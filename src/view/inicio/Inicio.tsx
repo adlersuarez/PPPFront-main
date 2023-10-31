@@ -16,6 +16,7 @@ import Estudiante from '../../model/interfaces/estudiante.model.interface';
 import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
 import Inscripcion from '../pages/estudiante/Inscripcion';
+import Proceso from '../pages/estudiante/Proceso';
 
 
 
@@ -206,8 +207,18 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 path={`${path}/inscripcion`}
                                 render={(props) => <Inscripcion {...props} />}
                             />
-                            {/* Modulos del centro de ayuda */}
-                            
+                            {/* Modulos del Estudiante */}
+                            {
+                                //
+                                <Route
+                                    path={`${path}/proceso`}
+                                    exact={true}
+                                    render={(props) => <Proceso informacion={informacion} {...props} />}
+                                />
+                                //
+                            }
+
+
                         </Switch>
                     </div>
                     {/* FIN NAVEGACION  */}
