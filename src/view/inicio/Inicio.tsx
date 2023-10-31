@@ -15,6 +15,7 @@ import RestError from '../../model/class/resterror.model.class';
 import Estudiante from '../../model/interfaces/estudiante.model.interface';
 import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
+import Inscripcion from '../pages/estudiante/Inscripcion';
 
 
 
@@ -199,11 +200,11 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 path={"/inicio"}
                                 exact={true}
                             >
-                                <Redirect to={`${path}/bienvenido`} />
+                                <Redirect to={`${path}/inscripcion`} />
                             </Route>
                             <Route
-                                path={`${path}/bienvenido`}
-                                render={(props) => <Bienvenido {...props} />}
+                                path={`${path}/inscripcion`}
+                                render={(props) => <Inscripcion {...props} />}
                             />
                             {/* Modulos del centro de ayuda */}
                             
