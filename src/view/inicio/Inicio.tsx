@@ -93,6 +93,8 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         }
     });
 
+    console.log('aaaaaaaaaaaaaaaaaa')
+
     useEffect(() => {
         const load = async () => {
             if (codigo.length === 8) {
