@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
+import ModalDatosEstudiante from '../../modalForms/ModalDatosEstudiante';
 //import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
 
 type DatosType = {
@@ -12,12 +13,20 @@ type DatosType = {
 };
 
 
-const TemplateStep1 = (props : DatosType) => {
+const TemplateStep1 = (props: DatosType) => {
 
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState<boolean>(false);
+    const [showEstud, setShowEstud] = useState<boolean>(false);
+    const [showCentro, setShowCentro] = useState<boolean>(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleCloseEstud = () => setShowEstud(false);
+    const handleShowEstud = () => setShowEstud(true);
+
+    const handleCloseCentro = () => setShowCentro(false);
+    const handleShowCentro = () => setShowCentro(true);
 
     //console.log(props)
 
@@ -26,7 +35,9 @@ const TemplateStep1 = (props : DatosType) => {
         <div className="mt-10 rounded shadow-lg border p-4 w-full">
 
             <ModalDatosPersonales datos={props} show={show} hide={handleClose} />
-            
+
+            <ModalDatosEstudiante show={showEstud} hide={handleCloseEstud} />
+
 
             <div className="flex">
                 <div className="w-1/2 pr-4">
@@ -118,10 +129,10 @@ const TemplateStep1 = (props : DatosType) => {
 
                                 <span className="ml-4">Datos estudiante</span>
 
-                                {/*<div className="ml-auto">
+                                <div className="ml-auto">
                                     <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2" onClick={handleShowEstud}>Iniciar</button>
                                     <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2" onClick={handleShowEstud}>Ver</button>
-                                </div>*/}
+                                </div>
                             </div>
 
                             <div className="flex items-center">
