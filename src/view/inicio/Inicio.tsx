@@ -17,6 +17,7 @@ import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
 import Inscripcion from '../pages/estudiante/Inscripcion';
 import Proceso from '../pages/estudiante/Proceso';
+import MatriculaInterna from '../pages/estudiante/matricula/MatriculaInterna';
 
 
 
@@ -206,6 +207,14 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                             <Route
                                 path={`${path}/inscripcion`}
                                 render={(props) => <Inscripcion {...props} />}
+                            />
+                            <Route
+                                path={`${path}/matricula_interna`}
+                                render={(props) => <MatriculaInterna {...props} />}
+                            />
+                            <Route
+                                path={`${path}/matricula_externa`}
+                                render={(props) => <MatriculaInterna {...props} />}
                             />
                             {/* Modulos del Estudiante */}
                             {

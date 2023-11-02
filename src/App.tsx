@@ -6,6 +6,7 @@ import Cargar from './view/cargar/Cargar';
 import NotFound from './view/pages/404/NotFound';
 import Acceso from './view/acceso/Acceso';
 import Inicio from './view/inicio/Inicio';
+import FormularioAcceso from './view/acceso/FormularioAcceso';
 //import Acceso from './view/acceso/Acceso';
 //import Busqueda from './view/busqueda/Busqueda';
 
@@ -33,7 +34,7 @@ function App() {
             <Route
                 path="/acceso"
                 exact={true}
-                render={(props) => <Acceso {...props} />}
+                render={(props) => <FormularioAcceso {...props} />}
             />
 
             <Route

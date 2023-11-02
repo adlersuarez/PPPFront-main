@@ -109,7 +109,7 @@ const Acceso = (props: RouteComponentProps<{}>) => {
                         initial={{ x: -1000, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 1 }}
-                    >PRÁCTICAS PRE-PROFESIONALES</motion.h1>
+                    >CENTRO DE IDIOMAS</motion.h1>
                     <motion.p
                         className="text-lg md:text-xl lg:text-2xl font-mont font-thin flex justify-center items-center"
                         initial={{ x: -1000, opacity: 0 }}
