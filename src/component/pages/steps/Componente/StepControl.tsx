@@ -10,8 +10,8 @@ function StepControl({ handleClick, currentStep, steps, estadoModel }: StepContr
     const blockDelim = ' bg-slate-700 border-2 border-slate-300 transition duration-200 ease-in-out cursor-not-allowed opacity-50';
     const blockEstado = ' bg-[#e8b962] border-2 border-[#e8b962] cursor-not-allowed hover:bg-[#ac853d] hover:border-[#ac853d] hover:text-white transition duration-200 ease-in-out';
 
-    const solicitud_proceso = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(e)
+    const solicitud_proceso = () => {
+        
     };
 
     return (

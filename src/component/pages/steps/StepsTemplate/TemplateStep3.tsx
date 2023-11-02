@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ModalDatosAreaTrabajo from '../../modalForms/ModalDatosAreaTrabajo';
+import ModalDatosJefeInmediato from '../../modalForms/ModalDatosJefeInmediato';
 
 const TemplateStep3 = () => {
 
@@ -20,6 +21,7 @@ const TemplateStep3 = () => {
             */}
             <ModalDatosAreaTrabajo show={showArea} hide={handleCloseArea} />
 
+            <ModalDatosJefeInmediato show={showJefe} hide={handleCloseJefe} />
 
             <div className="flex">
                 <div className="w-1/2 pr-4">

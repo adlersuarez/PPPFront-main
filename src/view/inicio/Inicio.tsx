@@ -4,9 +4,9 @@ import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { RootState } from '../../store/configureStore.store';
 import Aside from '../pages/layout/aside/Aside';
 import Nav from '../pages/layout/nav/Nav';
-import Dashboard from './dashboard/Dashboard';
+//import Dashboard from './dashboard/Dashboard';
 import { css, images } from '../../helper/index.helper';
-import Bienvenido from './bienvenido/Bienvenido';
+//import Bienvenido from './bienvenido/Bienvenido';
 import { useEffectOnce } from 'react-use';
 import { EstudianteRest, TrabajadorRest } from '../../network/rest/services.network';
 import Response from '../../model/class/response.model.class';
@@ -97,7 +97,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
             if (codigo.length === 8) {
                 const response = await TrabajadorRest<Trabajador>(codigo);
 
-                console.log(response)
+                //console.log(response)
 
                 if (response instanceof Response) {
                     setInformacion(response.data as Trabajador);

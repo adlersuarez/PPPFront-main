@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Modal from "../modal/ModalComponente";
-import { ConsultarRuc } from "../../../network/rest/apiconsultas.network";
+import { ConsultarDni, ConsultarRuc } from "../../../network/rest/apiconsultas.network";
 import Response from '@/model/class/response.model.class';
 import RucEmpresa from '@/model/interfaces/respuesta-api/ruc.empresa.model.interface';
+import DniPersona from '@/model/interfaces/respuesta-api/dni.persona.model.interface';
 
 interface DatosState {
     ruc: string;
@@ -42,9 +43,7 @@ const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
 
     // Consulta de PRUEBA para datos del RUC
     const consultarRUC = async () => {
-        //console.log(ruc)
         const response = await ConsultarRuc<RucEmpresa>(ruc);
-
         if (response instanceof Response) {
             let respuesta = response.data.data
             if (respuesta) {
@@ -57,7 +56,6 @@ const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
                         return "Error";
                     }
                 };
-
                 const zona = ajustarZona(respuesta.direccion, respuesta.direccion_completa);
 
                 setDatos({
@@ -75,9 +73,18 @@ const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
 
     // Consulta de PRUEBA para datos del DNI
     const consultarDNI = async () => {
-
+        const response = await ConsultarDni<DniPersona>(dni);
+        if (response instanceof Response) {
+            let respuesta = response.data.data
+            if (respuesta) {
+                setDatos({
+                    ...datos,
+                    dni_jefe: dni,
+                    nombre_jefe: respuesta.nombre_completo,
+                });
+            }
+        }
     }
-
 
     return (
 

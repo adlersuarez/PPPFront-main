@@ -22,6 +22,6 @@ export async function ConsultarRuc<RucEmpresa>(ruc: string, signal = null): Prom
     return await Resolve.create<RucEmpresa>(instance.get<RucEmpresa>("/ruc/" + ruc, { signal: signal! }));
 }
 
-export async function ConsultarDni<Persona>(dni: string, signal = null): Promise<Response<Persona> | RestError> {
-    return await Resolve.create<Persona>(instance.get<Persona>("/dni/" + dni, { signal: signal! }));
+export async function ConsultarDni<DniPersona>(dni: string, signal = null): Promise<Response<DniPersona> | RestError> {
+    return await Resolve.create<DniPersona>(instance.get<DniPersona>("/dni/" + dni, { signal: signal! }));
 }
