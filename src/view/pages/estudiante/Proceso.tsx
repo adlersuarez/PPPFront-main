@@ -7,6 +7,7 @@ import Estudiante from '@/model/interfaces/estudiante.model.interface';
 import Trabajador from '@/model/interfaces/trabajador.model.interface';
 import { useState } from 'react';
 import { RouteComponentProps } from "react-router-dom";//
+import TemplateStep1 from '@/component/pages/steps/StepsTemplate/TemplateStep1';
 
 type Informacion = {
     informacion: Estudiante | Trabajador | undefined;
@@ -16,6 +17,8 @@ const Proceso = (informacion: Informacion, props: RouteComponentProps<{}>) => {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [userData, setUserData] = useState<string>('');
     const [finalData, setFinalData] = useState<any[]>([]);
+
+    //console.log(informacion)
 
     const paso_proceso = {
         "efectiva": {
@@ -34,14 +37,13 @@ const Proceso = (informacion: Informacion, props: RouteComponentProps<{}>) => {
         }
     }
 
-    //console.log(informacion.informacion)
 
     const steps = paso_proceso.efectiva.pasos;
 
     const displayStep = (step: number) => {
         switch (step) {
             case 1:
-                return //<TemplatePaso1 datos={props.informacion} />;
+                return <TemplateStep1 {...informacion.informacion} />;
             case 2:
                 return //<TemplatePaso2 />;
             case 3:

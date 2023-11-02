@@ -23,6 +23,17 @@ type MenuItem = {
     subMenus?: MenuItem[]
 }
 
+/*type MenuItem = {
+    id: number,
+    titulo: string,
+    url?: string,
+    icono: string,
+    moduPadre: number,
+    modPosicion: number,
+    subMenu: boolean,
+    subMenuItems?: MenuItem[]
+}*/
+
 const menus: MenuItem[] = [
     {
         id: "1",
@@ -60,19 +71,69 @@ const menus: MenuItem[] = [
         subMenus: []
     },
     {
-        id: "5",
+        id: "6",
         nombre: "Docente",
         pathname: "/inicio/revision",
         icon: "bi-file-ruled",
         subMenus: []
     },
     {
-        id: "6",
+        id: "7",
         nombre: "Administrador",
         pathname: "/inicio/administrador",
         icon: "bi-bar-chart-line-fill",
         subMenus: []
     },
+
+    /*
+    {
+        id: "8",
+        titulo: "Dashboard",
+        url: "/inicio/dashboard",
+        icono: "bi-speedometer",
+        moduPadre: 0,
+        modPosicion: 1,
+        subMenu: false,
+        subMenuItems: [],
+    },
+    {
+        id: "9",
+        titulo: "Marcación",
+        url: "",
+        icono: "bi-arrow-left-right",
+        moduPadre: 0,
+        modPosicion: 2,
+        subMenu: true,
+        subMenuItems: [
+            {
+                id: 7,
+                titulo: "Visitantes",
+                url: "/inicio/marcacion-visitante",
+                icono: "bi-dash",
+                moduPadre: 2,
+                modPosicion: 1
+            }
+            ,
+            {
+                id: 8,
+                titulo: "Estudiantes",
+                url: "/inicio/marcacion-estudiante",
+                icono: "bi-dash",
+                moduPadre: 2,
+                modPosicion: 2
+            },
+            {
+                id: 9,
+                titulo: "Personal",
+                url: "/inicio/marcacion-personal",
+                icono: "bi-dash",
+                moduPadre: 2,
+                modPosicion: 3
+            }
+
+        ],
+    },*/
+
 ];
 
 
