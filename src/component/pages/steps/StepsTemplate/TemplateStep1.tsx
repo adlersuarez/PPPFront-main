@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
 import ModalDatosEstudiante from '../../modalForms/ModalDatosEstudiante';
+import ModalDatosCentroLaboral from '../../modalForms/ModalDatosCentroLaboral';
 //import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
 
 type DatosType = {
@@ -38,6 +39,7 @@ const TemplateStep1 = (props: DatosType) => {
 
             <ModalDatosEstudiante show={showEstud} hide={handleCloseEstud} />
 
+            <ModalDatosCentroLaboral show={showCentro} hide={handleCloseCentro} />
 
             <div className="flex">
                 <div className="w-1/2 pr-4">
@@ -142,10 +144,10 @@ const TemplateStep1 = (props: DatosType) => {
 
                                 <span className="ml-4">Datos centro laboral</span>
 
-                                {/*<div className="ml-auto">
+                                <div className="ml-auto">
                                     <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2" onClick={handleShowCentro}>Iniciar</button>
                                     <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2" onClick={handleShowCentro}>Ver</button>
-                                </div>*/}
+                                </div>
                             </div>
                         </div>
 

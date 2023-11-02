@@ -82,7 +82,7 @@ const Inscripcion = (props: RouteComponentProps<{}>) => {
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
                         <ModalidadCard
                             imagen={images.modalidad_efectiva}
-                            titulo={'EFECTIVA'}
+                            titulo={'CURRICULAR'}
                             resumen={''}
                             to={'/inicio/proceso'}
                             info={''}

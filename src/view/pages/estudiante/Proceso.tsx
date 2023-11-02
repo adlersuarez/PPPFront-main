@@ -8,6 +8,12 @@ import Trabajador from '@/model/interfaces/trabajador.model.interface';
 import { useState } from 'react';
 import { RouteComponentProps } from "react-router-dom";//
 import TemplateStep1 from '@/component/pages/steps/StepsTemplate/TemplateStep1';
+import TemplateStep2 from '@/component/pages/steps/StepsTemplate/TemplateStep2';
+import TemplateStep3 from '@/component/pages/steps/StepsTemplate/TemplateStep3';
+import TemplateStep4 from '@/component/pages/steps/StepsTemplate/TemplateStep4';
+import TemplateStep5 from '@/component/pages/steps/StepsTemplate/TemplateStep5';
+import TemplateStep6 from '@/component/pages/steps/StepsTemplate/TemplateStep6';
+import TemplateStep7 from '@/component/pages/steps/StepsTemplate/TemplateStep7';
 
 type Informacion = {
     informacion: Estudiante | Trabajador | undefined;
@@ -45,17 +51,17 @@ const Proceso = (informacion: Informacion, props: RouteComponentProps<{}>) => {
             case 1:
                 return <TemplateStep1 {...informacion.informacion} />;
             case 2:
-                return //<TemplatePaso2 />;
+                return <TemplateStep2 />;
             case 3:
-                return //<TemplatePaso3 />;
+                return <TemplateStep3 />;
             case 4:
-                return //<TemplatePaso4 />;
+                return <TemplateStep4 />;
             case 5:
-                return //<TemplatePaso5 />;
+                return <TemplateStep5 />;
             case 6:
-                return //<TemplatePaso6 />;
+                return <TemplateStep6 />;
             case 7:
-                return //<TemplatePaso7 />;
+                return <TemplateStep7 />;
             default:
                 return null; //
         }

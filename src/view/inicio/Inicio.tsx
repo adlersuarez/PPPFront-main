@@ -96,6 +96,9 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         const load = async () => {
             if (codigo.length === 8) {
                 const response = await TrabajadorRest<Trabajador>(codigo);
+
+                console.log(response)
+
                 if (response instanceof Response) {
                     setInformacion(response.data as Trabajador);
                     setCargando(false);
@@ -106,6 +109,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                 }
             } else {
                 const response = await EstudianteRest<Estudiante>(codigo);
+
                 if (response instanceof Response) {
                     setInformacion(response.data as Estudiante);
                     setCargando(false);
