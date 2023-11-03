@@ -117,8 +117,8 @@ const menus: MenuItem[] = [
         subMenuItems: [
             {
                 id: '1',
-                titulo: "Visitantes",
-                url: "/medicina/marcacion-visitante",
+                titulo: "Internado Médico",
+                url: "/inicio/medicina/internado-medico",
                 icono: "bi-dash",
                 moduPadre: false,
                 modPosicion: 1,
@@ -128,7 +128,7 @@ const menus: MenuItem[] = [
             {
                 id: '2',
                 titulo: "Estudiantes",
-                url: "/medicina/marcacion-estudiante",
+                url: "/medicina/tutor",
                 icono: "bi-dash",
                 moduPadre: false,
                 modPosicion: 2,
@@ -138,7 +138,7 @@ const menus: MenuItem[] = [
             {
                 id: '3',
                 titulo: "Personal",
-                url: "/medicina/marcacion-personal",
+                url: "/medicina/administrador",
                 icono: "bi-dash",
                 moduPadre: false,
                 modPosicion: 3,

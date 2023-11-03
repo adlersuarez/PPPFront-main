@@ -23,6 +23,7 @@ import Reglamento from '../pages/estudiante/Reglamento';
 import Admin from '../pages/admin/Dashboard';
 import Revision from '../pages/docente/Revision';
 import Especifico from '../pages/docente/Especifico';
+import ProcesoMedicina from '../pages/facultades/medicina/interno/ProcesoMedicina';
 
 
 
@@ -268,7 +269,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 <Route
                                     path={`${path}/revision`}
                                     exact={true}
-                                    render={(props) => <Revision {...props}/>}
+                                    render={(props) => <Revision {...props} />}
                                 />
                                 //
                             }
@@ -277,6 +278,15 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                     path={`${path}/revision/estudiante-detalle`}
                                     exact={true}
                                     render={(props) => <Especifico {...props} />}
+                                />
+                            }
+
+                            
+                            {//MEDICINA
+                                <Route
+                                    path={`${path}/medicina/internado-medico`}
+                                    exact={true}
+                                    render={() => <ProcesoMedicina  />}
                                 />
                             }
 
