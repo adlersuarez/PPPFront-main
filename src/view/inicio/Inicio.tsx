@@ -20,6 +20,8 @@ import Proceso from '../pages/estudiante/Proceso';
 import Formato from '../pages/estudiante/Formato';
 import Contacto from '../pages/estudiante/Contacto';
 import Reglamento from '../pages/estudiante/Reglamento';
+import Dashboard from './dashboard/Dashboard';
+import Admin from '../pages/admin/Dashboard';
 
 
 
@@ -248,6 +250,15 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                     path={`${path}/reglamentos`}
                                     exact={true}
                                     render={() => <Reglamento  />}
+                                />
+                                //
+                            }
+                            {
+                                //
+                                <Route
+                                    path={`${path}/administrador`}
+                                    exact={true}
+                                    render={() => <Admin  />}
                                 />
                                 //
                             }
