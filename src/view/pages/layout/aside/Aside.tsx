@@ -105,6 +105,48 @@ const menus: MenuItem[] = [
         subMenu: false,
         subMenuItems: []
     },
+    //
+    {
+        id: '8',
+        titulo: "Medicina",
+        url: "",
+        icono: "bi bi-hospital-fill",
+        moduPadre: true,
+        modPosicion: 8,
+        subMenu: true,
+        subMenuItems: [
+            {
+                id: '1',
+                titulo: "Visitantes",
+                url: "/medicina/marcacion-visitante",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            }
+            ,
+            {
+                id: '2',
+                titulo: "Estudiantes",
+                url: "/medicina/marcacion-estudiante",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 2,
+                subMenu: false,
+
+            },
+            {
+                id: '3',
+                titulo: "Personal",
+                url: "/medicina/marcacion-personal",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 3,
+                subMenu: false,
+            }
+
+        ],
+    },
     /*{
         id: '8',
         titulo: "Dashboard",
