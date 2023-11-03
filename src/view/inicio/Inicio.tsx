@@ -17,6 +17,9 @@ import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
 import Inscripcion from '../pages/estudiante/Inscripcion';
 import Proceso from '../pages/estudiante/Proceso';
+import Formato from '../pages/estudiante/Formato';
+import Contacto from '../pages/estudiante/Contacto';
+import Reglamento from '../pages/estudiante/Reglamento';
 
 
 
@@ -48,7 +51,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         const menus = document.querySelectorAll<HTMLElement>("#menus li button") as NodeListOf<HTMLButtonElement>;
         for (const button of menus) {
-            button.addEventListener("click", (event) => {
+            button.addEventListener("click", () => {
                 const element = button.parentNode?.querySelector("ul") as HTMLElement;
 
                 if (element.getAttribute("aria-expanded") !== "true") {
@@ -218,6 +221,33 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                     path={`${path}/proceso`}
                                     exact={true}
                                     render={(props) => <Proceso informacion={informacion} {...props} />}
+                                />
+                                //
+                            }
+                            {
+                                //
+                                <Route
+                                    path={`${path}/formatos`}
+                                    exact={true}
+                                    render={(props) => <Formato {...props} />}
+                                />
+                                //
+                            }
+                            {
+                                //
+                                <Route
+                                    path={`${path}/contactos`}
+                                    exact={true}
+                                    render={(props) => <Contacto  {...props} />}
+                                />
+                                //
+                            }
+                            {
+                                //
+                                <Route
+                                    path={`${path}/reglamentos`}
+                                    exact={true}
+                                    render={() => <Reglamento  />}
                                 />
                                 //
                             }

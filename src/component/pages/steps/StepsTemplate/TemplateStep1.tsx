@@ -2,19 +2,9 @@ import { useState } from 'react';
 import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
 import ModalDatosEstudiante from '../../modalForms/ModalDatosEstudiante';
 import ModalDatosCentroLaboral from '../../modalForms/ModalDatosCentroLaboral';
-//import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
+import DatosUsuario from '@/model/interfaces/datos.usuario.model.interface';
 
-type DatosType = {
-    docNumId: string;
-    asesNombres: string;
-    asesPaterno: string;
-    asesMaterno: string;
-    id_departamento: number;
-    // 
-};
-
-
-const TemplateStep1 = (props: DatosType) => {
+const TemplateStep1 = (props: DatosUsuario) => {
 
     const [show, setShow] = useState<boolean>(false);
     const [showEstud, setShowEstud] = useState<boolean>(false);
