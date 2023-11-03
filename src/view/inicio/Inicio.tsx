@@ -20,8 +20,9 @@ import Proceso from '../pages/estudiante/Proceso';
 import Formato from '../pages/estudiante/Formato';
 import Contacto from '../pages/estudiante/Contacto';
 import Reglamento from '../pages/estudiante/Reglamento';
-import Dashboard from './dashboard/Dashboard';
 import Admin from '../pages/admin/Dashboard';
+import Revision from '../pages/docente/Revision';
+import Especifico from '../pages/docente/Especifico';
 
 
 
@@ -249,7 +250,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 <Route
                                     path={`${path}/reglamentos`}
                                     exact={true}
-                                    render={() => <Reglamento  />}
+                                    render={() => <Reglamento />}
                                 />
                                 //
                             }
@@ -258,9 +259,25 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 <Route
                                     path={`${path}/administrador`}
                                     exact={true}
-                                    render={() => <Admin  />}
+                                    render={() => <Admin />}
                                 />
                                 //
+                            }
+                            {
+                                //
+                                <Route
+                                    path={`${path}/revision`}
+                                    exact={true}
+                                    render={(props) => <Revision {...props}/>}
+                                />
+                                //
+                            }
+                            {
+                                <Route
+                                    path={`${path}/revision/estudiante-detalle`}
+                                    exact={true}
+                                    render={(props) => <Especifico {...props} />}
+                                />
                             }
 
 
