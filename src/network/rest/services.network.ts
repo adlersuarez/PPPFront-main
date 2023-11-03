@@ -5,6 +5,7 @@ import RestError from '../../model/class/resterror.model.class';
 
 const instance = axios.create({
     baseURL: import.meta.env.VITE_SERVICES_API_APP,
+    //baseURL: import.meta.env.VITE_LOGIN_API_APP,
     timeout: 10000,
     headers: {
         "Accept": "application/json",

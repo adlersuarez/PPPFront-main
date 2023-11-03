@@ -104,7 +104,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
             if (codigo.length === 8) {
                 const response = await TrabajadorRest<Trabajador>(codigo);
 
-                //console.log(response)
+                //console.log(response.data)
 
                 if (response instanceof Response) {
                     setInformacion(response.data as Trabajador);

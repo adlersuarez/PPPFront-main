@@ -26,7 +26,7 @@ function App() {
             <Route
                 path="/"
                 exact={true}
-                >
+            >
                 <Redirect to={"/acceso"} />
             </Route>
 
@@ -41,10 +41,12 @@ function App() {
                 render={(props) => <Inicio {...props} />}
             />
 
-            {/* <Route
+            {/*
+            <Route
                 path="/control"
                 render={(props) => <Control {...props} />}
-              /> */}
+              />
+            */}
 
             <Route
                 component={NotFound}
