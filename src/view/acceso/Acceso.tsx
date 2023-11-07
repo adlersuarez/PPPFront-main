@@ -133,9 +133,9 @@ const Acceso = (props: RouteComponentProps<{}>) => {
                     />
                     <div className="flex flex-col items-center my-5">
                         <p className="font-mont text-center my-1">Por favor ingrese a su cuenta</p>
-                        <p className="md:hidden text-center font-mont">INTRANET</p>
+                        <p className="md:hidden text-center font-mont">CENTRO DE IDIOMAS</p>
                         <p className="md:hidden text-center font-mont text-sm flex">
-                            <span className="px-1">(INT)</span> <AcedemicCapSvg />
+                            <span className="px-1">UPLA</span> <AcedemicCapSvg />
                         </p>
                         {mensaje != "" && <p className="text-red-600 flex items-center"><AiFillWarning className="mr-1" /> <span>{mensaje}</span></p>}
 
