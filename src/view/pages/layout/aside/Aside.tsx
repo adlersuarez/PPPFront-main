@@ -38,7 +38,7 @@ const menus: MenuItem[] = [
     {
         id: "1",
         nombre: "Inicio",
-        pathname: "/inicio/inscripcion",
+        pathname: "/inicio/centro_de_idiomas",
         icon: "bi-info-circle",
         subMenus: []
     },

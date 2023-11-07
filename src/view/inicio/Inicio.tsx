@@ -15,11 +15,12 @@ import RestError from '../../model/class/resterror.model.class';
 import Estudiante from '../../model/interfaces/estudiante.model.interface';
 import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
-import Inscripcion from '../pages/estudiante/Inscripcion';
-import Proceso from '../pages/estudiante/Proceso';
-import HomeSistema from '../pages/estudiante/HomeSistema';
-import MatriculaInterna from '../pages/estudiante/matricula/MatriculaInterna';
-import MatriculaExterna from '../pages/estudiante/matricula/MatriculaExterna';
+import Inscripcion from '../estudiante/Inscripcion';
+import Proceso from '../estudiante/Proceso';
+import HomeSistema from '../estudiante/HomeSistema';
+import MatriculaInterna from '../estudiante/matricula/MatriculaInterna';
+import MatriculaExterna from '../estudiante/matricula/MatriculaExterna';
+import MatriculaHorario from '../estudiante/matricula/MatriculaHorario';
 
 
 
@@ -214,6 +215,8 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 />
                                 */
                             }
+                            
+                            {/* Modulos del Estudiante */}
 
                             <Route
                                 path={`${path}/centro_de_idiomas`}
@@ -230,7 +233,11 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 render={(props) => <MatriculaExterna {...props} />}
                             />
 
-                            {/* Modulos del Estudiante */}
+                            <Route
+                                path={`${path}/horario`}
+                                render={(props) => <MatriculaHorario {...props} />}
+                            />
+
                             {
                                 //
                                 <Route

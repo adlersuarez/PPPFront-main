@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import ButtonLink from '../../../component/pages/buttons/ButtonLink';
+import ButtonLink from '../../component/pages/buttons/ButtonLink';
 //import ModalidadCard from '../../component/cards/ModalidadCard';
-import images from '../../../helper/images.helper';
+import images from '../../helper/images.helper';
 import { RouteComponentProps } from "react-router-dom";
 import ModalidadCard from '@/component/pages/cards/ModalidadCard';
 

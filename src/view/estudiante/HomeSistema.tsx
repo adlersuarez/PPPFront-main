@@ -1,11 +1,11 @@
 import { ArrowRightOnCicleSvg } from "@/component/Svg.component";
 import { NavLink, RouteComponentProps } from "react-router-dom";
 
-import { images } from "../../../helper/index.helper";
+import { images } from "../../helper/index.helper";
 
 const HomeSistema = (props: RouteComponentProps<{}>) => {
     return (
-        <div className="grid grid-flow-row grid-cols-3 p-6">
+        <div className="grid grid-flow-row grid-cols-3 p-6 ">
             <div className="col-span-3 px-4 mb-8">
 
                 <div className="rounded overflow-hidden shadow-lg mx-auto">

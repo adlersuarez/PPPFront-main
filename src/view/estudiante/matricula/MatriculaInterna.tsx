@@ -124,7 +124,7 @@ const MatriculaInterna = (props: RouteComponentProps<{}>) => {
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         <button className="bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
                                                             <NavLink
-                                                                to="/inicio/horario_matricula">
+                                                                to={'/inicio/horario'}>
                                                                 Matricula
                                                             </NavLink>
                                                         </button>
