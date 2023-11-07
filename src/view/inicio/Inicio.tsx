@@ -17,7 +17,9 @@ import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
 import Inscripcion from '../pages/estudiante/Inscripcion';
 import Proceso from '../pages/estudiante/Proceso';
+import HomeSistema from '../pages/estudiante/HomeSistema';
 import MatriculaInterna from '../pages/estudiante/matricula/MatriculaInterna';
+import MatriculaExterna from '../pages/estudiante/matricula/MatriculaExterna';
 
 
 
@@ -92,8 +94,6 @@ const Inicio = (props: RouteComponentProps<{}>) => {
             });
         }
     });
-
-    console.log('aaaaaaaaaaaaaaaaaa')
 
     useEffect(() => {
         const load = async () => {
@@ -204,20 +204,32 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 path={"/inicio"}
                                 exact={true}
                             >
-                                <Redirect to={`${path}/inscripcion`} />
+                                <Redirect to={`${path}/centro_de_idiomas`} />
                             </Route>
+                            {
+                                /*
+                                <Route
+                                    path={`${path}/inscripcion`}
+                                    render={(props) => <Inscripcion {...props} />}
+                                />
+                                */
+                            }
+
                             <Route
-                                path={`${path}/inscripcion`}
-                                render={(props) => <Inscripcion {...props} />}
+                                path={`${path}/centro_de_idiomas`}
+                                render={(props) => <HomeSistema {...props} />}
                             />
+
                             <Route
                                 path={`${path}/matricula_interna`}
                                 render={(props) => <MatriculaInterna {...props} />}
                             />
+
                             <Route
                                 path={`${path}/matricula_externa`}
-                                render={(props) => <MatriculaInterna {...props} />}
+                                render={(props) => <MatriculaExterna {...props} />}
                             />
+
                             {/* Modulos del Estudiante */}
                             {
                                 //

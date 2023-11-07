@@ -72,7 +72,7 @@ const Acceso = (props: RouteComponentProps<{}>) => {
         //console.log(response)
 
         if (response instanceof Response) {
-            dispatch(login({codigo: response.data.docNumId ,token: response.data.token }));
+            dispatch(login({ codigo: response.data.docNumId, token: response.data.token }));
             return;
         }
 
@@ -168,6 +168,7 @@ const Acceso = (props: RouteComponentProps<{}>) => {
                 </div>
             </div>
         </div>
+        
     </>
 }
 

@@ -97,14 +97,18 @@ const MatriculaExterna = (props: RouteComponentProps<{}>) => {
                                             </div>
                                         </div>
 
-                                        {/* <div className='flex flex-col'>
-                                            <div className="rounded-lg p-4 border border-gray-300 shadow-md max-w-xs mx-auto">
-                                                <h2 className="text-xl font-bold mb-2">RECIBO N°2 <i className="bi bi-receipt text-lg text-gray-500"></i></h2>
-                                                <p><strong>Código:</strong> 56789</p>
-                                                <p><strong>Tipo:</strong> Matricula Centro de Idiomas</p>
-                                                <p><strong>Fecha:</strong> 18 de Octubre, 2023</p>
+                                        {
+                                            /*
+                                            <div className='flex flex-col'>
+                                                <div className="rounded-lg p-4 border border-gray-300 shadow-md max-w-xs mx-auto">
+                                                    <h2 className="text-xl font-bold mb-2">RECIBO N°2 <i className="bi bi-receipt text-lg text-gray-500"></i></h2>
+                                                    <p><strong>Código:</strong> 56789</p>
+                                                    <p><strong>Tipo:</strong> Matricula Centro de Idiomas</p>
+                                                    <p><strong>Fecha:</strong> 18 de Octubre, 2023</p>
+                                                </div>
                                             </div>
-                                        </div> */}
+                                            */
+                                        }
 
                                     </div>
                                 </div>

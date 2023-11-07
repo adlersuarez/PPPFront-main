@@ -18,7 +18,7 @@ import { AiFillWarning } from "react-icons/ai";
 import { Types } from "../../model/enum/types.model";
 import Estudiante from '@/model/interfaces/estudiante.model.interface';
 
-const FormularioAcceso = (props: RouteComponentProps<{}>) => {
+const FormularioAccesoExterno = (props: RouteComponentProps<{}>) => {
 
     const dispatch = useDispatch();
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
@@ -122,7 +122,7 @@ const FormularioAcceso = (props: RouteComponentProps<{}>) => {
                 // </div>
             }
             <div className="px-6 md:px-12 sm:px-10 my-auto mx-auto w-full md:w-1/2 xl:w-1/3">
-                <div className="shadow-lg border bg-white">
+                <div className="shadow-lg border bg-white rounded-md">
                     <motion.img
                         className="m-auto w-32 pt-4"
                         animate={{
@@ -130,12 +130,12 @@ const FormularioAcceso = (props: RouteComponentProps<{}>) => {
                             rotate: [0, 0, 270, 270, 0],
                             borderRadius: ["20%", "20%", "50%", "50%", "20%"],
                         }}
-                        transition={{ duration: 2 }}
+                        transition={{ duration: 2 }}    
                         src={images.logo}
                         alt=""
-                    /> 
+                    />
                     <div className="flex flex-col items-center my-5">
-                    <p className="font-mont text-center my-1 text-lg"><strong>REGISTRO UNICO PARA ESTUDIANTES INTERNOS</strong></p>
+                        <p className="font-mont text-center my-1 text-lg"><strong>REGISTRO PARA ESTUDIANTES EXTERNOS</strong></p>
                         <p className="md:hidden text-center font-mont">INTRANET</p>
                         <p className="md:hidden text-center font-mont text-sm flex">
                             <span className="px-1">(INT)</span> <AcedemicCapSvg />
@@ -249,4 +249,4 @@ const FormularioAcceso = (props: RouteComponentProps<{}>) => {
     </>
 }
 
-export default FormularioAcceso;
+export default FormularioAccesoExterno;
