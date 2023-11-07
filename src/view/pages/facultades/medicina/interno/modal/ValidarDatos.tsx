@@ -24,9 +24,10 @@ const ValidarCelular: React.FC<Props> = (props: Props) => {
     const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(''));
     const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
     const [isCodeConfirmed, setIsCodeConfirmed] = useState<boolean>(false);
-    const [phoneNumber] = useState<string | undefined>(datos.telefono);
+    
     const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
 
+    const phoneNumber = datos.telefono;
     const formattedPhoneNumber = phoneNumber?.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
 
     const generateRandomNumbers = () => {

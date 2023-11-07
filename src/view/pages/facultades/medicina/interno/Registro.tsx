@@ -13,6 +13,12 @@ type DatosType = {
 
 const Registro = () => {
 
+    const [datos, setDatos] = useState<DatosType>({
+        dni: '71254763',
+        email: '',
+        telefono: '',
+    });
+
     const [show, setShow] = useState<boolean>(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -31,12 +37,6 @@ const Registro = () => {
             window.getSelection()?.removeAllRanges();
         }
     };*/
-
-    const datos: DatosType = {
-        dni: '71254763',
-        email: 'eprueba@upla.edu.pe',
-        telefono: '974127894',
-    };
 
     return (
         <div className="flex flex-wrap -mx-3">
@@ -123,6 +123,8 @@ const Registro = () => {
                                                     id="correoElectronico"
                                                     name="correoElectronico"
                                                     className="w-full border rounded px-3 py-2"
+                                                    value={datos.email}
+                                                    onChange={(e) => setDatos({ ...datos, email: e.target.value })}
                                                 />
                                                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-green-400 p-1 text-white rounded-sm flex gap-2 text-xs">
                                                     <i className="bi bi-check-circle" /> Validado
@@ -151,6 +153,8 @@ const Registro = () => {
                                                     id="numeroTelefono"
                                                     name="numeroTelefono"
                                                     className="border rounded px-3 py-2 w-full"
+                                                    value={datos.telefono}
+                                                    onChange={(e) => setDatos({ ...datos, telefono: e.target.value })}
                                                 />
                                                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-green-400 p-1 text-white rounded-sm flex gap-2 text-xs">
                                                     <i className="bi bi-check-circle" /> Validado

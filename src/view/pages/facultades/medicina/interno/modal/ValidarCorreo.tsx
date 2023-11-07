@@ -24,9 +24,7 @@ const ValidarCorreo: React.FC<Props> = (props: Props) => {
     const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(''));
     const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
     const [isCodeConfirmed, setIsCodeConfirmed] = useState<boolean>(false);
-    const [phoneNumber] = useState<string | undefined>(datos.telefono);
     const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
-
 
     const generateRandomNumbers = () => {
         const numbers = [...Array(9)].map((_, index) => index + 1);
