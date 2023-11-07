@@ -24,6 +24,7 @@ import Admin from '../pages/admin/Dashboard';
 import Revision from '../pages/docente/Revision';
 import Especifico from '../pages/docente/Especifico';
 import ProcesoMedicina from '../pages/facultades/medicina/interno/ProcesoMedicina';
+import Registro from '../pages/facultades/medicina/interno/Registro';
 
 
 
@@ -281,12 +282,19 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 />
                             }
 
-                            
+
                             {//MEDICINA
                                 <Route
                                     path={`${path}/medicina/internado-medico`}
                                     exact={true}
-                                    render={() => <ProcesoMedicina  />}
+                                    render={() => <ProcesoMedicina />}
+                                />
+                            }
+                            {
+                                <Route
+                                    path={`${path}/medicina/registro`}
+                                    exact={true}
+                                    render={() => <Registro />}
                                 />
                             }
 

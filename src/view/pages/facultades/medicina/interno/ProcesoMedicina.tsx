@@ -81,6 +81,7 @@ const ProcesoMedicina = () => {
                         </h1>
                         <p className='mt-4 text-xl'>¿Como va mi proceso?</p>
                     </div>
+                    
 
                     <div className=''>
                         <div className="md:w-full mx-auto pb-2 bg-white ">

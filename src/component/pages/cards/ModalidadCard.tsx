@@ -36,13 +36,13 @@ const ModalidadCard = (props: Props) => {
                 </div>
 
                 <div className="flex w-full md:w-auto">
-  <div className={`2xl:m-auto md:ml-auto`}>
-    <NavLink to={props.info} className="flex text-blue-500 hover:underline m-auto">
-      <span className="">Más Información</span>
-      <i className={`bi bi-info-circle ml-2 text-lg`} />
-    </NavLink>
-  </div>
-</div>
+                    <div className={`2xl:m-auto md:ml-auto`}>
+                        <NavLink to={props.info} className="flex text-blue-500 hover:underline m-auto">
+                            <span className="">Más Información</span>
+                            <i className={`bi bi-info-circle ml-2 text-lg`} />
+                        </NavLink>
+                    </div>
+                </div>
             </div>
         </div >
     );

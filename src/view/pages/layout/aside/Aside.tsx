@@ -128,7 +128,7 @@ const menus: MenuItem[] = [
             {
                 id: '2',
                 titulo: "Estudiantes",
-                url: "/medicina/tutor",
+                url: "/inicio/medicina/registro",
                 icono: "bi-dash",
                 moduPadre: false,
                 modPosicion: 2,
