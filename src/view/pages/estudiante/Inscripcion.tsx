@@ -17,9 +17,9 @@ const Inscripcion = () => {
                             <div className='flex flex-col gap-2'>
                                 <h1 className='font-bold text-xl'>Prácticas Pre Profesionales</h1>
                                 <p>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                    Damos la bienvenida a los participantes de las prácticas preprofesionales en la Universidad Peruana Los Andes (UPLA). Este periodo representa una etapa fundamental en su formación académica, donde se integrarán en un entorno que propicia la aplicación de conocimientos teóricos en situaciones prácticas y desafiantes.
+
+                                    Las prácticas preprofesionales constituyen un componente esencial de nuestro compromiso con la excelencia académica y la preparación integral de nuestros estudiantes. Durante este proceso, los participantes tendrán la oportunidad de poner a prueba y consolidar sus habilidades adquiridas en el aula, al tiempo que se familiarizan con los protocolos y procedimientos específicos de su campo de estudio.
                                 </p>
                             </div>
                             <div className="flex justify-start gap-8">
