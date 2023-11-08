@@ -23,8 +23,7 @@ const ValidarCelular: React.FC<Props> = (props: Props) => {
 
     const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(''));
     const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
-    
-    //const [isCodeConfirmed, setIsCodeConfirmed] = useState<boolean>(false);
+    const [isCodeConfirmed, setIsCodeConfirmed] = useState<boolean>(false);
     
     const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
 
@@ -59,14 +58,13 @@ const ValidarCelular: React.FC<Props> = (props: Props) => {
 
     const handleResendCode = () => {
         // Agregar lógica para reenviar el código de verificación aquí
-        console.log(isCodeSent)
         setIsCodeSent(true);
     };
 
-    /*const handleConfirmCode = () => {
+    const handleConfirmCode = () => {
         // Agregar lógica para verificar el código de verificación aquí
         setIsCodeConfirmed(true);
-    };*/
+    };
 
     // Llamar a la función para generar números aleatorios cuando se monta el componente
     React.useEffect(() => {
