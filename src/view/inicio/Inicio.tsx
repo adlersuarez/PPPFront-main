@@ -25,6 +25,8 @@ import Revision from '../pages/docente/Revision';
 import Especifico from '../pages/docente/Especifico';
 import ProcesoMedicina from '../pages/facultades/medicina/interno/ProcesoMedicina';
 import Registro from '../pages/facultades/medicina/interno/Registro';
+import CargarInformes from '../pages/facultades/medicina/interno/CargarInformes';
+import Fechas from '../pages/facultades/medicina/admin/Fechas';
 
 
 
@@ -295,6 +297,20 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                     path={`${path}/medicina/registro`}
                                     exact={true}
                                     render={() => <Registro />}
+                                />
+                            }
+                            {
+                                <Route
+                                    path={`${path}/medicina/estudiantes`}
+                                    exact={true}
+                                    render={() => <CargarInformes />}
+                                />
+                            }
+                            {
+                                <Route
+                                    path={`${path}/medicina/administrador`}
+                                    exact={true}
+                                    render={() => <Fechas />}
                                 />
                             }
 

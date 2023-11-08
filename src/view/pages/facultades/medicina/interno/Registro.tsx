@@ -49,7 +49,7 @@ const Registro = () => {
 
                     <h1 className="text-blue-800 mb-4 font-bold text-2xl">Pre-Registro estudiantes</h1>
 
-                    <div className="w-full max-w-screen-xl mx-auto">
+                    <div className="w-full max-w-screen-xl">
                         <div className="flex gap-4">
                             {/* Columna 1 */}
                             <div className="w-1/2 shadow">
@@ -231,8 +231,13 @@ const Registro = () => {
                 </div>
 
                 <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border mt-3">
-
-
+                    <div className="w-full flex justify-end">
+                        <button
+                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                            Confirmar
+                        </button>
+                    </div>
 
                 </div>
             </div>
