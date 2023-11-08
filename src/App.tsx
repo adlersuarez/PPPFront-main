@@ -7,9 +7,9 @@ import NotFound from './view/pages/404/NotFound';
 import Acceso from './view/acceso/Acceso';
 import Inicio from './view/inicio/Inicio';
 import FormularioAcceso from './view/acceso/FormularioAcceso';
-import FormularioAccesoExterno from './view/acceso/FormularioAccesoExterno';
-//import Acceso from './view/acceso/Acceso';
-//import Busqueda from './view/busqueda/Busqueda';
+import RegistroEstudianteExterno from './view/acceso/FormRegistroEstudianteExterno';
+
+
 
 function App() {
 
@@ -33,33 +33,31 @@ function App() {
             </Route>
 
             {
-            
             <Route
                 path="/acceso"
                 exact={true}
                 render={(props) => <Acceso {...props} />}
             /> 
+            }
+
+            {
+            
+            // <Route
+            //     path="/acceso"
+            //     exact={true}
+            //     render={(props) => <FormularioAcceso {...props} />}
+            // /> 
             
             }
 
             {
-            /*/
-            <Route
-                path="/acceso"
-                exact={true}
-                render={(props) => <FormularioAcceso {...props} />}
-            /> 
-            /*/
-            }
-
-            {
-            /*/
-            <Route
-                path="/acceso"
-                exact={true}
-                render={(props) => <FormularioAccesoExterno {...props} />}
-            />
-            /*/
+   
+            // <Route
+            //     path="/acceso"
+            //     exact={true}
+            //     render={(props) => <RegistroEstudianteExterno {...props} />}
+            // />
+   
             }
 
             <Route
