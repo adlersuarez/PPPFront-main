@@ -1,27 +1,21 @@
 import { NavLink } from "react-router-dom";
 import Modal from "../modal/ModalComponente";
-
-type DatosType = {
-    docNumId: string;
-    asesNombres: string;
-    asesPaterno: string;
-    asesMaterno: string;
-};
+import DatosUsuario from "@/model/interfaces/datos.usuario.model.interface";
 
 type Props = {
-    datos: DatosType;
+    datos: DatosUsuario;
     show: boolean;
     hide: () => void;
 };
 
-const ModalDatosPersonales: React.FC<Props> = (props: Props) => {
+const ModalDatosPersonales = (props: Props) => {
 
     const datos = {
-        dni: props.datos.docNumId,
-        nombres: props.datos.asesNombres,
-        apellido_paterno: props.datos.asesPaterno,
-        apellido_materno: props.datos.asesMaterno,
-        correo_institucional: `${props.datos.docNumId}@upla.edu.pe`,
+        dni: props.datos.cod,
+        nombres: props.datos.nombre,
+        apellido_paterno: props.datos.apellidoPat,
+        apellido_materno: props.datos.apellidoMat,
+        correo_institucional: `${props.datos.cod}@upla.edu.pe`,
         correo: '',
         celular: '',
         telefono: '',

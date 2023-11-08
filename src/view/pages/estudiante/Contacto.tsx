@@ -1,4 +1,4 @@
-import { RouteComponentProps } from "react-router-dom";
+
 
 interface ContactData {
     nombre: string;
@@ -7,7 +7,7 @@ interface ContactData {
     direccion: string;
 }
 
-const Contacto = (props: RouteComponentProps<{}>) => {
+const Contacto = () => {
 
     const coordinatorData: ContactData = {
         nombre: "Juan Perez",

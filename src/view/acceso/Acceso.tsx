@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../../store/configureStore.store";
@@ -17,7 +17,7 @@ import Login from "../../model/interfaces/login.model.interface";
 import { AiFillWarning } from "react-icons/ai";
 import { Types } from "../../model/enum/types.model";
 
-const Acceso = (props: RouteComponentProps<{}>) => {
+const Acceso = () => {
 
     const dispatch = useDispatch();
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)

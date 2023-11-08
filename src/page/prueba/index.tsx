@@ -1,17 +1,17 @@
-import { respuesta } from '@/model/types/respuesta';
-import React, { useEffect, useState } from 'react'
-import { getMorti } from './rest/api';
-import { morti } from '@/model/types/morti.mode.';
-import { useDispatch } from 'react-redux';
-import { setLoading } from '@/store/slices/general';
-import { Alerta } from '@/components/Alerta';
+//import { respuesta } from '@/model/types/respuesta';
+//import { useEffect, useState } from 'react'
+//import { getMorti } from './rest/api';
+//import { morti } from '@/model/types/morti.mode.';
+//import { useDispatch } from 'react-redux';
+//import { setLoading } from '@/store/slices/general';
+//import { Alerta } from '../components/Alerta';
 
 const index = () => {    
-    const dispatch = useDispatch();
-    const msj = Alerta()
-    const [mortis, setMortis] = useState<morti[]>([]);
+    //const dispatch = useDispatch();
+    //const msj = Alerta()
+    //const [mortis, setMortis] = useState<morti[]>([]);
 
-    useEffect(() => {        
+    /*useEffect(() => {        
         const getMortis = async () => {
             dispatch(setLoading(true));
             const response = await getMorti<respuesta<morti>>();  
@@ -29,11 +29,11 @@ const index = () => {
         } 
         getMortis();        
       dispatch(setLoading(false));
-    }, [])
+    }, [])*/
     
   return (
     <div className='text-green-300 font-bold text-5xl'>
-        {
+        {/*
             mortis.length>0
             ?
             mortis.map((item:morti,index)=>
@@ -43,7 +43,7 @@ const index = () => {
             )
             :
             <div>No hay datos</div>
-        }
+  */}
     </div>
   )
 }

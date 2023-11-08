@@ -22,6 +22,10 @@ const instance = axios.create({
 //     return config;
 // });
 
-export async function BuscarIngresoPersona<Responde>(data: Data, abortController: AbortController | null = null): Promise<Response<Responde> | RestError> {
+/*export async function BuscarIngresoPersona<Responde>(data: Data, abortController: AbortController | null = null): Promise<Response<Responde> | RestError> {
+    return await Resolve.create<Responde>(instance.post<Responde>("/buscareingresopersona", data));
+}*/
+
+export async function BuscarIngresoPersona<Responde>(data: Data): Promise<Response<Responde> | RestError> {
     return await Resolve.create<Responde>(instance.post<Responde>("/buscareingresopersona", data));
 }

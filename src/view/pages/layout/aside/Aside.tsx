@@ -123,8 +123,7 @@ const menus: MenuItem[] = [
                 moduPadre: false,
                 modPosicion: 1,
                 subMenu: false,
-            }
-            ,
+            },
             {
                 id: '2',
                 titulo: "Estudiantes",
@@ -137,11 +136,30 @@ const menus: MenuItem[] = [
             },
             {
                 id: '3',
-                titulo: "Personal",
-                url: "/medicina/administrador",
+                titulo: "Estudiante Archivos",
+                url: "/inicio/medicina/estudiantes",
                 icono: "bi-dash",
                 moduPadre: false,
                 modPosicion: 3,
+                subMenu: false,
+
+            },
+            {
+                id: '4',
+                titulo: "Admin",
+                url: "/inicio/medicina/administrador",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 4,
+                subMenu: false,
+            },
+            {
+                id: '5',
+                titulo: "Docente",
+                url: "/medicina/docente",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 5,
                 subMenu: false,
             }
 

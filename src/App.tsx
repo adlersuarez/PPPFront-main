@@ -33,7 +33,7 @@ function App() {
             <Route
                 path="/acceso"
                 exact={true}
-                render={(props) => <Acceso {...props} />}
+                render={() => <Acceso />}
             />
 
             <Route

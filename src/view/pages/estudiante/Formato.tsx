@@ -1,4 +1,4 @@
-import { RouteComponentProps } from "react-router-dom";
+
 
 interface Document {
     nombre: string;
@@ -6,7 +6,7 @@ interface Document {
     archivo: string;
 }
 
-const Formato = (props: RouteComponentProps<{}>) => {
+const Formato = () => {
 
     const documents: Document[] = [
         {

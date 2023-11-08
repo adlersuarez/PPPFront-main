@@ -25,6 +25,8 @@ import Revision from '../pages/docente/Revision';
 import Especifico from '../pages/docente/Especifico';
 import ProcesoMedicina from '../pages/facultades/medicina/interno/ProcesoMedicina';
 import Registro from '../pages/facultades/medicina/interno/Registro';
+import CargarInformes from '../pages/facultades/medicina/interno/CargarInformes';
+import Fechas from '../pages/facultades/medicina/admin/Fechas';
 
 
 
@@ -217,7 +219,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                             </Route>
                             <Route
                                 path={`${path}/inscripcion`}
-                                render={(props) => <Inscripcion {...props} />}
+                                render={() => <Inscripcion />}
                             />
                             {/* Modulos del Estudiante */}
                             {
@@ -234,7 +236,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 <Route
                                     path={`${path}/formatos`}
                                     exact={true}
-                                    render={(props) => <Formato {...props} />}
+                                    render={() => <Formato  />}
                                 />
                                 //
                             }
@@ -243,7 +245,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 <Route
                                     path={`${path}/contactos`}
                                     exact={true}
-                                    render={(props) => <Contacto  {...props} />}
+                                    render={() => <Contacto  />}
                                 />
                                 //
                             }
@@ -295,6 +297,20 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                     path={`${path}/medicina/registro`}
                                     exact={true}
                                     render={() => <Registro />}
+                                />
+                            }
+                            {
+                                <Route
+                                    path={`${path}/medicina/estudiantes`}
+                                    exact={true}
+                                    render={() => <CargarInformes />}
+                                />
+                            }
+                            {
+                                <Route
+                                    path={`${path}/medicina/administrador`}
+                                    exact={true}
+                                    render={() => <Fechas />}
                                 />
                             }
 

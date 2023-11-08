@@ -19,7 +19,7 @@ const TemplateStep1 = (props: DatosUsuario) => {
     const handleCloseCentro = () => setShowCentro(false);
     const handleShowCentro = () => setShowCentro(true);
 
-    //console.log(props)
+    console.log(props)
 
 
     return (

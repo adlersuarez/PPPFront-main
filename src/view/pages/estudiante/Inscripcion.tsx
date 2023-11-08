@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom';
 import ButtonLink from '../../../component/pages/buttons/ButtonLink';
 //import ModalidadCard from '../../component/cards/ModalidadCard';
 import images from '../../../helper/images.helper';
-import { RouteComponentProps } from "react-router-dom";
+
 import ModalidadCard from '@/component/pages/cards/ModalidadCard';
 
-const Inscripcion = (props: RouteComponentProps<{}>) => {
+const Inscripcion = () => {
 
     return (
         <div className="flex flex-wrap -mx-3">

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps } from "react-router-dom";
+//import { RouteComponentProps } from "react-router-dom";
 import { images } from '../../helper/index.helper';
 
-const Busqueda = (props: RouteComponentProps<{}>) => {
+const Busqueda = () => {
 
     const [dni, setDNI] = useState('');
     const [fullName, setFullName] = useState('');

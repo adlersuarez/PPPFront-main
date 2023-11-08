@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+/*import { createBrowserRouter } from 'react-router-dom';
 import Morti from '@/page/prueba/index';
 import Home from './page/Home';
 
@@ -14,4 +14,4 @@ const router = createBrowserRouter([
         ]
       }
 ])
-export default router;
+export default router;*/

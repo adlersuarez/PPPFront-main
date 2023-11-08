@@ -1,8 +1,7 @@
-import Loading from '@/components/Loading';
+import Loading from '../component/Loading';
 import { RootState } from '@/store';
-import React from 'react'
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+//import { Outlet } from "react-router-dom";
 
 const Home = () => {
     const {loading} = useSelector((state: RootState) => state.general);
@@ -10,7 +9,7 @@ const Home = () => {
   return (
     <div>
 {loading && <Loading/>} 
-    <Outlet />
+    {/*<Outlet />*/}
     </div>
   )
 }

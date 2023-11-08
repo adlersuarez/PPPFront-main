@@ -73,6 +73,11 @@ interface Paso2Props {
 }
 
 const Paso2: React.FC<Paso2Props> = ({ pdfUrl, validarPdf }) => {
+
+    if(pdfUrl){
+        console.log(pdfUrl)
+    }
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div className="bg-white shadow-md rounded p-4">
@@ -190,6 +195,11 @@ interface Paso4Props {
 }
 
 const Paso4: React.FC<Paso4Props> = ({ pdfUrl, validarPdf }) => {
+
+    if(pdfUrl){
+        console.log(pdfUrl)
+    }
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div className="bg-white shadow-md rounded p-4">
@@ -241,6 +251,7 @@ const Paso5: React.FC<Paso5Props> = ({ pdfUrls, validarPdf }) => {
                         <li>Requisito 1</li>
                         <li>Requisito 2</li>
                         <li>Requisito 3</li>
+                        <li>{url}</li>
                         {/* ... Agrega más requisitos según sea necesario ... */}
                     </ul>
                     <button
@@ -277,9 +288,9 @@ const Paso5: React.FC<Paso5Props> = ({ pdfUrls, validarPdf }) => {
 };
 
 // Paso 6: Formulario con respuestas entregadas
-interface Paso6Props {
+/*interface Paso6Props {
     respuestas: string[];
-}
+}*/
 
 const Paso6 = (
     //{ respuestas }
@@ -305,11 +316,12 @@ interface Paso7Props {
     validarPdf: (index: number) => void; // Agrega el tipo de la función si es necesario
 }
 
-const Paso7: React.FC<Paso7Props> = ({ pdfUrls, validarPdf }) => {
+const Paso7: React.FC<Paso7Props> = ({ pdfUrls, }) => {
     const [activePdfIndex, setActivePdfIndex] = useState<number | null>(null);
 
     const handleValidate = (index: number) => {
         setActivePdfIndex(index);
+        
     };
 
     if (!Array.isArray(pdfUrls) || pdfUrls.length === 0) {
@@ -518,19 +530,19 @@ const Especifico : React.FC<RouteComponentProps> = (props) => {
     };
 
     const [pasoActual, setPasoActual] = useState<number>(1);
-    const [datosEmpresa, setDatosEmpresa] = useState<DatosEmpresa>({
+    const [datosEmpresa, ] = useState<DatosEmpresa>({
         ruc: '123456789',
         nombre: 'Empresa ABC',
         direccion: 'Dirección de la empresa',
     });
-    const [datosRepresentante, setDatosRepresentante] = useState<DatosRepresentante>({
+    const [datosRepresentante, ] = useState<DatosRepresentante>({
         dni: '12345678',
         nombre: 'Representante XYZ',
         grado: 'Grado ABC',
         cargo: 'Cargo XYZ',
     });
 
-    const [datosArea, setDatosArea] = useState<DatosArea>({
+    const [datosArea, ] = useState<DatosArea>({
         areaEspecifica: 'Área específica',
         direccion: 'Dirección del área',
         diasPracticas: 'Días de prácticas',
@@ -539,7 +551,7 @@ const Especifico : React.FC<RouteComponentProps> = (props) => {
         finPracticas: 'Fin de prácticas',
     });
 
-    const [datosJefe, setDatosJefe] = useState<DatosJefe>({
+    const [datosJefe, ] = useState<DatosJefe>({
         dni: '12345678',
         nombre: 'Nombre del jefe',
         grado: 'Grado del jefe',
@@ -548,7 +560,7 @@ const Especifico : React.FC<RouteComponentProps> = (props) => {
         celular: 'Celular del jefe',
     });
 
-    const [pdfUrl, setPdfUrl] = useState('https://www.example.com/sample.pdf');
+    const [pdfUrl, ] = useState('https://www.example.com/sample.pdf');
 
     const pdfUrls: string[] = [
         'Informe Final',
