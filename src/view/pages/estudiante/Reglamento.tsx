@@ -36,11 +36,11 @@ const RightContent: React.FC<RightContentProps> = ({ data }) => {
 
 const Reglamento = () => {
 
-    const [selectedButton, setSelectedButton] = useState<string>('');
+    const [selectedButtonIndex, setSelectedButtonIndex] = useState<number>(0);
     const [rightContentData, setRightContentData] = useState<ContentData | null>(null);
 
-    const handleButtonClick = (text: string, data: ContentData) => {
-        setSelectedButton(text);
+    const handleButtonClick = (index: number, data: ContentData) => {
+        setSelectedButtonIndex(index);
         setRightContentData(data);
     };
 
@@ -212,36 +212,38 @@ const Reglamento = () => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                         <div className="flex-auto mb-3">
-                            <h1 className="text-2xl font-bold mb-1">REGLAMENTOS</h1>
-                            <p className="leading-normal text-sm dark:text-white dark:opacity-60">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi voluptates assumenda, aperiam placeat, dolore culpa accusantium sed perspiciatis doloremque aspernatur doloribus recusandae, aut magni omnis provident non reprehenderit debitis! Dignissimos.</p>
+                            <h1 className='font-bold text-2xl text-gray-400'>MARCO LEGAL</h1>
+                            <p className="leading-normal text-sm dark:text-white dark:opacity-60">Las prácticas preprofesionales se encuentran respaldadas por un marco legal que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la preparación de futuros profesionales.</p>
                         </div>
 
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-1">
-                            <div className="flex">
+                            <div className="flex flex-col sm:flex-row gap-4">
                                 {/* Primera Parte */}
-                                <div className="w-1/2 p-8 flex flex-col border-r border-gray-300">
-                                    <div className="w-full flex">
-                                        <div className="flex-col w-2/3">
-                                            <h2 className="text-xl font-bold mb-4">REGLAMENTO GENERAL DE PRÁCTICAS PRE PROFESIONALES</h2>
+                                <div className="w-full sm:w-1/2 p-4 flex flex-col border border-gray-300 gap-4">
+                                    <div className="w-full flex gap-2">
+                                        <div className="flex flex-col w-2/3 gap-2">
+                                            <h2 className="text-xl font-bold">REGLAMENTO GENERAL DE PRÁCTICAS PRE PROFESIONALES</h2>
                                             <p className="text-gray-700 text-sm">APROBADO MEDIANTE RESOLUCIÓN Nº 1786-2019-CU-VRAC</p>
                                             <p className="text-gray-700 text-xs">HUANCAYO-PERÚ 2019</p>
 
                                         </div>
                                         <div className="flex-col w-1/3 flex items-end">
                                             <img src="/Reglamentos/ImagenReglamento.png" alt="Imagen" className="w-20 mb-4" />
-                                            <a href="/Reglamentos/Reglamento-General-de-PPP.pdf" download className="mb-4">
-                                                <i className="bi bi-file-pdf-fill text-red-500 text-3xl mr-2"></i> Descargar PDF
+                                            <a href="/Reglamentos/Reglamento-General-de-PPP.pdf" download className="text-sm flex gap-2">
+                                                <i className="bi bi-file-pdf-fill text-red-500 text-xl m-auto"></i>
+                                                <span className="m-auto">Descargar
+                                                </span>
                                             </a>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid sm:grid-cols-2 gap-4">
                                         {buttonData.map((button, index) => (
                                             <button
                                                 key={index}
-                                                onClick={() => handleButtonClick(button.text, button.content)}
-                                                className={`font-bold py-2 px-4 rounded ${selectedButton === button.text
-                                                    ? 'bg-gray-700 text-white'
-                                                    : 'bg-blue-500 hover:bg-blue-700 text-white'
+                                                onClick={() => handleButtonClick(index, button.content)}
+                                                className={`font-bold py-2 px-4 rounded ${selectedButtonIndex === index
+                                                    ? 'bg-blue-700 text-white'
+                                                    : 'bg-gray-500 hover:bg-blue-700 text-white'
                                                     }`}
                                             >
                                                 {button.text}
@@ -250,12 +252,29 @@ const Reglamento = () => {
                                     </div>
                                 </div>
                                 {/* Segunda Parte */}
-                                <div className="w-1/2 p-8 flex items-center justify-center">
+                                <div className="w-full sm:w-1/2 p-4 flex flex-col items-center justify-start border border-gray-300 gap-4">
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleButtonClick(selectedButtonIndex - 1, buttonData[selectedButtonIndex - 1].content)}
+                                            disabled={selectedButtonIndex === 0}
+                                            className="bg-gray-500 hover:bg-blue-700 text-white py-1 px-2 rounded-sm"
+                                        >
+                                            <i className="bi bi-arrow-left" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleButtonClick(selectedButtonIndex + 1, buttonData[selectedButtonIndex + 1].content)}
+                                            disabled={selectedButtonIndex === buttonData.length - 1}
+                                            className="bg-gray-500 hover:bg-blue-700 text-white py-1 px-2 rounded-sm"
+                                        >
+                                            <i className="bi bi-arrow-right" />
+                                        </button>
+                                    </div>
+
                                     {rightContentData ? (
                                         <RightContent data={rightContentData} />
                                     ) : (
-                                        <div className="bg-yellow-200 p-4 rounded-md">
-                                            <p className="text-center text-yellow-800 font-bold">Seleccione un botón para ver el contenido correspondiente</p>
+                                        <div className="bg-red-400 p-4 rounded-md">
+                                            <p className="text-center text-white font-semibold">Seleccione un botón para ver el contenido correspondiente</p>
                                         </div>
                                     )}
                                 </div>

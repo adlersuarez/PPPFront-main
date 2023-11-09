@@ -69,7 +69,7 @@ const Acceso = () => {
 
         const response = await LoginRest<Login>(data);
 
-        console.log(response)
+        //console.log(response)
 
         if (response instanceof Response) {
             dispatch(login({codigo: response.data.docNumId ,token: response.data.token }));

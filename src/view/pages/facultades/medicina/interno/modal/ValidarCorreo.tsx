@@ -137,9 +137,9 @@ const ValidarCorreo: React.FC<Props> = (props: Props) => {
                                             </button>
                                         ))}
                                     </div>
-                                    <button onClick={handleBackspace} className="border-2 border-blue-500 bg-blue-500 text-white w-12 h-12 rounded-md hover:bg-white hover:text-blue-500 hover:font-bold text-2xl hover:text-4xl flex">
+                                    <button onClick={handleBackspace} className="border-2 border-blue-500 bg-blue-500 text-white w-12 h-12 rounded-md hover:bg-white hover:text-blue-500  text-2xl flex">
                                         <span className=' m-auto'>
-                                            <i className="bi bi-x" />
+                                            <i className="bi bi-backspace" />
                                         </span>
                                     </button>
                                 </div>

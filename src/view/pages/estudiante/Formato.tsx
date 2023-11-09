@@ -11,7 +11,7 @@ const Formato = () => {
     const documents: Document[] = [
         {
             nombre: "Carta de Aceptación",
-            resumen: "Breve resumen del contenido del primer documento.",
+            resumen: "Documento formal que confirma tu aceptación en una institución formalmente reconocida",
             archivo: 'carta-aceptacion.docx',
         },
         {
@@ -48,22 +48,22 @@ const Formato = () => {
             <div className="w-full max-w-full px-3 flex-0">
                 <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
-                    <div className="flex-auto mb-3">
-                        <h1 className="text-2xl font-bold mb-1">FORMATOS</h1>
-                        <p className="leading-normal text-sm dark:text-white dark:opacity-60">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi voluptates assumenda, aperiam placeat, dolore culpa accusantium sed perspiciatis doloremque aspernatur doloribus recusandae, aut magni omnis provident non reprehenderit debitis! Dignissimos.</p>
+                    <div className="flex flex-col mb-4 gap-2">
+                        <h1 className='font-bold text-2xl text-gray-400'>FORMATOS</h1>
+                        <p className="leading-normal text-sm dark:text-white dark:opacity-60">Descargue formatos validados por la UPLA y su facultad, Estos documentos pueden ser usados si la organización no cuenta con formatos establecidos</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 
 
                         {documents.map((document, index) => (
-                            <div key={index} className="bg-blue-100 dark:bg-gray-950 rounded-md p-4 shadow">
-                                <h2 className="text-2xl font-bold mb-4">{document.nombre}</h2>
-                                <p className="text-lg text-gray-700 mb-4">{document.resumen}</p>
+                            <div key={index} className="bg-gray-100 dark:bg-gray-950 rounded-md p-4 shadow flex flex-col gap-2">
+                                <h2 className="text-2xl font-bold text-gray-500">{document.nombre}</h2>
+                                <p className="text-lg text-gray-600">{document.resumen}</p>
                                 <button
                                     onClick={() => downloadFile(`/Formatos/${document.archivo}`, document.archivo)}
                                     //onClick={handleDownload}
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all duration-300 flex items-center"
+                                    className="bg-gray-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all duration-300 flex items-center"
                                 >
                                     <i className="bi bi-file-word-fill text-white text-3xl mr-2"></i> Descargar {document.nombre}
                                 </button>

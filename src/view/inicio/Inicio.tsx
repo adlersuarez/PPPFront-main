@@ -123,6 +123,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                 if (response instanceof Response) {
                     setInformacion(response.data as Estudiante);
                     setCargando(false);
+                    //console.log(response)
                 }
 
                 if (response instanceof RestError) {

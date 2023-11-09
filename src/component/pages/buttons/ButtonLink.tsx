@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 type Props = {
     to: string,
     nombre: string,
-    icon: string
 }
 
 const ButtonLink = (props: Props) => {
@@ -14,23 +13,20 @@ const ButtonLink = (props: Props) => {
             className={`
                 flex 
                 items-center 
-                justify-between
-                w-40
-                p-3 
-                text-lg 
-                font-normal 
+                w-full
+                p-2 
+                text-sm 
+                text-white
+                font-semibold 
                 transition-all 
                 duration-200
-                bg-white
-                text-blue-500
-                border-blue-500
-                border
-                hover:bg-blue-500
-                hover:text-white 
+                bg-gray-400
+                hover:bg-blue-700
+                rounded-lg
+                uppercase 
                 `}
         >
-            <span> {props.nombre}</span>
-            <i className={`bi ${props.icon} text-xl`} />
+            <span className="mx-auto"> {props.nombre}</span>
         </NavLink>
 
     );

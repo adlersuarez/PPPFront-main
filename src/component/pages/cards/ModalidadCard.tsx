@@ -16,12 +16,12 @@ const ModalidadCard = (props: Props) => {
                 <img src={props.imagen} alt="Imagen" className="" />
             </div>
 
-            <div className="mt-2">
-                <div className="font-bold text-blue-800">
+            <div className="mt-2 flex flex-col gap-2">
+                <div className="font-bold text-gray-400">
                     <span className="text-lg">{props.titulo}</span>
                 </div>
                 <p className="text-gray-500 text-sm">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                    {props.resumen}
                 </p>
             </div>
 
@@ -29,7 +29,7 @@ const ModalidadCard = (props: Props) => {
                 <div className="w-full md:w-auto">
                     <NavLink
                         to={props.to}
-                        className={`flex p-2 px-4 rounded-md items-center justify-between text-lg font-normal transition-all duration-200 bg-white text-blue-500 border-blue-500 border hover:bg-blue-500 hover:text-white`}
+                        className={`flex p-2 px-4 rounded-md items-center justify-between text-lg font-normal transition-all duration-200 bg-gray-400 text-white hover:bg-blue-500 hover:text-white`}
                     >
                         <span className="m-auto">Iniciar proceso</span>
                     </NavLink>

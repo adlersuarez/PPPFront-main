@@ -33,20 +33,19 @@ const Contacto = () => {
     return (
         <div className="flex flex-wrap -mx-3">
             <div className="w-full max-w-full px-3 flex-0">
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
+                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-8">
 
                     <div className="flex-auto mb-3">
-                        <h1 className="text-2xl font-bold mb-1">CONTACTOS</h1>
-                        <p className="leading-normal text-sm dark:text-white dark:opacity-60">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi voluptates assumenda, aperiam placeat, dolore culpa accusantium sed perspiciatis doloremque aspernatur doloribus recusandae, aut magni omnis provident non reprehenderit debitis! Dignissimos.</p>
+                        <h1 className='font-bold text-2xl text-gray-400'>CONTACTOS</h1>
+                        <p className="leading-normal text-sm dark:text-white dark:opacity-60"></p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-12 md:grid-cols-1 mt-8">
-
-                        <div className="bg-white rounded-lg shadow-inner max-w-3xl p-4 mx-auto flex ">
-                            <div className="w-1/2 pr-4">
+                    <div className="grid grid-cols-1 gap-12 md:grid-cols-1">
+                        <div className="bg-white rounded-lg shadow max-w-3xl p-4 flex flex-col sm:flex-row">
+                            <div className="w-full sm:w-1/2 pr-4 mb-4 sm:mb-0">
                                 <div className="flex flex-col relative mb-8 pl-4 text-right justify-between h-full">
-                                    <div className="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-gray-300 w-20 h-20 flex items-center justify-center rounded-full">
-                                        <i className="bi bi-person-fill text-white text-5xl"></i>
+                                    <div className="absolute top-8 left-8 transform -translate-x-1/2 -translate-y-1/2 bg-gray-300 w-16 h-16 flex items-center justify-center rounded-full">
+                                        <i className="bi bi-person-fill text-white text-4xl"></i>
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <h2 className="text-3xl font-bold">Coordinador</h2>
@@ -59,7 +58,7 @@ const Contacto = () => {
                                 </div>
 
                             </div>
-                            <div className="w-1/2 bg-gray-100 p-4 rounded-lg shadow-inner">
+                            <div className="w-full sm:w-1/2 bg-gray-100 p-4 rounded-lg shadow-inner">
                                 <h2 className="text-xl font-bold mb-4">Detalles</h2>
 
                                 <div className="flex items-center mb-4">
@@ -77,14 +76,14 @@ const Contacto = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg shadow-inner max-w-3xl p-4 mx-auto flex ">
-                            <div className="w-1/2 pr-4">
+                        <div className="bg-white rounded-lg shadow max-w-3xl p-4 flex flex-col sm:flex-row">
+                            <div className="w-full sm:w-1/2 pr-4 mb-4 sm:mb-0">
                                 <div className="flex flex-col relative mb-8 pl-4 text-right justify-between h-full">
-                                    <div className="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-gray-300 w-20 h-20 flex items-center justify-center rounded-full">
-                                        <i className="bi bi-person-fill text-white text-5xl"></i>
+                                    <div className="absolute top-8 left-8 transform -translate-x-1/2 -translate-y-1/2 bg-gray-300 w-16 h-16 flex items-center justify-center rounded-full">
+                                        <i className="bi bi-person-fill text-white text-4xl"></i>
                                     </div>
                                     <div className="flex flex-col gap-2">
-                                        <h2 className="text-3xl font-bold">Soporte Técnico</h2>
+                                        <h2 className="text-3xl font-bold">Soporte</h2>
                                         <p className="text-xl">{soporteData.nombre}</p>
                                         <p className="text-xs">Oficina #####</p>
                                     </div>
@@ -94,7 +93,7 @@ const Contacto = () => {
                                 </div>
 
                             </div>
-                            <div className="w-1/2 bg-gray-100 p-4 rounded-lg shadow-inner">
+                            <div className="w-full sm:w-1/2 bg-gray-100 p-4 rounded-lg shadow-inner">
                                 <h2 className="text-xl font-bold mb-4">Detalles</h2>
 
                                 <div className="flex items-center mb-4">
@@ -111,18 +110,19 @@ const Contacto = () => {
                                 </div>
                             </div>
                         </div>
+
                         <hr />
 
-                        <div className="bg-white rounded-lg shadow-inner max-w-3xl p-4 mx-auto flex ">
-                            <div className="w-1/2 pr-4">
+                        <div className="bg-white rounded-lg shadow max-w-3xl p-4 flex flex-col sm:flex-row">
+                            <div className="w-full sm:w-1/2 pr-4 mb-4 sm:mb-0">
                                 <div className="flex flex-col relative mb-8 pl-4 text-right justify-between h-full">
-                                    <div className="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-gray-300 w-20 h-20 flex items-center justify-center rounded-full">
-                                        <i className="bi bi-person-fill text-white text-5xl"></i>
+                                    <div className="absolute top-8 left-8 transform -translate-x-1/2 -translate-y-1/2 bg-gray-300 w-16 h-16 flex items-center justify-center rounded-full">
+                                        <i className="bi bi-person-fill text-white text-4xl"></i>
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <h2 className="text-3xl font-bold">Docente</h2>
                                         <p className="text-xl">{docenteData.nombre}</p>
-                                        <p className="text-xs">Facultad #####</p>
+                                        <p className="text-xs">Oficina #####</p>
                                     </div>
                                     <div>
                                         <p className="mb-0 text-xs text-center">Aquí puedes encontrar los detalles de contacto del coordinador de la oficina X.</p>
@@ -130,7 +130,7 @@ const Contacto = () => {
                                 </div>
 
                             </div>
-                            <div className="w-1/2 bg-gray-100 p-4 rounded-lg shadow-inner">
+                            <div className="w-full sm:w-1/2 bg-gray-100 p-4 rounded-lg shadow-inner">
                                 <h2 className="text-xl font-bold mb-4">Detalles</h2>
 
                                 <div className="flex items-center mb-4">
@@ -147,6 +147,7 @@ const Contacto = () => {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
