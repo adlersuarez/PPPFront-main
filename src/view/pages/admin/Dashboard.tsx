@@ -80,7 +80,7 @@ const Admin: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-4">
 
                         <div className="bg-blue-100 dark:bg-gray-950 rounded-md p-4 shadow">
                             <div className="flex items-center">
