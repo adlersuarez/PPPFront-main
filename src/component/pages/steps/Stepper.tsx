@@ -16,6 +16,7 @@ type StepperProps = {
 };
 
 const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel }) => {
+
     const [newStep, setNewStep] = useState<Step[]>([]);
     const stepRef = useRef<Step[]>([]);
 
@@ -74,11 +75,31 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel }) =>
         setNewStep(current);
     }, [steps, currentStep]);
 
-    const displaySteps = newStep.map((step, index) => (
-        <div key={step.id} className={step.id > 1 ? "w-full" : ""}>
-            <StepModelNew index={index} step={step} estado={estadoModel} />
-        </div>
-    ));
+
+    //
+    const displaySteps = newStep.map((step, index) => {
+        return (
+            window.innerWidth < 600 ?
+                (
+                    step.highlighted &&
+                    <div
+                        key={step.id} className="mx-auto uppercase">
+                        <StepModelNew
+                            index={index}
+                            step={step}
+                            estado={estadoModel} />
+                    </div>
+                )
+                :
+                <div
+                    key={step.id} className={step.id > 1 ? "w-full uppercase" : "uppercase"}>
+                    <StepModelNew
+                        index={index}
+                        step={step}
+                        estado={estadoModel} />
+                </div>
+        )
+    });
 
     return (
         <div className="mx-auto my-5 p-8 flex justify-between items-center w-11/12">

@@ -114,13 +114,11 @@ const Proceso = (informacion: Informacion) => {
                 <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                     <div className="rounded-lg">
-                        <h1 className='text-center text-3xl'>
-                            {'Prácticas Pre Profesionales - '}
-                            <span className='font-bold'>
-                                {'MODALIDAD EFECTIVA'}
-                            </span>
+                        <h1 className='text-3xl text-gray-400'>
+                            <span>Modalidad: </span>                        
+                            <strong>CURRICULAR</strong>
                         </h1>
-                        <p className='mt-4 text-xl'>¿Como va mi proceso?</p>
+                        <p className='mt-4 text-xl text-gray-400'>¿Como va mi proceso?</p>
                     </div>
 
                     <div className=''>

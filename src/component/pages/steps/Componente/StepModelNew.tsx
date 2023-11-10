@@ -32,14 +32,14 @@ function StepModelNew(props: StepModelNewProps) {
                 return <span><i className="bi bi-check-lg" /></span>;
             }
             if (step.id === auxiliar) {
-                return <span><i className="bi bi-clock-history" /></span>;
+                return <span ><i className="bi bi-clock-history" /></span>;
             }
             if (step.id > auxiliar) {
-                return <strong className=' text-lg'>{index + 1}</strong>;
+                return <strong className='text-lg'>{index + 1}</strong>;
             }
         }
         if (!estado[step.id - 1]) {
-            return <span><i className={`bi bi-clock-history ${step.highlighted && 'text-white'}`} /></span>;
+            return <span className="my-auto"><i className={`bi bi-clock-history ${step.highlighted && 'text-white'}`} /></span>;
         }
         return <span><i className={`bi bi-check-lg ${step.highlighted && 'text-white'}`} /></span>;
     };
@@ -54,25 +54,24 @@ function StepModelNew(props: StepModelNewProps) {
         return "text-[#22a75a]";
     };
 
+    //
     return (
-        <div className={"flex items-center"}>
-            <div className={`flex-auto border-y-4 transition duration-500 ease-in-out border-gray-300`} />
-            <div className="relative flex flex-col items-center">
-                <div className={`rounded-full transition duration-500 ease-in-out border-4 h-12 w-12 flex items-center justify-center py-3 text-gray-300 font-bold text-2xl 
+        <div className={`flex items-center`} >
+            <div className={`border-y-4 transition duration-500 ease-in-out border-gray-300 sm:flex-auto`} />
+            <div className={`relative flex flex-col items-center`}>
+                <div className={`rounded-full transition duration-500 ease-in-out border-4 h-12 w-12 flex items-center justify-center text-gray-300 font-bold text-2xl 
                     ${calculateStepColor()}
                 `}>
                     {calculateStepIcon()}
                 </div>
-
                 <div className={`absolute top-0 text-center mt-16 w-40 text-sm font-black 
                     ${calculateStepText()}
                 `}>
-                    <strong>
+                    <strong className="">
                         {step.description}
                     </strong>
                 </div>
             </div>
-
         </div>
     );
 }
