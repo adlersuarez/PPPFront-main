@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import RestError from "../../../../../model/class/resterror.model.class";
 import Response from "../../../../../model/class/response.model.class";
 import { BuscarIngresoPersona } from "../../../../../network/rest/ingreso.network";
-import { Types } from "../../../../../model/enum/types.model";
+import { Types } from "../../../../../model/enum/types.model.enum";
 import { useDispatch } from "react-redux";
 import Data from "../../../../../model/interfaces/ingreso/data.model.interface";
 import Persona from "../../../../../model/interfaces/ingreso/persona.model.interface";

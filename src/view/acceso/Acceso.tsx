@@ -14,9 +14,9 @@ import Response from "../../model/class/response.model.class";
 import RestError from "../../model/class/resterror.model.class";
 import Login from "../../model/interfaces/login.model.interface";
 import { AiFillWarning } from "react-icons/ai";
-import { Types } from "../../model/enum/types.model";
+import { Types } from "../../model/enum/types.model.enum";
 
-import FormRegistroEstudianteExterno from "./FormRegistroEstudianteExterno";
+//import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
 //import Checked from "./widget/Checked";
 
 const Acceso = (props: RouteComponentProps<{}>) => {
@@ -177,10 +177,10 @@ const Acceso = (props: RouteComponentProps<{}>) => {
 
                                             <Button proceso={proceso} />
 
-                                            <br />
+                                            {/* <br /> */}
 
-                                            <span className="text-xs cursor-pointer text-upla-100 hover:underline"
-                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span>
+                                            {/* <span className="text-xs cursor-pointer text-upla-100 hover:underline"
+                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span> */}
 
                                         </form>
                                     </div>
@@ -190,7 +190,8 @@ const Acceso = (props: RouteComponentProps<{}>) => {
                     )
                     :
                     (
-                        <FormRegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
+                        //<RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
+                        ''
                     )
             }
 

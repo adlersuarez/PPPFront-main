@@ -4,17 +4,17 @@ import { motion } from "framer-motion";
 import { images } from "../../helper/index.helper";
 import { AcedemicCapSvg } from "../../component/Svg.component";
 
-import DniPersona from "../../model/interfaces/respuesta-api/dni.persona.model.interface";
-import { ConsultarDni } from "../../network/rest/ReniecSunat.network";
+import DniPersona from "../../model/interfaces/reniec-sunat/dni.persona";
+import { ConsultarDni } from "../../network/rest/reniec-sunat.network";
 import Response from "../../model/class/response.model.class";
 import RestError from "../../model/class/resterror.model.class";
-import { Types } from "../../model/enum/types.model";
+import { Types } from "../../model/enum/types.model.enum";
 
 type Props = {
     onEventFormRegEstExterno: ()=> void
 }
 
-const FormRegistroEstudianteExterno = (props: Props) => {
+const RegistroEstudianteExterno = (props: Props) => {
 
     const [dni, setDni] = useState("")
 
@@ -251,4 +251,4 @@ const FormRegistroEstudianteExterno = (props: Props) => {
     </>
 }
 
-export default FormRegistroEstudianteExterno;
+export default RegistroEstudianteExterno;

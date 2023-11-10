@@ -2,13 +2,9 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/configureStore.store';
 import Cargar from './view/cargar/Cargar';
-//import Inicio from './view/inicio/Inicio';
 import NotFound from './view/pages/404/NotFound';
 import Acceso from './view/acceso/Acceso';
 import Inicio from './view/inicio/Inicio';
-import FormularioAcceso from './view/acceso/FormularioAcceso';
-import RegistroEstudianteExterno from './view/acceso/FormRegistroEstudianteExterno';
-
 
 
 function App() {

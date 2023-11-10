@@ -1,4 +1,4 @@
-export default interface Trabajador {
+export default interface TrabajadorLogin {
     id : number,
     docNumId: string,
     asesPaterno: string,

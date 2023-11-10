@@ -15,7 +15,7 @@ const Title = () => {
                     </span>
                 </div>
             </div>
-            <small className="font-bold my-2 text-white">PRÁCTICAS PRE PROFESIONALES</small>
+            <small className="font-bold my-2 text-white">CENTRO DE IDIOMAS</small>
         </Link>
     );
 }

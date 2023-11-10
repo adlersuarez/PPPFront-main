@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../store/configureStore.store";
-import Estudiante from "../../../../../model/interfaces/estudiante.model.interface";
-import Trabajador from "../../../../../model/interfaces/trabajador.model.interface";
+import Estudiante from "../../../../../model/interfaces/login/estudiante.login";
+import Trabajador from "../../../../../model/interfaces/trabajador/trabajador.model.interface";
 
 type Props = {
     informacion: Estudiante | Trabajador | undefined
@@ -26,7 +26,7 @@ const SubTitle = (props: Props) => {
     return (
         <div className="mt-6 md:mt-0">
             <img
-                className=" p-1 m-auto w-32 h-32 rounded-full ring-2 ring-gray-300 hover:scale-110 ease-in duration-300"
+                className=" p-1 m-auto w-24 h-24 rounded-full ring-2 ring-gray-300 hover:scale-110 ease-in duration-300"
                 src={`https://academico.upla.edu.pe/FotosAlum/037000${codigo}.jpg`}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
@@ -44,6 +44,7 @@ const SubTitle = (props: Props) => {
                 </h1>
             </div>
             <p className="text-center text-white">{codigo}</p>
+            <br/>
         </div>
     );
 }

@@ -1,4 +1,4 @@
-export default interface Estudiante{
+export default interface EstudianteLogin{
     codigo: string,
     carrera: string,
     especialidad:string,
