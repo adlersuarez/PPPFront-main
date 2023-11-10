@@ -4,7 +4,7 @@ import { AnularConsultaRest, SoporteListarConsultasRest, TerminarConsultaRest } 
 import ListarConsulta from "../../../../model/interfaces/soporte/listarconsulta.model.interfaces";
 import RestError from "../../../../model/class/resterror.model.class";
 import Response from "../../../../model/class/response.model.class";
-import { Types } from "../../../../model/enum/types.model";
+import { Types } from "../../../../model/enum/types.model.enum";
 import Paginacion from "../../../../component/Paginacion.component";
 import Responde from "../../../../model/interfaces/soporte/responde.model.interface";
 import { formatTime } from "../../../../helper/herramienta.helper";

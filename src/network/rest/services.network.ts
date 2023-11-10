@@ -25,12 +25,12 @@ export async function LoginRest<Login>(params: object, signal = null): Promise<R
     return await Resolve.create<Login>(instance.post<Login>("/Login", params, { signal: signal! }));
 }
 
-export async function EstudianteRest<Estudiante>(codigo: string, signal = null): Promise<Response<Estudiante> | RestError> {
-    return await Resolve.create<Estudiante>(instance.get<Estudiante>("/MostrarFacultad/" + codigo, { signal: signal! }));
+export async function EstudianteLoginRest<EstudianteLogin>(codigo: string, signal = null): Promise<Response<EstudianteLogin> | RestError> {
+    return await Resolve.create<EstudianteLogin>(instance.get<EstudianteLogin>("/MostrarFacultad/" + codigo, { signal: signal! }));
 }
 
-export async function TrabajadorRest<Trabajador>(dni: string, signal = null): Promise<Response<Trabajador> | RestError> {
-    return await Resolve.create<Trabajador>(instance.get<Trabajador>("/Soporte/obtenerDatosTrabajadorPorDni/" + dni, { signal: signal! }));
+export async function TrabajadorLoginRest<TrabajadorLogin>(dni: string, signal = null): Promise<Response<TrabajadorLogin> | RestError> {
+    return await Resolve.create<TrabajadorLogin>(instance.get<TrabajadorLogin>("/Soporte/obtenerDatosTrabajadorPorDni/" + dni, { signal: signal! }));
 }
 
 export async function ValidarTokenRest<Void>(signal = null): Promise<Response<Void> | RestError> {

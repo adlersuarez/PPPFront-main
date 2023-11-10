@@ -47,24 +47,6 @@ const Cargar = () => {
                     <h1 className='m-3 text-center'>Se está estableciendo conexión con el servidor..</h1>
                 </div>
             </div>
-            {/* <div className="loader text-center">
-                <div className="loader-inner">
-
-                    <div className="lds-roller mb-3">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-
-                    <h4 className="text-uppercase font-weight-bold">Cargando...</h4>
-                    <p className="font-italic text-muted">Se está estableciendo conexión con el servidor...</p>
-                </div>
-            </div> */}
         </>
     );
 }

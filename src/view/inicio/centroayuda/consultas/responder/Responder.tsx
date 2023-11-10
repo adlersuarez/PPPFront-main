@@ -3,7 +3,7 @@ import { RouteComponentProps, useLocation } from "react-router-dom";
 import { LoaderSvg } from "../../../../../component/Svg.component";
 import Response from "../../../../../model/class/response.model.class";
 import RestError from "../../../../../model/class/resterror.model.class";
-import { Types } from "../../../../../model/enum/types.model";
+import { Types } from "../../../../../model/enum/types.model.enum";
 import Paginacion from "../../../../../component/Paginacion.component";
 import { ListarRespuestasPorIdConsultaRest, ObtenerConsultaPorIdConsultaRest, RegistrarRespuestaRest } from "../../../../../network/rest/services.network";
 import Responde from "../../../../../model/interfaces/soporte/responde.model.interface";

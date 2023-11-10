@@ -4,11 +4,11 @@ import Title from "./widget/Title";
 import SubTitle from "./widget/SubTitle";
 import Overlay from "./widget/Overlay";
 import Body from "./widget/Body";
-import Estudiante from "../../../../model/interfaces/estudiante.model.interface";
-import Trabajador from "../../../../model/interfaces/trabajador.model.interface";
+import EstudianteLogin from "../../../../model/interfaces/login/estudiante.login";
+import TrabajadorLogin from "../../../../model/interfaces/login/trabajador.login";
 
 type Props = {
-    informacion: Estudiante | Trabajador | undefined,
+    informacion: EstudianteLogin | TrabajadorLogin | undefined,
     pathname: string,
     refAside: React.RefObject<HTMLInputElement>,
     refOverlay: React.RefObject<HTMLInputElement>,

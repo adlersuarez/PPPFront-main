@@ -3,8 +3,8 @@ import Stepper from '@/component/pages/steps/Stepper';
 import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
 
-import Estudiante from '@/model/interfaces/estudiante.model.interface';
-import Trabajador from '@/model/interfaces/trabajador.model.interface';
+import Estudiante from '@/model/interfaces/login/estudiante.login';
+import Trabajador from '@/model/interfaces/trabajador/trabajador.model.interface';
 import { useState } from 'react';
 import { RouteComponentProps } from "react-router-dom";//
 import TemplateStep1 from '@/component/pages/steps/StepsTemplate/TemplateStep1';

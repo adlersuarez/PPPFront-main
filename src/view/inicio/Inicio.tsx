@@ -4,24 +4,29 @@ import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { RootState } from '../../store/configureStore.store';
 import Aside from '../pages/layout/aside/Aside';
 import Nav from '../pages/layout/nav/Nav';
-import Dashboard from './dashboard/Dashboard';
+
 import { css, images } from '../../helper/index.helper';
-import Bienvenido from './bienvenido/Bienvenido';
+
 import { useEffectOnce } from 'react-use';
-import { EstudianteRest, TrabajadorRest } from '../../network/rest/services.network';
+import { EstudianteLoginRest, TrabajadorLoginRest } from '../../network/rest/services.network';
 import Response from '../../model/class/response.model.class';
 import { logout } from '../../store/authSlice.store';
 import RestError from '../../model/class/resterror.model.class';
-import Estudiante from '../../model/interfaces/estudiante.model.interface';
-import Trabajador from '../../model/interfaces/trabajador.model.interface';
+import Estudiante from '../../model/interfaces/login/estudiante.login';
+import Trabajador from '../../model/interfaces/login/estudiante.login';
 import { Toaster } from 'react-hot-toast';
+import Dashboard from './dashboard/Dashboard';
+import Bienvenido from './bienvenido/Bienvenido';
 import Inscripcion from '../estudiante/Inscripcion';
 import Proceso from '../estudiante/Proceso';
 import HomeSistema from '../estudiante/HomeSistema';
 import MatriculaInterna from '../estudiante/matricula/MatriculaInterna';
 import MatriculaExterna from '../estudiante/matricula/MatriculaExterna';
 import MatriculaHorario from '../estudiante/matricula/MatriculaHorario';
+import { ValidarEstudianteExistente } from '../../network/rest/idiomas.network';
+import RespValue from '../../model/interfaces/RespValue.model.interface';
 
+import PrimerLogin from './PrimerLogin';
 
 
 const Inicio = (props: RouteComponentProps<{}>) => {
@@ -47,6 +52,8 @@ const Inicio = (props: RouteComponentProps<{}>) => {
     const [cargando, setCargando] = useState<boolean>(true);
 
     const [informacion, setInformacion] = useState<Estudiante | Trabajador>();
+
+    const [primerLogin, setPrimerLogin] = useState<boolean>(false);
 
     useEffectOnce(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -99,7 +106,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
     useEffect(() => {
         const load = async () => {
             if (codigo.length === 8) {
-                const response = await TrabajadorRest<Trabajador>(codigo);
+                const response = await TrabajadorLoginRest<Trabajador>(codigo);
                 if (response instanceof Response) {
                     setInformacion(response.data as Trabajador);
                     setCargando(false);
@@ -109,10 +116,12 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                     dispatch(logout());
                 }
             } else {
-                const response = await EstudianteRest<Estudiante>(codigo);
+                const response = await EstudianteLoginRest<Estudiante>(codigo);
                 if (response instanceof Response) {
                     setInformacion(response.data as Estudiante);
                     setCargando(false);
+
+                    validarPrimerLogin(codigo)
                 }
 
                 if (response instanceof RestError) {
@@ -167,87 +176,127 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         }
     }
 
+    const validarPrimerLogin = async (codigo: string) => {
+
+        const validar = await ValidarEstudianteExistente<RespValue>(codigo)
+
+        if (validar instanceof Response) {
+            if (validar.data.value == codigo) {
+                setPrimerLogin(false)
+                console.log('existe')
+            } else {
+                console.log('no existe')
+                setPrimerLogin(true)
+            }
+        }
+        if (validar instanceof RestError) {
+            console.log(validar.getMessage())
+        }
+    }
+
     // const { path, url } = props.match;
     const { path } = props.match;
 
     return (
-        <div className="flex w-full">
-
+        <>
             {
-                cargando && <div className="fixed z-[500] w-screen h-screen">
-                    <div className=" w-screen h-screen bg-gray-900"></div>
-                    <div className=" w-full h-full absolute left-0 top-0 text-white flex justify-center items-center flex-col">
-                        <img src={images.logo} className="w-[10.5rem] mr-0 my-3" alt="Flowbite Logo" />
-                        <div style={{ "borderTopColor": "transparent" }}
-                            className="w-16 h-16 border-4 border-upla-100 border-solid rounded-full animate-spin">
-                        </div>
-                        <h1 className='m-3 text-center'>Cargando información, espere por favor...</h1>
-                    </div>
-                </div>}
+                primerLogin == true ?
+                    (
+                        <PrimerLogin codigo={codigo} informacion={informacion} />
+                    ) :
+                    (
+                        <div className="flex w-full">
 
-            {/* Navbar */}
-            <Nav refBlock={refBlock} onEventMenu={onEventMenu} />
-            {/*  */}
-
-            {/* Aside */}
-            <Aside informacion={informacion} pathname={props.location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
-            {/*  */}
-
-            {/*  */}
-            <div
-                ref={refMain}
-                className={css.DivMain}>
-                <div className="w-full p-4 font-mont overflow-hidden">
-                    {/*INICIO NAVEGACION */}
-                    <div className="content-wrapper flex-wrap">
-                        <Switch>
-                            <Route
-                                path={"/inicio"}
-                                exact={true}
-                            >
-                                <Redirect to={`${path}/centro_de_idiomas`} />
-                            </Route>
                             {
-                                /*
-                                <Route
-                                    path={`${path}/inscripcion`}
-                                    render={(props) => <Inscripcion {...props} />}
-                                />
-                                */
-                            }
-                            
-                            {/* Modulos del Estudiante */}
+                                cargando && <div className="fixed z-[500] w-screen h-screen">
+                                    <div className=" w-screen h-screen bg-gray-900"></div>
+                                    <div className=" w-full h-full absolute left-0 top-0 text-white flex justify-center items-center flex-col">
+                                        <img src={images.logo} className="w-[10.5rem] mr-0 my-3" alt="Flowbite Logo" />
+                                        <div style={{ "borderTopColor": "transparent" }}
+                                            className="w-16 h-16 border-4 border-upla-100 border-solid rounded-full animate-spin">
+                                        </div>
+                                        <h1 className='m-3 text-center'>Cargando información, espere por favor...</h1>
+                                    </div>
+                                </div>}
 
-                            <Route
-                                path={`${path}/centro_de_idiomas`}
-                                render={(props) => <HomeSistema {...props} />}
-                            />
+                            {/* Navbar */}
+                            <Nav refBlock={refBlock} onEventMenu={onEventMenu} />
+                            {/*  */}
 
-                            <Route
-                                path={`${path}/matricula_interna`}
-                                render={(props) => <MatriculaInterna {...props} />}
-                            />
+                            {/* Aside */}
+                            <Aside informacion={informacion} pathname={props.location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
+                            {/*  */}
 
-                            <Route
-                                path={`${path}/matricula_externa`}
-                                render={(props) => <MatriculaExterna {...props} />}
-                            />
+                            {/*  */}
+                            <div
+                                ref={refMain}
+                                className={css.DivMain}>
+                                <div className="w-full p-4 font-mont overflow-hidden">
+                                    {/*INICIO NAVEGACION */}
+                                    <div className="content-wrapper flex-wrap">
+                                        <Switch>
+                                            <Route
+                                                path={"/inicio"}
+                                                exact={true}
+                                            >
+                                                <Redirect to={`${path}/centro_de_idiomas`} />
+                                            </Route>
+                                            {
+                                                /*
+                                                <Route
+                                                    path={`${path}/inscripcion`}
+                                                    render={(props) => <Inscripcion {...props} />}
+                                                />
+                                                */
+                                            }
 
-                            <Route
-                                path={`${path}/horario`}
-                                render={(props) => <MatriculaHorario {...props} />}
-                            />
+                                            {/* Modulos del Estudiante */}
+
+                                            <Route
+                                                path={`${path}/centro_de_idiomas`}
+                                                render={(props) => <HomeSistema {...props} />}
+                                            />
+
+                                            <Route
+                                                path={`${path}/matricula_interna`}
+                                                render={(props) => <MatriculaInterna {...props} />}
+                                            />
+
+                                            <Route
+                                                path={`${path}/matricula_externa`}
+                                                render={(props) => <MatriculaExterna {...props} />}
+                                            />
+
+                                            <Route
+                                                path={`${path}/horario`}
+                                                render={(props) => <MatriculaHorario {...props} />}
+                                            />
+
+                                            {
+                                                //
+                                                <Route
+                                                    path={`${path}/proceso`}
+                                                    exact={true}
+                                                    render={(props) => <Proceso informacion={informacion} {...props} />}
+                                                />
+                                                //
+                                            }
 
 
-                        </Switch>
-                    </div>
-                    {/* FIN NAVEGACION  */}
-                </div>
-                {/*  */}
-            </div>
-            {/*  */}
-            <Toaster />
-        </div>
+                                        </Switch>
+                                    </div>
+                                    {/* FIN NAVEGACION  */}
+                                </div>
+                                {/*  */}
+                            </div>
+                            {/*  */}
+                            <Toaster />
+                        </div>
+                    )
+            }
+
+
+        </>
     );
 }
 

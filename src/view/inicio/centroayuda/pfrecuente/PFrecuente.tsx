@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { SoporteListarFrecuenteRest } from "../../../../network/rest/services.network";
-import { Types } from "../../../../model/enum/types.model";
+import { Types } from "../../../../model/enum/types.model.enum";
 import RestError from "../../../../model/class/resterror.model.class";
 import Response from "../../../../model/class/response.model.class";
 import { logout } from "../../../../store/authSlice.store";

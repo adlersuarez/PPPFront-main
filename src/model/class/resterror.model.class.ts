@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { Types } from "../enum/types.model";
+import { Types } from "../enum/types.model.enum";
 
 class RestError {
 
