@@ -30,14 +30,26 @@ export async function ValidarEstudianteExistente<RespValue>(codigo: string, sign
     return await Resolve.create<RespValue>(instance.get<RespValue>("/Estudiante/ValidarEstudianteExistente/" + codigo, { signal: signal! }));
 }
 
-export async function ListarPrograma<Listas>(signal = null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>("/Programa/ListarPrograma", { signal: signal! }));
+export async function ListarPrograma<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>("/Programa/ListarPrograma", { signal: abortController?.signal }));
 }
 
-export async function ListarModalidad<Modalidad>(signal = null): Promise<Response<Modalidad[]> | RestError> {
-    return await Resolve.create<Modalidad[]>(instance.get<Modalidad[]>("/Modalidad/ListarModalidad", { signal: signal! }));
+export async function ListarModalidad<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>("/Modalidad/ListarModalidad", { signal: abortController?.signal }));
 }
 
-export async function ListarModalidadDos<Listas>(signal = null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>("/Modalidad/ListarModalidad", { signal: signal! }));
-}
+// export async function ListarPrograma<T>(signal = null): Promise<Response<T> | RestError> {
+//     return await Resolve.create<T>(instance.get<T>("/Programa/ListarPrograma", { signal: signal! }));
+// }
+
+// export async function ListarPrograma(signal = null): Promise<Response<Programa[]> | RestError> {
+//     return await Resolve.create<Programa[]>(instance.get<Programa[]>("/Programa/ListarPrograma", { signal: signal! }));
+// }
+
+// export async function ListarModalidad<Listas>(signal = null): Promise<Response<Listas> | RestError> {
+//     return await Resolve.create<Listas>(instance.get<Listas>("/Modalidad/ListarModalidad", { signal: signal! }));
+// }
+
+// export async function ListarModalidadDos<Listas>(signal = null): Promise<Response<Listas> | RestError> {
+//     return await Resolve.create<Listas>(instance.get<Listas>("/Modalidad/ListarModalidad", { signal: signal! }));
+// }

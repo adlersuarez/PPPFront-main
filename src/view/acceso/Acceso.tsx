@@ -12,7 +12,7 @@ import InputClave from "./widget/InputClave";
 import { LoginRest } from "../../network/rest/services.network";
 import Response from "../../model/class/response.model.class";
 import RestError from "../../model/class/resterror.model.class";
-import Login from "../../model/interfaces/login.model.interface";
+import Login from "../../model/interfaces/login/login";
 import { AiFillWarning } from "react-icons/ai";
 import { Types } from "../../model/enum/types.model.enum";
 

@@ -183,10 +183,10 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         if (validar instanceof Response) {
             if (validar.data.value == codigo) {
                 setPrimerLogin(false)
-                console.log('existe')
-            } else {
-                console.log('no existe')
+                //console.log('existe')
+            } else { 
                 setPrimerLogin(true)
+                //console.log('no existe')
             }
         }
         if (validar instanceof RestError) {
