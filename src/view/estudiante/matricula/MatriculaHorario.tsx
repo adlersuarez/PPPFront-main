@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavLink, RouteComponentProps } from "react-router-dom";
 import 'devextreme/dist/css/dx.light.css';
-import { Scheduler, View, Resource, DataCellProps } from 'devextreme-react/scheduler';
-import { CellData as SchedulerCellData } from 'devextreme-react/scheduler';
+import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 
 
 // import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
