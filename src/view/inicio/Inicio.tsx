@@ -238,16 +238,6 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 render={(props) => <MatriculaHorario {...props} />}
                             />
 
-                            {
-                                //
-                                <Route
-                                    path={`${path}/proceso`}
-                                    exact={true}
-                                    render={(props) => <Proceso informacion={informacion} {...props} />}
-                                />
-                                //
-                            }
-
 
                         </Switch>
                     </div>
