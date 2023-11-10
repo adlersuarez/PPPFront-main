@@ -15,124 +15,59 @@ type Props = {
     onEventOverlay: React.MouseEventHandler,
 }
 
+
 type MenuItem = {
     id: string,
-    nombre: string,
-    pathname?: string,
-    icon: string,
-    subMenus?: MenuItem[]
-}
-
-/*type MenuItem = {
-    id: number,
     titulo: string,
     url?: string,
     icono: string,
-    moduPadre: number,
+    moduPadre: boolean,
     modPosicion: number,
     subMenu: boolean,
     subMenuItems?: MenuItem[]
-}*/
+}
 
 const menus: MenuItem[] = [
     {
         id: "1",
-        nombre: "Inicio",
-        pathname: "/inicio/centro_de_idiomas",
-        icon: "bi-info-circle",
-        subMenus: []
-    },
-    {
-        id: "2",
-        nombre: "Formatos",
-        icon: "bi-file-earmark-text",
-        pathname: "/inicio/formatos",
-        subMenus: []
-    },
-    {
-        id: "3",
-        nombre: "Proceso",
-        pathname: "/inicio/proceso",
-        icon: "bi-bar-chart-steps",
-        subMenus: []
-    },
-    {
-        id: "4",
-        nombre: "Reglamentos",
-        pathname: "/inicio/reglamentos",
-        icon: "bi-file-ruled",
-        subMenus: []
-    },
-    {
-        id: "5",
-        nombre: "Contactos",
-        pathname: "/inicio/contactos",
-        icon: "bi-envelope-at",
-        subMenus: []
-    },
-    {
-        id: "6",
-        nombre: "Docente",
-        pathname: "/inicio/revision",
-        icon: "bi-file-ruled",
-        subMenus: []
-    },
-    {
-        id: "7",
-        nombre: "Administrador",
-        pathname: "/inicio/administrador",
-        icon: "bi-bar-chart-line-fill",
-        subMenus: []
-    },
-
-    /*
-    {
-        id: "8",
-        titulo: "Dashboard",
-        url: "/inicio/dashboard",
-        icono: "bi-speedometer",
-        moduPadre: 0,
+        titulo: "Inicio",
+        url: "/inicio/centro_de_idiomas",
+        icono: "bi-info-circle",
+        moduPadre: false,
         modPosicion: 1,
         subMenu: false,
         subMenuItems: [],
     },
     {
-        id: "9",
-        titulo: "Marcación",
-        url: "",
-        icono: "bi-arrow-left-right",
-        moduPadre: 0,
+        id: "2",
+        titulo: "Matricula Interna",
+        url: "/inicio/matricula_interna",
+        icono: "bi-info-circle",
+        moduPadre: false,
         modPosicion: 2,
-        subMenu: true,
-        subMenuItems: [
-            {
-                id: 7,
-                titulo: "Visitantes",
-                url: "/inicio/marcacion-visitante",
-                icono: "bi-dash",
-                moduPadre: 2,
-                modPosicion: 1
-            }
-            ,
-            {
-                id: 8,
-                titulo: "Estudiantes",
-                url: "/inicio/marcacion-estudiante",
-                icono: "bi-dash",
-                moduPadre: 2,
-                modPosicion: 2
-            },
-            {
-                id: 9,
-                titulo: "Personal",
-                url: "/inicio/marcacion-personal",
-                icono: "bi-dash",
-                moduPadre: 2,
-                modPosicion: 3
-            }
-
-        ],
-    },*/
+        subMenu: false,
+        subMenuItems: [],
+    },
+    {
+        id: "3",
+        titulo: "Matricula Externa",
+        url: "/inicio/matricula_externa",
+        icono: "bi-info-circle",
+        moduPadre: false,
+        modPosicion: 3,
+        subMenu: false,
+        subMenuItems: [],
+    },
+    {
+        id: "4",
+        titulo: "Horario",
+        url: "/inicio/horario",
+        icono: "bi-info-circle",
+        moduPadre: false,
+        modPosicion: 4,
+        subMenu: false,
+        subMenuItems: [],
+    },
 
 ];
 
@@ -149,30 +84,30 @@ const Aside = (props: Props) => {
                 <ul id="menus">
                     {
                         menus.map((menu, index) => {
-                            if (menu.subMenus?.length == 0) {
+                            if (menu.subMenuItems?.length == 0) {
                                 return <Menu
                                     key={index}
                                     pathname={props.pathname}
-                                    icon={menu.icon}
-                                    nombre={menu.nombre}
-                                    to={menu.pathname!}
+                                    icon={menu.icono}
+                                    nombre={menu.titulo}
+                                    to={menu.url!}
                                 />
                             } else {
                                 return <ListMenu
                                     key={index}
                                     idList={menu.id}
-                                    desplegar={menu.subMenus?.filter(item => item.pathname === props.pathname).length != 0}
-                                    icon={menu.icon}
-                                    nombre={menu.nombre}
+                                    desplegar={menu.subMenuItems?.filter(item => item.url === props.pathname).length != 0}
+                                    icon={menu.icono}
+                                    nombre={menu.titulo}
                                 >
                                     {
-                                        menu.subMenus?.map((submenu, indexm) => {
+                                        menu.subMenuItems?.map((submenu, indexm) => {
                                             return <Menu
                                                 key={indexm}
                                                 pathname={props.pathname}
-                                                icon={submenu.icon}
-                                                nombre={submenu.nombre}
-                                                to={submenu.pathname!}
+                                                icon={submenu.icono}
+                                                nombre={submenu.titulo}
+                                                to={submenu.url!}
                                             />
                                         })
                                     }

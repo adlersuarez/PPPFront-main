@@ -1,10 +1,19 @@
 import { NavLink, RouteComponentProps } from "react-router-dom";
+import 'devextreme/dist/css/dx.light.css';
+
+import { Scheduler, View } from 'devextreme-react/scheduler';
 
 const MatriculaHorario = (props: RouteComponentProps<{}>) => {
 
+    var appointment = [{
+        text: "Meet with a customer",
+        startDate: new Date("2021-05-21T15:00:00.000Z"),
+        endDate: new Date("2021-05-21T16:00:00.000Z")
+    }];
+
     return (
         <>
-            <div className="flex flex-col -mx-3 text-center">
+            {/* <div className="flex flex-col -mx-3 text-center">
                 <h2>
                     1 Nivel - Horario Matutino
                 </h2>
@@ -106,7 +115,17 @@ const MatriculaHorario = (props: RouteComponentProps<{}>) => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> */}
+            <Scheduler
+                defaultCurrentView="week"
+                dataSource={appointment}>
+                <View
+                    type="week"
+                    startDayHour={8}
+                    endDayHour={15}
+                />
+
+            </Scheduler>
         </>
     )
 }
