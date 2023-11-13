@@ -172,8 +172,6 @@ const TemplateStep1 = (props: DatosUsuario) => {
                         </div>
                     </div>
 
-
-
                 </ContenedorSteps.Proceso>
 
             </ContenedorSteps>
