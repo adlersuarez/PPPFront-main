@@ -1,4 +1,4 @@
-//import { NavLink } from 'react-router-dom';
+//import Alerta from '@/component/Alerta';
 import ButtonLink from '../../../component/pages/buttons/ButtonLink';
 //import ModalidadCard from '../../component/cards/ModalidadCard';
 import images from '../../../helper/images.helper';
@@ -6,6 +6,16 @@ import images from '../../../helper/images.helper';
 import ModalidadCard from '@/component/pages/cards/ModalidadCard';
 
 const Inscripcion = () => {
+
+    /*const sweet = () => {
+        Alerta().fire({
+            title: 'Auto close alert!',
+            text: 'I will close in 2 seconds.',
+            timer: 2000
+        });
+        
+    };*/
+
 
     return (
         <div className="flex flex-wrap -mx-3">
@@ -18,7 +28,12 @@ const Inscripcion = () => {
                                 <p className='text-sm'>
                                     <strong>Las prácticas preprofesionales (PPP)</strong> son un requisito para egresar de su especialidad. El alumno es responsable de escoger el lugar y momento de la realización de las PPP, el mismo que deberá ser autorizado por su coordinador(a) de especialidad.
                                 </p>
-                                <hr className='my-2'/>
+                                {/*
+                                <button onClick={sweet}>
+                                    boton
+                                </button>
+                                */}
+                                <hr className='my-2' />
                                 <div className='flex flex-col gap-2'>
                                     <h2 className='font-bold text-gray-400'>FINALIDAD</h2>
                                     <ul className=" list-inside list-none pl-2 text-sm flex flex-col gap-1">
@@ -40,7 +55,7 @@ const Inscripcion = () => {
 
                         </div>
                         <div className='flex flex-col sm:border-l-2'>
-                        <hr className='sm:hidden py-2'/>
+                            <hr className='sm:hidden py-2' />
                             <div className='flex flex-col gap-2 sm:pl-4'>
                                 <h2 className='font-bold text-gray-400'>HERRAMIENTAS DE APOYO</h2>
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">

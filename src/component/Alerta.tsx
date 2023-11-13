@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
-export const  Alerta=() =>{
+
+ const  Alerta=() =>{
     const Mensaje = Swal.mixin({
         confirmButtonColor: '#0ca6eb',
         confirmButtonText: 'Aceptar',
@@ -11,3 +12,5 @@ export const  Alerta=() =>{
     Mensaje
   )
 }
+
+export default Alerta

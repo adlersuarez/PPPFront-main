@@ -28,8 +28,6 @@ import Registro from '../pages/facultades/medicina/interno/Registro';
 import CargarInformes from '../pages/facultades/medicina/interno/CargarInformes';
 import Fechas from '../pages/facultades/medicina/admin/Fechas';
 
-
-
 const Inicio = (props: RouteComponentProps<{}>) => {
 
     const dispatch = useDispatch();
