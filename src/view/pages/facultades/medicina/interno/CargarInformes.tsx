@@ -13,7 +13,7 @@ interface File {
 
 const CargarInformes = () => {
 
-    const [files, ] = useState<File[]>([
+    const [files,] = useState<File[]>([
         {
             id: '1',
             rotacion: 'Rotación 1',
@@ -108,7 +108,10 @@ const CargarInformes = () => {
                 <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border mt-3">
                     <h1 className="text-2xl font-bold text-blue-800">Informes semanales</h1>
                     <FileUploader />
-                    <FileTable files={files} />
+                    <div className=" overflow-x-auto">
+                        <FileTable files={files} />
+                    </div>
+
                 </div>
             </div>
         </div>

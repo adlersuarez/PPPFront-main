@@ -99,7 +99,7 @@ const Fechas = () => {
                 <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border mt-3">
                     <div className="mb-4">
                         <h2 className="text-xl font-semibold mb-2">Agregar Nueva Rotación</h2>
-                        <div className="grid grid-cols-3 gap-4 w-1/3">
+                        <div className="grid grid-cols-3 gap-4">
                             <div>
                                 <label htmlFor="startDate" className="block text-gray-700 text-sm font-bold">Fecha de Inicio:</label>
                                 <input

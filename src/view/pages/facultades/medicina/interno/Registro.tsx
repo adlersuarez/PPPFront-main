@@ -50,9 +50,9 @@ const Registro = () => {
                     <h1 className="text-blue-800 mb-4 font-bold text-2xl">Pre-Registro estudiantes</h1>
 
                     <div className="w-full max-w-screen-xl">
-                        <div className="flex gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {/* Columna 1 */}
-                            <div className="w-1/2 shadow">
+                            <div className="shadow">
                                 <div className="bg-blue-800 text-white px-4 py-2 flex gap-2">
                                     <i className="bi bi-person-fill text-2xl my-auto" />
                                     <span className="my-auto">Información Personal y de Contacto</span>
@@ -110,13 +110,20 @@ const Registro = () => {
                                     </div>
 
                                     <div className="">
-                                        <label
-                                            htmlFor="correoElectronico"
-                                            className="block text-gray-500 font-medium">
-                                            Correo Electrónico
-                                        </label>
-                                        <div className="flex gap-2 justify-between">
-                                            <div className="relative w-10/12">
+
+                                        <div className="flex justify-between">
+                                            <label
+                                                htmlFor="correoElectronico"
+                                                className="block text-gray-500 font-medium">
+                                                Correo Electrónico
+                                            </label>
+                                            <div className="bg-green-400 px-1 h-5 text-white rounded-sm flex gap-2 text-xs">
+                                                <i className="bi bi-check-circle my-auto " /> 
+                                                <span className="my-auto">Validado</span>
+                                            </div>
+                                        </div>
+                                        <div className="w-full flex gap-2 justify-between">
+                                            <div className="flex w-full">
                                                 <input
                                                     type="email"
                                                     placeholder="Ejm:   JuanPerez@gmail.com"
@@ -126,45 +133,50 @@ const Registro = () => {
                                                     value={datos.email}
                                                     onChange={(e) => setDatos({ ...datos, email: e.target.value })}
                                                 />
-                                                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-green-400 p-1 text-white rounded-sm flex gap-2 text-xs">
-                                                    <i className="bi bi-check-circle" /> Validado
-                                                </span>
+
                                             </div>
+
                                             <button
                                                 onClick={handleShowMail}
-                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded w-2/12"
+                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded flex gap-2 justify-center"
                                             >
-                                                Validar
+                                                <i className="bi bi-patch-check my-auto text-xl sm:text-lg" />
+                                                <span className="hidden sm:flex my-auto">Validar</span>
                                             </button>
                                         </div>
                                     </div>
 
                                     <div className="">
-                                        <label
-                                            htmlFor="numeroTelefono"
-                                            className="block text-gray-500 font-medium">
-                                            Número Telefónico
-                                        </label>
-                                        <div className="flex gap-2 justify-between">
-                                            <div className="relative w-10/12">
+                                    <div className="flex justify-between">
+                                            <label
+                                                htmlFor="correoElectronico"
+                                                className="block text-gray-500 font-medium">
+                                                Número Telefónico
+                                            </label>
+                                            <div className="bg-green-400 px-1 h-5 text-white rounded-sm flex gap-2 text-xs">
+                                                <i className="bi bi-check-circle my-auto" /> 
+                                                <span className="my-auto">Validado</span>
+                                            </div>
+                                        </div>
+                                        <div className="w-full flex gap-2 justify-between">
+                                            <div className="flex w-full">
                                                 <input
                                                     type="text"
                                                     placeholder="Ejm:   964 158 897"
                                                     id="numeroTelefono"
                                                     name="numeroTelefono"
-                                                    className="border rounded px-3 py-2 w-full"
+                                                    className="w-full border rounded px-3 py-2"
                                                     value={datos.telefono}
                                                     onChange={(e) => setDatos({ ...datos, telefono: e.target.value })}
                                                 />
-                                                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-green-400 p-1 text-white rounded-sm flex gap-2 text-xs">
-                                                    <i className="bi bi-check-circle" /> Validado
-                                                </span>
+                                                
                                             </div>
                                             <button
                                                 onClick={handleShow}
-                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded w-2/12"
+                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded flex gap-2 justify-center"
                                             >
-                                                Validar
+                                                <i className="bi bi-patch-check my-auto text-xl sm:text-lg" />
+                                                <span className="hidden sm:flex my-auto">Validar</span>
                                             </button>
                                         </div>
 
@@ -173,7 +185,7 @@ const Registro = () => {
                             </div>
 
                             {/* Columna 2 */}
-                            <div className="w-1/2 shadow h-auto">
+                            <div className="shadow h-auto">
                                 <div className="bg-[#2196F3] text-white px-4 py-2 flex gap-2">
                                     <i className="bi bi-person-vcard-fill text-2xl my-auto" />
                                     <span className="my-auto">Datos profesionales / académicos</span>
