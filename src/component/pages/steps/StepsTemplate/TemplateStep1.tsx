@@ -5,9 +5,8 @@ import ModalDatosCentroLaboral from '../../modalForms/ModalDatosCentroLaboral';
 import DatosUsuario from '@/model/interfaces/datos.usuario.model.interface';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import ListaElementos from './Contenedor/ListaElementos';
-import EstadoProceso from './Contenedor/EstadoProceso';
-import EstadoTiempo from './Contenedor/EstadoTiempo';
 import EstadoRequisito from './Contenedor/EstadoRequisito';
+import EstadoTemplate from './Contenedor/EstadoTemplate';
 
 const TemplateStep1 = (props: DatosUsuario) => {
 
@@ -88,17 +87,10 @@ const TemplateStep1 = (props: DatosUsuario) => {
 
                 <ContenedorSteps.Proceso>
                     <div className='flex flex-col'>
-                        <div className="flex justify-between">
-                            <span className='font font-bold text-gray-500'>ESTADO</span>
-                            <div className='flex gap-2'>
-                                <EstadoProceso
-                                    estado={EstadoActual.estado}
-                                />
-                                <EstadoTiempo
-                                    fecha={EstadoActual.fecha.presentacion}
-                                />
-                            </div>
-                        </div>
+
+                        <EstadoTemplate
+                            datos={EstadoActual}
+                        />
 
                         <hr className="my-2" />
 
@@ -157,28 +149,30 @@ const TemplateStep1 = (props: DatosUsuario) => {
                                 </tbody>
                             </table>
                         </div>
-                    </div>
 
-                    <hr className="my-2" />
+                        <hr className="my-2" />
 
-                    <div className="flex flex-col p-2 gap-2">
-                        <div className='bg-green-200 rounded-lg text-center'>
-                            <span className="px-4 text-green-600 font-semibold">Datos completos, puede descargar la carta de presentación</span>
+                        <div className="flex flex-col p-2 gap-2">
+                            <div className='bg-green-200 rounded-lg text-center'>
+                                <span className="px-4 text-green-600 font-semibold">Datos completos, puede descargar la carta de presentación</span>
+                            </div>
+                            <div className='bg-red-200 rounded-lg text-center'>
+                                <span className="px-4 text-red-600 font-semibold">Datos incompletos, por favor rellene todos los formularios</span>
+                            </div>
+
                         </div>
-                        <div className='bg-red-200 rounded-lg text-center'>
-                            <span className="px-4 text-red-600 font-semibold">Datos incompletos, por favor rellene todos los formularios</span>
+
+                        <hr className="my-2" />
+
+                        <div className="flex">
+                            <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded m-auto flex">
+                                <i className="bi bi-file-earmark-arrow-down w-1/4 m-auto text-3xl" />
+                                <span className='w-3/4'>Descargar Carta de Presentación</span>
+                            </button>
                         </div>
-
                     </div>
 
-                    <hr className="my-2" />
 
-                    <div className="flex">
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded m-auto flex">
-                            <i className="bi bi-file-earmark-arrow-down w-1/4 m-auto text-3xl" />
-                            <span className='w-3/4'>Descargar Carta de Presentación</span>
-                        </button>
-                    </div>
 
                 </ContenedorSteps.Proceso>
 

@@ -1,92 +1,106 @@
+import ContenedorSteps from "./Contenedor/ContenedorSteps"
+import EstadoRequisito from "./Contenedor/EstadoRequisito";
+import EstadoTemplate from "./Contenedor/EstadoTemplate";
+import ListaElementos from "./Contenedor/ListaElementos";
+
 const TemplateStep6 = () => {
+
+    const Caracteristicas = [
+        {
+            descripcion: 'Se realizará una visita inopinada o se enviará una ficha de evaluación de desempeño a su jefe inmediato',
+        },
+    ]
+
+    const Importante = [
+        {
+            descripcion: 'Cuando su jefe inmediato evalúe tu desempeño, el sistema te permitirá subir tu informe final, de lo contrario no podrás subir tu informe final'
+        },
+    ]
+
+    const EstadoActual = {
+        estado: 2,
+        fecha: {
+            presentacion: '2023-11-10T16:10:00.000'
+        }
+    }
+
     return (
-        <div className="mt-10 rounded shadow-lg border p-4 w-full">
+        <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <div className="flex">
-                <div className="w-1/2 pr-4">
-                    <div className="flex text-gray-400">
-                        <i className="bi bi-6-square-fill mr-4 text-xl" />
-                        <h1 className="font-bold text-xl">EVALUACIÓN DE DESEMPEÑO</h1>
+            <ContenedorSteps
+                numero={6}
+                titulo="EVALUACIÓN DE DESEMPEÑO"
+            >
+                <ContenedorSteps.Informacion>
+                    <div className='flex flex-col justify-between'>
+                        <ListaElementos
+                            titulo="Características"
+                            elementos={Caracteristicas}
+                        />
+                        <hr className="my-2" />
+                        <ListaElementos
+                            titulo="Importante"
+                            elementos={Importante}
+                        />
                     </div>
+                </ContenedorSteps.Informacion>
 
-                    <h2 className="font-semibold text-lg">Características</h2>
-                    <ul className="list-disc">
+                <ContenedorSteps.Proceso>
+                <div className='flex flex-col'>
+                        
+                        <EstadoTemplate
+                            datos={EstadoActual}
+                        />
 
-                        <li className="mb-1 ml-8">Se realizará una visita inopinada o se enviará una ficha de evaluación de desempeño a su jefe inmediato</li>
+                        <hr className="my-2" />
 
-                    </ul>
-                    <hr className="my-2" />
-                    <h2 className="font-semibold text-lg">Importante</h2>
-                    <ul className="list-disc">
-                        <li className="mb-1 ml-8">Cuando su jefe inmediato evalúe tu desempeño, el sistema te permitirá subir tu informe final, de lo contrario no podrás subir tu informe final</li>
-                    </ul>
-                </div>
+                        <div className="overflow-x-auto p-2">
+                            <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto">
+                                <thead>
+                                    <tr>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Requisito</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className='bg-white border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito estado={1} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Evaluación de desempeño
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                <div className="w-1/2 pl-4 border-l flex flex-col justify-between">
-                    <div>
-                        <div className="mb-4 flex">
-                            <p className="text-lg font-semibold">Estado:</p>
-                            {/* Completado */}
-                            <div className="flex ml-2 rounded-lg bg-green-500 text-white px-2">
-                                <span className="m-auto">Completado</span>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr className="my-2" />
+
+                        <div className="flex flex-col p-2 gap-2">
+                            <div className='bg-green-200 rounded-lg text-center'>
+                                <span className="px-4 text-green-600 font-semibold">Evaluación de desempeño completada</span>
                             </div>
-
-                            {/* Proceso */}
-                            <div className="flex ml-2 rounded-lg bg-yellow-400 text-white px-2">
-                                <span className="m-auto">En proceso</span>
-                            </div>
-
-                            {/* Duración */}
-                            <div className="flex ml-2 rounded-lg bg-yellow-400 text-white px-2">
-                                <i className="bi bi-clock-history m-auto mr-1" />
-                                <span className="m-auto">15 días</span>
-                            </div>
-
-                            {/* Duración */}
-                            <div className="flex ml-2 rounded-lg bg-red-700 text-white px-2">
-                                <i className="bi bi-clock-history m-auto mr-1" />
-                                <span className="m-auto">5 días</span>
+                            <div className='bg-red-200 rounded-lg text-center'>
+                                <span className="px-4 text-red-600 font-semibold">Evaluacion de desempeño no completada</span>
                             </div>
 
                         </div>
 
-
-
-                        <div className='flex flex-col gap-2'>
-                           
-
-                            <div className="flex items-center">
-                                <div className="rounded-full bg-yellow-400 text-white items-center justify-center w-6 flex">
-                                    <i className="bi bi-exclamation-lg m-auto" />
-                                </div>
-
-                                <span className="ml-4">Evaluación de desempeño</span>
-
-                                <div className="ml-auto">
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Ver</button>
-                                </div>
-                            </div>
-
-                            
-                        </div>
-
                     </div>
+                </ContenedorSteps.Proceso>
 
-                    <div>
-                        <hr className="mb-4" />
-                        <div className="flex flex-col gap-2">
-                            <div>
-                                <span className="bg-green-200 rounded-lg px-4 text-green-600 font-semibold">Evaluación completada</span>
-                            </div>
-                            <div>
-                                <span className="bg-red-200 rounded-lg px-4 text-red-600 font-semibold">Evaluación requerida</span>
-                            </div>
-                            
-                        </div>
-                    </div>
+            </ContenedorSteps>
 
-                </div>
-            </div>
         </div>
     );
 };

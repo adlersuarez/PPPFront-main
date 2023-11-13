@@ -15,7 +15,7 @@ const ListaElementos = ({ titulo, elementos }: ListaElementosProps) => {
 
     return (
         <div className="flex flex-col v">
-            <h2 className="font-semibold text-gray-500 text-lg">{titulo}</h2>
+            <h2 className="font-bold text-gray-500 text-lg">{titulo}</h2>
             <ul className="list-disc">
                 {
                     elementos?.map((elemento, index) => (

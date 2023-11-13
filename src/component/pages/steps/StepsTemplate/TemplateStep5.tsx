@@ -1,147 +1,167 @@
+import ContenedorSteps from "./Contenedor/ContenedorSteps"
+import EstadoRequisito from "./Contenedor/EstadoRequisito";
+import EstadoTemplate from "./Contenedor/EstadoTemplate";
+import ListaElementos from "./Contenedor/ListaElementos";
+
 const TemplateStep5 = () => {
+
+    const Caracteristicas = [
+        {
+            descripcion: 'Descarga el formato de ficha de control',
+            estado: 1,
+        },
+        {
+            descripcion: 'Registra las posibles actividades a realizadas por cada semana',
+            estado: 2,
+        },
+    ]
+
+    const Procedimiento = [
+        {
+            descripcion: 'Plazo máximo de ## días posteriores de iniciar el proceso.'
+        },
+        {
+            descripcion: 'La ficha de control de actividades debe ser escaneada a colores, debidamente firmada y sellada por su jefe inmediato'
+        }
+    ]
+
+    const EstadoActual = {
+        estado: 2,
+        fecha: {
+            presentacion: '2023-11-10T16:10:00.000'
+        }
+    }
+
     return (
-        <div className="mt-10 rounded shadow-lg border p-4 w-full">
+        <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <div className="flex">
-                <div className="w-1/2 pr-4">
-                    <div className="flex text-gray-400">
-                        <i className="bi bi-5-square-fill mr-4 text-xl" />
-                        <h1 className="font-bold text-xl">FICHA DE CONTROL DE ACTIVIDADES</h1>
+            <ContenedorSteps
+                numero={5}
+                titulo="FICHA DE CONTROL DE ACTIVIDADES"
+            >
+                <ContenedorSteps.Informacion>
+                    <div className='flex flex-col justify-between'>
+                        <ListaElementos
+                            titulo="Características"
+                            elementos={Caracteristicas}
+                        />
+                        <hr className="my-2" />
+                        <ListaElementos
+                            titulo="Procedimiento"
+                            elementos={Procedimiento}
+                        />
                     </div>
+                </ContenedorSteps.Informacion>
+                <ContenedorSteps.Proceso>
+                    <div className='flex flex-col'>
 
-                    <h2 className="font-semibold text-lg">Características</h2>
-                    <ul className="list-disc">
-                        <li className="mb-1 ml-8">
-                            Descarga el formato de plan de actividades
-                            {/* Icono de disponible*/}
-                            <span className="bg-green-400 text-white rounded-sm ml-2" title="Completo">
-                                <i className="bi bi-check-lg mx-1" />
-                            </span>
+                        <EstadoTemplate
+                            datos={EstadoActual}
+                        />
 
-                            {/* Icono de falta*/}
-                            <span className="bg-yellow-400 text-white rounded-sm ml-2" title="Es requerido">
-                                <i className="bi bi-exclamation-lg mx-1" />
-                            </span>
+                        <hr className="my-2" />
 
-                            {/* Icono de falta*/}
-                            <span className="bg-blue-400 text-white rounded-sm ml-2" title="Apoyo">
-                                <i className="bi bi-plus-lg mx-1" />
-                            </span>
+                        <div className="overflow-x-auto p-2">
+                            <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto">
+                                <thead>
+                                    <tr>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Requisito</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className='bg-white border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito estado={1} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Ficha de control 1
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className='bg-gray-100 border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito estado={1} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Ficha de control 2
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className='bg-white border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito estado={1} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Ficha de control 3
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className='bg-gray-100 border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito estado={1} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Ficha de control 4
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className='bg-white border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito estado={1} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Ficha de control 5
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                        </li>
-                        <li className="mb-1 ml-8">Registra las posibles actividades a realizadas por cada semana</li>
-                    </ul>
-                    <hr className="my-2" />
-                    <h2 className="font-semibold text-lg">Procedimiento</h2>
-                    <ul className="list-disc">
-                        <li className="mb-1 ml-8">Plazo máximo de ## días posteriores de iniciar el proceso.</li>
-                        <li className="mb-1 ml-8">La ficha de control de actividades debe ser escaneada a colores, debidamente firmada y sellada por su jefe inmediato</li>
-                    </ul>
-                </div>
+                                </tbody>
+                            </table>
+                        </div>
 
-                <div className="w-1/2 pl-4 border-l flex flex-col justify-between">
-                    <div>
-                        <div className="mb-4 flex">
-                            <p className="text-lg font-semibold">Estado:</p>
-                            {/* Completado */}
-                            <div className="flex ml-2 rounded-lg bg-green-500 text-white px-2">
-                                <span className="m-auto">Completado</span>
+                        <hr className="my-2" />
+
+                        <div className="flex flex-col p-2 gap-2">
+                            <div className='bg-green-200 rounded-lg text-center'>
+                                <span className="px-4 text-green-600 font-semibold">Documentos debidamente cargados</span>
                             </div>
-
-                            {/* Proceso */}
-                            <div className="flex ml-2 rounded-lg bg-yellow-400 text-white px-2">
-                                <span className="m-auto">En proceso</span>
-                            </div>
-
-                            {/* Duración */}
-                            <div className="flex ml-2 rounded-lg bg-yellow-400 text-white px-2">
-                                <i className="bi bi-clock-history m-auto mr-1" />
-                                <span className="m-auto">15 días</span>
-                            </div>
-
-                            {/* Duración */}
-                            <div className="flex ml-2 rounded-lg bg-red-700 text-white px-2">
-                                <i className="bi bi-clock-history m-auto mr-1" />
-                                <span className="m-auto">5 días</span>
+                            <div className='bg-red-200 rounded-lg text-center'>
+                                <span className="px-4 text-red-600 font-semibold">Documentos requeridos</span>
                             </div>
 
                         </div>
 
-
-
-                        <div className='flex flex-col gap-2'>
-
-                            <div className="flex items-center">
-                                <div className="rounded-full bg-yellow-400 text-white items-center justify-center w-6 flex">
-                                    <i className="bi bi-exclamation-lg m-auto" />
-                                </div>
-
-                                <span className="ml-4">Ficha de control 1</span>
-
-                                <div className="ml-auto">
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Subir archivo</button>
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Ver</button>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center">
-                                <div className="rounded-full bg-yellow-400 text-white items-center justify-center w-6 flex">
-                                    <i className="bi bi-exclamation-lg m-auto" />
-                                </div>
-
-                                <span className="ml-4">Ficha de control 2</span>
-
-                                <div className="ml-auto">
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Subir archivo</button>
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Ver</button>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center">
-                                <div className="rounded-full bg-yellow-400 text-white items-center justify-center w-6 flex">
-                                    <i className="bi bi-exclamation-lg m-auto" />
-                                </div>
-
-                                <span className="ml-4">Ficha de control 3</span>
-
-                                <div className="ml-auto">
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Subir archivo</button>
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Ver</button>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center">
-                                <div className="rounded-full bg-yellow-400 text-white items-center justify-center w-6 flex">
-                                    <i className="bi bi-exclamation-lg m-auto" />
-                                </div>
-
-                                <span className="ml-4">Ficha de control 4</span>
-
-                                <div className="ml-auto">
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Subir archivo</button>
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded mr-2">Ver</button>
-                                </div>
-                            </div>
-
-
-                        </div>
-
                     </div>
+                </ContenedorSteps.Proceso>
+            </ContenedorSteps>
 
-                    <div>
-                        <hr className="mb-4" />
-                        <div className="flex flex-col gap-2">
-                            <div>
-                                <span className="bg-green-200 rounded-lg px-4 text-green-600 font-semibold">Documentos debidamente cargados</span>
-                            </div>
-                            <div>
-                                <span className="bg-red-200 rounded-lg px-4 text-red-600 font-semibold">Documento(s) requerido(s)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
         </div>
     );
 };
