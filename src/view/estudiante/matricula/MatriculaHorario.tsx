@@ -1,17 +1,15 @@
-import React, { useState, ReactNode } from 'react';
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { useState } from 'react';
+import { RouteComponentProps } from "react-router-dom";
 import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
-import CustomModal from '@/component/Modal.component';
 import ModalMatricula from './modal/Matricula.modal';
 
 import notify from 'devextreme/ui/notify';
+import Horario from '@/component/pages/horario/Horario';
 
 // import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 
 const MatriculaHorario = (props: RouteComponentProps<{}>) => {
-
-    const resourcesList = ['Assignee', 'Room', 'Priority'];
 
     const fechaActual: Date = new Date();
 
@@ -164,52 +162,13 @@ const MatriculaHorario = (props: RouteComponentProps<{}>) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [allowResizing, setAllowResizing] = useState<boolean>(false);
-    const [allowDragging, setAllowDragging] = useState<boolean>(false);
-
-    const onAllowResizingChanged = (e: { value: boolean }) => setAllowResizing(e.value);
-    const onAllowDraggingChanged = (e: { value: boolean }) => setAllowDragging(e.value);
-
-    const showAddedToast = (e: { appointmentData: any }) => showToast('Added', e.appointmentData.text, 'success');
-    const showUpdatedToast = (e: { appointmentData: any }) => showToast('Updated', e.appointmentData.text, 'info');
-    const showDeletedToast = (e: { appointmentData: any }) => showToast('Deleted', e.appointmentData.text, 'warning');
-
-    const showToast = (event: string, value: string, type: string) => {
-        notify(`${event} "${value}" task`, type, 800);
-    };
+    // const showToast = (event: string, value: string, type: string) => {
+    //     notify(`${event} "${value}" task`, type, 800);
+    // };
     return (
         <>
-            <Scheduler
-                defaultCurrentView="week"
-                dataSource={data}
-                showAllDayPanel={false}
-                firstDayOfWeek={1}
-                cellDuration={30}
-                showCurrentTimeIndicator={false}
-                onAppointmentClick={handleShow}
-                editing={{
-                    allowResizing,
-                    allowDragging,
-                }}
-                onAppointmentAdded={showAddedToast}
-                onAppointmentUpdated={showUpdatedToast}
-                onAppointmentDeleted={showDeletedToast}
-            // showNavigator={false}
-            >
-                <View
-                    type="week"
-                    startDayHour={8}
-                    endDayHour={14}
-                />
-                <Resource
-                    dataSource={colorCR}
-                    fieldExpr="roomId"
-                    label="Room"
-                />
-
-            </Scheduler>
+            <Horario data={data} color={colorCR} handleShow={handleShow}/>
             <ModalMatricula show={show} hide={handleClose} />
-
         </>
     )
 }
