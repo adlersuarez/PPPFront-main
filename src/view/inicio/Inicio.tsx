@@ -15,18 +15,21 @@ import RestError from '../../model/class/resterror.model.class';
 import Estudiante from '../../model/interfaces/login/estudiante.login';
 import Trabajador from '../../model/interfaces/login/estudiante.login';
 import { Toaster } from 'react-hot-toast';
+
 import Dashboard from './dashboard/Dashboard';
 import Bienvenido from './bienvenido/Bienvenido';
 import Inscripcion from '../estudiante/Inscripcion';
 import Proceso from '../estudiante/Proceso';
-import HomeSistema from '../estudiante/HomeSistema';
+import HomeEstudiante from '../estudiante/HomeEstudiante';
 import MatriculaInterna from '../estudiante/matricula/MatriculaInterna';
 import MatriculaExterna from '../estudiante/matricula/MatriculaExterna';
 import MatriculaHorario from '../estudiante/matricula/MatriculaHorario';
+
 import { ValidarEstudianteExistente } from '../../network/rest/idiomas.network';
 import RespValue from '../../model/interfaces/RespValue.model.interface';
 
 import PrimerLogin from './PrimerLogin';
+import HorarioIdiomas from '../trabajador/HorarioIdiomas';
 
 
 const Inicio = (props: RouteComponentProps<{}>) => {
@@ -183,10 +186,10 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         if (validar instanceof Response) {
             if (validar.data.value == codigo) {
                 setPrimerLogin(false)
-                console.log('existe')
-            } else {
-                console.log('no existe')
+                //console.log('existe')
+            } else { 
                 setPrimerLogin(true)
+                //console.log('no existe')
             }
         }
         if (validar instanceof RestError) {
@@ -202,7 +205,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
             {
                 primerLogin == true ?
                     (
-                        <PrimerLogin codigo={codigo} informacion={informacion} />
+                        <PrimerLogin codigo={codigo} informacion={informacion} validarPrimerLogin={validarPrimerLogin}/>
                     ) :
                     (
                         <div className="flex w-full">
@@ -239,22 +242,14 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                                 path={"/inicio"}
                                                 exact={true}
                                             >
-                                                <Redirect to={`${path}/centro_de_idiomas`} />
+                                                <Redirect to={`${path}/centro-idiomas`} />
                                             </Route>
-                                            {
-                                                /*
-                                                <Route
-                                                    path={`${path}/inscripcion`}
-                                                    render={(props) => <Inscripcion {...props} />}
-                                                />
-                                                */
-                                            }
+
 
                                             {/* Modulos del Estudiante */}
-
                                             <Route
-                                                path={`${path}/centro_de_idiomas`}
-                                                render={(props) => <HomeSistema {...props} />}
+                                                path={`${path}/centro-idiomas`}
+                                                render={(props) => <HomeEstudiante {...props} />}
                                             />
 
                                             <Route
@@ -281,6 +276,13 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                                 />
                                                 //
                                             }
+
+                                            {/* Modulos del Trabajador */}
+                                            <Route
+                                                path={`${path}/horario-idiomas`}
+                                                render={(props) => <HorarioIdiomas {...props} />}
+                                            />
+
 
 
                                         </Switch>

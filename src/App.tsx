@@ -11,8 +11,6 @@ function App() {
 
     const cargando = useSelector((state: RootState) => state.autenticacion.cargando);
 
-    //console.log(cargando)
-
     if (cargando) {
         return <Cargar />;
     }
@@ -24,47 +22,32 @@ function App() {
             <Route
                 path="/"
                 exact={true}
-                >
+            >
                 <Redirect to={"/acceso"} />
             </Route>
 
-            {
+
             <Route
                 path="/acceso"
                 exact={true}
                 render={(props) => <Acceso {...props} />}
-            /> 
-            }
-
-            {
-            
-            // <Route
-            //     path="/acceso"
-            //     exact={true}
-            //     render={(props) => <FormularioAcceso {...props} />}
-            // /> 
-            
-            }
-
-            {
-   
-            // <Route
-            //     path="/acceso"
-            //     exact={true}
-            //     render={(props) => <RegistroEstudianteExterno {...props} />}
-            // />
-   
-            }
+            />
 
             <Route
                 path="/inicio"
+                // exact={true}
                 render={(props) => <Inicio {...props} />}
             />
 
-            {/* <Route
-                path="/control"
-                render={(props) => <Control {...props} />}
-              /> */}
+            {
+                /*
+                <Route
+                    path="/acceso"
+                    exact={true}
+                    render={(props) => <RegistroEstudianteExterno {...props} />}
+                />
+                */
+            }
 
             <Route
                 component={NotFound}
