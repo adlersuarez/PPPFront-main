@@ -1,15 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Stepper from '@/component/pages/steps/Stepper';
 import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
-
-import TemplateStep1 from '@/component/pages/steps/StepsTemplate/TemplateStep1';
-import TemplateStep2 from '@/component/pages/steps/StepsTemplate/TemplateStep2';
-import TemplateStep3 from '@/component/pages/steps/StepsTemplate/TemplateStep3';
-import TemplateStep4 from '@/component/pages/steps/StepsTemplate/TemplateStep4';
-import TemplateStep5 from '@/component/pages/steps/StepsTemplate/TemplateStep5';
-import TemplateStep6 from '@/component/pages/steps/StepsTemplate/TemplateStep6';
-import TemplateStep7 from '@/component/pages/steps/StepsTemplate/TemplateStep7';
 
 const Proceso = () => {
 
@@ -36,24 +28,17 @@ const Proceso = () => {
 
     const steps = paso_proceso.efectiva.pasos;
 
-    const displayStep = (step: number) => {
-        switch (step) {
-            case 1:
-                return <TemplateStep1 />;
-            case 2:
-                return <TemplateStep2 />;
-            case 3:
-                return <TemplateStep3 />;
-            case 4:
-                return <TemplateStep4 />;
-            case 5:
-                return <TemplateStep5 />;
-            case 6:
-                return <TemplateStep6 />;
-            case 7:
-                return <TemplateStep7 />;
-            default:
-                return null; //
+    const [stepComponent, setStepComponent] = useState<JSX.Element | null>(null);
+
+    //Cambiar de step
+    const displayStep = async (step: number) => {
+        try {
+            const TemplateStepModule = await import(`../../../component/pages/steps/StepsTemplate/TemplateStep${step}.tsx`);
+            const TemplateStep = TemplateStepModule.default;
+            setStepComponent(<TemplateStep />);
+        } catch (error) {
+            console.error('Error al cargar el componente:', error);
+            setStepComponent(null);
         }
     };
 
@@ -75,6 +60,10 @@ const Proceso = () => {
 
     const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6, paso_7];
 
+    //
+    useEffect(() => {
+        displayStep(currentStep);
+    }, [currentStep]);
 
     return (
         <div className="flex flex-wrap -mx-3">
@@ -83,7 +72,7 @@ const Proceso = () => {
 
                     <div className="rounded-lg">
                         <h1 className='text-3xl text-gray-400'>
-                            <span>Modalidad: </span>                        
+                            <span>Modalidad: </span>
                             <strong>CURRICULAR</strong>
                         </h1>
                         <p className='mt-4 text-xl text-gray-400'>¿Como va mi proceso?</p>
@@ -112,7 +101,11 @@ const Proceso = () => {
                                         finalData,
                                         setFinalData
                                     }}>
-                                    {displayStep(currentStep)}
+
+                                    <Suspense fallback={<div>Loading...</div>}>
+                                        {stepComponent}
+                                    </Suspense>
+
                                 </StepperContext.Provider>
 
                             </div>}

@@ -1,13 +1,16 @@
-import { useState } from 'react';
-import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
-import ModalDatosEstudiante from '../../modalForms/ModalDatosEstudiante';
-import ModalDatosCentroLaboral from '../../modalForms/ModalDatosCentroLaboral';
+import { useState, lazy, Suspense} from 'react';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import ListaElementos from './Contenedor/ListaElementos';
 import EstadoRequisito from './Contenedor/EstadoRequisito';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
 
 const TemplateStep1 = () => {
+
+    // Importa los modales de forma dinámica
+    const ModalDatosPersonales = lazy(() => import('../../modalForms/ModalDatosPersonales'));
+    const ModalDatosEstudiante = lazy(() => import('../../modalForms/ModalDatosEstudiante'));
+    const ModalDatosCentroLaboral = lazy(() => import('../../modalForms/ModalDatosCentroLaboral'));
+    //
 
     const [show, setShow] = useState<boolean>(false);
     const [showEstud, setShowEstud] = useState<boolean>(false);
@@ -56,15 +59,19 @@ const TemplateStep1 = () => {
         }
     }
 
-
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <ModalDatosPersonales show={show} hide={handleClose} />
+            {/* <ModalDatosPersonales show={show} hide={handleClose} />
+                <ModalDatosEstudiante show={showEstud} hide={handleCloseEstud} />
+                <ModalDatosCentroLaboral show={showCentro} hide={handleCloseCentro} />*/}
 
-            <ModalDatosEstudiante show={showEstud} hide={handleCloseEstud} />
-
-            <ModalDatosCentroLaboral show={showCentro} hide={handleCloseCentro} />
+            {/* Agrega el Suspense para manejar la carga perezosa de modales */}
+            <Suspense fallback={<div>Cargando...</div>}>
+                <ModalDatosPersonales show={show} hide={handleClose} />
+                <ModalDatosEstudiante show={showEstud} hide={handleCloseEstud} />
+                <ModalDatosCentroLaboral show={showCentro} hide={handleCloseCentro} />
+            </Suspense>
 
             <ContenedorSteps
                 numero={1}

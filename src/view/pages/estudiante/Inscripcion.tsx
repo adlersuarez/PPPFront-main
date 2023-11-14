@@ -1,9 +1,6 @@
-//import Alerta from '@/component/Alerta';
-import ButtonLink from '../../../component/pages/buttons/ButtonLink';
-//import ModalidadCard from '../../component/cards/ModalidadCard';
-import images from '../../../helper/images.helper';
-
+import ButtonLink from '@/component/pages/buttons/ButtonLink';
 import ModalidadCard from '@/component/pages/cards/ModalidadCard';
+import { images } from '@/helper/index.helper';
 
 const Inscripcion = () => {
 
@@ -13,10 +10,7 @@ const Inscripcion = () => {
             text: 'I will close in 2 seconds.',
             timer: 2000
         });
-        
     };*/
-    console.log('aea')
-
 
     return (
         <div className="flex flex-wrap -mx-3">

@@ -4,8 +4,6 @@ type EstadoElemento = {
 
 const EstadoRequisito = ({ estado }: EstadoElemento) => {
 
-    console.log(estado)
-
     var titulo = ''
     var color = ''
     var icono = ''
