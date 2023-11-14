@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Redirect } from 'react-router-dom';
+import { Navigate as Redirect } from 'react-router-dom';
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../../store/configureStore.store";

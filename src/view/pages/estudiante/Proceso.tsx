@@ -3,9 +3,6 @@ import Stepper from '@/component/pages/steps/Stepper';
 import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
 
-import Estudiante from '@/model/interfaces/estudiante.model.interface';
-import Trabajador from '@/model/interfaces/trabajador.model.interface';
-
 import TemplateStep1 from '@/component/pages/steps/StepsTemplate/TemplateStep1';
 import TemplateStep2 from '@/component/pages/steps/StepsTemplate/TemplateStep2';
 import TemplateStep3 from '@/component/pages/steps/StepsTemplate/TemplateStep3';
@@ -13,41 +10,12 @@ import TemplateStep4 from '@/component/pages/steps/StepsTemplate/TemplateStep4';
 import TemplateStep5 from '@/component/pages/steps/StepsTemplate/TemplateStep5';
 import TemplateStep6 from '@/component/pages/steps/StepsTemplate/TemplateStep6';
 import TemplateStep7 from '@/component/pages/steps/StepsTemplate/TemplateStep7';
-import DatosUsuario from '@/model/interfaces/datos.usuario.model.interface';
 
-type Informacion = {
-    informacion: Estudiante | Trabajador | undefined;
-};
-
-const Proceso = (informacion: Informacion) => {
+const Proceso = () => {
 
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [userData, setUserData] = useState<string>('');
     const [finalData, setFinalData] = useState<any[]>([]);
-
-    let aux: Estudiante | Trabajador | undefined = informacion.informacion
-
-    var datosUsuario: DatosUsuario
-
-    if (aux) {
-        if ('asesNombres' in aux) {
-            // tipo Trabajador
-            datosUsuario = {
-                nombre: aux.asesNombres,
-                apellidoPat: aux.asesPaterno,
-                apellidoMat: aux.asesMaterno,
-                cod: aux.docNumId
-            };
-        } else {
-            // tipo Estudiante
-            datosUsuario = {
-                nombre: aux.nombres,
-                apellidoPat: aux.apellidoPaterno,
-                apellidoMat: aux.apellidoMaterno,
-                cod: aux.codigo
-            };
-        }
-    }
 
     const paso_proceso = {
         "efectiva": {
@@ -71,7 +39,7 @@ const Proceso = (informacion: Informacion) => {
     const displayStep = (step: number) => {
         switch (step) {
             case 1:
-                return <TemplateStep1 {...datosUsuario} />;
+                return <TemplateStep1 />;
             case 2:
                 return <TemplateStep2 />;
             case 3:

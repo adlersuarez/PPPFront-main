@@ -2,13 +2,12 @@ import { useState } from 'react';
 import ModalDatosPersonales from '../../modalForms/ModalDatosPersonales';
 import ModalDatosEstudiante from '../../modalForms/ModalDatosEstudiante';
 import ModalDatosCentroLaboral from '../../modalForms/ModalDatosCentroLaboral';
-import DatosUsuario from '@/model/interfaces/datos.usuario.model.interface';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import ListaElementos from './Contenedor/ListaElementos';
 import EstadoRequisito from './Contenedor/EstadoRequisito';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
 
-const TemplateStep1 = (props: DatosUsuario) => {
+const TemplateStep1 = () => {
 
     const [show, setShow] = useState<boolean>(false);
     const [showEstud, setShowEstud] = useState<boolean>(false);
@@ -61,7 +60,7 @@ const TemplateStep1 = (props: DatosUsuario) => {
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <ModalDatosPersonales datos={props} show={show} hide={handleClose} />
+            <ModalDatosPersonales show={show} hide={handleClose} />
 
             <ModalDatosEstudiante show={showEstud} hide={handleCloseEstud} />
 

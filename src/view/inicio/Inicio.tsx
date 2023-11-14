@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { RootState } from '../../store/configureStore.store';
 import Aside from '../pages/layout/aside/Aside';
 import Nav from '../pages/layout/nav/Nav';
@@ -15,27 +15,16 @@ import RestError from '../../model/class/resterror.model.class';
 import Estudiante from '../../model/interfaces/estudiante.model.interface';
 import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
-import Inscripcion from '../pages/estudiante/Inscripcion';
-import Proceso from '../pages/estudiante/Proceso';
-import Formato from '../pages/estudiante/Formato';
-import Contacto from '../pages/estudiante/Contacto';
-import Reglamento from '../pages/estudiante/Reglamento';
-import Admin from '../pages/admin/Dashboard';
-import Revision from '../pages/docente/Revision';
-import Especifico from '../pages/docente/Especifico';
-import ProcesoMedicina from '../pages/facultades/medicina/interno/ProcesoMedicina';
-import Registro from '../pages/facultades/medicina/interno/Registro';
-import CargarInformes from '../pages/facultades/medicina/interno/CargarInformes';
-import Fechas from '../pages/facultades/medicina/admin/Fechas';
 
-const Inicio = (props: RouteComponentProps<{}>) => {
+const Inicio = () => {
 
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
 
     if (!autenticado) {
-        return <Redirect to="/acceso" />
+        return <Navigate to="/acceso" />
     }
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
@@ -176,145 +165,41 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         }
     }
 
-    // const { path, url } = props.match;
-    const { path } = props.match;
-
     return (
         <div className="flex w-full">
 
             {
-                cargando && <div className="fixed z-[500] w-screen h-screen">
-                    <div className=" w-screen h-screen bg-gray-900"></div>
+                cargando &&
+                <div className="fixed z-[500] w-screen h-screen">
+                    <div className=" w-screen h-screen bg-gray-900">
+                    </div>
                     <div className=" w-full h-full absolute left-0 top-0 text-white flex justify-center items-center flex-col">
                         <img src={images.logo} className="w-[10.5rem] mr-0 my-3" alt="Flowbite Logo" />
                         <div style={{ "borderTopColor": "transparent" }}
                             className="w-16 h-16 border-4 border-upla-100 border-solid rounded-full animate-spin">
                         </div>
-                        <h1 className='m-3 text-center'>Cargando información, espere por favor...</h1>
+                        <h1 className='m-3 text-center'>
+                            Cargando información, espere por favor...
+                        </h1>
                     </div>
-                </div>}
+                </div>
+            }
 
             {/* Navbar */}
             <Nav refBlock={refBlock} onEventMenu={onEventMenu} />
             {/*  */}
 
             {/* Aside */}
-            <Aside informacion={informacion} pathname={props.location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
+            <Aside informacion={informacion} pathname={location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
             {/*  */}
 
-            {/*  */}
             <div
                 ref={refMain}
                 className={css.DivMain}>
                 <div className="w-full p-4 font-mont overflow-hidden">
                     {/*INICIO NAVEGACION */}
                     <div className="content-wrapper flex-wrap">
-                        <Switch>
-                            <Route
-                                path={"/inicio"}
-                                exact={true}
-                            >
-                                <Redirect to={`${path}/inscripcion`} />
-                            </Route>
-                            <Route
-                                path={`${path}/inscripcion`}
-                                render={() => <Inscripcion />}
-                            />
-                            {/* Modulos del Estudiante */}
-                            {
-                                //
-                                <Route
-                                    path={`${path}/proceso`}
-                                    exact={true}
-                                    render={(props) => <Proceso informacion={informacion} {...props} />}
-                                />
-                                //
-                            }
-                            {
-                                //
-                                <Route
-                                    path={`${path}/formatos`}
-                                    exact={true}
-                                    render={() => <Formato  />}
-                                />
-                                //
-                            }
-                            {
-                                //
-                                <Route
-                                    path={`${path}/contactos`}
-                                    exact={true}
-                                    render={() => <Contacto  />}
-                                />
-                                //
-                            }
-                            {
-                                //
-                                <Route
-                                    path={`${path}/reglamentos`}
-                                    exact={true}
-                                    render={() => <Reglamento />}
-                                />
-                                //
-                            }
-                            {
-                                //
-                                <Route
-                                    path={`${path}/administrador`}
-                                    exact={true}
-                                    render={() => <Admin />}
-                                />
-                                //
-                            }
-                            {
-                                //
-                                <Route
-                                    path={`${path}/revision`}
-                                    exact={true}
-                                    render={(props) => <Revision {...props} />}
-                                />
-                                //
-                            }
-                            {
-                                <Route
-                                    path={`${path}/revision/estudiante-detalle`}
-                                    exact={true}
-                                    render={(props) => <Especifico {...props} />}
-                                />
-                            }
-
-
-                            {//MEDICINA
-                                <Route
-                                    path={`${path}/medicina/internado-medico`}
-                                    exact={true}
-                                    render={() => <ProcesoMedicina />}
-                                />
-                            }
-                            {
-                                <Route
-                                    path={`${path}/medicina/registro`}
-                                    exact={true}
-                                    render={() => <Registro />}
-                                />
-                            }
-                            {
-                                <Route
-                                    path={`${path}/medicina/estudiantes`}
-                                    exact={true}
-                                    render={() => <CargarInformes />}
-                                />
-                            }
-                            {
-                                <Route
-                                    path={`${path}/medicina/administrador`}
-                                    exact={true}
-                                    render={() => <Fechas />}
-                                />
-                            }
-
-
-                        </Switch>
+                        <Outlet />
                     </div>
                     {/* FIN NAVEGACION  */}
                 </div>

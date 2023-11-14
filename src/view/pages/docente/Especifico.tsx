@@ -1,6 +1,6 @@
 import { FaBuilding, FaUser, FaIdCard, FaGraduationCap, FaUserTie, FaArrowLeft, FaArrowRight, FaCheck, FaCalendarAlt, FaClock, FaEnvelope, FaMobile } from 'react-icons/fa';
 import { useState } from 'react';
-import { RouteComponentProps, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 //Paso 1
 interface DatosEmpresa {
@@ -22,6 +22,7 @@ interface Paso1Props {
 }
 
 const Paso1: React.FC<Paso1Props> = ({ datosEmpresa, datosRepresentante }) => {
+
     return (
         <div className="bg-white rounded mt-4 md:flex md:justify-between md:items-start">
             <div className="mb-4 md:w-1/2 md:pr-4">
@@ -292,9 +293,7 @@ const Paso5: React.FC<Paso5Props> = ({ pdfUrls, validarPdf }) => {
     respuestas: string[];
 }*/
 
-const Paso6 = (
-    //{ respuestas }
-    ) => {
+const Paso6 = (/*{ respuestas }*/) => {
     return (
         <div>
             <p>Respuestas:</p>
@@ -508,17 +507,10 @@ interface Notas {
     EP: string;
 }
 
-interface LocationState {
-    codigo: string;
-    nombres: string;
-    facultad: string;
-    escuela_profesional: string;
-    curso: string;
-    plan: string;
-}
-
-const Especifico : React.FC<RouteComponentProps> = (props) => {
-    const location = useLocation<LocationState>();
+const Especifico = () => {
+    
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const datos = {
         codigo: location.state.codigo,
@@ -647,7 +639,7 @@ const Especifico : React.FC<RouteComponentProps> = (props) => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
                         <div className="p-4 bg-Solid">
                             <h2 className="text-2xl font-bold mb-6">
-                                <span onClick={() => props.history.goBack()} title="Atrás" role="button">
+                                <span onClick={() => navigate(-1)} title="Atrás" role="button">
                                     <i className="bi bi-arrow-left-circle-fill text-blue-500" />
                                 </span>
                                 Detalle estudiante

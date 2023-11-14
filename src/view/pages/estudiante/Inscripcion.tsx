@@ -15,6 +15,7 @@ const Inscripcion = () => {
         });
         
     };*/
+    console.log('aea')
 
 
     return (

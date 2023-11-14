@@ -1,9 +1,7 @@
 import { NavLink } from "react-router-dom";
 import Modal from "../modal/ModalComponente";
-import DatosUsuario from "@/model/interfaces/datos.usuario.model.interface";
 
 type Props = {
-    datos: DatosUsuario;
     show: boolean;
     hide: () => void;
 };
@@ -13,11 +11,11 @@ const ModalDatosPersonales = (props: Props) => {
     //console.log(props)
 
     const datos = {
-        dni: props.datos.cod,
-        nombres: props.datos.nombre,
-        apellido_paterno: props.datos.apellidoPat,
-        apellido_materno: props.datos.apellidoMat,
-        correo_institucional: `${props.datos.cod}@upla.edu.pe`,
+        dni: '76634282',
+        nombres: 'Doe',
+        apellido_paterno: 'Rodriguez',
+        apellido_materno: 'Gutierrez',
+        correo_institucional: `prueba@upla.edu.pe`,
         correo: '',
         celular: '',
         telefono: '',

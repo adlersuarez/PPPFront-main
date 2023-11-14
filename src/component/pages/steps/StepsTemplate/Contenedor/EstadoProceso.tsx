@@ -14,7 +14,7 @@ const EstadoProceso = ({ estado }: EstadoElemento) => {
             break;
 
         case 2:
-            color = 'yellow-400'
+            color = 'yellow-300'
             texto = 'En proceso'
             break;
 

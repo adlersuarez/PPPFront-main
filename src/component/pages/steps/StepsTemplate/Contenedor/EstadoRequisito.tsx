@@ -4,6 +4,8 @@ type EstadoElemento = {
 
 const EstadoRequisito = ({ estado }: EstadoElemento) => {
 
+    console.log(estado)
+
     var titulo = ''
     var color = ''
     var icono = ''
@@ -17,7 +19,7 @@ const EstadoRequisito = ({ estado }: EstadoElemento) => {
 
         case 2:
             titulo = 'Requerido'
-            color = 'yellow-400'
+            color = 'yellow-300'
             icono = 'exclamation-lg'
             break;
 

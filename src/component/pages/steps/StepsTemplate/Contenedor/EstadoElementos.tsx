@@ -17,7 +17,7 @@ const EstadoElementos = ({estado}: EstadoElemento) => {
 
         case 2:
             titulo = 'Requerido'
-            color = 'yellow-400'
+            color = 'yellow-300'
             icono = 'exclamation-lg'
             break;
 

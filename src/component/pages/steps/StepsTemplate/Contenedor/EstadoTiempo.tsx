@@ -24,10 +24,10 @@ const EstadoTiempo: React.FC<EstadoElemento> = ({ fecha }) => {
         color = 'bg-green-500';
         formattedText = `${differenceInDays} días`;
     } else if (differenceInDays >= 1) {
-        color = 'bg-yellow-500';
+        color = 'bg-yellow-300';
         formattedText = '1 día';
     } else if (differenceInHours >= 2) {
-        color = 'bg-yellow-500';
+        color = 'bg-yellow-300';
         formattedText = `${differenceInHours} horas`;
     } else if (differenceInHours >= 1) {
         color = 'bg-red-500';

@@ -1,8 +1,9 @@
 import EstadoPracticas from "../../../component/pages/status/EstadoPracticas";
-import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Revision = (props: RouteComponentProps) => {
-    const history = useHistory();
+const Revision = () => {
+    const navigate = useNavigate();
+    //const location = useLocation();
 
     const datos: Record<string, string> = {
         docente: 'JARA RODRIGUEZ, EUTIMIO CATALINO',
@@ -228,14 +229,17 @@ const Revision = (props: RouteComponentProps) => {
         nivel_seccion: string,
         plan: string
     ) => {
-        history.push(`${props.match.path}/estudiante-detalle`, {
-            codigo: codigo,
-            nombres: nombres,
-            facultad: facultad,
-            escuela_profesional: escuela_profesional,
-            usuario_condicion: usuario_condicion,
-            curso: nivel_seccion,
-            plan: plan,
+
+        navigate(`./estudiante-detalle`, {
+            state: {
+                codigo: codigo,
+                nombres: nombres,
+                facultad: facultad,
+                escuela_profesional: escuela_profesional,
+                usuario_condicion: usuario_condicion,
+                curso: nivel_seccion,
+                plan: plan,
+            },
         });
     };
 
@@ -255,7 +259,7 @@ const Revision = (props: RouteComponentProps) => {
                     </div>
                 </div>
             </div>
-  
+
             <div className="flex flex-wrap -mx-3 mt-4">
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border overflow-x-auto">
