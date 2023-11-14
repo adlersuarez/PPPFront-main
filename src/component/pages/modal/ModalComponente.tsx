@@ -25,7 +25,7 @@ const Modal = ({ children, onShow, onHide }: ModalProps) => {
                 <div
                     id="defaultModal"
                     tabIndex={-1}
-                    className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+                    className="fixed p-4 top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
                     onClick={handleModalClick}
                 >
                     <div className="relative w-full max-w-3xl max-h-full">
