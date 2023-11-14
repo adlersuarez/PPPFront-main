@@ -45,7 +45,7 @@ export default function ReporteArea() {
         labels: labels,
         datasets: [
             {
-                fill: true,
+                //fill: true,
                 label: 'Ingeniería',
                 data: [95, 90, 100, 97, 100, 95, 90],
                 borderColor: 'rgb(53, 162, 235)',
