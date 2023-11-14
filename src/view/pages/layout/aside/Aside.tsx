@@ -31,7 +31,7 @@ const menus: MenuItem[] = [
     {
         id: "1",
         titulo: "Inicio",
-        url: "/inicio/centro_de_idiomas",
+        url: "/inicio/centro-idiomas",
         icono: "bi-info-circle",
         moduPadre: false,
         modPosicion: 1,

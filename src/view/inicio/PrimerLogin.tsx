@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { motion } from "framer-motion";
-
 import { images } from "../../helper/index.helper";
+
+import toast, { Toaster } from 'react-hot-toast';
 
 import Response from "../../model/class/response.model.class";
 import RestError from "../../model/class/resterror.model.class";
@@ -10,17 +11,18 @@ import { Types } from "../../model/enum/types.model.enum";
 
 import EstudianteLogin from "../../model/interfaces/login/estudiante.login";
 import { logout } from "../../store/authSlice.store";
-import { ListarPrograma, ListarModalidad } from "../../network/rest/idiomas.network";
+import { ListarPrograma, ListarModalidad, InsertarDatosEstudiantePrimerLogin } from "../../network/rest/idiomas.network";
 
-import Listas from "../../model/interfaces/listas.model.interface";
+import Listas from "../../model/interfaces/Listas.model.interface";
 import Modalidad from "../../model/interfaces/modalidad/modalidad";
 import Programa from "../../model/interfaces/programa/programa";
-
+import RespValue from "../../model/interfaces/RespValue.model.interface";
 
 
 type Props = {
     codigo: string,
     informacion: EstudianteLogin | undefined
+    validarPrimerLogin : (codigo: string)=> void
 }
 
 const PrimerLogin = (props: Props) => {
@@ -83,13 +85,34 @@ const PrimerLogin = (props: Props) => {
             selectMod?.focus();
             return
         }
-        
 
+        const response = await InsertarDatosEstudiantePrimerLogin<RespValue>(props.codigo, parseInt(programa), parseInt(modalidad))
+        if (response instanceof Response) {
+            if(response.data.value == "procesado"){
+                toast.success('Registro procesado')
+                props.validarPrimerLogin(props.codigo)
+                return
+            }else{
+                toast.error('Se produjo un error, intente mas tarde')
+                return
+            }
+
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+
+            toast.error('Se produjo un error, intente mas tarde')
+            return
+        }
 
     }
 
     return (
-        <>
+        <>  
+            <Toaster 
+                position="bottom-right"
+            />
+
             <div className="flex flex-wrap w-screen h-screen bg-portada">
 
                 <div className="px-6 md:px-4 sm:px-3 my-auto mx-auto w-full md:w-1/2 xl:w-1/3">
