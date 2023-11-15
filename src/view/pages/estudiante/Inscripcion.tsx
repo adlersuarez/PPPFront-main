@@ -21,7 +21,7 @@ const Inscripcion = () => {
                             <div className='flex flex-col gap-2'>
                                 <h1 className='font-bold text-2xl text-gray-400'>PRÁCTICAS PREPROFESIONALES</h1>
                                 <p className='text-sm'>
-                                    <strong>Las prácticas preprofesionales (PPP)</strong> son un requisito para egresar de su especialidad. El alumno es responsable de escoger el lugar y momento de la realización de las PPP, el mismo que deberá ser autorizado por su coordinador(a) de especialidad.
+                                    <strong className='text-gray-500'>Las prácticas preprofesionales (PPP)</strong> son un requisito para egresar de su especialidad. El alumno es responsable de escoger el lugar y momento de la realización de las PPP, el mismo que deberá ser autorizado por su coordinador(a) de especialidad.
                                 </p>
                                 {/*
                                 <button onClick={sweet}>
@@ -49,9 +49,9 @@ const Inscripcion = () => {
                             </div>
 
                         </div>
-                        <div className='flex flex-col sm:border-l-2'>
-                            <hr className='sm:hidden py-2' />
-                            <div className='flex flex-col gap-2 sm:pl-4'>
+                        <div className='flex flex-col lg:border-l-2'>
+                            <hr className='lg:hidden py-2' />
+                            <div className='flex flex-col gap-2 lg:pl-4'>
                                 <h2 className='font-bold text-gray-400'>HERRAMIENTAS DE APOYO</h2>
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
                                     <ButtonLink
@@ -115,7 +115,7 @@ const Inscripcion = () => {
                         <p>Existen 2 modalidades, elige la que se adecue a tu situación</p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+                    <div className="grid grid-grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-start">
                         <ModalidadCard
                             imagen={images.modalidad_efectiva}
                             titulo={'CURRICULAR'}

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import Modal from "../modal/ModalComponente";
+import Alerta from "@/component/Alerta";
 
 type Props = {
     show: boolean;
@@ -16,6 +17,32 @@ const ModalDatosEstudiante: React.FC<Props> = (props: Props) => {
         modalidad_ingreso: 'Postulante Regular',
         sede: 'HUANCAYO',
     }
+
+    //Sweetalert
+    const AgregarDatos = () => {
+        Alerta().fire({
+            title: "¿Estás seguro?",
+            text: "¡No podrás revertir esto!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirmar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                //Funcion para ocultar
+                props.hide()
+
+                Alerta().fire({
+                    icon: "success",
+                    title: "Datos actualizados",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    };
 
     return (
         <Modal onShow={props.show} onHide={props.hide}>
@@ -121,7 +148,7 @@ const ModalDatosEstudiante: React.FC<Props> = (props: Props) => {
                             Cancelar
                         </button>
                         <button
-                            onClick={props.hide}
+                            onClick={AgregarDatos}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center lg:mt-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             Guardar

@@ -6,7 +6,7 @@ import './index.css'
 import './network/rest/services.network';
 import './network/rest/notificacion.network';
 import './network/rest/ingreso.network';
-import './assets/css/sweetalert.css'
+//import './assets/css/sweetalert.css'
 //
 import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
 

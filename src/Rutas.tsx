@@ -84,8 +84,16 @@ const router = createBrowserRouter([
           },
         ]
       },
+      {
+        path: '*',
+        element: <NotFound />
+      }
 
     ]
+  },
+  {
+    path: '/',
+    element: <Navigate to="acceso" replace />,
   },
   {
     path: 'acceso',
