@@ -30,6 +30,7 @@ import RespValue from '../../model/interfaces/RespValue.model.interface';
 
 import PrimerLogin from './PrimerLogin';
 import HorarioIdiomas from '../trabajador/HorarioIdiomas';
+import AgregarHorario from '../trabajador/AgregarHorario';
 
 
 const Inicio = (props: RouteComponentProps<{}>) => {
@@ -281,6 +282,11 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                             <Route
                                                 path={`${path}/horario-idiomas`}
                                                 render={(props) => <HorarioIdiomas {...props} />}
+                                            />
+
+                                            <Route
+                                                path={`${path}/agregar-horario`}
+                                                render={(props) => <AgregarHorario {...props} />}
                                             />
 
 

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import Modal from "../../../../component/pages/modal/ModalComponente";
+import Modal from "../../../component/pages/modal/ModalComponente";
 
 // type DatosType = {
 //     docNumId: string;
@@ -14,13 +14,11 @@ type Props = {
     hide: () => void;
 };
 
-const ModalMatricula: React.FC<Props> = (props: Props) => {
-
-
-    return (
+const ModalModificarHorario = (props: Props) => {
+    return(
         <Modal onShow={props.show} onHide={props.hide}>
             <Modal.Header closeButton onHide={props.hide}>
-                <h2 className="font-bold">INFORMACIÓN SOBRE EL HORARIO</h2>
+                <h2 className="font-bold">MODIFICAR UNA CLASE DEL HORARIO</h2>
             </Modal.Header>
             <Modal.Body>
                 <div className='flex flex-col gap-3'>
@@ -148,5 +146,4 @@ const ModalMatricula: React.FC<Props> = (props: Props) => {
         </Modal>
     )
 }
-
-export default ModalMatricula;
+export default ModalModificarHorario
