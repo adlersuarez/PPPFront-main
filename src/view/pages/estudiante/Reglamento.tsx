@@ -54,7 +54,7 @@ const Reglamento = () => {
                                 },
                                 {
                                     id: 2,
-                                    text: 'Las practicas pre profesionales tienen por objetivo consolidar en el estudiante las competencias profesionales, es decir el dominio para el desempeño de la profesión.'
+                                    text: 'Las prácticas pre profesionales tienen por objetivo consolidar en el estudiante las competencias profesionales, es decir el dominio para el desempeño de la profesión.'
                                 }
                             ]
                         },
@@ -69,11 +69,11 @@ const Reglamento = () => {
                             articulos: [
                                 {
                                     id: 3,
-                                    text: 'Las Practicas Pre Profesionales son actividades curriculares obligatorias e individuales que el estudiante realiza en una organización privada o pública, en áreas afines al ejercicio profesional del Programa de Estudios a la que pertenece.'
+                                    text: 'Las Prácticas Pre Profesionales son actividades curriculares obligatorias e individuales que el estudiante realiza en una organización privada o pública, en áreas afines al ejercicio profesional del Programa de Estudios a la que pertenece.'
                                 },
                                 {
                                     id: 4,
-                                    text: 'Las Practicas Pre Profesionales son un proceso que permite a los estudiantes reafirmar e integrar la teoría a la practica en el proceso de formación profesional.'
+                                    text: 'Las Prácticas Pre Profesionales son un proceso que permite a los estudiantes reafirmar e integrar la teoría a la practica en el proceso de formación profesional.'
                                 },
                             ]
                         },
@@ -82,7 +82,7 @@ const Reglamento = () => {
                             articulos: [
                                 {
                                     id: 5,
-                                    text: 'El Reglamento de General de Practicas Pre Profesionales se rige por:',
+                                    text: 'El Reglamento de General de Prácticas Pre Profesionales se rige por:',
                                     tipo_lista: 'dot',
                                     lista: [
                                         {
@@ -125,7 +125,7 @@ const Reglamento = () => {
                             articulos: [
                                 {
                                     id: 6,
-                                    text: 'Las Practicas Pre Profesionales por su naturaleza son de carácter práctico y de obligatoriedad para todos los estudiantes de los diferentes Programas de Estudio de cada Facultad, sin exoneración alguna y fundamentado en el Plan de Estudios 2015.'
+                                    text: 'Las Prácticas Pre Profesionales por su naturaleza son de carácter práctico y de obligatoriedad para todos los estudiantes de los diferentes Programas de Estudio de cada Facultad, sin exoneración alguna y fundamentado en el Plan de Estudios 2015.'
                                 },
                                 {
                                     id: 7,
@@ -133,7 +133,7 @@ const Reglamento = () => {
                                 },
                                 {
                                     id: 8,
-                                    text: 'Las Facultades tienen la obligación de brindar las facilidades necesarias que posibiliten el logro de los objetivos trazados para que los estudiantes efectúen las Practicas Pre Profesionales.'
+                                    text: 'Las Facultades tienen la obligación de brindar las facilidades necesarias que posibiliten el logro de los objetivos trazados para que los estudiantes efectúen las Prácticas Pre Profesionales.'
                                 },
                                 {
                                     id: 9,
@@ -155,34 +155,28 @@ const Reglamento = () => {
                             title: "DE LOS PROCEDIMIENTOS",
                             articulos: [
                                 {
-                                    id: 17,
-                                    text: 'La Coordinación de Practicas Pre Profesionales es un organismo de Asesoría y Ejecución, encargada de planificar, organizar, coordinar, dirigir, supervisar, asesorar, controlar y evaluar las actividades.'
+                                    id: 11,
+                                    text: 'Las Prácticas Pre Profesionales se sujetan a los procedimientos considerados en el Reglamento Específico de cada Facultad según la naturaleza de cada uno de ellas.'
                                 },
                                 {
-                                    id: 18,
-                                    text: 'El Coordinador de Practicas Pre Profesionales, será propuesto por el Decano de la Facultad ante el Consejo de Facultad, que aprueba y posteriormente es ratificado por Consejo Universitario.'
+                                    id: 12,
+                                    text: 'El desarrollo de las Prácticas Pre Profesionales, son secuenciales y no paralelas; para matricularse en la práctica siguiente, previamente deben aprobar la que antecede, a excepción de los Programas de Estudios que realizan una sola práctica.'
                                 },
                                 {
-                                    id: 19,
-                                    text: 'Son Funciones del Coordinador de Practicas Pre Profesionales:',
-                                    tipo_lista: 'alfabetico',
-                                    lista: [
-                                        {
-                                            elemento: 'Dirigir, organizar y gestionar las Prácticas Pre Profesionales de los estudiantes de los diferentes Programas de Estudios de la Facultad.',
-                                        },
-                                        {
-                                            elemento: 'Formular el Plan de Trabajo Semestral o Anual de Prácticas Pre Profesionales.',
-                                        },
-                                        {
-                                            elemento: 'Solicitar a la Coordinación de Asuntos Académicos el cuadro de orden de mérito para la asignación de las plazas correspondientes.',
-                                        },
-                                        {
-                                            elemento: 'Elaborar la Carta de Presentación de los Estudiantes, para la realización de sus Prácticas Pre Profesionales.',
-                                        },
-                                        {
-                                            elemento: 'Verificar los informes emitidos por los Coordinadores, tutores y estudiantes.',
-                                        },
-                                    ]
+                                    id: 13,
+                                    text: 'El Centro de Prácticas, el Tutor asignado o Docente Monitor tienen la obligación de informar sobre las prácticas realizadas por el estudiante a través de las fichas de evaluación, cuyo formato es proporcionado por la Coordinación de Prácticas Pre Profesionales de cada Facultad',
+                                },
+                                {
+                                    id: 14,
+                                    text: 'El estudiante que realiza las Prácticas Pre Profesionales, al finalizar, esta obligado a presentar un informe escrito a la Coordinación de Prácticas Pre Profesionales de su Facultad, dentro del término máximo de quince días hábiles bajo responsabilidad para la revisión y aprobación del mismo; de ser observado el informe, la Coordinación hará de conocimiento a los practicantes, para que en un plazo de 8 días puedan subsanar las observaciones, pasado este término el informe se considerara por no presentado. La no presentación de los informes se considera causal de abandono de las Prácticas Pre Profesionales.',
+                                },
+                                {
+                                    id: 15,
+                                    text: 'El sistema de calificación de las Prácticas Pre Profesionales será vigesimal de 0 a 20.',
+                                },
+                                {
+                                    id: 16,
+                                    text: 'El practicante no podrá abandonar ni renunciar a sus prácticas una vez iniciadas, salvo causa justificada puesta en conocimiento de la Coordinación de Prácticas Pre Profesionales oportunamente y por escrito.',
                                 }
                             ]
                         },
@@ -191,15 +185,15 @@ const Reglamento = () => {
                             articulos: [
                                 {
                                     id: 17,
-                                    text: 'La Coordinación de Practicas Pre Profesionales es un organismo de Asesoría y Ejecución, encargada de planificar, organizar, coordinar, dirigir, supervisar, asesorar, controlar y evaluar las actividades.'
+                                    text: 'La Coordinación de Prácticas Pre Profesionales es un organismo de Asesoría y Ejecución, encargada de planificar, organizar, coordinar, dirigir, supervisar, asesorar, controlar y evaluar las actividades.'
                                 },
                                 {
                                     id: 18,
-                                    text: 'El Coordinador de Practicas Pre Profesionales, será propuesto por el Decano de la Facultad ante el Consejo de Facultad, que aprueba y posteriormente es ratificado por Consejo Universitario.'
+                                    text: 'El Coordinador de Prácticas Pre Profesionales, será propuesto por el Decano de la Facultad ante el Consejo de Facultad, que aprueba y posteriormente es ratificado por Consejo Universitario.'
                                 },
                                 {
                                     id: 19,
-                                    text: 'Son Funciones del Coordinador de Practicas Pre Profesionales:',
+                                    text: 'Son Funciones del Coordinador de Prácticas Pre Profesionales:',
                                     tipo_lista: 'alfabetico',
                                     lista: [
                                         {
@@ -232,11 +226,11 @@ const Reglamento = () => {
                             articulos: [
                                 {
                                     id: 20,
-                                    text: 'Para efectos de la realización de las Practicas Pre Profesionales, el estudiante debe estar en la condición de INVICTO.'
+                                    text: 'Para efectos de la realización de las Prácticas Pre Profesionales, el estudiante debe estar en la condición de INVICTO.'
                                 },
                                 {
                                     id: 21,
-                                    text: 'La pertinencia y duración de las Practicas Pre Profesionales estarán establecidos en los planes de estudios de cada Programa de acuerdo a sus especialidades.'
+                                    text: 'La pertinencia y duración de las Prácticas Pre Profesionales estarán establecidos en los planes de estudios de cada Programa de acuerdo a sus especialidades.'
                                 },
                                 {
                                     id: 22,
@@ -244,7 +238,7 @@ const Reglamento = () => {
                                 },
                                 {
                                     id: 23,
-                                    text: 'Para el proceso de elaboración de las Actas de Practicas Pre profesionales, se deberá de contar con el informe de conformidad emitido por el Coordinador de Practicas Pre Profesionales de la Facultad a la Coordinación de Asuntos Académicos, en un plazo máximo de 15 días hábiles de haber concluido con sus Prácticas Pre Profesionales; caso contrario se invalidar la matrícula y el proceso académico administrativo.'
+                                    text: 'Para el proceso de elaboración de las Actas de Prácticas Pre profesionales, se deberá de contar con el informe de conformidad emitido por el Coordinador de Prácticas Pre Profesionales de la Facultad a la Coordinación de Asuntos Académicos, en un plazo máximo de 15 días hábiles de haber concluido con sus Prácticas Pre Profesionales; caso contrario se invalidar la matrícula y el proceso académico administrativo.'
                                 }
                             ]
                         },
@@ -253,7 +247,7 @@ const Reglamento = () => {
                             articulos: [
                                 {
                                     id: 24,
-                                    text: 'La pertinencia y duración de las Practicas Pre Profesionales estarán establecidos en los planes de estudios de cada Programa de acuerdo a sus especialidades.'
+                                    text: 'La pertinencia y duración de las Prácticas Pre Profesionales estarán establecidos en los planes de estudios de cada Programa de acuerdo a sus especialidades.'
                                 },
                                 {
                                     id: 25,
@@ -261,7 +255,7 @@ const Reglamento = () => {
                                 },
                                 {
                                     id: 26,
-                                    text: 'El docente tutor o el que hace las veces de esta, rellenar la ficha de evaluación diseñada y aprobada por el Consejo de Facultad. En caso que la instituci6n donde realiza las Practicas Pre-profesionales tenga una modalidad de evaluación establecida por la misma, la Facultad validara con los criterios normados.'
+                                    text: 'El docente tutor o el que hace las veces de esta, rellenar la ficha de evaluación diseñada y aprobada por el Consejo de Facultad. En caso que la instituci6n donde realiza las Prácticas Pre-profesionales tenga una modalidad de evaluación establecida por la misma, la Facultad validara con los criterios normados.'
                                 },
                                 {
                                     id: 27,
@@ -286,7 +280,7 @@ const Reglamento = () => {
                                 },
                                 {
                                     id: 30,
-                                    text: 'El Coordinador de Practicas Pre Profesionales identificar las Ernpresas o Instituciones Públicas o Privadas que facilitan las Practicas Pre Profesionales de acuerdo a la pertinencia de cada Programa de estudios para la adjudicación de plazas.'
+                                    text: 'El Coordinador de Prácticas Pre Profesionales identificará las Empresas o Instituciones Públicas o Privadas que facilitan las Practicas Pre Profesionales de acuerdo a la pertinencia de cada Programa de estudios para la adjudicación de plazas.'
                                 }
                             ]
                         },
@@ -346,11 +340,10 @@ const Reglamento = () => {
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-1">
-
                         {
-                            //reglamentos.map()
                             reglamentos.map((reglamento, index) => (
-                                <div key={index} className={`pb-6 ${index !== reglamentos.length - 1 ? 'border-b-4' : ''}`}>
+                                <div key={index}
+                                    className={`pb-6 ${index !== reglamentos.length - 1 ? 'border-b-4' : ''}`}>
                                     <ComponenteReglamento {...reglamento} />
                                 </div>
                             ))
