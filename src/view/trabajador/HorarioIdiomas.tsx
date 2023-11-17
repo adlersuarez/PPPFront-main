@@ -372,14 +372,14 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
                                     <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
                                         <thead className="align-bottom">
                                             <tr>
-                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
-                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Idioma</th>
+                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '10%' }}>Idioma</th>
                                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidas</th>
                                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
-                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Editar</th>
-                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Detalle</th>
-                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Eliminar</th>
+                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>Editar</th>
+                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>Detalle</th>
+                                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>Eliminar</th>
                                             </tr>
                                         </thead>
                                         <tbody>

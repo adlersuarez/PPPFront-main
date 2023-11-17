@@ -215,6 +215,7 @@ const HorarioProceso = (props: Props ) =>{
                     setIdPrograma(0)
                     setIdPeriodo(0)
                     setIdTipoEstudio(0)
+                    setEstado(true)
                 }}
                 onClose={props.handleCloseModal}
             >
