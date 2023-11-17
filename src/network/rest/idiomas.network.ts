@@ -31,7 +31,7 @@ export async function ValidarEstudianteExistente<RespValue>(codigo: string, sign
 }
 
 export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId: string, ProgramaId: number, ModalidadId: number, signal = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Estudiante/InsertarDatosEstudiantePrimerLogin/${EstudianteId}/${ProgramaId}/${ModalidadId} `, { signal: signal! }));
+    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Estudiante/InsertarDatosEstudiantePrimerLogin/${EstudianteId}/${ProgramaId}/${ModalidadId}`, { signal: signal! }));
 }
 
 export async function ListarIdioma<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
@@ -61,6 +61,19 @@ export async function ListarPeriodo<Listas>( abortController: AbortController | 
 export async function ListarTipoEstudio<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/TipoEstudio/ListarTipoEstudio", { signal: abortController?.signal }));
 }
+
+//Horario
+
+export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
+    return await Resolve.create(instance.get<ListasPag>(`/Horario/ListarHorarioPag/${IdiomaId}/${SedeId}/${ModalidadId}/${posPagina}/${filaPagina}`, { signal: abortController?.signal }));
+}
+
+export async function InsertarActualizarHorario<RespValue>(mode: string, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarActualizarHorario/${mode} `, params, { signal: abortController?.signal }));
+}
+// export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId: string, ProgramaId: number, ModalidadId: number, signal = null): Promise<Response<RespValue> | RestError> {
+//     return await Resolve.create<RespValue>(instance.post<RespValue>(`/Estudiante/InsertarDatosEstudiantePrimerLogin/${EstudianteId}/${ProgramaId}/${ModalidadId} `, { signal: signal! }));
+// }
 
 
 
