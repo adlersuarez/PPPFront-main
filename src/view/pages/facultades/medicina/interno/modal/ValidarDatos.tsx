@@ -23,20 +23,20 @@ const ValidarCelular: React.FC<Props> = (props: Props) => {
 
     const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(''));
     const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
-    
+
     //const [isCodeConfirmed, setIsCodeConfirmed] = useState<boolean>(false);
-    
+
     const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
 
     const phoneNumber = datos.telefono;
     const formattedPhoneNumber = phoneNumber?.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
 
     const generateRandomNumbers = () => {
-        const numbers = [...Array(9)].map((_, index) => index + 1);
+        const numbers = [...Array(10)].map((_, index) => index);
         numbers.sort(() => Math.random() - 0.5);
         setRandomNumbers(numbers);
     };
-    // Manejar la selección del código de verificación
+
     // Manejar la selección del código de verificación
     const handleCodeSelection = (number: number, index: number) => {
         setVerificationCode((prevCode) => {
@@ -80,24 +80,25 @@ const ValidarCelular: React.FC<Props> = (props: Props) => {
             <Modal.Body>
                 <div className="container mx-auto flex flex-col items-center gap-6">
                     <div className="flex justify-start w-full gap-4 bg-gray-500 p-2 rounded-lg">
-                        <div className="flex gap-2 text-3xl font-bold text-white">
-                            <i className="bi bi-check-lg" />
+                        <div className="flex gap-2 sm:gap-6 text-center sm:text-3xl font-bold text-white px-4 m-auto">
+                            <i className="bi bi-check-lg my-auto text-2xl sm:text-4xl" />
                             <span>CONFIRMACIÓN NÚMERO DE TELÉFONO</span>
                         </div>
                     </div>
-                    <div className='flex gap-8'>
-                        <div className='w-1/2 h-full'>
-                            <div className="flex flex-col items-center justify-between gap-10 px-4">
-                                <div className="flex text-xl gap-4 text-gray-500">
-                                    <i className="bi bi-phone-vibrate text-5xl my-auto" />
-                                    <p className='font-medium'>Por favor, ingresa el código de verificación enviado a:</p>
-
+                    <div className='flex flex-col sm:flex-row gap-4'>
+                        <div className='sm:w-1/2'>
+                            <div className="flex flex-col items-center justify-between gap-4 w-full">
+                                <div className="flex sm:text-xl gap-8 sm:gap-6 sm:px-6 text-gray-500 bg-gray-100 p-4 px-6 w-full rounded-lg">
+                                    <i className="bi bi-phone-vibrate text-3xl sm:text-4xl my-auto" />
+                                    <p className='font-medium'>
+                                        Por favor, ingresa el código de verificación enviado a:
+                                    </p>
                                 </div>
-                                <div className="flex gap-4 text-blue-800">
-
-                                    <span className='my-auto text-5xl font-medium'>{formattedPhoneNumber}</span>
+                                <div className=" gap-4 text-gray-400 rounded-lg border p-4 w-72 sm:w-88 flex">
+                                    <span className='m-auto text-xl font-semibold overflow-x-auto max-w-full  whitespace-nowrap'>
+                                        {formattedPhoneNumber}
+                                    </span>
                                 </div>
-
                                 <button
                                     onClick={handleResendCode}
                                     className="text-blue-600 px-4 py-2 rounded-lg font-medium flex text-lg gap-2 transition duration-300 hover:bg-blue-600 hover:text-white"
@@ -105,11 +106,9 @@ const ValidarCelular: React.FC<Props> = (props: Props) => {
                                     <span className='my-auto'> REENVIAR CÓDIGO </span>
                                     <i className="bi bi-send my-auto" />
                                 </button>
-
                             </div>
-
                         </div>
-                        <div className='w-1/2 flex flex-col gap-4'>
+                        <div className='sm:w-1/2 flex flex-col gap-4'>
                             <div className='border-2 border-blue-500 rounded-lg p-2'>
                                 <div className="grid grid-cols-6 gap-1">
                                     {verificationCode.map((digit, index) => (
@@ -127,48 +126,62 @@ const ValidarCelular: React.FC<Props> = (props: Props) => {
 
                             <div className='flex'>
                                 <div className='flex gap-2 m-auto'>
-                                    <div className="grid grid-cols-3 gap-2 w-40 bg-blue-500 rounded-lg">
-                                        {randomNumbers.map((number) => (
-                                            <button
-                                                key={number}
-                                                onClick={() => handleCodeSelection(number, verificationCode.indexOf(''))}
-                                                className="text-white p-2 w-12 h-12 rounded-md  hover:bg-white hover:text-blue-500 hover:text-2xl hover:font-bold flex"
-                                            >
-                                                <span className='m-auto'>
-                                                    {number}
-                                                </span>
-                                            </button>
-                                        ))}
+                                    <div className="grid grid-cols-3 gap-2 rounded-lg">
+                                        {
+                                            randomNumbers.map((number, index) => {
+                                                if (index === 9) {
+                                                    return (
+                                                        <React.Fragment key={number}>
+                                                            <div />
+                                                            <button
+                                                                onClick={() => handleCodeSelection(number, verificationCode.indexOf(''))}
+                                                                className="text-white p-2 w-24 h-12 rounded-md bg-gray-400 hover:bg-blue-500 hover:text-2xl hover:font-bold flex"
+                                                            >
+                                                                <span className='m-auto'>
+                                                                    {number}
+                                                                </span>
+                                                            </button>
+                                                            <button
+                                                                onClick={handleBackspace} className="text-gray-400 w-24 h-12 text-2xl hover:text-blue-500 hover:text-4xl flex">
+                                                                <span className='m-auto'>
+                                                                    <i className="bi bi-backspace-fill"/>
+                                                                </span>
+                                                            </button>
+                                                        </React.Fragment>
+                                                    );
+                                                }
+
+                                                return (
+                                                    <button
+                                                        key={number}
+                                                        onClick={() => handleCodeSelection(number, verificationCode.indexOf(''))}
+                                                        className="text-white p-2 w-24 h-12 rounded-md bg-gray-400 hover:bg-blue-500 hover:text-2xl hover:font-bold flex"
+                                                    >
+                                                        <span className='m-auto'>
+                                                            {number}
+                                                        </span>
+                                                    </button>
+                                                );
+
+                                            })
+                                        }
                                     </div>
-                                    <button onClick={handleBackspace} className="border-2 border-blue-500 bg-blue-500 text-white w-12 h-12 rounded-md hover:bg-white hover:text-blue-500 text-2xl flex">
-                                        <span className=' m-auto'>
-                                            <i className="bi bi-backspace" />
-                                        </span>
-                                    </button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
-
-
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <div className='w-full flex justify-between'>
-                    <div>
-
-                    </div>
-                    <div className='flex gap-3 justify-end'>
-
+                <div className='w-full flex justify-center sm:justify-end'>
+                    <div className='flex'>
                         <button
                             onClick={props.hide}
                             //onClick={handleConfirmCode}
                             //disabled={!verificationCode}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
-                            Confirmar
+                            Verificar y Confirmar
                         </button>
                     </div>
                 </div>

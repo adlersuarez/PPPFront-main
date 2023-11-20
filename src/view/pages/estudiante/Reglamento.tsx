@@ -268,10 +268,6 @@ const Reglamento = () => {
                             title: 'DEL ÓRDEN DE MÉRITO',
                             articulos: [
                                 {
-                                    id: 27,
-                                    text: 'Las fichas de evaluación serán firmadas por el jefe del área donde realizo sus prácticas y por el docente tutor.'
-                                },
-                                {
                                     id: 28,
                                     text: 'Es el resultado de un proceso académico, por el cual permite establecer en forma regular la adjudicación de plazas para los estudiantes de los diferentes Programas de Estudio de todas las Facultades.'
                                 },
@@ -328,7 +324,6 @@ const Reglamento = () => {
 
 
     ]
-
     
     return (
 
