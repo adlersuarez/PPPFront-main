@@ -2,6 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import Stepper from '@/component/pages/steps/Stepper';
 import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
+import Volver from '@/component/Volver';
 
 const Proceso = () => {
 
@@ -68,17 +69,21 @@ const Proceso = () => {
     return (
         <div className="flex flex-wrap -mx-3">
             <div className="w-full max-w-full px-3 flex-0">
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
-
-                    <div className="rounded-lg">
-                        <h1 className='text-3xl text-gray-400'>
-                            <span>Modalidad: </span>
-                            <strong>CURRICULAR</strong>
-                        </h1>
-                        <p className='mt-4 text-xl text-gray-400'>¿Como va mi proceso?</p>
+                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
+                    <div className="text-2xl text-gray-400 font-bold flex gap-2">
+                        <Volver />
+                        Volver
                     </div>
 
-                    <div className=''>
+                    <div className="flex flex-col gap-4 ">
+                        <div className='text-3xl text-gray-400 gap-2 w-full text-center grid grid-rows-2 sm:flex sm:justify-center sm:gap-3'>
+                            <span>Modalidad</span>
+                            <strong>CURRICULAR</strong>
+                        </div>
+                        <p className='text-xl text-gray-400'>¿Como va mi proceso?</p>
+                    </div>
+
+                    <div>
                         <div className="md:w-full mx-auto pb-2 bg-white ">
                             {<div className="w-full horizontal mt-5">
                                 <Stepper
@@ -112,7 +117,6 @@ const Proceso = () => {
 
                         </div>
                     </div>
-
                 </div>
 
                 <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border mt-3">

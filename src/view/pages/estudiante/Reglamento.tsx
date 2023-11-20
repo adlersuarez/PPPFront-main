@@ -1,3 +1,4 @@
+import Volver from "@/component/Volver";
 import ComponenteReglamento from "@/component/pages/reglamento/ComponeteReglamento";
 
 interface Articulo {
@@ -328,15 +329,19 @@ const Reglamento = () => {
 
     ]
 
+    
     return (
 
         <div className="flex flex-wrap -mx-3">
             <div className="w-full max-w-full px-3 flex-0 ">
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 sm:p-10 break-words bg-white opacity-100 border rounded-md bg-clip-border">
+                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
 
-                    <div className="flex-auto mb-3">
-                        <h1 className='font-bold text-2xl text-gray-400'>MARCO LEGAL</h1>
-                        <p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60">Las prácticas preprofesionales se encuentran respaldadas por un marco legal que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la preparación de futuros profesionales.</p>
+                    <div className="flex flex-col gap-2">
+                        <div className='font-bold text-2xl text-gray-400 flex gap-2'>
+                            <Volver />
+                            MARCO LEGAL
+                        </div>
+                        <p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60 text-justify">Las prácticas preprofesionales se encuentran respaldadas por un marco legal que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la preparación de futuros profesionales.</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-1">

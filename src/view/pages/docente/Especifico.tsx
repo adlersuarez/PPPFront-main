@@ -1,6 +1,7 @@
 import { FaBuilding, FaUser, FaIdCard, FaGraduationCap, FaUserTie, FaArrowLeft, FaArrowRight, FaCheck, FaCalendarAlt, FaClock, FaEnvelope, FaMobile } from 'react-icons/fa';
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import Volver from '@/component/Volver';
 
 //Paso 1
 interface DatosEmpresa {
@@ -75,7 +76,7 @@ interface Paso2Props {
 
 const Paso2: React.FC<Paso2Props> = ({ pdfUrl, validarPdf }) => {
 
-    if(pdfUrl){
+    if (pdfUrl) {
         console.log(pdfUrl)
     }
 
@@ -197,7 +198,7 @@ interface Paso4Props {
 
 const Paso4: React.FC<Paso4Props> = ({ pdfUrl, validarPdf }) => {
 
-    if(pdfUrl){
+    if (pdfUrl) {
         console.log(pdfUrl)
     }
 
@@ -320,7 +321,7 @@ const Paso7: React.FC<Paso7Props> = ({ pdfUrls, }) => {
 
     const handleValidate = (index: number) => {
         setActivePdfIndex(index);
-        
+
     };
 
     if (!Array.isArray(pdfUrls) || pdfUrls.length === 0) {
@@ -508,9 +509,8 @@ interface Notas {
 }
 
 const Especifico = () => {
-    
-    const location = useLocation();
-    const navigate = useNavigate();
+
+    const location = useLocation()
 
     const datos = {
         codigo: location.state.codigo,
@@ -522,19 +522,19 @@ const Especifico = () => {
     };
 
     const [pasoActual, setPasoActual] = useState<number>(1);
-    const [datosEmpresa, ] = useState<DatosEmpresa>({
+    const [datosEmpresa,] = useState<DatosEmpresa>({
         ruc: '123456789',
         nombre: 'Empresa ABC',
         direccion: 'Dirección de la empresa',
     });
-    const [datosRepresentante, ] = useState<DatosRepresentante>({
+    const [datosRepresentante,] = useState<DatosRepresentante>({
         dni: '12345678',
         nombre: 'Representante XYZ',
         grado: 'Grado ABC',
         cargo: 'Cargo XYZ',
     });
 
-    const [datosArea, ] = useState<DatosArea>({
+    const [datosArea,] = useState<DatosArea>({
         areaEspecifica: 'Área específica',
         direccion: 'Dirección del área',
         diasPracticas: 'Días de prácticas',
@@ -543,7 +543,7 @@ const Especifico = () => {
         finPracticas: 'Fin de prácticas',
     });
 
-    const [datosJefe, ] = useState<DatosJefe>({
+    const [datosJefe,] = useState<DatosJefe>({
         dni: '12345678',
         nombre: 'Nombre del jefe',
         grado: 'Grado del jefe',
@@ -552,7 +552,7 @@ const Especifico = () => {
         celular: 'Celular del jefe',
     });
 
-    const [pdfUrl, ] = useState('https://www.example.com/sample.pdf');
+    const [pdfUrl,] = useState('https://www.example.com/sample.pdf');
 
     const pdfUrls: string[] = [
         'Informe Final',
@@ -636,59 +636,55 @@ const Especifico = () => {
         <>
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full max-w-full px-3 flex-0">
-                    <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
-                        <div className="p-4 bg-Solid">
-                            <h2 className="text-2xl font-bold mb-6">
-                                <span onClick={() => navigate(-1)} title="Atrás" role="button">
-                                    <i className="bi bi-arrow-left-circle-fill text-blue-500" />
-                                </span>
-                                Detalle estudiante
-                            </h2>
+                    <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
 
-                            <div className="w-full">
+                        <div className="text-2xl font-bold flex gap-2">
+                            <Volver />
+                            Detalle estudiante
+                        </div>
 
-                                <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
-                                    <div className="border-b-2 border-gray-200 p-2">
-                                        <div className="text-lg font-bold text-blue-500">
-                                            {datos.estudiante} - {datos.codigo}
-                                        </div>
+                        <div className="w-full">
+                            <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                                <div className="border-b-2 border-gray-200 p-2">
+                                    <div className="text-lg font-bold text-blue-500">
+                                        {datos.estudiante} - {datos.codigo}
                                     </div>
-                                    <div className="m-4 text-lg">
+                                </div>
+                                <div className="m-4 text-lg">
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-                                            <p className="font-bold">Facultad: <span className="font-normal text-blue-500">{datos.facultad}</span></p>
-                                            <p className="font-bold ">Escuela Profesional: <span className="font-normal text-blue-500">{datos.escuela}</span></p>
-                                            <p className="font-bold">Nivel-sección: <span className="font-normal text-blue-500">{datos.curso}</span></p>
-                                            <p className="font-bold ">Plan: <span className="font-normal text-blue-500">{datos.plan}</span></p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+                                        <p className="font-bold">Facultad: <span className="font-normal text-blue-500">{datos.facultad}</span></p>
+                                        <p className="font-bold ">Escuela Profesional: <span className="font-normal text-blue-500">{datos.escuela}</span></p>
+                                        <p className="font-bold">Nivel-sección: <span className="font-normal text-blue-500">{datos.curso}</span></p>
+                                        <p className="font-bold ">Plan: <span className="font-normal text-blue-500">{datos.plan}</span></p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div className="w-full rounded-lg border-2 border-gray-300 mt-4 border-t-4">
+                                <div className="border-b-2 border-gray-200 p-2">
+                                    <div className="container mx-auto p-4">
+                                        <div className="flex gap-3 justify-center">
+                                            {pasoActual > 1 && (
+                                                <button onClick={irAlPasoAnterior} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                                    <FaArrowLeft className="mr-1" />
+                                                    Paso Anterior
+                                                </button>
+                                            )}
+                                            {pasoActual < 8 && (
+                                                <button onClick={irAlSiguientePaso} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                                    Siguiente Paso
+                                                    <FaArrowRight className="ml-1" />
+                                                </button>
+                                            )}
                                         </div>
+                                        {componenteActual}
+
 
                                     </div>
                                 </div>
 
-                                <div className="w-full rounded-lg border-2 border-gray-300 mt-4 border-t-4">
-                                    <div className="border-b-2 border-gray-200 p-2">
-                                        <div className="container mx-auto p-4">
-                                            <div className="flex gap-3 justify-center">
-                                                {pasoActual > 1 && (
-                                                    <button onClick={irAlPasoAnterior} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                                                        <FaArrowLeft className="mr-1" />
-                                                        Paso Anterior
-                                                    </button>
-                                                )}
-                                                {pasoActual < 8 && (
-                                                    <button onClick={irAlSiguientePaso} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                                                        Siguiente Paso
-                                                        <FaArrowRight className="ml-1" />
-                                                    </button>
-                                                )}
-                                            </div>
-                                            {componenteActual}
-
-
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
                     </div>

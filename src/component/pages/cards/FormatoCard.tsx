@@ -24,7 +24,7 @@ const FormatoCard = (props: Props) => {
                 <h2 className="text-xl font-bold text-gray-500 uppercase">
                     {props.nombre}
                 </h2>
-                <p className=" text-gray-600">
+                <p className=" text-gray-600 text-sm">
                     {props.resumen}
                 </p>
             </div>

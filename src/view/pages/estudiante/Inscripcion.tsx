@@ -20,7 +20,7 @@ const Inscripcion = () => {
                         <div className="flex flex-col justify-between">
                             <div className='flex flex-col gap-2'>
                                 <h1 className='font-bold text-2xl text-gray-400'>PRÁCTICAS PREPROFESIONALES</h1>
-                                <p className='text-sm'>
+                                <p className='text-sm text-justify'>
                                     <strong className='text-gray-500'>Las prácticas preprofesionales (PPP)</strong> son un requisito para egresar de su especialidad. El alumno es responsable de escoger el lugar y momento de la realización de las PPP, el mismo que deberá ser autorizado por su coordinador(a) de especialidad.
                                 </p>
                                 {/*

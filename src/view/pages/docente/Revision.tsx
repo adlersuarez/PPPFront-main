@@ -1,3 +1,4 @@
+import Volver from "@/component/Volver";
 import EstadoPracticas from "../../../component/pages/status/EstadoPracticas";
 import { useNavigate } from 'react-router-dom';
 
@@ -247,15 +248,21 @@ const Revision = () => {
         <>
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full max-w-full px-3 flex-0">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full p-4 bg-white border rounded-md">
-                        {datos && Object.keys(datos).map((key, index) => (
-                            <div key={index} className="mb-2">
-                                <label className="block text-gray-700 text-lg font-bold mb-2">
-                                    {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
-                                </label>
-                                <p className="text-gray-700 text-xl">{datos[key]}</p>
-                            </div>
-                        ))}
+                    <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
+                        <div className="text-2xl font-bold flex gap-2">
+                            <Volver />
+                            Revisión docente
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {datos && Object.keys(datos).map((key, index) => (
+                                <div key={index} className="mb-2">
+                                    <label className="block text-gray-700 text-lg font-bold mb-2">
+                                        {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
+                                    </label>
+                                    <p className="text-gray-700 text-xl">{datos[key]}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
