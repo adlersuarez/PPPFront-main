@@ -26,11 +26,7 @@ const MatriculaInterna = (props: RouteComponentProps<{}>) => {
     return (
         <>
             <div className="flex shadow-lg rounded-xl w-5/6 mx-auto">
-                {
-                    /*
-                        RECIBOS Y PAGOS
-                    */
-                }
+
                 <div className={`rounded-s-lg transition-all duration-500 ${div1Visible ? 'w-1/4 bg-gray-100' : 'w-3/4 bg-white'}`}>
                     <div className="flex justify-center items-center">
                         <button className={`text-white rounded-b-lg px-4 ${div1Visible ? 'cursor-pointer bg-blue-900' : 'cursor-default bg-blue-800'}`} onClick={toggleDiv1}>
@@ -39,58 +35,89 @@ const MatriculaInterna = (props: RouteComponentProps<{}>) => {
                         </button>
 
                     </div>
-                    <div className="p-4">
-                        <div className='flex justify-around'>
-                            <div className='flex'>
-                                <h3 className='font-bold m-auto pr-2'>IDIOMA: </h3>
-                                <select
-                                    id="select-idioma"
-                                    defaultValue={'0'}
-                                    onChange={() => {
-                                        // SetIdioma(e.target.value);
-                                    }}
-                                >
-                                    <option className='text-gray-400 bold' value='0' disabled>Seleccione</option>
-                                    {
-                                        // idiomas.map(idioma => {
-                                        //     return (
-                                        //         <option key={idioma.id} value={idioma.id}>{idioma.idioma_nombre}</option>
-                                        //     )
-                                        // })
-                                        <>
-                                            <option value="">Ingles</option>
-                                            <option value="">Japones</option>
-                                            <option value="">Japones</option>
-                                            <option value="">Italiano</option>
-                                        </>
-                                    }
-                                </select>
+                    {
+                        !div1Visible &&
+                        <>
+                            <div className="p-4">
+                                <div className='flex justify-around py-3'>
+                                    <div className='flex'>
+                                        <h3 className='font-bold m-auto pr-2'>IDIOMA: </h3>
+                                        <select
+                                            id="select-idioma"
+                                            defaultValue={'0'}
+                                            className="border rounded p-2"
+                                            onChange={() => {
+                                                // SetIdioma(e.target.value);
+                                            }}
+                                        >
+                                            <option className='text-gray-400 italic' value='0' disabled>Seleccione</option>
+                                            {
+                                                <>
+                                                    <option value="">Ingles</option>
+                                                    <option value="">Japones</option>
+                                                    <option value="">Japones</option>
+                                                    <option value="">Italiano</option>
+                                                </>
+                                            }
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div className="flex justify-around py-3">
+                                    <div className='flex'>
+                                        <h3 className='font-bold m-auto pr-2'>TIPO:</h3>
+                                        <select
+                                            id="select-tipo"
+                                            defaultValue={'0'}
+                                            className="border rounded p-2"
+                                            onChange={() => {
+                                                // SetTipo(e.target.value);
+                                            }}
+                                        >
+                                            <option className='text-gray-400 italic' value='0' disabled>Seleccione</option>
+                                            {
+                                                <>
+                                                    <option value="">Regular</option>
+                                                    <option value="">Acelerado</option>
+                                                </>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="flex justify-around py-3">
+                                    <div className='flex'>
+                                        <h3 className='font-bold m-auto pr-2'>MODALIDAD:</h3>
+                                        <select
+                                            id="select-tipo"
+                                            defaultValue={'0'}
+                                            className="border rounded p-2"
+                                            onChange={() => {
+                                                // SetTipo(e.target.value);
+                                            }}
+                                        >
+                                            <option className='text-gray-400 italic' value='0' disabled>Seleccione</option>
+                                            {
+                                                <>
+                                                    <option value="">Presencial</option>
+                                                    <option value="">Virtual</option>
+                                                </>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end py-3">
+                                    <div className='flex'>
+                                        <button
+                                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ring ring-green-300 focus:ring focus:ring-green-300 focus:outline-none"
+                                            onClick={toggleDiv2}
+                                        >
+                                            Matricular
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div className='flex'>
-                                <h3 className='font-bold m-auto pr-2'>TIPO:</h3>
-                                <select
-                                    id="select-tipo"
-                                    defaultValue={'0'}
-                                    onChange={() => {
-                                        // SetTipo(e.target.value);
-                                    }}
-                                >
-                                    <option className='text-gray-400 bold' value='0' disabled>Seleccione</option>
-                                    {
-                                        // tipos.map(tipo => {
-                                        //     return (
-                                        //         <option key={tipo.id} value={tipo.id}>{tipo.tipo_nombre}</option>
-                                        //     )
-                                        // })
-                                        <>
-                                            <option value="">Regular</option>
-                                            <option value="">Acelerado</option>
-                                        </>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                        </>
+                    }
                 </div>
                 {
                     /*
