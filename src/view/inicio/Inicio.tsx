@@ -16,9 +16,9 @@ import Estudiante from '../../model/interfaces/login/estudiante.login';
 import Trabajador from '../../model/interfaces/login/estudiante.login';
 import { Toaster } from 'react-hot-toast';
 
-import Dashboard from './dashboard/Dashboard';
-import Bienvenido from './bienvenido/Bienvenido';
-import Inscripcion from '../estudiante/Inscripcion';
+// import Dashboard from './dashboard/Dashboard';
+// import Bienvenido from './bienvenido/Bienvenido';
+// import Inscripcion from '../estudiante/Inscripcion';
 import Proceso from '../estudiante/Proceso';
 import HomeEstudiante from '../estudiante/HomeEstudiante';
 import MatriculaInterna from '../estudiante/matricula/MatriculaInterna';
@@ -63,7 +63,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         const menus = document.querySelectorAll<HTMLElement>("#menus li button") as NodeListOf<HTMLButtonElement>;
         for (const button of menus) {
-            button.addEventListener("click", (event) => {
+            button.addEventListener("click", () => {
                 const element = button.parentNode?.querySelector("ul") as HTMLElement;
 
                 if (element.getAttribute("aria-expanded") !== "true") {

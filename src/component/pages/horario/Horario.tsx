@@ -1,10 +1,6 @@
-import { useState } from 'react';
-import { RouteComponentProps } from "react-router-dom";
 import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 
-
-import notify from 'devextreme/ui/notify';
 
 type Props = {
     data: object[];
@@ -13,10 +9,6 @@ type Props = {
 }
 
 const Horario = (props: Props) => {
-
-    const [allowResizing, setAllowResizing] = useState<boolean>(false);
-    const [allowDragging, setAllowDragging] = useState<boolean>(false);
-    const [allowAdding, setAllowAdding] = useState<boolean>(false);
 
     return (
         <>
@@ -28,11 +20,7 @@ const Horario = (props: Props) => {
                 cellDuration={30}
                 showCurrentTimeIndicator={false}
                 onAppointmentClick={props.handleShow}
-                editing={{
-                    allowAdding,
-                    allowResizing,
-                    allowDragging,
-                }}
+                editing={false}
             >
                 <View
                     type="week"
@@ -44,7 +32,7 @@ const Horario = (props: Props) => {
                     fieldExpr="roomId"
                     label="Room"
                 />
-            </Scheduler>
+            </Scheduler >
         </>
     )
 }

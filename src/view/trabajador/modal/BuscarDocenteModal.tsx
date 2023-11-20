@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import Modal from "../../../component/pages/modal/ModalComponente";
 
 type Instructor = {
@@ -17,6 +17,15 @@ type Props = {
 }
 
 const ModalBuscarDocente = (props: Props) => {
+
+    const [instructor,SetInstructor] = useState<string>()
+
+    const handleGuardarInstructor = () => {
+        if(instructor){
+            localStorage.setItem('instructor',instructor)
+        }
+    }
+
     return (
         <Modal onShow={props.show} onHide={props.hide}>
             <Modal.Header closeButton onHide={props.hide}>
@@ -31,6 +40,7 @@ const ModalBuscarDocente = (props: Props) => {
                         <div className="flex">
                             <select
                                 className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                onChange={(e)=>{SetInstructor(e.target.value)}}
                             >
                                 <option value="0">- Seleccione -</option>
                                 {
@@ -56,7 +66,7 @@ const ModalBuscarDocente = (props: Props) => {
                     </div>
                     <div className='flex gap-3 w-5/12 justify-end'>
                         <button
-                            onClick={() => { props.hide(); props.showModal(); }}
+                            onClick={() => { props.hide(); props.showModal(); handleGuardarInstructor(); }}
                             className="text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         >
                             Guardar

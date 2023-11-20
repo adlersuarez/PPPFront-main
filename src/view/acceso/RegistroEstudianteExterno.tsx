@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 
 import { images } from "../../helper/index.helper";
@@ -16,7 +16,7 @@ type Props = {
 
 const RegistroEstudianteExterno = (props: Props) => {
 
-    const [dni, setDni] = useState("")
+    // const [dni, setDni] = useState("")
 
     const refDniExterno = useRef<HTMLInputElement>(null)
 

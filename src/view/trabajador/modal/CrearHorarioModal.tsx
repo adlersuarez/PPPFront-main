@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import Modal from "../../../component/pages/modal/ModalComponente";
-import ModalBuscarDocente from './BuscarDocenteModal';
+// import ModalBuscarDocente from './BuscarDocenteModal';
 
 type Idioma = {
     id: number;
@@ -49,20 +49,28 @@ type Props = {
     show: boolean;
     hide: () => void;
     showModal: () => void;
+    handleGuardar: () => void;
 };
 
 const ModalCrearHorario = (props: Props) => {
 
-    const [idioma, SetIdioma] = useState<number | string>()
+    const [idioma, SetIdioma] = useState<string>()
+    const [dia, SetDia] = useState<string>()
     const [estado, SetEstado] = useState<boolean>(false)
-    const [modalidad, SetModalidad] = useState<number | string>()
-    const [instructores, SetInstructores] = useState<number | string>()
-    const [horarioInicio, SetHorarioInicio] = useState<number | string>()
-    const [horarioFin, SetHorarioFin] = useState<number | string>()
-    const [instructor, SetInstructor] = useState<number | string>()
-    const [observacion, SetObservacion] = useState<string>()
+    const [modalidad, SetModalidad] = useState<string>()
+    const [horarioInicio, SetHorarioInicio] = useState<string>()
+    const [horarioFin, SetHorarioFin] = useState<string>()
+    const [observacion, SetObservacion] = useState<string>('')
 
-    // console.log(props.data.idioma[0].id)
+    const handleGuardarForm = () => {
+        if(idioma) localStorage.setItem('idioma',idioma)
+        if(dia) localStorage.setItem('dia',dia)
+        localStorage.setItem('estado',JSON.stringify(estado))
+        if(modalidad) localStorage.setItem('modalidad',modalidad)
+        if(horarioInicio) localStorage.setItem('horarioInicio',horarioInicio)
+        if(horarioFin) localStorage.setItem('horarioFin',horarioFin)
+        if(observacion) localStorage.setItem('observacion',observacion)
+    }
 
     return (
         <Modal onShow={props.show} onHide={props.hide}>
@@ -80,8 +88,9 @@ const ModalCrearHorario = (props: Props) => {
                                 </label>
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    onChange={(e)=>{SetIdioma(e.target.value)}}
                                 >
-                                    <option value="0">- Seleccione -</option>
+                                    <option className='text-gray-400 bold' value="0" disabled>- Seleccione -</option>
                                     {
                                         props.data.idioma.map((item, index) => {
                                             return (
@@ -99,8 +108,9 @@ const ModalCrearHorario = (props: Props) => {
                                 </label>
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    onChange={(e)=>{SetModalidad(e.target.value)}}
                                 >
-                                    <option value="0">- Seleccione -</option>
+                                    <option className='text-gray-400 bold' value="0" disabled>- Seleccione -</option>
                                     {
                                         props.data.modalidad.map((item, index) => {
                                             return (
@@ -121,8 +131,9 @@ const ModalCrearHorario = (props: Props) => {
                                     </label>
                                     <select
                                         className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                        onChange={(e)=>{SetDia(e.target.value)}}
                                     >
-                                        <option value={0}>- Seleccione el Día-</option>
+                                        <option className='text-gray-400 bold' value={0} disabled>- Seleccione el Día-</option>
                                         {
                                             props.data.dia.map((item, index) => {
                                                 return (
@@ -156,8 +167,9 @@ const ModalCrearHorario = (props: Props) => {
                                     </label>
                                     <select
                                         className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                        onChange={(e)=>{SetHorarioInicio(e.target.value)}}
                                     >
-                                        <option value="0">- Seleccione -</option>
+                                        <option className='text-gray-400 bold' value="0">- Seleccione -</option>
                                         {
                                             props.data.horarioInicio.map((item, index) => {
                                                 return (
@@ -175,8 +187,9 @@ const ModalCrearHorario = (props: Props) => {
                                     </label>
                                     <select
                                         className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                        onChange={(e)=>{SetHorarioFin(e.target.value)}}
                                     >
-                                        <option value="0">- Seleccione -</option>
+                                        <option className='text-gray-400 bold' value="0">- Seleccione -</option>
                                         {
                                             props.data.horarioFin.map((item, index) => {
 
@@ -217,7 +230,7 @@ const ModalCrearHorario = (props: Props) => {
                                         className="flex-1 block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                         id="comentario"
                                         name="comentario"
-                                        onChange={() => { }}
+                                        onChange={(e) => {SetObservacion(e.target.value)}}
                                         cols={4}
                                     ></textarea>
                                 </div>
@@ -233,7 +246,7 @@ const ModalCrearHorario = (props: Props) => {
                     </div>
                     <div className='flex gap-3 w-5/12 justify-end'>
                         <button
-                            onClick={props.hide}
+                            onClick={()=>{ handleGuardarForm(); props.hide(); props.handleGuardar(); }}
                             className="text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         >
                             Guardar

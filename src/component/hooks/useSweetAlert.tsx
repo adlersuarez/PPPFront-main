@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import Swal from "../../assets/js/sweetalert";
+//@ts-ignore
+import Swal from "../../assets/js/sweetalert.js";
 import Sweet from "../../model/interfaces/Sweet.mode.interface";
 
 

@@ -4,16 +4,19 @@ import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
 
 import Estudiante from '@/model/interfaces/login/estudiante.login';
-import Trabajador from '@/model/interfaces/trabajador/trabajador.model.interface';
+// import Trabajador from '@/model/interfaces/trabajador/trabajador.model.interface';
 import { useState } from 'react';
 import { RouteComponentProps } from "react-router-dom";//
-import TemplateStep1 from '@/component/pages/steps/StepsTemplate/TemplateStep1';
+// import TemplateStep1 from '@/component/pages/steps/StepsTemplate/TemplateStep1';
 
 type Informacion = {
-    informacion: Estudiante | Trabajador | undefined;
+    informacion: Estudiante | undefined;
 };
 
 const Proceso = (informacion: Informacion, props: RouteComponentProps<{}>) => {
+    
+    if(informacion&&props){}
+
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [userData, setUserData] = useState<string>('');
     const [finalData, setFinalData] = useState<any[]>([]);
@@ -43,7 +46,7 @@ const Proceso = (informacion: Informacion, props: RouteComponentProps<{}>) => {
     const displayStep = (step: number) => {
         switch (step) {
             case 1:
-                return <TemplateStep1 {...informacion.informacion} />;
+                return //<TemplateStep1 {...informacion.informacion} />;
             case 2:
                 return //<TemplatePaso2 />;
             case 3:

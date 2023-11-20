@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import '../../assets/css/loader.css';
 import Response from "../../model/class/response.model.class";
 import { useDispatch } from 'react-redux';

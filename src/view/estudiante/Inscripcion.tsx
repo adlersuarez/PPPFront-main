@@ -6,7 +6,7 @@ import { RouteComponentProps } from "react-router-dom";
 import ModalidadCard from '@/component/pages/cards/ModalidadCard';
 
 const Inscripcion = (props: RouteComponentProps<{}>) => {
-
+    if(props){}
     return (
         <div className="flex flex-wrap -mx-3">
             <div className="w-full max-w-full px-3 flex-0">

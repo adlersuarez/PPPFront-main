@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import Modal from "../../../component/pages/modal/ModalComponente";
 
 // type DatosType = {

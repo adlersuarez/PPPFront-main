@@ -1,12 +1,12 @@
-import { BsFillPersonFill } from "react-icons/bs";
-import { GrAnalytics } from "react-icons/gr";
-import { SiGoogleanalytics } from "react-icons/si";
-import { TbDeviceAnalytics } from "react-icons/tb";
-import { images } from "../../../helper/index.helper";
+// import { BsFillPersonFill } from "react-icons/bs";
+// import { GrAnalytics } from "react-icons/gr";
+// import { SiGoogleanalytics } from "react-icons/si";
+// import { TbDeviceAnalytics } from "react-icons/tb";
+// import { images } from "../../../helper/index.helper";
 import { RouteComponentProps } from "react-router-dom";
 
 const Dashboard = (props: RouteComponentProps<{}>) => {
-
+    if(props){}
     return (
         <>
             <div className="relative flex flex-col min-w-0 mb-6 break-words bg-transparent border-0 border-solid shadow-none rounded-2xl bg-clip-border">

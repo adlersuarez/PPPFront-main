@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState, ChangeEvent } from "react";
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import Response from "../../model/class/response.model.class";
 import RestError from "../../model/class/resterror.model.class";
@@ -12,7 +12,7 @@ import Modalidad from "../../model/interfaces/modalidad/modalidad";
 import Turno from "../../model/interfaces/turno/turno";
 import Programa from "../../model/interfaces/programa/programa";
 import Periodo from "../../model/interfaces/periodo/periodo";
-import TipoEstudio from "../../model/interfaces/tipo-estudio/TipoEstudio";
+import TipoEstudio from "../../model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../model/interfaces/Listas.model.interface";
 import { ListarIdioma, ListarModalidad, ListarPeriodo, ListarPrograma, ListarSede, ListarTipoEstudio, ListarTurno } from "../../network/rest/idiomas.network";
@@ -47,10 +47,10 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
     const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
 
-    const [idTurno, setIdTurno] = useState<number>(0)
-    const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [idPeriodo, setIdPeriodo] = useState<number>(0)
-    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+    // const [idTurno, setIdTurno] = useState<number>(0)
+    // const [idPrograma, setIdPrograma] = useState<number>(0)
+    // const [idPeriodo, setIdPeriodo] = useState<number>(0)
+    // const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
@@ -208,26 +208,26 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
         console.log(estado)
     };
 
-    const registrarHorario  = () => {
+    // const registrarHorario  = () => {
 
-        if(idTurno == 0){
-            refTurno.current?.focus()
-            return
-        }
-        if(idPrograma == 0){
-            refPrograma.current?.focus()
-            return
-        }
-        if(idPeriodo == 0){
-            refPeriodo.current?.focus()
-            return
-        }
-        if(idTipoEstudio == 0){
-            refTipoEstudio.current?.focus()
-            return
-        }
+    //     if(idTurno == 0){
+    //         refTurno.current?.focus()
+    //         return
+    //     }
+    //     if(idPrograma == 0){
+    //         refPrograma.current?.focus()
+    //         return
+    //     }
+    //     if(idPeriodo == 0){
+    //         refPeriodo.current?.focus()
+    //         return
+    //     }
+    //     if(idTipoEstudio == 0){
+    //         refTipoEstudio.current?.focus()
+    //         return
+    //     }
 
-    }
+    // }
 
 
     return (

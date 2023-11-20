@@ -1,4 +1,4 @@
-import { IconType } from "react-icons";
+// import { IconType } from "react-icons";
 import { NavLink } from "react-router-dom";
 
 type Props = {

@@ -20,7 +20,7 @@ import { Types } from "../../model/enum/types.model.enum";
 //import Checked from "./widget/Checked";
 
 const Acceso = (props: RouteComponentProps<{}>) => {
-
+    if(props){}
     const dispatch = useDispatch();
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
 
@@ -35,6 +35,8 @@ const Acceso = (props: RouteComponentProps<{}>) => {
     const [claveMensaje, setClaveMensaje] = useState<string>('');
 
     const [formRegEstExterno, setFormRegEstExterno] = useState<boolean>(false);
+    
+    if(false) setFormRegEstExterno(false)
 
     const refCodigo = useRef<HTMLInputElement>(null);
     const refClave = useRef<HTMLInputElement>(null);
@@ -98,9 +100,9 @@ const Acceso = (props: RouteComponentProps<{}>) => {
         return <Redirect to="/inicio" />
     }
 
-    const onEventFormRegEstExterno = () => {
-        setFormRegEstExterno(!formRegEstExterno)
-    }
+    // const onEventFormRegEstExterno = () => {
+    //     setFormRegEstExterno(!formRegEstExterno)
+    // }
 
     return (
         <>

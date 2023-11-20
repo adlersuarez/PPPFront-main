@@ -158,26 +158,6 @@ const Swal = () => {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     var _extends = Object.assign || function (target) {
         for (var i = 1; i < arguments.length; i++) {
             var source = arguments[i];

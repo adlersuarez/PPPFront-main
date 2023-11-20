@@ -5,16 +5,15 @@ import SubTitle from "./widget/SubTitle";
 import Overlay from "./widget/Overlay";
 import Body from "./widget/Body";
 import EstudianteLogin from "../../../../model/interfaces/login/estudiante.login";
-import TrabajadorLogin from "../../../../model/interfaces/login/trabajador.login";
+// import TrabajadorLogin from "../../../../model/interfaces/login/trabajador.login";
 
 type Props = {
-    informacion: EstudianteLogin | TrabajadorLogin | undefined,
+    informacion: EstudianteLogin | undefined,
     pathname: string,
     refAside: React.RefObject<HTMLInputElement>,
     refOverlay: React.RefObject<HTMLInputElement>,
     onEventOverlay: React.MouseEventHandler,
 }
-
 
 type MenuItem = {
     id: string,

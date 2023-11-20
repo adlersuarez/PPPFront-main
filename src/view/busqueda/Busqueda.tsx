@@ -4,6 +4,8 @@ import { images } from '../../helper/index.helper';
 
 const Busqueda = (props: RouteComponentProps<{}>) => {
 
+    if(props){}
+
     const [dni, setDNI] = useState('');
     const [fullName, setFullName] = useState('');
     const [otherInfo, setOtherInfo] = useState('');

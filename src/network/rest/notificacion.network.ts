@@ -22,5 +22,6 @@ const instance = axios.create({
 // });
 
 export async function EnviarNotifacionCelular(idConsulta: string, abortController: AbortController | null = null): Promise<Response<String> | RestError> {
+    if(abortController){}
     return await Resolve.create(instance.get("/notificar/" + idConsulta));
 }

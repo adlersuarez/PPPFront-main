@@ -1,6 +1,7 @@
 import { NavLink, RouteComponentProps } from "react-router-dom";
 
 const MatriculaExterna = (props: RouteComponentProps<{}>) => {
+    if(props){}
     return (
         <>
             <div className="flex flex-wrap -mx-3">
@@ -137,7 +138,7 @@ const MatriculaExterna = (props: RouteComponentProps<{}>) => {
                                                 <select
                                                     id="select-idioma"
                                                     defaultValue={'0'}
-                                                    onChange={(e) => {
+                                                    onChange={() => {
                                                         // SetIdioma(e.target.value);
                                                     }}
                                                 >
@@ -162,7 +163,7 @@ const MatriculaExterna = (props: RouteComponentProps<{}>) => {
                                                 <select
                                                     id="select-tipo"
                                                     defaultValue={'0'}
-                                                    onChange={(e) => {
+                                                    onChange={() => {
                                                         // SetTipo(e.target.value);
                                                     }}
                                                 >
@@ -199,7 +200,7 @@ const MatriculaExterna = (props: RouteComponentProps<{}>) => {
                                                 <select
                                                     id="select-instructor-1"
                                                     defaultValue={'0'}
-                                                    onChange={(e) => {
+                                                    onChange={() => {
                                                         // SetInstructor(e.target.value);
                                                     }}
                                                 >
@@ -252,7 +253,7 @@ const MatriculaExterna = (props: RouteComponentProps<{}>) => {
                                                 <select
                                                     id="select-horario-1"
                                                     defaultValue={'0'}
-                                                    onChange={(e) => {
+                                                    onChange={() => {
                                                         // SetHorario(e.target.value);
                                                     }}
                                                 >

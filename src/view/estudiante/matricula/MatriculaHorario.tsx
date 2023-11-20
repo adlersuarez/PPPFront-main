@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { RouteComponentProps } from "react-router-dom";
 import 'devextreme/dist/css/dx.light.css';
-import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
+
 import ModalMatricula from './modal/Matricula.modal';
 
-import notify from 'devextreme/ui/notify';
+
 import Horario from '@/component/pages/horario/Horario';
 
 // import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 
 const MatriculaHorario = (props: RouteComponentProps<{}>) => {
 
+    if(props){}
+    
     const fechaActual: Date = new Date();
 
     function diaActual() {
@@ -39,7 +41,7 @@ const MatriculaHorario = (props: RouteComponentProps<{}>) => {
     const data = [
         {
             text: 'HORARIO REGULAR 1',
-            roomId: 1,
+            roomId: 3,
             startDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[0], 8, 0),
             endDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[0], 9, 30),
             // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
@@ -53,7 +55,7 @@ const MatriculaHorario = (props: RouteComponentProps<{}>) => {
         },
         {
             text: 'HORARIO REGULAR 1',
-            roomId: 1,
+            roomId: 4,
             startDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[2], 8, 0),
             endDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[2], 9, 30),
             // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
@@ -141,20 +143,20 @@ const MatriculaHorario = (props: RouteComponentProps<{}>) => {
         },
     ];
 
-    const turno = [
-        {
-            text: 'Mañana',
-            id: 1,
-        },
-        {
-            text: 'Tarde',
-            id: 2,
-        },
-        {
-            text: 'Noche',
-            id: 3,
-        },
-    ]
+    // const turno = [
+    //     {
+    //         text: 'Mañana',
+    //         id: 1,
+    //     },
+    //     {
+    //         text: 'Tarde',
+    //         id: 2,
+    //     },
+    //     {
+    //         text: 'Noche',
+    //         id: 3,
+    //     },
+    // ]
 
 
     const [show, setShow] = useState(false);

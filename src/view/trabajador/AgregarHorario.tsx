@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
-import { RouteComponentProps } from "react-router-dom";
+import { useState, useEffect } from 'react';
+// import { RouteComponentProps } from "react-router-dom";
 import Horario from "@/component/pages/horario/Horario"
 import ModalCrearHorario from './modal/CrearHorarioModal';
 import ModalModificarHorario from "./modal/ModificarHorarioModal";
 import ModalBuscarDocente from "./modal/BuscarDocenteModal";
-
+import { RouteComponentProps } from "react-router-dom";
 type Idioma = {
     id: number;
     lenguaje: string;
@@ -43,10 +43,18 @@ type Data = {
     observacion: string;
 }
 
+// type Props = {
+
+// }
+
 const AgregarHorario = (props: RouteComponentProps<{}>) => {
 
-    const [dataHorario, SetDataHorario] = useState<object[]>([]);
-    const [color, SetColor] = useState<object[]>([]);
+    if(props){}
+    // const [dataHorario, SetDataHorario] = useState<object[]>([]);
+    // const [color, SetColor] = useState<object[]>([]);
+    
+    var dataHorario: object[] = []
+    var color: object[] = []
 
     const [showCrearAsignatura, setShowCrearAsignatura] = useState<boolean>(false);
     const [showModficarAsignatura, setShowModficarAsignatura] = useState<boolean>(false);
@@ -219,13 +227,9 @@ const AgregarHorario = (props: RouteComponentProps<{}>) => {
         });
     }, [])
 
-    // console.log(dataForm)
+    const handleGuardarNuevaHora = () => {
 
-
-    // console.log(showBuscarDocente)
-    // console.log(showCrearAsignatura)
-    // console.log(showModficarAsignatura)
-
+    }
     return (
         <>
             <div className='flex justify-between p-4'>
@@ -234,6 +238,12 @@ const AgregarHorario = (props: RouteComponentProps<{}>) => {
                     onClick={handleShowCrearAsignatura}
                 >
                     Añadir Asignatura
+                </button>
+                <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ring ring-green-300 focus:ring focus:ring-green-300 focus:outline-none"
+                    onClick={()=>{localStorage.clear; console.log('limpio')}}
+                >
+                    limpiar
                 </button>
                 <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ring ring-red-300 focus:ring focus:ring-red-300 focus:outline-none">
                     <NavLink
@@ -244,10 +254,9 @@ const AgregarHorario = (props: RouteComponentProps<{}>) => {
                 </button>
             </div>
             <Horario data={dataHorario} color={color} handleShow={handleShowModficarAsignatura} />
-            {/* <ModalMatricula show={show} hide={handleClose} /> */}
-            <ModalCrearHorario show={showCrearAsignatura} hide={handleCloseCrearAsignatura} showModal={handleShowBuscarDocente} data={dataForm} />
+            <ModalCrearHorario show={showCrearAsignatura} hide={handleCloseCrearAsignatura} showModal={handleShowBuscarDocente} data={dataForm} handleGuardar={handleGuardarNuevaHora}/>
             <ModalModificarHorario show={showModficarAsignatura} hide={handleCloseModficarAsignatura} />
-            <ModalBuscarDocente show={showBuscarDocente} hide={handleCloseBuscarDocente} showModal={handleShowCrearAsignatura} data={dataForm.instructores}/>
+            <ModalBuscarDocente show={showBuscarDocente} hide={handleCloseBuscarDocente} showModal={handleShowCrearAsignatura} data={dataForm.instructores} />
         </>
     )
 }
