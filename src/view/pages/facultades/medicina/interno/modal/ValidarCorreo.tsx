@@ -92,20 +92,22 @@ const ValidarCorreo: React.FC<Props> = (props: Props) => {
                                     </p>
                                 </div>
                                 <div className=" gap-4 text-gray-400 rounded-lg border p-4 w-72 sm:w-88 flex">
-                                    <span className='m-auto text-xl font-semibold overflow-x-auto max-w-full  whitespace-nowrap'>
+                                    <span className='m-auto text-2xl font-semibold overflow-x-auto max-w-full  whitespace-nowrap'>
                                         {datos.email}
                                     </span>
                                 </div>
                                 <button
                                     onClick={handleResendCode}
-                                    className="text-blue-600 px-4 py-2 rounded-lg font-medium flex text-lg gap-2 transition duration-300 hover:bg-blue-600 hover:text-white"
+                                    className="hidden text-blue-600 px-4 py-2 rounded-lg font-medium sm:flex text-lg gap-2 transition duration-300 hover:bg-blue-600 hover:text-white"
                                 >
                                     <span className='my-auto'> REENVIAR CÓDIGO </span>
                                     <i className="bi bi-send my-auto" />
                                 </button>
                             </div>
                         </div>
-                        <div className='sm:w-1/2 flex flex-col gap-4'>
+                        <div className='sm:w-1/2 flex flex-col gap-2'>
+                            <hr className='sm:hidden' />
+                            <span className='text-blue-700 font-bold text-xl sm:hidden py-2'>CÓDIGO DE VERIFICACIÓN:</span>
                             <div className='border-2 border-blue-500 rounded-lg p-2'>
                                 <div className="grid grid-cols-6 gap-1">
                                     {

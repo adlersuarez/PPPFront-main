@@ -27,16 +27,32 @@ const Registro = () => {
     const handleCloseMail = () => setShowMail(false);
     const handleShowMail = () => setShowMail(true);
 
-    //const textRef = useRef<HTMLInputElement>(null);
+    const [phoneError, setPhoneError] = useState<string | null>(null);
+    const [emailError, setEmailError] = useState<string | null>(null);
 
-    /*const copyToClipboard = () => {
-        if (textRef.current) {
-            textRef.current.select();
-            console.log(textRef)
-            document.execCommand("copy");
-            window.getSelection()?.removeAllRanges();
+    const handlePhoneChange = () => {
+        const phoneRegex = /^\d{9}$/;
+        if (datos.telefono.trim() === '') {
+            setPhoneError('El teléfono es requerido');
+        } else if (phoneRegex.test(datos.telefono)) {
+            setPhoneError(null);
+            handleShow(); 
+        } else {
+            setPhoneError('El teléfono debe tener 9 dígitos');
         }
-    };*/
+    };
+    
+    const handleEmailChange = () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (datos.email.trim() === '') {
+            setEmailError('El correo electrónico es requerido');
+        } else if (emailRegex.test(datos.email)) {
+            setEmailError(null);
+            handleShowMail();
+        } else {
+            setEmailError('Ingrese un correo electrónico válido');
+        }
+    };
 
     return (
         <div className="flex flex-wrap -mx-3">
@@ -118,7 +134,7 @@ const Registro = () => {
                                                 Correo Electrónico
                                             </label>
                                             <div className="bg-green-400 px-1 h-5 text-white rounded-sm flex gap-2 text-xs">
-                                                <i className="bi bi-check-circle my-auto " /> 
+                                                <i className="bi bi-check-circle my-auto " />
                                                 <span className="my-auto">Validado</span>
                                             </div>
                                         </div>
@@ -133,28 +149,27 @@ const Registro = () => {
                                                     value={datos.email}
                                                     onChange={(e) => setDatos({ ...datos, email: e.target.value })}
                                                 />
-
                                             </div>
-
                                             <button
-                                                onClick={handleShowMail}
+                                                onClick={handleEmailChange}
                                                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded flex gap-2 justify-center"
                                             >
                                                 <i className="bi bi-patch-check my-auto text-xl sm:text-lg" />
                                                 <span className="hidden sm:flex my-auto">Validar</span>
                                             </button>
                                         </div>
+                                        <span className="text-red-600 text-xs">{emailError}</span>  
                                     </div>
 
                                     <div className="">
-                                    <div className="flex justify-between">
+                                        <div className="flex justify-between">
                                             <label
                                                 htmlFor="correoElectronico"
                                                 className="block text-gray-500 font-medium">
                                                 Número Telefónico
                                             </label>
                                             <div className="bg-green-400 px-1 h-5 text-white rounded-sm flex gap-2 text-xs">
-                                                <i className="bi bi-check-circle my-auto" /> 
+                                                <i className="bi bi-check-circle my-auto" />
                                                 <span className="my-auto">Validado</span>
                                             </div>
                                         </div>
@@ -169,17 +184,17 @@ const Registro = () => {
                                                     value={datos.telefono}
                                                     onChange={(e) => setDatos({ ...datos, telefono: e.target.value })}
                                                 />
-                                                
+
                                             </div>
                                             <button
-                                                onClick={handleShow}
+                                                onClick={handlePhoneChange}
                                                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded flex gap-2 justify-center"
                                             >
                                                 <i className="bi bi-patch-check my-auto text-xl sm:text-lg" />
                                                 <span className="hidden sm:flex my-auto">Validar</span>
                                             </button>
                                         </div>
-
+                                        <span className="text-red-600 text-xs">{phoneError}</span> 
                                     </div>
                                 </div>
                             </div>

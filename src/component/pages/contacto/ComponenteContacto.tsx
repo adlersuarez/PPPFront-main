@@ -75,7 +75,13 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, codigo, nombre, t
                         <p className="text-xs text-center uppercase font-semibold">
                             Aquí puedes encontrar sus datos de contacto
                         </p>
-                        <i className="bi bi-arrow-down-square text-2xl sm:hidden m-auto" />
+                        {
+                            show ?
+                                <i className="bi bi-arrow-up-square text-2xl sm:hidden m-auto" />
+                                :
+                                <i className="bi bi-arrow-down-square text-2xl sm:hidden m-auto" />
+                        }
+
                     </button>
                 </div>
             </div>
