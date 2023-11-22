@@ -5,7 +5,7 @@ import Horario from "@/component/pages/horario/Horario"
 import ModalCrearHorario from './modal/CrearHorarioModal';
 import ModalModificarHorario from "./modal/ModificarHorarioModal";
 import ModalBuscarDocente from "./modal/BuscarDocenteModal";
-import { RouteComponentProps } from "react-router-dom";
+// import { RouteComponentProps } from "react-router-dom";
 type Idioma = {
     id: number;
     lenguaje: string;
@@ -47,9 +47,9 @@ type Data = {
 
 // }
 
-const AgregarHorario = (props: RouteComponentProps<{}>) => {
+const AgregarHorario = () => {
 
-    if(props){}
+    // if(props){}
     // const [dataHorario, SetDataHorario] = useState<object[]>([]);
     // const [color, SetColor] = useState<object[]>([]);
     
