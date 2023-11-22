@@ -14,9 +14,9 @@ import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   //<React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      {/* <BrowserRouter>
+      </BrowserRouter> */}
         <App />
-      </BrowserRouter>
     </Provider>
   //</React.StrictMode>,
 )

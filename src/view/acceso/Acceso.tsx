@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../../store/configureStore.store";
@@ -19,8 +19,8 @@ import { Types } from "../../model/enum/types.model.enum";
 //import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
 //import Checked from "./widget/Checked";
 
-const Acceso = (props: RouteComponentProps<{}>) => {
-    if(props){}
+const Acceso = () => {
+
     const dispatch = useDispatch();
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
 
@@ -97,7 +97,7 @@ const Acceso = (props: RouteComponentProps<{}>) => {
     }
 
     if (autenticado) {
-        return <Redirect to="/inicio" />
+        return <Navigate to="/inicio" />
     }
 
     // const onEventFormRegEstExterno = () => {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RouteComponentProps } from "react-router-dom";
+
 import 'devextreme/dist/css/dx.light.css';
 
 import ModalMatricula from './modal/Matricula.modal';
@@ -9,9 +9,7 @@ import Horario from '@/component/pages/horario/Horario';
 
 // import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 
-const MatriculaHorario = (props: RouteComponentProps<{}>) => {
-
-    if(props){}
+const MatriculaHorario = () => {
     
     const fechaActual: Date = new Date();
 

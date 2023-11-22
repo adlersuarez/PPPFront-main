@@ -1,10 +1,10 @@
 import { ArrowRightOnCicleSvg } from "@/component/Svg.component";
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { images } from "../../helper/index.helper";
 
-const HomeEstudiante = (props: RouteComponentProps<{}>) => {
-    if(props){}
+const HomeEstudiante = ()  => {
+
     return (
         <div className="flex flex-wrap -mx-3">
             <div className="w-full max-w-full px-3 flex-0">

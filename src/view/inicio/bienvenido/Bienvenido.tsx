@@ -1,13 +1,12 @@
 
-import { RouteComponentProps } from "react-router-dom";
+
 // import { images } from "../../../helper/index.helper";
 // import Transition from "../../../component/Transition.component";
 // import toast, { Toaster } from 'react-hot-toast';
 
 
-const Bienvenido = (props: RouteComponentProps<{}>) => {
+const Bienvenido = () => {
 
-    if(props){}
     
     // const [open, setOpen] = useState<boolean>(false);
     // const ref = useRef<HTMLDivElement>(null);

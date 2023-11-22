@@ -67,6 +67,16 @@ const menus: MenuItem[] = [
         subMenu: false,
         subMenuItems: [],
     },
+    {
+        id: "4",
+        titulo: "Agregar Horario",
+        url: "/inicio/agregar-horario",
+        icono: "bi-info-circle",
+        moduPadre: false,
+        modPosicion: 4,
+        subMenu: false,
+        subMenuItems: [],
+    },
 
 ];
 

@@ -1,7 +1,7 @@
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const MatriculaExterna = (props: RouteComponentProps<{}>) => {
-    if(props){}
+const MatriculaExterna = () => {
+
     return (
         <>
             <div className="flex flex-wrap -mx-3">

@@ -1,11 +1,9 @@
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/configureStore.store';
 import Cargar from './view/cargar/Cargar';
-import NotFound from './view/pages/404/NotFound';
-import Acceso from './view/acceso/Acceso';
-import Inicio from './view/inicio/Inicio';
 
+import router from './Rutas';
 
 function App() {
 
@@ -17,43 +15,7 @@ function App() {
 
     return (
 
-        <Switch>
-
-            <Route
-                path="/"
-                exact={true}
-            >
-                <Redirect to={"/acceso"} />
-            </Route>
-
-
-            <Route
-                path="/acceso"
-                exact={true}
-                render={(props) => <Acceso {...props} />}
-            />
-
-            <Route
-                path="/inicio"
-                // exact={true}
-                render={(props) => <Inicio {...props} />}
-            />
-
-            {
-                /*
-                <Route
-                    path="/acceso"
-                    exact={true}
-                    render={(props) => <RegistroEstudianteExterno {...props} />}
-                />
-                */
-            }
-
-            <Route
-                component={NotFound}
-            />
-
-        </Switch>
+        <RouterProvider router={router} />
 
     );
 

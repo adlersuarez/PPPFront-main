@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Outlet, Navigate , useLocation } from 'react-router-dom';
 import { RootState } from '../../store/configureStore.store';
 import Aside from '../pages/layout/aside/Aside';
 import Nav from '../pages/layout/nav/Nav';
@@ -33,14 +33,16 @@ import HorarioIdiomas from '../trabajador/HorarioIdiomas';
 import AgregarHorario from '../trabajador/AgregarHorario';
 
 
-const Inicio = (props: RouteComponentProps<{}>) => {
+const Inicio = () => {
 
     const dispatch = useDispatch();
+
+    const location = useLocation();
 
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
 
     if (!autenticado) {
-        return <Redirect to="/acceso" />
+        return <Navigate to="/acceso" />
     }
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
@@ -198,8 +200,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
         }
     }
 
-    // const { path, url } = props.match;
-    const { path } = props.match;
+
 
     return (
         <>
@@ -228,7 +229,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                             {/*  */}
 
                             {/* Aside */}
-                            <Aside informacion={informacion} pathname={props.location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
+                            <Aside informacion={informacion} pathname={location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
                             {/*  */}
 
                             {/*  */}
@@ -238,60 +239,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                 <div className="w-full p-4 font-mont overflow-hidden">
                                     {/*INICIO NAVEGACION */}
                                     <div className="content-wrapper flex-wrap">
-                                        <Switch>
-                                            <Route
-                                                path={"/inicio"}
-                                                exact={true}
-                                            >
-                                                <Redirect to={`${path}/centro-idiomas`} />
-                                            </Route>
-
-
-                                            {/* Modulos del Estudiante */}
-                                            <Route
-                                                path={`${path}/centro-idiomas`}
-                                                render={(props) => <HomeEstudiante {...props} />}
-                                            />
-
-                                            <Route
-                                                path={`${path}/matricula_interna`}
-                                                render={(props) => <MatriculaInterna {...props} />}
-                                            />
-
-                                            <Route
-                                                path={`${path}/matricula_externa`}
-                                                render={(props) => <MatriculaExterna {...props} />}
-                                            />
-
-                                            <Route
-                                                path={`${path}/horario`}
-                                                render={(props) => <MatriculaHorario {...props} />}
-                                            />
-
-                                            {
-                                                //
-                                                <Route
-                                                    path={`${path}/proceso`}
-                                                    exact={true}
-                                                    render={(props) => <Proceso informacion={informacion} {...props} />}
-                                                />
-                                                //
-                                            }
-
-                                            {/* Modulos del Trabajador */}
-                                            <Route
-                                                path={`${path}/horario-idiomas`}
-                                                render={(props) => <HorarioIdiomas {...props} />}
-                                            />
-
-                                            <Route
-                                                path={`${path}/agregar-horario`}
-                                                render={(props) => <AgregarHorario {...props} />}
-                                            />
-
-
-
-                                        </Switch>
+                                        <Outlet />
                                     </div>
                                     {/* FIN NAVEGACION  */}
                                 </div>

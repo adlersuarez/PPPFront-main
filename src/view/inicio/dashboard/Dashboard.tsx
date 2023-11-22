@@ -3,10 +3,8 @@
 // import { SiGoogleanalytics } from "react-icons/si";
 // import { TbDeviceAnalytics } from "react-icons/tb";
 // import { images } from "../../../helper/index.helper";
-import { RouteComponentProps } from "react-router-dom";
 
-const Dashboard = (props: RouteComponentProps<{}>) => {
-    if(props){}
+const Dashboard = () => {
     return (
         <>
             <div className="relative flex flex-col min-w-0 mb-6 break-words bg-transparent border-0 border-solid shadow-none rounded-2xl bg-clip-border">

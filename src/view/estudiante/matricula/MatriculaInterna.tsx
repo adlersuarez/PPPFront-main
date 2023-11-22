@@ -1,9 +1,8 @@
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState } from 'react';
 
-const MatriculaInterna = (props: RouteComponentProps<{}>) => {
+const MatriculaInterna = () => {
 
-    if (props) { }
     const [div1Visible, setDiv1Visible] = useState(false);
     const [div2Visible, setDiv2Visible] = useState(true);
 
