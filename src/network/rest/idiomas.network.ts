@@ -62,6 +62,10 @@ export async function ListarTipoEstudio<Listas>( abortController: AbortControlle
     return await Resolve.create<Listas>(instance.get<Listas>("/TipoEstudio/ListarTipoEstudio", { signal: abortController?.signal }));
 }
 
+export async function ListarAsignatura<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>("/Asignatura/ListarAsignatura", { signal: abortController?.signal }));
+}
+
 //Horario
 
 export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {

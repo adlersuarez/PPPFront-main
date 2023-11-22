@@ -3,8 +3,6 @@ import { useDispatch } from 'react-redux';
 import { motion } from "framer-motion";
 import { images } from "../../helper/index.helper";
 
-import toast, { Toaster } from 'react-hot-toast';
-
 import Response from "../../model/class/response.model.class";
 import RestError from "../../model/class/resterror.model.class";
 import { Types } from "../../model/enum/types.model.enum";
@@ -19,10 +17,13 @@ import Programa from "../../model/interfaces/programa/programa";
 import RespValue from "../../model/interfaces/RespValue.model.interface";
 
 
+import useSweerAlert from "../../component/hooks/useSweetAlert"
+
+
 type Props = {
     codigo: string,
     informacion: EstudianteLogin | undefined
-    validarPrimerLogin : (codigo: string)=> void
+    validarPrimerLogin: (codigo: string) => void
 }
 
 const PrimerLogin = (props: Props) => {
@@ -34,11 +35,15 @@ const PrimerLogin = (props: Props) => {
 
     const [programa, setPrograma] = useState("0")
     const [modalidad, setModalidad] = useState("0")
+    const [terminos, setTerminos] = useState(false)
 
     const refPrograma = useRef<HTMLSelectElement>(null)
     const refModalidad = useRef<HTMLSelectElement>(null)
+    const refTerminos = useRef<HTMLInputElement>(null)
 
     const abortController = useRef(new AbortController());
+
+    const sweet = useSweerAlert();
 
     useEffect(() => {
         ListaProgramas()
@@ -74,44 +79,49 @@ const PrimerLogin = (props: Props) => {
     const onEventRegEstDetalle = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const selectProg = refPrograma.current;
-        const selectMod = refModalidad.current;
-
-        if(programa == "0"){
-            selectProg?.focus();
+        if (programa == "0") {
+            refPrograma.current?.focus()
             return
         }
-        if(modalidad == "0"){
-            selectMod?.focus();
+        if (modalidad == "0") {
+            refModalidad.current?.focus()
+            return
+        }
+        if (terminos == false) {
+            refTerminos.current?.focus()
             return
         }
 
-        const response = await InsertarDatosEstudiantePrimerLogin<RespValue>(props.codigo, parseInt(programa), parseInt(modalidad))
-        if (response instanceof Response) {
-            if(response.data.value == "procesado"){
-                toast.success('Registro procesado')
-                props.validarPrimerLogin(props.codigo)
-                return
-            }else{
-                toast.error('Se produjo un error, intente mas tarde')
-                return
+        sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+            if (value) {
+                sweet.openInformation("Mensaje", "Procesando información...")
+
+                const response = await InsertarDatosEstudiantePrimerLogin<RespValue>(props.codigo, parseInt(programa), parseInt(modalidad))
+                if (response instanceof Response) {
+                    if (response.data.value == "procesado") {
+                        sweet.openSuccess("Mensaje", response.data.value as string, () => { });
+                        props.validarPrimerLogin(props.codigo)
+                        return
+                    } else {
+                        sweet.openWarning("Mensaje", "Se produjo un error, intente mas tarde", () => { });
+                        return
+                    }
+
+                }
+                if (response instanceof RestError) {
+                    if (response.getType() === Types.CANCELED) return;
+                    sweet.openWarning("Mensaje", response.getMessage(), () => { });
+                    return
+                }
             }
+        })
 
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
 
-            toast.error('Se produjo un error, intente mas tarde')
-            return
-        }
 
     }
 
     return (
-        <>  
-            <Toaster 
-                position="bottom-right"
-            />
+        <>
 
             <div className="flex flex-wrap w-screen h-screen bg-portada">
 
@@ -171,7 +181,7 @@ const PrimerLogin = (props: Props) => {
                                             className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                             ref={refPrograma}
                                             value={programa}
-                                            onChange={ (event) => setPrograma(event.currentTarget.value) }
+                                            onChange={(event) => setPrograma(event.currentTarget.value)}
                                         >
                                             <option value="0">- Seleccione -</option>
                                             {
@@ -196,7 +206,7 @@ const PrimerLogin = (props: Props) => {
                                             className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                             ref={refModalidad}
                                             value={modalidad}
-                                            onChange={ (event) => setModalidad(event.currentTarget.value) }
+                                            onChange={(event) => setModalidad(event.currentTarget.value)}
                                         >
                                             <option value="0">- Seleccione -</option>
                                             {
@@ -210,6 +220,36 @@ const PrimerLogin = (props: Props) => {
                                             }
 
                                         </select>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mb-2 mt-4">
+                                    <div>
+                                        <label
+                                            className="font-mont block mb-1 text-sm font-medium text-gray-900 "
+                                        >
+                                            Terminos y condiciones <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                        </label>
+                                        <div className="flex items-start">
+                                            <div className="flex items-center h-5">
+                                                <input
+                                                    id="remember"
+                                                    type="checkbox"
+                                                    className="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300"
+                                                    ref={refTerminos}
+                                                    checked={terminos}
+                                                    onChange={(e) => {
+                                                        setTerminos(e.target.checked)
+                                                    }}
+                                                />
+                                            </div>
+                                            <label
+                                                htmlFor="remember"
+                                                className="font-mont ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                Aceptar
+                                            </label>
+                                        </div>
+
                                     </div>
                                 </div>
 

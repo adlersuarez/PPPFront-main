@@ -1,23 +1,25 @@
-import CustomModal from "../../component/Modal.component";
+import CustomModal from "../../../../component/Modal.component";
 import { useEffect, useRef, useState, ChangeEvent } from "react";
 
 import { useSelector } from "react-redux";
-import { RootState } from '../../store/configureStore.store';
+import { RootState } from '../../../../store/configureStore.store';
 
-import Response from "../../model/class/response.model.class";
-import RestError from "../../model/class/resterror.model.class";
-import { Types } from "../../model/enum/types.model.enum";
+import Response from "../../../../model/class/response.model.class";
+import RestError from "../../../../model/class/resterror.model.class";
+import { Types } from "../../../../model/enum/types.model.enum";
 
-import Turno from "../../model/interfaces/turno/turno";
-import Programa from "../../model/interfaces/programa/programa";
-import Periodo from "../../model/interfaces/periodo/periodo";
-import TipoEstudio from "../../model/interfaces/tipo-estudio/tipoEstudio";
+import Turno from "../../../../model/interfaces/turno/turno";
+import Programa from "../../../../model/interfaces/programa/programa";
+import Periodo from "../../../../model/interfaces/periodo/periodo";
+import TipoEstudio from "../../../../model/interfaces/tipo-estudio/tipoEstudio";
 
-import Listas from "../../model/interfaces/Listas.model.interface";
-import { ListarPeriodo, ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../network/rest/idiomas.network";
+import Listas from "../../../../model/interfaces/Listas.model.interface";
+import { ListarPeriodo, ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
 
-import RespValue from "../../model/interfaces/RespValue.model.interface";
-import Sweet from '../../model/interfaces/Sweet.mode.interface'
+import RespValue from "../../../../model/interfaces/RespValue.model.interface";
+import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
+
+import { seccionSelect } from '../../../../helper/herramienta.helper'
 
 
 type Props = {
@@ -34,7 +36,7 @@ type Props = {
     handleCloseModal: () => void
 }
 
-const HorarioProceso = (props: Props ) =>{
+const HorarioProceso = (props: Props) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
@@ -47,18 +49,19 @@ const HorarioProceso = (props: Props ) =>{
     const [idPrograma, setIdPrograma] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+    const [seccion, setSeccion] = useState<string>("")
+    const [estado, setEstado] = useState<boolean>(true)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
     const refTipoEstudio = useRef<HTMLSelectElement>(null)
-
-    const [estado, setEstado] = useState<boolean>(true)
+    const refSeccion = useRef<HTMLSelectElement>(null)
 
     const anioActual = new Date().getFullYear();
 
 
-    useEffect( ()=> {
+    useEffect(() => {
         DataTurno()
         DataPrograma()
         DataPeriodo()
@@ -149,6 +152,10 @@ const HorarioProceso = (props: Props ) =>{
             refTipoEstudio.current?.focus()
             return
         }
+        if(seccion == "0"){
+            refSeccion.current?.focus()
+            return
+        }
 
         const params = {
             "horarioId": 0,
@@ -159,7 +166,7 @@ const HorarioProceso = (props: Props ) =>{
             "modalidadId": props.idModalidad,
             "periodoId": idPeriodo,
             "tipEstudioId": idTipoEstudio,
-            "seccion": "",
+            "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
@@ -203,7 +210,7 @@ const HorarioProceso = (props: Props ) =>{
 
     }
 
-    return(
+    return (
         <>
             <CustomModal
                 isOpen={props.isOpenModal}
@@ -215,6 +222,7 @@ const HorarioProceso = (props: Props ) =>{
                     setIdPrograma(0)
                     setIdPeriodo(0)
                     setIdTipoEstudio(0)
+                    setSeccion("0")
                     setEstado(true)
                 }}
                 onClose={props.handleCloseModal}
@@ -229,9 +237,9 @@ const HorarioProceso = (props: Props ) =>{
                             <i className="bi bi-x-circle text-lg"></i>
                         </button>
                     </div>
-                    <div className="w-full p-4">
+                    <div className="w-full px-4 pb-2 pt-4">
 
-                        <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mb-2">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mb-4">
 
                             <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                                 <div className="m-2">
@@ -331,7 +339,7 @@ const HorarioProceso = (props: Props ) =>{
 
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
@@ -360,6 +368,33 @@ const HorarioProceso = (props: Props ) =>{
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refSeccion}
+                                    value={seccion}
+                                    onChange={(event) => {
+                                        setSeccion(event.currentTarget.value);
+                                        console.log(event.currentTarget.value)
+                                    }}
+                                >
+                                    <option value={"0"}>- Seleccione -</option>
+                                    {
+                                        seccionSelect.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.nombreSeccion}>
+                                                    {item.nombreSeccion} 
+                                                    {/* - {item.id} */}
+                                                </option>
+                                            );
+
+                                        })
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Estado
                                 </label>
                                 <label className="relative inline-flex items-center cursor-pointer">
@@ -374,8 +409,8 @@ const HorarioProceso = (props: Props ) =>{
                             </div>
                         </div>
 
-
                     </div>
+
                     <div className="relative flex flex-wrap justify-center">
                         <button
                             className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
@@ -391,6 +426,11 @@ const HorarioProceso = (props: Props ) =>{
                         </button>
                     </div>
 
+                    <div className="relative flex flex-wrap justify-center mt-4">
+                        <span className="text-xs mb-2">
+                            Todos los campos con <i className="bi bi-asterisk text-xs text-red-500"></i> son oblicatorios
+                        </span>
+                    </div>
                 </div>
 
             </CustomModal>

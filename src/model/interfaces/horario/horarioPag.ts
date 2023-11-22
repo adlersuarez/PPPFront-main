@@ -18,7 +18,7 @@ export default interface HorarioPag {
     tipoEstudio: string
     seccion: string
     estado: number
-    fechaRegistra: Date
+    fechaRegistra: string
 
 }
 

@@ -29,8 +29,9 @@ import { ValidarEstudianteExistente } from '../../network/rest/idiomas.network';
 import RespValue from '../../model/interfaces/RespValue.model.interface';
 
 import PrimerLogin from './PrimerLogin';
-import HorarioIdiomas from '../trabajador/HorarioIdiomas';
+import HorarioIdiomas from '../trabajador/horario/HorarioIdiomas';
 import AgregarHorario from '../trabajador/AgregarHorario';
+// import HorarioDetalle from '../trabajador/horario/HorarioDetalle';
 
 
 const Inicio = (props: RouteComponentProps<{}>) => {
@@ -188,7 +189,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
             if (validar.data.value == codigo) {
                 setPrimerLogin(false)
                 //console.log('existe')
-            } else { 
+            } else {
                 setPrimerLogin(true)
                 //console.log('no existe')
             }
@@ -206,7 +207,7 @@ const Inicio = (props: RouteComponentProps<{}>) => {
             {
                 primerLogin == true ?
                     (
-                        <PrimerLogin codigo={codigo} informacion={informacion} validarPrimerLogin={validarPrimerLogin}/>
+                        <PrimerLogin codigo={codigo} informacion={informacion} validarPrimerLogin={validarPrimerLogin} />
                     ) :
                     (
                         <div className="flex w-full">
@@ -281,8 +282,15 @@ const Inicio = (props: RouteComponentProps<{}>) => {
                                             {/* Modulos del Trabajador */}
                                             <Route
                                                 path={`${path}/horario-idiomas`}
+                                                exact={true}
                                                 render={(props) => <HorarioIdiomas {...props} />}
                                             />
+
+                                            {/* <Route
+                                                path={`${path}/horario-idiomas/detalle`}
+                                                exact={true}
+                                                render={(props) => <HorarioDetalle {...props} />}
+                                            /> */}
 
                                             <Route
                                                 path={`${path}/agregar-horario`}
