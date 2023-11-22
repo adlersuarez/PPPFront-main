@@ -29,8 +29,9 @@ import { ValidarEstudianteExistente } from '../../network/rest/idiomas.network';
 import RespValue from '../../model/interfaces/RespValue.model.interface';
 
 import PrimerLogin from './PrimerLogin';
-import HorarioIdiomas from '../trabajador/HorarioIdiomas';
+import HorarioIdiomas from '../trabajador/horario/HorarioIdiomas';
 import AgregarHorario from '../trabajador/AgregarHorario';
+// import HorarioDetalle from '../trabajador/horario/HorarioDetalle';
 
 
 const Inicio = () => {
@@ -190,7 +191,7 @@ const Inicio = () => {
             if (validar.data.value == codigo) {
                 setPrimerLogin(false)
                 //console.log('existe')
-            } else { 
+            } else {
                 setPrimerLogin(true)
                 //console.log('no existe')
             }
@@ -207,7 +208,7 @@ const Inicio = () => {
             {
                 primerLogin == true ?
                     (
-                        <PrimerLogin codigo={codigo} informacion={informacion} validarPrimerLogin={validarPrimerLogin}/>
+                        <PrimerLogin codigo={codigo} informacion={informacion} validarPrimerLogin={validarPrimerLogin} />
                     ) :
                     (
                         <div className="flex w-full">
@@ -239,7 +240,9 @@ const Inicio = () => {
                                 <div className="w-full p-4 font-mont overflow-hidden">
                                     {/*INICIO NAVEGACION */}
                                     <div className="content-wrapper flex-wrap">
+
                                         <Outlet />
+
                                     </div>
                                     {/* FIN NAVEGACION  */}
                                 </div>

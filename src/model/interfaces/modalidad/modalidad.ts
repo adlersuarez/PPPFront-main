@@ -1,4 +1,4 @@
 export default interface Modalidad {
-    modalidadId: number, 
+    modalidadId: number 
     modalidad: string
 }

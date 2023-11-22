@@ -179,9 +179,8 @@ const Acceso = () => {
 
                                             <Button proceso={proceso} />
 
-                                            {/* <br /> */}
-
-                                            {/* <span className="text-xs cursor-pointer text-upla-100 hover:underline"
+                                            {/* <br />
+                                            <span className="text-xs cursor-pointer text-upla-100 hover:underline"
                                                 onClick={onEventFormRegEstExterno}>Registro estudiante externo</span> */}
 
                                         </form>
@@ -192,7 +191,7 @@ const Acceso = () => {
                     )
                     :
                     (
-                        //<RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
+                        // <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
                         ''
                     )
             }

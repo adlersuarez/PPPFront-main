@@ -1,5 +1,5 @@
 export default interface Programa {
-    programaId: number,
-    programa: string,
+    programaId: number
+    programa: string
     programaEstado: number
 }
