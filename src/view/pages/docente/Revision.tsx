@@ -230,7 +230,6 @@ const Revision = () => {
         nivel_seccion: string,
         plan: string
     ) => {
-
         navigate(`./estudiante-detalle`, {
             state: {
                 codigo: codigo,
@@ -253,15 +252,17 @@ const Revision = () => {
                             <Volver />
                             Revisión docente
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {datos && Object.keys(datos).map((key, index) => (
-                                <div key={index} className="mb-2">
-                                    <label className="block text-gray-700 text-lg font-bold mb-2">
-                                        {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
-                                    </label>
-                                    <p className="text-gray-700 text-xl">{datos[key]}</p>
-                                </div>
-                            ))}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+                            {
+                                datos && Object.keys(datos).map((key, index) => (
+                                    <div key={index} className="">
+                                        <label className="block text-gray-700 tex-sm sm:text-lg font-bold">
+                                            {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
+                                        </label>
+                                        <p className="text-gray-700 text-base sm:text-xl">{datos[key]}</p>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>

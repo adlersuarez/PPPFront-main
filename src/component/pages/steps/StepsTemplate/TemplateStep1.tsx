@@ -75,7 +75,7 @@ const TemplateStep1 = () => {
 
             <ContenedorSteps
                 numero={1}
-                titulo='CARTA PRESENTACIÓN'
+                titulo='CARTA DE PRESENTACIÓN'
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>
