@@ -80,47 +80,6 @@ const AgregarHorario = () => {
         observacion: '',
     })
 
-    const fechaActual: Date = new Date();
-
-    function diaActual() {
-        switch (fechaActual.getDay()) {
-            case 1:
-                return [0, 1, 2, 3, 4, 5, 6]
-            case 2:
-                return [-1, 0, 1, 2, 3, 4, 5]
-            case 3:
-                return [-2, -1, 0, 1, 2, 3, 4]
-            case 4:
-                return [-3, -2, -1, 0, 1, 2, 3]
-            case 5:
-                return [-4, -3, -2, -1, 0, 1, 2]
-            case 6:
-                return [-5, -4, -3, -2, -1, 0, 1]
-            case 0:
-                return [-6, -5, -4, -3, -2, -1, 0]
-            default:
-                return []
-        }
-    }
-
-    const diaSemana = diaActual()
-
-    const Dats = [
-        {
-            text: 'HORARIO REGULAR 1',
-            roomId: 3,
-            startDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[0], 8, 0),
-            endDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[0], 9, 30),
-            // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
-        },
-    ]
-
-    const CrearData = () => {
-        let hora = {
-            text: ''+localStorage.getItem('idioma')+localStorage.getItem('dia')+localStorage.getItem('modalidad')
-        }
-    }
-
     var idiomasSelect = [
         {
             id: 1,
@@ -280,7 +239,12 @@ const AgregarHorario = () => {
                 >
                     Añadir Asignatura
                 </button>
-                
+                <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ring ring-green-300 focus:ring focus:ring-green-300 focus:outline-none"
+                    onClick={()=>{localStorage.clear; console.log('limpio')}}
+                >
+                    limpiar
+                </button>
                 <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ring ring-red-300 focus:ring focus:ring-red-300 focus:outline-none">
                     <NavLink
                         to={'/inicio/horario-idiomas'}
