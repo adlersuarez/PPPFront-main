@@ -16,23 +16,10 @@ import Estudiante from '../../model/interfaces/login/estudiante.login';
 import Trabajador from '../../model/interfaces/login/estudiante.login';
 import { Toaster } from 'react-hot-toast';
 
-// import Dashboard from './dashboard/Dashboard';
-// import Bienvenido from './bienvenido/Bienvenido';
-// import Inscripcion from '../estudiante/Inscripcion';
-import Proceso from '../estudiante/Proceso';
-import HomeEstudiante from '../estudiante/HomeEstudiante';
-import MatriculaInterna from '../estudiante/matricula/MatriculaInterna';
-import MatriculaExterna from '../estudiante/matricula/MatriculaExterna';
-import MatriculaHorario from '../estudiante/matricula/MatriculaHorario';
-
 import { ValidarEstudianteExistente } from '../../network/rest/idiomas.network';
 import RespValue from '../../model/interfaces/RespValue.model.interface';
 
 import PrimerLogin from './PrimerLogin';
-import HorarioIdiomas from '../trabajador/horario/HorarioIdiomas';
-import AgregarHorario from '../trabajador/AgregarHorario';
-// import HorarioDetalle from '../trabajador/horario/HorarioDetalle';
-
 
 const Inicio = () => {
 

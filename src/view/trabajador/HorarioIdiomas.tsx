@@ -424,7 +424,7 @@ const HorarioIdiomas = () => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                         <div className="p-1 bg-Solid">
-                            <h2 className="text-2xl font-bold mb-6"><span onClick={() => useNavigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
+                            <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
 
                             <div className="w-full">
 

@@ -4,7 +4,8 @@ import Sede from "./sede/sede"
 import Idioma from "./idioma/idioma"
 import Turno from "./turno/turno"
 import Periodo from "./periodo/periodo"
-import TipoEstudio from "./tipo-estudio/TipoEstudio"
+import TipoEstudio from "./tipo-estudio/tipoEstudio"
+import Asignatura from "./asignatura/asignatura"
 
 export default interface Listas {
     resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] 
