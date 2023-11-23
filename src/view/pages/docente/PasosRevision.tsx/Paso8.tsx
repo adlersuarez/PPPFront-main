@@ -21,8 +21,7 @@ const Paso8: React.FC<Paso8Props> = ({ notas, onNotaChange }) => {
                 <h1 className="font-bold">EVALUACIÓN</h1>
             </div>
             <div className="flex">
-                
-                <div className="grid grid-cols-2 gap-4 mx-auto text-gray-400 text-lg sm:text-xl">
+                <div className="grid grid-cols-2 gap-4 my-auto text-gray-400 text-lg sm:text-xl">
                     <div className="flex items-center">
                         <i className="bi bi-file-text-fill mr-4" />
                         <p className="">P1:</p>

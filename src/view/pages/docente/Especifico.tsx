@@ -270,13 +270,13 @@ const Especifico = () => {
                         </div>
 
                         <div className="w-full">
-                            <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                            <div onClick={() => setShowDetalles(!showDetalles)} className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                                 <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-blue-500 text-lg sm:text-2xl">
                                     <div className=" font-bold ">
                                         {datos.estudiante} - {datos.codigo}
                                     </div>
 
-                                    <i onClick={() => setShowDetalles(!showDetalles)}
+                                    <i 
                                         className={`bi bi-caret-down-fill transform my-auto ${showDetalles ? 'rotate-180' : ''}`} />
 
                                 </div>
