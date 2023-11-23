@@ -68,7 +68,7 @@ const menus: MenuItem[] = [
         subMenuItems: [],
     },
     {
-        id: "4",
+        id: "5",
         titulo: "Agregar Horario",
         url: "/inicio/agregar-horario",
         icono: "bi-info-circle",
@@ -77,7 +77,36 @@ const menus: MenuItem[] = [
         subMenu: false,
         subMenuItems: [],
     },
-
+    {
+        id: "6",
+        titulo: "Inicio Docente",
+        url: "/inicio/inicio-docente",
+        icono: "bi-info-circle",
+        moduPadre: false,
+        modPosicion: 4,
+        subMenu: false,
+        subMenuItems: [],
+    },
+    {
+        id: "7",
+        titulo: "Agregar Horario",
+        url: "/inicio/clases-asignadas",
+        icono: "bi-info-circle",
+        moduPadre: false,
+        modPosicion: 4,
+        subMenu: false,
+        subMenuItems: [],
+    },
+    {
+        id: "8",
+        titulo: "Agregar Horario",
+        url: "/inicio/reporte-notas",
+        icono: "bi-info-circle",
+        moduPadre: false,
+        modPosicion: 4,
+        subMenu: false,
+        subMenuItems: [],
+    },
 ];
 
 

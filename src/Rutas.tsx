@@ -8,6 +8,9 @@ import HorarioIdiomas from './view/trabajador/HorarioIdiomas';
 import AgregarHorario from './view/trabajador/AgregarHorario';
 import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
+import InicioDocente from './view/docente/InicioDocente';
+import ListaClasesAsignados from './view/docente/ListaClasesAsignados';
+import ReporteDeNotas from './view/docente/ReporteDeNotas';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +44,18 @@ const router = createBrowserRouter([
       {
         path:'agregar-horario',
         element: <AgregarHorario/>
+      },
+      {
+        path:'inicio-docente',
+        element: <InicioDocente/>
+      },
+      {
+        path:'clases-asignadas',
+        element: <ListaClasesAsignados/>
+      },
+      {
+        path:'reporte-notas',
+        element: <ReporteDeNotas/>
       },
     ]
   },
