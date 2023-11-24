@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
+
 
 const ListaClasesAsignados = () => {
 
@@ -48,7 +49,7 @@ const ListaClasesAsignados = () => {
                                             // ref={refIdioma}
                                             value={0}
                                             // value={idIdioma}
-                                            onChange={(event) => {/*/
+                                            onChange={() => {/*/
                                                 const selectedIdiomaId = event.currentTarget.value;
                                                 setIdIdioma(selectedIdiomaId);
 
@@ -84,7 +85,7 @@ const ListaClasesAsignados = () => {
                                             // ref={refSede}
                                             // value={idSede}
                                             value={0}
-                                            onChange={(event) => {/*/
+                                            onChange={() => {/*/
                                                 const selectedSedeId = event.currentTarget.value;
                                                 setIdSede(selectedSedeId);
 
@@ -121,7 +122,7 @@ const ListaClasesAsignados = () => {
                                             // ref={refModalidad}
                                             // value={idModalidad}
                                             value={0}
-                                            onChange={(event) => {/*/
+                                            onChange={() => {/*/
                                                 const selectedModalidadId = event.currentTarget.value;
                                                 setIdModalidad(parseInt(selectedModalidadId));
 
@@ -192,12 +193,14 @@ const ListaClasesAsignados = () => {
                                                     <td className="px-6 py-4">{item.modalidad}</td>
                                                     <td className="px-6 py-4">{item.aula}</td>
                                                     <td className="px-6 py-4">
-                                                        <button
-                                                            className="bg-yellow-400 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:ring ring-yellow-300 focus:outline-none"
-                                                            onClick={() => { }}
-                                                        >
-                                                            <i className="bi bi-calendar text-xs text-white"></i>
-                                                        </button>
+                                                        <NavLink to={'/inicio/vista-horario'}>
+                                                            <button
+                                                                className="bg-yellow-400 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:ring ring-yellow-300 focus:outline-none"
+                                                                onClick={() => { }}
+                                                            >
+                                                                <i className="bi bi-calendar text-xs text-white"></i>
+                                                            </button>
+                                                        </NavLink>
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <button

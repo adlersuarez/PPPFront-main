@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Response from "../../../model/class/response.model.class";
 import RestError from "../../../model/class/resterror.model.class";
@@ -25,8 +25,10 @@ import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
 import HorarioDetalle from "./HorarioDetalle";
 
 
-const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
+const HorarioIdiomas = () => {
 
+    const navigate = useNavigate()
+    
     const sweet = useSweerAlert();
 
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
@@ -273,7 +275,7 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
                                         handleCloseModal={handleCloseModal} />
 
                                     <div className="p-1 bg-Solid">
-                                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => props.history.goBack()} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
+                                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
 
                                         <div className="w-full">
 

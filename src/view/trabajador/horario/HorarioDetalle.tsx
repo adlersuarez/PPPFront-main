@@ -1,5 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
-import Horario from "../Horario";
+import Horario from "../horario/component/Horario";
 import { useState } from "react";
 import ModalHorarioDetProceso from "./modal/HorarioDetProceso";
 import Sweet from '../../../model/interfaces/Sweet.mode.interface'
@@ -22,7 +21,11 @@ const HorarioDetalle = (props: Props) => {
 
     const [showModficarAsignatura, setShowModficarAsignatura] = useState<boolean>(false);
     const handleShowModficarAsignatura = () => setShowModficarAsignatura(true);
-
+    if(false){
+        SetData([])
+        SetColor([])
+        showModficarAsignatura
+    }
     const [isOpenModal, setIsOpenModal] = useState(false);
 
     const handleOpenModalHorarioDetProceso = ()  => {
