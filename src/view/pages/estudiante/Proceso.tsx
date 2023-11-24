@@ -51,6 +51,10 @@ const Proceso = () => {
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     };
 
+    const seleccionStep = (step : number) => {
+        setCurrentStep(step);
+    }
+
     const paso_1: boolean = true;
     const paso_2: boolean = true;
     const paso_3: boolean = true;
@@ -90,6 +94,7 @@ const Proceso = () => {
                                     steps={steps}
                                     currentStep={currentStep}
                                     estadoModel={estado_model}
+                                    seleccionStep={seleccionStep}
                                 />
 
                                 <StepperControl

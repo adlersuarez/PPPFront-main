@@ -10,12 +10,13 @@ type Step = {
 };
 
 type StepperProps = {
+    seleccionStep: (step: number) => void;
     steps: string[];
     currentStep: number;
     estadoModel: boolean[];
 };
 
-const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel }) => {
+const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, seleccionStep }) => {
 
     const [newStep, setNewStep] = useState<Step[]>([]);
     const stepRef = useRef<Step[]>([]);
@@ -91,13 +92,14 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel }) =>
                     </div>
                 )
                 :
-                <div
+                <button
+                    onClick={() => seleccionStep(step.id)}
                     key={step.id} className={step.id > 1 ? "w-full uppercase" : "uppercase"}>
                     <StepModelNew
                         index={index}
                         step={step}
                         estado={estadoModel} />
-                </div>
+                </button>
         )
     });
 
