@@ -227,18 +227,25 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         return (
             <div className='flex flex-col gap-2'>
                 <h2 className='text-xl text-gray-500 font-bold'>RESUMEN</h2>
+                <hr className='border border-gray-300'/>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-600'>
                     <div className='flex gap-4'>
-                        <i className='bi bi-calendar-check' /> <strong>Inicio:</strong>{manualStartDate && format(new Date(`${manualStartDate}T00:00:00`), 'd MMMM yyyy', { locale: es })}
+                        <i className='bi bi-calendar-check' />
+                        <strong>Inicio:</strong>
+                        {manualStartDate && format(new Date(`${manualStartDate}T00:00:00`), 'd MMMM yyyy', { locale: es })}
                     </div>
                     <div className='flex gap-4'>
-                        <i className='bi bi-calendar-check' /> <strong>Fin:</strong> {manualEndDate && format(new Date(`${manualEndDate}T00:00:00`), 'd MMMM yyyy', { locale: es })}
+                        <i className='bi bi-calendar-check' />
+                        <strong>Fin:</strong>
+                        {manualEndDate && format(new Date(`${manualEndDate}T00:00:00`), 'd MMMM yyyy', { locale: es })}
                     </div>
                     <div className='flex gap-4'>
-                        <i className='bi bi-calendar-check' /> <strong>Días:</strong> {diasString}
+                        <i className='bi bi-calendar-week' />
+                        <strong>Días:</strong> {diasString}
                     </div>
                     <div className='flex gap-4'>
-                        <i className='bi bi-clock' /> <strong>Horas(diarias):</strong> {totalHours > 0 && descripTotal}
+                        <i className='bi bi-clock' />
+                        <strong>Horas(diarias):</strong> {totalHours > 0 && descripTotal}
                     </div>
                 </div>
             </div>
@@ -429,7 +436,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                 />
                             </div>
 
-                            <button onClick={addExcludedDate} className="bg-gray-500 hover:bg-blue-700 text-white p-1 px-2 rounded-lg">Agregar</button>
+                            <button onClick={addExcludedDate} className="bg-gray-500 hover:bg-blue-700 text-white p-1 px-2 rounded-lg mt-1">Agregar</button>
                         </div>
                         <div className='flex'>
                             {
@@ -442,7 +449,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
                                     </div>
                                     :
-                                    <div className='bg-gray-300 p-2 m-auto text-center text-gray-500 font-bold rounded-lg text-xs sm:text-lg'>
+                                    <div className='bg-gray-300 p-2 m-auto text-center text-gray-500 font-bold rounded-lg text-xs sm:text-sm'>
                                         Puede añadir días donde no realizará sus prácticas correspondientes por algún motivo
                                     </div>
                             }
