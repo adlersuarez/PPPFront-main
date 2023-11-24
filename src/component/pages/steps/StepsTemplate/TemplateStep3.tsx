@@ -5,17 +5,22 @@ import ContenedorSteps from './Contenedor/ContenedorSteps';
 import ListaElementos from './Contenedor/ListaElementos';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
 import EstadoRequisito from './Contenedor/EstadoRequisito';
+import ModalDatosDuracion from '../../modalForms/ModalDatosDuracion';
 
 const TemplateStep3 = () => {
 
     const [showArea, setShowArea] = useState<boolean>(false);
     const [showJefe, setShowJefe] = useState<boolean>(false);
+    const [showHorario, setShowHorario] = useState<boolean>(false);
 
     const handleCloseArea = () => setShowArea(false);
     const handleShowArea = () => setShowArea(true);
 
     const handleCloseJefe = () => setShowJefe(false);
     const handleShowJefe = () => setShowJefe(true);
+
+    const handleCloseHorario = () => setShowHorario(false);
+    const handleShowHorario = () => setShowHorario(true);
 
     const Requisitos = [
         {
@@ -54,6 +59,8 @@ const TemplateStep3 = () => {
             <ModalDatosAreaTrabajo show={showArea} hide={handleCloseArea} />
 
             <ModalDatosJefeInmediato show={showJefe} hide={handleCloseJefe} />
+
+            <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} />
 
             <ContenedorSteps
                 numero={3}
@@ -106,6 +113,20 @@ const TemplateStep3 = () => {
                                         </td>
                                     </tr>
                                     <tr className='bg-gray-100 border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito estado={2} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Duración y Horario
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowHorario}>Iniciar</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowHorario}>Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className='bg-white border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <EstadoRequisito estado={2} />
                                         </td>

@@ -91,7 +91,6 @@ const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
         <Modal onShow={props.show} onHide={props.hide}>
             <Modal.Header closeButton onHide={props.hide}> </Modal.Header>
             <Modal.Body>
-
                 <div className='flex flex-col gap-3'>
                     <div className='bg-gray-200 w-full rounded-lg flex p-2 justify-between'>
                         <div className='flex'>
@@ -235,7 +234,6 @@ const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
                         </div>
                     </div>
                 </div>
-
             </Modal.Body>
             <Modal.Footer>
                 <div className="w-full grid lg:grid-cols-2 lg:gap-3">

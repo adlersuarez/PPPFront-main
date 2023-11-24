@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Estilos de ejemplo, ajusta según sea necesario */
+.react-datepicker__day--in-range {
+    background-color: rgb(105, 186, 211);
+    color: white;
+    border-radius: 0.2em;
+}
+
+
+.react-datepicker__day--highlighted {
+    background-color: #4eaf63;
+    color: white;
+    border-radius: 0.2em;
+    
+}
