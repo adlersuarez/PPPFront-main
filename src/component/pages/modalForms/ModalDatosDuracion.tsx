@@ -39,7 +39,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
     const [dayCount, setDayCount] = useState<number>(0);
 
-    console.log(dayCount)
+    //console.log(dayCount)
 
     const handleDayCheckboxChange = (day: string) => {
         const updatedDays = selectedDays.includes(day)
@@ -55,7 +55,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                 <input
                     type="checkbox"
                     id={day}
-                    className='my-auto'
+                    className='my-auto text-gray-500'
                     checked={selectedDays.includes(day)}
                     onChange={() => handleDayCheckboxChange(day)}
                 />
@@ -67,8 +67,6 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
             </div>
         ));
     };
-
-
 
     const handleDateChange = (date: Date | null) => {
         setManualStartDate(date ? date.toISOString().split('T')[0] : '')
@@ -353,7 +351,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                         <div className="flex flex-col gap-2">
                             <h1 className='font-semibold'>SELECCIONE DÍAS DE PRÁCTICAS</h1>
 
-                            <div className="grid grid-cols-3">
+                            <div className="grid grid-cols-2 sm:grid-cols-3">
                                 {renderDayCheckboxes()}
                             </div>
 
@@ -450,7 +448,6 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                                 <strong> {descripSemanal}</strong>
                                             </span>
                                         </div>
-
                                     }
                                 </div>
                             </div>
@@ -526,7 +523,6 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                 </div>
             </Modal.Footer>
         </Modal>
-
     )
 }
 
