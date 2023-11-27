@@ -60,8 +60,8 @@ const Proceso = () => {
     const paso_3: boolean = true;
     const paso_4: boolean = true;
     const paso_5: boolean = true;
-    const paso_6: boolean = true;
-    const paso_7: boolean = true;
+    const paso_6: boolean = false;
+    const paso_7: boolean = false;
 
     const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6, paso_7];
 
@@ -89,7 +89,8 @@ const Proceso = () => {
 
                     <div>
                         <div className="md:w-full mx-auto pb-2 bg-white ">
-                            {<div className="w-full horizontal mt-5">
+                            {
+                                <div className="w-full horizontal mt-5">
                                 <Stepper
                                     steps={steps}
                                     currentStep={currentStep}
@@ -118,7 +119,8 @@ const Proceso = () => {
 
                                 </StepperContext.Provider>
 
-                            </div>}
+                            </div>
+                            }
 
                         </div>
                     </div>

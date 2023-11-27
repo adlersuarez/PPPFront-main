@@ -20,10 +20,10 @@ function StepModelNew(props: StepModelNewProps) {
         if (!step.highlighted) {
             return "bg-white border-gray-300";
         }
-        if (!(step.completed && estado[step.id - 1])) {
+        if (!(step.completed && estado[step.id - 1])) { //Proceso
             return "bg-[#e8b962] border-[#e8b962]";
         }
-        return "bg-[#22a75a] font-bold border-[#22a75a] text-3xl";
+        return "bg-[#22a75a] font-bold border-[#22a75a] text-3xl"; //Completo
     };
 
     const calculateStepIcon = () => {
@@ -48,10 +48,10 @@ function StepModelNew(props: StepModelNewProps) {
         if (!step.highlighted) {
             return "text-gray-400 text-xs font-normal";
         }
-        if (!(step.completed && estado[step.id - 1])) {
+        if (!(step.completed && estado[step.id - 1])) {  //Proceso
             return "text-[#e8b962]";
         }
-        return "text-[#22a75a]";
+        return "text-[#22a75a]";    //Completo
     };
 
     //

@@ -6,7 +6,7 @@ type StepControlProps = {
 };
 
 function StepControl({ handleClick, currentStep, steps, estadoModel }: StepControlProps) {
-    const valido = ' bg-[#22a75a] border-2 border-[#22a75a] hover:bg-[#16793f] hover:border-[#16793f] hover:text-white transition duration-200 ease-in-out cursor-pointer';
+    const valido = ' bg-gray-500 border-2 border-gray-500 hover:bg-blue-700 hover:border-blue-700 hover:text-white transition duration-200 ease-in-out cursor-pointer';
     const blockDelim = ' bg-slate-700 border-2 border-slate-300 transition duration-200 ease-in-out cursor-not-allowed opacity-50';
     const blockEstado = ' bg-[#e8b962] border-2 border-[#e8b962] cursor-not-allowed hover:bg-[#ac853d] hover:border-[#ac853d] hover:text-white transition duration-200 ease-in-out';
 
@@ -24,7 +24,7 @@ function StepControl({ handleClick, currentStep, steps, estadoModel }: StepContr
                     >
                         {currentStep === 1 ? <i className="bi bi-lock text-gray-400" /> : <i className="bi bi-arrow-left" />}
                     </button>
-                    <div className="text-center text-[#22a75a]">
+                    <div className="text-center text-gray-500">
                         <span className='text-xs font-medium'>
                             {currentStep === 1 ? '' : 'Atrás'}
                         </span>
@@ -38,7 +38,7 @@ function StepControl({ handleClick, currentStep, steps, estadoModel }: StepContr
                     >
                         {currentStep === steps.length ? <i className="bi bi-lock text-gray-400" /> : (estadoModel[currentStep - 1] ? <i className="bi bi-arrow-right" /> : <i className="bi bi-clock" />)}
                     </button>
-                    <div className={`text-center ${currentStep === steps.length ? '' : (estadoModel[currentStep - 1] ? 'text-[#22a75a]' : 'text-[#e8b962]')}`}>
+                    <div className={`text-center ${currentStep === steps.length ? '' : (estadoModel[currentStep - 1] ? 'text-gray-500' : 'text-[#e8b962]')}`}>
                         <span className='text-xs font-medium'>
                             {
                                 currentStep === steps.length ? '' : (estadoModel[currentStep - 1] ?
