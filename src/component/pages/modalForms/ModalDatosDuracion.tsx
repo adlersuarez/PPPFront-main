@@ -228,7 +228,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
     }, [timeRanges]);
 
     const handleAddButtonClick = () => {
-        alert('agregado')
+        //alert('agregado')
         addTimeRange();
     };
 
