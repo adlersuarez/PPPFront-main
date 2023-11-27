@@ -66,7 +66,10 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         ));
     };
 
+
+
     const handleDateChange = (date: Date | null) => {
+        console.log(date)
         setManualStartDate(date ? date.toISOString().split('T')[0] : '')
         setStartDate(date);
     };
@@ -307,7 +310,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                 <DatePicker
                                     //selected={startDate}
                                     onChange={(date) => handleDateChange(date)}
-                                    selectsStart
+                                    //selectsStart
                                     startDate={startDate}
                                     //endDate={endDate}
                                     inline
@@ -315,6 +318,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                     locale={es}
                                     //startDay={0}
                                     calendarStartDay={0} // Domingo
+                                    //disabledKeyboardNavigation
                                 />
                             </div>
                         </div>

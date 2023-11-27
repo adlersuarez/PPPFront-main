@@ -2,17 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Estilos de ejemplo, ajusta según sea necesario */
-.react-datepicker__day--in-range {
-    background-color: rgb(105, 186, 211);
-    color: white;
-    border-radius: 0.2em;
-}
-
+/*Estilos Datepicker*/
 
 .react-datepicker__day--highlighted {
-    background-color: #4eaf63;
+    background-color: #838383;
     color: white;
-    border-radius: 0.2em;
+    border-radius: 0.3em;
     
+}
+
+.react-datepicker__current-month {
+    text-transform: uppercase;
 }
