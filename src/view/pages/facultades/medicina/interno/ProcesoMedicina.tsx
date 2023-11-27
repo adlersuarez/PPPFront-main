@@ -51,11 +51,13 @@ const ProcesoMedicina = () => {
 
     const handleClick = (direction: string) => {
         let newStep = currentStep;
-
         direction === "next" ? newStep++ : newStep--;
-
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     };
+
+    const seleccionStep = (step : number) => {
+        setCurrentStep(step);
+    }
 
     const paso_1: boolean = true;
     const paso_2: boolean = true;
@@ -90,6 +92,7 @@ const ProcesoMedicina = () => {
                                     steps={steps}
                                     currentStep={currentStep}
                                     estadoModel={estado_model}
+                                    seleccionStep={seleccionStep}
                                 />
 
                                 <StepperControl
