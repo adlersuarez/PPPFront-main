@@ -8,7 +8,11 @@
     background-color: #838383;
     color: white;
     border-radius: 0.3em;
-    
+    transition: background-color 0.3s ease;
+}
+
+.react-datepicker__day--highlighted:hover {
+    background-color: rgb(64, 114, 223);
 }
 
 .react-datepicker__current-month {

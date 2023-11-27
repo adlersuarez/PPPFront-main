@@ -39,6 +39,8 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
     const [dayCount, setDayCount] = useState<number>(0);
 
+    console.log(dayCount)
+
     const handleDayCheckboxChange = (day: string) => {
         const updatedDays = selectedDays.includes(day)
             ? selectedDays.filter((selectedDay) => selectedDay !== day)
@@ -69,7 +71,6 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
 
     const handleDateChange = (date: Date | null) => {
-        console.log(date)
         setManualStartDate(date ? date.toISOString().split('T')[0] : '')
         setStartDate(date);
     };
@@ -163,6 +164,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
     const [timeRanges, setTimeRanges] = useState<TimeRange[]>([{ start: '', end: '' }]);
     const [totalHours, setTotalHours] = useState<number>(0);
     const [descripTotal, setDescripTotal] = useState<string>('');
+    const [descripSemanal, setDescripSemanal] = useState<string>('');
 
     //console.log(timeRanges)
 
@@ -199,6 +201,9 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         const totalHoursInt = Math.floor(total);
         const minutes = Math.round((total % 1) * 60);
 
+        const totalHoursSemanalInt = Math.floor(total * selectedDays.length);
+        const minutesSemanal = Math.round((total * selectedDays.length % 1) * 60);
+
         if (totalHoursInt === 0) {
             setDescripTotal(`${minutes} min`);
         } else if (minutes === 0) {
@@ -207,9 +212,23 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
             setDescripTotal(`${totalHoursInt} h ${minutes} min`);
         }
 
+        if (totalHoursSemanalInt === 0) {
+            setDescripSemanal(`${minutesSemanal} min`);
+        } else if (minutesSemanal === 0) {
+            setDescripSemanal(`${totalHoursSemanalInt} h`);
+        } else {
+            setDescripSemanal(`${totalHoursSemanalInt} h ${minutesSemanal} min`);
+        }
+
+        if (total !== 0) {
+            setDayCount(Math.floor(duracion / total))
+        }
+
+
     }, [timeRanges]);
 
     const handleAddButtonClick = () => {
+        alert('agregado')
         addTimeRange();
     };
 
@@ -230,7 +249,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         return (
             <div className='flex flex-col gap-2'>
                 <h2 className='text-xl text-gray-500 font-bold'>RESUMEN</h2>
-                <hr className='border border-gray-300'/>
+                <hr className='border border-gray-300' />
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-600'>
                     <div className='flex gap-4'>
                         <i className='bi bi-calendar-check' />
@@ -247,8 +266,16 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                         <strong>Días:</strong> {diasString}
                     </div>
                     <div className='flex gap-4'>
+                        <i className='bi bi-hash' />
+                        <strong>Cantidad:</strong> {dayCount>0 && dayCount + ' días'}
+                    </div>
+                    <div className='flex gap-4'>
                         <i className='bi bi-clock' />
-                        <strong>Horas(diarias):</strong> {totalHours > 0 && descripTotal}
+                        <strong>Horas (diarias):</strong> {totalHours > 0 && descripTotal}
+                    </div>
+                    <div className='flex gap-4'>
+                        <i className='bi bi-clock' />
+                        <strong>Horas (semanales):</strong> {totalHours > 0 && descripSemanal}
                     </div>
                 </div>
             </div>
@@ -283,7 +310,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                 <span className='font-bold'> {maxDiario} h diaro o {maxSemanal} h semanal</span>
                             </p>
                         </div>
-                        <div className='flex gap-4'>
+                        <div className='gap-4 hidden'>
                             <label htmlFor="dayInput" className='my-auto'>N° días:</label>
                             <input
                                 type="number"
@@ -293,7 +320,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                 onChange={(e) => setDayCount(parseInt(e.target.value))}
                             />
                         </div>
-                        <div />
+                        <div className='hidden'/>
 
                         <div className="flex flex-col gap-4">
                             <h1 className='font-semibold'>SELECCIONE FECHA DE INICIO</h1>
@@ -318,7 +345,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                     locale={es}
                                     //startDay={0}
                                     calendarStartDay={0} // Domingo
-                                    //disabledKeyboardNavigation
+                                //disabledKeyboardNavigation
                                 />
                             </div>
                         </div>
@@ -394,12 +421,12 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                     {
                                         totalHours > 0 &&
                                         (
-                                            totalHours > 6 ?
+                                            totalHours > maxDiario ?
                                                 <div title='La jornada máxima es de 6 horas diarias'
-                                                className='flex m-auto gap-2 bg-red-400 text-white p-1 px-2 rounded-lg'>
+                                                    className='flex m-auto gap-2 bg-red-400 text-white p-1 px-2 rounded-lg'>
                                                     <i className="bi bi-exclamation-triangle text-lg" />
                                                     <span className='my-auto'>
-                                                        {'Total: '}
+                                                        {'Total diario: '}
                                                         <strong> {descripTotal}</strong>
                                                     </span>
                                                 </div>
@@ -407,11 +434,23 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                                 <div className='flex m-auto gap-2 bg-green-400 text-white p-1 px-2 rounded-lg'>
                                                     <i className="bi bi-check-circle text-lg" />
                                                     <span className='my-auto'>
-                                                        {'Total: '}
+                                                        {'Total diario: '}
                                                         <strong>{descripTotal}</strong>
                                                     </span>
                                                 </div>
                                         )
+                                    }
+                                    {
+                                        ((totalHours * selectedDays.length) > maxSemanal && totalHours <= maxDiario) &&
+                                        <div title='La jornada máxima es de 30 horas a la semana'
+                                            className='flex m-auto gap-2 bg-red-400 text-white p-1 px-2 rounded-lg'>
+                                            <i className="bi bi-exclamation-triangle text-lg" />
+                                            <span className='my-auto'>
+                                                {'Total semanal: '}
+                                                <strong> {descripSemanal}</strong>
+                                            </span>
+                                        </div>
+
                                     }
                                 </div>
                             </div>
