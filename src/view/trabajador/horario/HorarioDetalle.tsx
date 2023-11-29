@@ -100,7 +100,7 @@ const HorarioDetalle = (props: Props) => {
                     endDate.setHours(parseInt(endHour), parseInt(endMin), 0, 0);
 
                     return {
-                        text: item.asignatura,
+                        asignatura: item.asignatura,
                         startDate,
                         endDate,
                         hIni: item.horaIni,
@@ -117,7 +117,7 @@ const HorarioDetalle = (props: Props) => {
                         // modalidad: item.modalidad,
                         // ocupado: item.ocupado,
                         capacidad: item.capacidad,
-                        perId: item.docenteId,
+                        docenteId: item.docenteId,
                         asignaturaId: item.asiId,
                         //codCursal: item.codCursal,
                         visibleeee: item.estado == 1 ? true : false,
