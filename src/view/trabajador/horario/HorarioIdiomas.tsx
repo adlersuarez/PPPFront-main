@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Response from "../../../model/class/response.model.class";
 import RestError from "../../../model/class/resterror.model.class";
@@ -25,13 +25,16 @@ import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
 import HorarioDetalle from "./HorarioDetalle";
 
 
-const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
+const HorarioIdiomas = () => {
 
+    const navigate = useNavigate()
     const sweet = useSweerAlert();
 
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
+
+    const [idHorario, setIdHorario] = useState<number>(0)
 
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>("0")
@@ -216,13 +219,14 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
     }
 
 
-    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number) => {
+    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number) => {
         setModuloDetalle(true)
 
         setNombreIdioma(idiomaNombre)
         setNombreSede(sedeNombre)
         setNombreModalidad(modalidadNombre)
         setIdIdioma(idiomaId)
+        setIdHorario(horarioId)
     }
 
     const handleCloseModuloDetalle = () => {
@@ -249,6 +253,7 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
                         {
                             moduloDetalle == true ? (
                                 <HorarioDetalle
+                                    idHorario={idHorario}
                                     idIdioma={idIdioma}
                                     nombreIdioma={nombreIdioma}
                                     nombreSede={nombreSede}
@@ -273,7 +278,7 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
                                         handleCloseModal={handleCloseModal} />
 
                                     <div className="p-1 bg-Solid">
-                                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => props.history.goBack()} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
+                                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
 
                                         <div className="w-full">
 
@@ -467,7 +472,7 @@ const HorarioIdiomas = (props: RouteComponentProps<{}>) => {
                                                                                         <button
                                                                                             title="Detalle"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={()=>handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId)}
+                                                                                            onClick={()=>handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 

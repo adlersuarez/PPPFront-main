@@ -4,7 +4,7 @@ import HomeEstudiante from './view/estudiante/HomeEstudiante';
 import MatriculaInterna from './view/estudiante/matricula/MatriculaInterna';
 import MatriculaExterna from './view/estudiante/matricula/MatriculaExterna';
 import MatriculaHorario from './view/estudiante/matricula/MatriculaHorario';
-import HorarioIdiomas from './view/trabajador/HorarioIdiomas';
+import HorarioIdiomas from './view/trabajador/horario/HorarioIdiomas';
 import AgregarHorario from './view/trabajador/AgregarHorario';
 import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
