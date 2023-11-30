@@ -1,6 +1,6 @@
 import CustomModal from "@/component/Modal.component";
 import { useState } from "react";
-import { useNavigate, NavLink, use } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SubirNotas = () => {
 
