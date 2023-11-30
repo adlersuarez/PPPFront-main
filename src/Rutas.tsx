@@ -8,6 +8,11 @@ import HorarioIdiomas from './view/trabajador/horario/HorarioIdiomas';
 import AgregarHorario from './view/trabajador/AgregarHorario';
 import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
+import InicioDocente from './view/docente/InicioDocente';
+import ListaClasesAsignados from './view/docente/ListaClasesAsignados';
+import ReporteDeNotas from './view/docente/ReporteDeNotas';
+import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
+import SubirNotas from './view/docente/SubirNotas';
 
 const router = createBrowserRouter([
   {
@@ -23,11 +28,11 @@ const router = createBrowserRouter([
         element: <HomeEstudiante/>
       },
       {
-        path:'matricula_interna',
+        path:'matricula-interna',
         element: <MatriculaInterna/>
       },
       {
-        path:'matricula_externa',
+        path:'matricula-externa',
         element: <MatriculaExterna/>
       },
       {
@@ -41,6 +46,26 @@ const router = createBrowserRouter([
       {
         path:'agregar-horario',
         element: <AgregarHorario/>
+      },
+      {
+        path:'inicio-docente',
+        element: <InicioDocente/>
+      },
+      {
+        path:'clases-asignadas',
+        element: <ListaClasesAsignados/>
+      },
+      {
+        path:'reporte-notas',
+        element: <ReporteDeNotas/>
+      },
+      {
+        path:'vista-horario',
+        element: <VistaHorarioDocente/>
+      },
+      {
+        path:'subir-notas',
+        element: <SubirNotas/>
       },
     ]
   },

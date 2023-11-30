@@ -28,6 +28,7 @@ import HorarioDetalle from "./HorarioDetalle";
 const HorarioIdiomas = () => {
 
     const navigate = useNavigate()
+    
     const sweet = useSweerAlert();
 
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])

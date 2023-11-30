@@ -13,7 +13,6 @@ const SubTitle = (props: Props) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
-    console.log(props.informacion)
 
     if (props.informacion !== undefined) {
         let estudiante = props.informacion as Estudiante;

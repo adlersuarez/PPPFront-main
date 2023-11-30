@@ -42,7 +42,7 @@ const MatriculaHorario = () => {
             roomId: 3,
             startDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[0], 8, 0),
             endDate: new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + diaSemana[0], 9, 30),
-            // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
+            // recurrenceRule: 'FREQ=WEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
         },
         {
             text: 'HORARIO REGULAR 1',

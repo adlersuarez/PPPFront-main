@@ -2,6 +2,7 @@ import Horario from "./component/Horario";
 import { useEffect, useState } from "react";
 import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
 import ModalHorarioDetEditar from "./modal/HorarioDetEditar";
+
 import Sweet from '../../../model/interfaces/Sweet.mode.interface'
 
 import Response from "../../../model/class/response.model.class";

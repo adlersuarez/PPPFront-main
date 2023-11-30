@@ -16,7 +16,7 @@ import Login from "../../model/interfaces/login/login";
 import { AiFillWarning } from "react-icons/ai";
 import { Types } from "../../model/enum/types.model.enum";
 
-//import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
+import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
 //import Checked from "./widget/Checked";
 
 const Acceso = () => {
@@ -100,9 +100,9 @@ const Acceso = () => {
         return <Navigate to="/inicio" />
     }
 
-    // const onEventFormRegEstExterno = () => {
-    //     setFormRegEstExterno(!formRegEstExterno)
-    // }
+    const onEventFormRegEstExterno = () => {
+        setFormRegEstExterno(!formRegEstExterno)
+    }
 
     return (
         <>
@@ -179,9 +179,9 @@ const Acceso = () => {
 
                                             <Button proceso={proceso} />
 
-                                            {/* <br />
+                                            <br />
                                             <span className="text-xs cursor-pointer text-upla-100 hover:underline"
-                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span> */}
+                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span>
 
                                         </form>
                                     </div>
@@ -191,8 +191,8 @@ const Acceso = () => {
                     )
                     :
                     (
-                        // <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
-                        ''
+                        <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
+                        // ''
                     )
             }
 

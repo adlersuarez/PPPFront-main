@@ -6,7 +6,7 @@ import CustomModal from '../../../../component/Modal.component';
 type Props = {
     data: object[];
     color: object[];
-    handleOpenModalHorarioDetProcesoEditar: ()=> void
+    handleOpenModalHorarioDetProcesoEditar: () => void
     //handleShow: () => void;
 }
 
@@ -33,11 +33,11 @@ const Horario = (props: Props) => {
 
         return (
 
-            <div className={`p-1  my-1 rounded-sm`}style={{ backgroundColor: `${horario.color}` }} >
+            <div className={`p-1  my-1 rounded-sm`} style={{ backgroundColor: `${horario.color}` }} >
                 <p className="mb-1 font-bold tracking-tight text-gray-900 dark:text-white">{horario.asignatura}</p>
                 <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">{horario.docenteId}</p>
                 <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '10px' }}>{horario.docente}</p>
-                
+
                 {/* <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Read more
                     <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
@@ -111,7 +111,7 @@ const Horario = (props: Props) => {
                     <div className="relative flex flex-wrap justify-center">
                         <button
                             className="ml-1 flex items-center rounded border-md border-yellow-500 bg-yellow-500 text-white p-2 hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-400 active:ring-yellow-400"
-                            onClick={()=>{
+                            onClick={() => {
                                 handleCloseModal();
                                 props.handleOpenModalHorarioDetProcesoEditar()
                             }}
@@ -144,12 +144,14 @@ const Horario = (props: Props) => {
 
             <Scheduler
                 timeZone="America/Lima"
+
                 defaultCurrentView="week"
                 dataSource={props.data}
                 showAllDayPanel={false}
                 firstDayOfWeek={1}
                 cellDuration={30}
                 showCurrentTimeIndicator={false}
+
                 onAppointmentTooltipShowing={(e) => e.cancel = true}
                 width={"100%"}
                 height={"100%"}
@@ -161,11 +163,12 @@ const Horario = (props: Props) => {
                     type="week"
                     startDayHour={6}
                     endDayHour={22}
+
                 />
                 <Resource
                     dataSource={props.color}
                     fieldExpr="roomId"
-                    // label="Room"
+                // label="Room"
                 />
             </Scheduler>
             {
