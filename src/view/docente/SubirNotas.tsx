@@ -18,7 +18,7 @@ const SubirNotas = () => {
 
     return (
         <>
-            <CustomModal
+            {/* <CustomModal
                 isOpen={open}
                 onOpen={() => { }}
                 onHidden={() => { }}
@@ -100,6 +100,9 @@ const SubirNotas = () => {
                         </div>
                     </div>
                 </div>
+            </div> */}
+            <div>
+                
             </div>
         </>
     )
