@@ -18,7 +18,7 @@ const ReporteDeNotas = () => {
 
                                             <h2>Idioma: Ingles</h2>
 
-                                            <h2>Aula: 3</h2>
+                                            <h2>Aula: 1</h2>
 
                                             <h2>Estudiantes: 20</h2>
 
@@ -34,7 +34,7 @@ const ReporteDeNotas = () => {
                                         <div className='flex justify-around items-center'>
                                             <h2>Idioma: Ingles</h2>
 
-                                            <h2>Aula: 3</h2>
+                                            <h2>Aula: 2</h2>
 
                                             <h2>Estudiantes: 20</h2>
 

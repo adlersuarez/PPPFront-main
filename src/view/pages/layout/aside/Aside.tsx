@@ -100,6 +100,15 @@ const menus: MenuItem[] = [
                 modPosicion: 1,
                 subMenu: false,
             },
+            {
+                id: "3",
+                titulo: "Reporte de Notas",
+                url: "/inicio/reporte-notas",
+                icono: "bi-clipboard2-plus",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            },
         ],
     },
     {
@@ -135,7 +144,6 @@ const menus: MenuItem[] = [
     },
 
 ];
-
 
 const Aside = (props: Props) => {
 
