@@ -1,7 +1,7 @@
 import Horario from "./component/Horario";
 import { useEffect, useState } from "react";
 import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
-import ModalHorarioDetProcesoEditar from "./modal/HorarioDetProcesoEditar";
+import ModalHorarioDetEditar from "./modal/HorarioDetEditar";
 import Sweet from '../../../model/interfaces/Sweet.mode.interface'
 
 import Response from "../../../model/class/response.model.class";
@@ -161,7 +161,7 @@ const HorarioDetalle = (props: Props) => {
                 handleCloseModalHorarioAgregra={handleCloseModalHorarioAgregra} />
                 
 
-            <ModalHorarioDetProcesoEditar
+            <ModalHorarioDetEditar
                 isOpenModal={isOpenModalEditar}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
