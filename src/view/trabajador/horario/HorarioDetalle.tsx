@@ -1,6 +1,7 @@
 import Horario from "./component/Horario";
 import { useEffect, useState } from "react";
-import ModalHorarioDetProceso from "./modal/HorarioDetProceso";
+import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
+import ModalHorarioDetProcesoEditar from "./modal/HorarioDetProcesoEditar";
 import Sweet from '../../../model/interfaces/Sweet.mode.interface'
 
 import Response from "../../../model/class/response.model.class";
@@ -32,32 +33,28 @@ const HorarioDetalle = (props: Props) => {
     const [color, setColor] = useState<object[]>([]);
 
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
 
-    //const [showModficarAsignatura, setShowModficarAsignatura] = useState<boolean>(false);
-
-    useEffect( ()=>{
+    useEffect(() => {
         loadInit(props.idHorario)
-    },[])
+    }, [])
 
-    //const handleShowModficarAsignatura = () => setShowModficarAsignatura(true);
 
-    const handleOpenModalHorarioDetProceso = ()  => {
+    const handleOpenModalHorarioAgregra = () => {
         setIsOpenModal(true)
     }
 
-    const handleCloseModalHorarioDetProceso = ()  => {
+    const handleCloseModalHorarioAgregra = () => {
         setIsOpenModal(false)
     }
 
-    const loadInit = async(horarioId: number) => {
+    const loadInit = async (horarioId: number) => {
 
         setListaHorarioDetalleId([])
 
         const response = await ListarHorarioDetalleId<Listas>(horarioId, props.abortControl)
         if (response instanceof Response) {
             setListaHorarioDetalleId(response.data.resultado as ListHorarioDetId[])
-            //console.log(response.data.resultado)
-            await dataRenderHorario()
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -65,33 +62,23 @@ const HorarioDetalle = (props: Props) => {
         }
     }
 
-    useEffect(()=>{dataRenderHorario()},[listaHorarioDetalleId])
+    useEffect(() => {
+        dataRenderHorario()
+        dataRenderHorarioColor()
+    }, [listaHorarioDetalleId])
 
 
     const dataRenderHorario = async () => {
 
-        // console.log(listaHorarioDetalleId)
-
-
         if (listaHorarioDetalleId.length > 0) {
 
             setDataHorario(
-                listaHorarioDetalleId.map( (item) => {
+                listaHorarioDetalleId.map((item) => {
 
                     const currentDate = new Date();
-                    // const currentDay = currentDate.getDay();
-
-                    // const dayDiff = (item.dia - 1 == 0 ? 7 : item.dia - 1) - currentDay;
-                    const dayDiff: number = parseInt(item.dia)
 
                     const startDate = new Date(currentDate);
                     const endDate = new Date(currentDate);
-
-                    startDate.setDate(dayDiff);
-
-                    // endDate.setDate((endDate.getDate() + dayDiff) - 7);
-                    endDate.setDate(dayDiff)
-
 
                     const [startHour, startMin] = item.horaIni.split(":");
                     const [endHour, endMin] = item.horaFin.split(":");
@@ -100,14 +87,17 @@ const HorarioDetalle = (props: Props) => {
                     endDate.setHours(parseInt(endHour), parseInt(endMin), 0, 0);
 
                     return {
+                        asignaturaId: item.asiId,
                         asignatura: item.asignatura,
-                        startDate,
-                        endDate,
-                        hIni: item.horaIni,
-                        hFin: item.horaFin,
+                        startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(startHour), parseInt(startMin)),
+                        endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
+                        horaIni: item.horaIni,
+                        horaFin: item.horaFin,
                         color: item.color,
                         docente: item.docente,
-                        // seccion: item.seccion,
+                        seccion: item.seccion,
+                        turno: item.turno,
+                        tipoEstudio: item.tipoEstudio,
                         // aula: item.aula,
                         observacion: item.observacion,
                         dia: item.dia,
@@ -118,34 +108,66 @@ const HorarioDetalle = (props: Props) => {
                         // ocupado: item.ocupado,
                         capacidad: item.capacidad,
                         docenteId: item.docenteId,
-                        asignaturaId: item.asiId,
+
                         //codCursal: item.codCursal,
-                        visibleeee: item.estado == 1 ? true : false,
+                        visibleeee: item.estado,
+
+                        roomId: item.color
                     };
 
                 })
 
             );
-            
 
         }
 
-        console.log(dataHorario)
-
     }
 
+    const dataRenderHorarioColor = async () => {
+        if (listaHorarioDetalleId.length > 0) {
 
+            setColor(
+                listaHorarioDetalleId.map((item) => {
+                    return {
+                        id: item.color,
+                        color: item.color,
+                        // text: ""
+                    }
+                })
+
+            )
+
+        }
+    }
+
+    // Modal Editar
+    const handleOpenModalHorarioDetProcesoEditar = () => {
+        setIsOpenModalEditar(true)
+    }
+
+    const handleCloseModalHorarioDetProcesoEditar = () => {
+        setIsOpenModalEditar(false)
+    }
 
 
     return (
         <>
-            <ModalHorarioDetProceso
+            <ModalHorarioDetAgregar
                 isOpenModal={isOpenModal}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
                 sweet={props.sweet}
                 abortControl={props.abortControl}
-                handleCloseModalHorarioDetProceso={handleCloseModalHorarioDetProceso} />
+                handleCloseModalHorarioAgregra={handleCloseModalHorarioAgregra} />
+                
+
+            <ModalHorarioDetProcesoEditar
+                isOpenModal={isOpenModalEditar}
+                idHorario={props.idHorario}
+                idIdioma={props.idIdioma}
+                sweet={props.sweet}
+                abortControl={props.abortControl}
+                handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar} />
 
             <div className="p-1 bg-Solid">
                 <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Configuracion de Horario</h2>
@@ -156,7 +178,7 @@ const HorarioDetalle = (props: Props) => {
                         <div className="relative flex flex-wrap justify-between ">
                             <button
                                 className="ml-1 flex items-center rounded border-md p-2 text-xs border-green-500 bg-green-500 text-white hover:bg-green-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
-                                onClick={handleOpenModalHorarioDetProceso}
+                                onClick={handleOpenModalHorarioAgregra}
                             >
                                 <i className="bi bi-plus-circle mr-1"></i> AGREGAR ASIGNATURA
                             </button>
@@ -180,7 +202,7 @@ const HorarioDetalle = (props: Props) => {
                         {/* <span className=" bg-blue-500 text-center">{props.nombreIdioma} - {props.nombreSede} - {props.nombreModalidad}</span> */}
                     </div>
 
-                    <Horario data={dataHorario} color={color}/>
+                    <Horario data={dataHorario} color={color}  handleOpenModalHorarioDetProcesoEditar={handleOpenModalHorarioDetProcesoEditar}/>
                 </div>
             </div>
 

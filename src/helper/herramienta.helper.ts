@@ -117,17 +117,16 @@ export const horaSelect = [
   ];
 
 export const colorSelect = [
-    { "id": 1, "nombreColor": 'Rojo', "codColor": 'rgb(239, 154, 154)' },
-    { "id": 2, "nombreColor": 'Verde', "codColor": 'rgb(129, 199, 132)' },
-    { "id": 3, "nombreColor": 'Azul', "codColor": 'rgb(100, 181, 246)' },
-    { "id": 4, "nombreColor": 'Amarillo', "codColor": 'rgb(255, 245, 157)' },
-    { "id": 5, "nombreColor": 'Naranja', "codColor": 'rgb(255, 204, 128)' },
-    { "id": 6, "nombreColor": 'Morado', "codColor": 'rgb(186, 104, 200)' },
-    { "id": 7, "nombreColor": 'Rosa', "codColor": 'rgb(244, 143, 177)' },
-    { "id": 8, "nombreColor": 'Cyan', "codColor": 'rgb(77, 208, 225)' },
-    { "id": 9, "nombreColor": 'Gris', "codColor": 'rgb(176, 190, 197)' },
-    { "id": 10, "nombreColor": 'Negro', "codColor": 'rgb(117, 117, 117)' },
-    { "id": 11, "nombreColor": 'Marrón', "codColor": 'rgb(141, 110, 99)' }
+    { "id": 1, "nombreColor": 'Rojo', "codColor": '#EF9A9A' },
+    { "id": 2, "nombreColor": 'Verde', "codColor": '#81C784' },
+    { "id": 3, "nombreColor": 'Azul', "codColor": '#64B5F6' },
+    { "id": 4, "nombreColor": 'Amarillo', "codColor": '#FFF59D' },
+    { "id": 5, "nombreColor": 'Naranja', "codColor": '#FFCC80' },
+    { "id": 6, "nombreColor": 'Morado', "codColor": '#BA68C8' },
+    { "id": 7, "nombreColor": 'Rosa', "codColor": '#F48FB1' },
+    { "id": 8, "nombreColor": 'Cyan', "codColor": '#4DD0E1' },
+    { "id": 9, "nombreColor": 'Gris', "codColor": '#B0BEC5' },
+    { "id": 10, "nombreColor": 'Marrón', "codColor": '#8D6E63' }
 ];
 
 export const seccionSelect = [

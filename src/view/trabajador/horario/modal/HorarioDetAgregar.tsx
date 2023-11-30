@@ -25,10 +25,10 @@ type Props = {
     idIdioma: number,
     sweet: Sweet,
     abortControl: AbortController,
-    handleCloseModalHorarioDetProceso: () => void
+    handleCloseModalHorarioAgregra: () => void
 }
 
-const HorarioDetProceso = (props: Props) => {
+const HorarioDetAgregar = (props: Props) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
@@ -128,7 +128,6 @@ const HorarioDetProceso = (props: Props) => {
         }
         if (color == "0") {
             refColor.current?.focus()
-            console.log(color)
             return
         }
         if (capacidad == 0) {
@@ -175,7 +174,7 @@ const HorarioDetProceso = (props: Props) => {
                 if (response instanceof Response) {
 
                     if (response.data.value == "procesado") {
-                        props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioDetProceso() });
+                        props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
                     }
 
                 }
@@ -196,7 +195,7 @@ const HorarioDetProceso = (props: Props) => {
                     }
                     */
 
-                    props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioDetProceso() });
+                    props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
                 }
             }
         })
@@ -256,7 +255,7 @@ const HorarioDetProceso = (props: Props) => {
 
                     setHoraAcademica(0)
                 }}
-                onClose={props.handleCloseModalHorarioDetProceso}
+                onClose={props.handleCloseModalHorarioAgregra}
             >
                 <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
@@ -264,7 +263,7 @@ const HorarioDetProceso = (props: Props) => {
                         <h6 className="py-1 font-bold text-lg">Nueva Asignatura</h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
-                            onClick={props.handleCloseModalHorarioDetProceso}>
+                            onClick={props.handleCloseModalHorarioAgregra}>
                             <i className="bi bi-x-circle text-lg"></i>
                         </button>
                     </div>
@@ -566,7 +565,7 @@ const HorarioDetProceso = (props: Props) => {
                         </button>
                         <button
                             className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
-                            onClick={props.handleCloseModalHorarioDetProceso}
+                            onClick={props.handleCloseModalHorarioAgregra}
                         >
                             <i className="bi bi-x-circle mr-1"></i> Cerrar
                         </button>
@@ -584,4 +583,4 @@ const HorarioDetProceso = (props: Props) => {
     )
 }
 
-export default HorarioDetProceso
+export default HorarioDetAgregar
