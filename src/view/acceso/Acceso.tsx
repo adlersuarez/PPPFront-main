@@ -36,7 +36,7 @@ const Acceso = () => {
 
     const [formRegEstExterno, setFormRegEstExterno] = useState<boolean>(false);
     
-    if(false) setFormRegEstExterno(false)
+    // if(false) setFormRegEstExterno(false)
 
     const refCodigo = useRef<HTMLInputElement>(null);
     const refClave = useRef<HTMLInputElement>(null);
@@ -75,10 +75,12 @@ const Acceso = () => {
 
         const response = await LoginRest<Login>(data);
 
-        //console.log(response)
 
         if (response instanceof Response) {
-            dispatch(login({ codigo: response.data.docNumId, token: response.data.token }));
+
+            const tipUsuario: string = response.data.docNumId.length == 7 ? 'est' : 'admin'
+
+            dispatch(login({ codigo: response.data.docNumId, token: response.data.token, tipoUsuario: tipUsuario }));
             return;
         }
 
@@ -195,7 +197,6 @@ const Acceso = () => {
                         // ''
                     )
             }
-
 
         </>
     )

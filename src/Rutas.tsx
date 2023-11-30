@@ -1,9 +1,13 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Inicio from './view/inicio/Inicio';
+
+// Estudiante
 import HomeEstudiante from './view/estudiante/HomeEstudiante';
 import MatriculaInterna from './view/estudiante/matricula/MatriculaInterna';
 import MatriculaExterna from './view/estudiante/matricula/MatriculaExterna';
 import MatriculaHorario from './view/estudiante/matricula/MatriculaHorario';
+
+// Trabajador
 import HorarioIdiomas from './view/trabajador/horario/HorarioIdiomas';
 import AgregarHorario from './view/trabajador/AgregarHorario';
 import Acceso from './view/acceso/Acceso';

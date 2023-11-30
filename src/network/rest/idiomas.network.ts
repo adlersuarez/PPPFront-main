@@ -30,8 +30,8 @@ export async function ValidarEstudianteExistente<RespValue>(codigo: string, sign
     return await Resolve.create<RespValue>(instance.get<RespValue>("/Estudiante/ValidarEstudianteExistente/" + codigo, { signal: signal! }));
 }
 
-export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId: string, ProgramaId: number, ModalidadId: number, signal = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Estudiante/InsertarDatosEstudiantePrimerLogin/${EstudianteId}/${ProgramaId}/${ModalidadId}`, { signal: signal! }));
+export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId: string, IdiomaId: number, ProgramaId: number, ModalidadId: number, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Estudiante/InsertarDatosEstudiantePrimerLogin/${EstudianteId}/${IdiomaId}/${ProgramaId}/${ModalidadId}`, { signal: signal! }));
 }
 
 export async function ListarIdioma<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {

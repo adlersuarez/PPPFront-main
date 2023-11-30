@@ -67,7 +67,7 @@ const InicioDocente = () => {
                                                     </span>
                                                 </div>
                                                 </NavLink> */}
-                                                <NavLink to={'/inicio/reporte-notas'}>                                                 <div className="flex justify-center items-center">
+                                                <NavLink to={'/inicio/reporte-nota'}>                                                 <div className="flex justify-center items-center">
                                                     <ArrowRightOnCicleSvg />
                                                     <span>
                                                         Opciones
