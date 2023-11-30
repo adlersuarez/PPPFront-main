@@ -121,8 +121,8 @@ const menus: MenuItem[] = [
         subMenuItems: [
             {
                 id: "1",
-                titulo: "Inicio Docente",
-                url: "/inicio/inicio-docente",
+                titulo: "Inicio Administratrivo",
+                url: "/inicio/inicio-administrativo",
                 icono: "bi-house-fill",
                 moduPadre: false,
                 modPosicion: 4,
@@ -131,8 +131,8 @@ const menus: MenuItem[] = [
             },
             {
                 id: "2",
-                titulo: "Agregar Horario",
-                url: "/inicio/agregar-horario",
+                titulo: "Visualizar Horarios",
+                url: "/inicio/horario-idiomas",
                 icono: "bi-calendar-plus",
                 moduPadre: false,
                 modPosicion: 4,
