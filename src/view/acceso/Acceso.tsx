@@ -78,7 +78,7 @@ const Acceso = () => {
 
         if (response instanceof Response) {
 
-            const tipUsuario: string = response.data.docNumId.length == 7 ? 'est' : 'admin'
+            const tipUsuario = response.data.docNumId.length == 7 ? 'est' : 'admin'
 
             dispatch(login({ codigo: response.data.docNumId, token: response.data.token, tipoUsuario: tipUsuario }));
             return;

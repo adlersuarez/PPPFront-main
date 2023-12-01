@@ -33,9 +33,9 @@ export const authSlice = createSlice({
             state.codigo = action.payload.codigo
             state.token = action.payload.token;
             state.tipoUsuario = action.payload.tipoUsuario;
-            window.localStorage.setItem('codigo', JSON.stringify(action.payload.codigo));
-            window.localStorage.setItem('token', JSON.stringify(action.payload.token));
-            window.localStorage.setItem('tipoUsuario', JSON.stringify(action.payload.tipoUsuario));
+            window.localStorage.setItem("codigo", JSON.stringify(action.payload.codigo));
+            window.localStorage.setItem("token", JSON.stringify(action.payload.token));
+            window.localStorage.setItem("tipoUsuario", JSON.stringify(action.payload.tipoUsuario));
         },
         logout: (state) => {          
             state.cargando = true;

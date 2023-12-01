@@ -6,13 +6,12 @@ import Overlay from "./widget/Overlay";
 import Body from "./widget/Body";
 import EstudianteLogin from "../../../../model/interfaces/login/estudiante.login";
 import TrabajadorLogin from "../../../../model/interfaces/login/trabajador.login";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../store/configureStore.store";
+
 import { useEffect } from "react";
 
 
 type Props = {
-    tipoUsuario: string
+
     informacion: EstudianteLogin | TrabajadorLogin | undefined,
     pathname: string,
     refAside: React.RefObject<HTMLInputElement>,
@@ -208,19 +207,16 @@ const menus: MenuItem[] = [
 
 const Aside = (props: Props) => {
 
-    const tipoUser = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
-    console.log(localStorage.getItem("tipoUsuario"))
-    console.log(props.tipoUsuario)
-    
-
-    // const menuAct = localStorage.getItem("tipoUsuario");
+    // const tipoUser = window.localStorage.getItem("tipoUsuario")
+    // const cod = window.localStorage.getItem("codigo")
+    const tipoUser = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
 
 
     useEffect(()=>{
         
     }, [])
 
-    const menus: MenuItem[] = tipoUser == '"est"' ? menusEst : menusAdmin
+    const menus: MenuItem[] = tipoUser == "est" ? menusEst : menusAdmin
 
 
     return (

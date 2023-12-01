@@ -15,7 +15,6 @@ import TrabajadorLogin from '../../model/interfaces/login/trabajador.login';
 type Props = {
     cargando: boolean,
     informacion: EstudianteLogin | TrabajadorLogin | undefined,
-    tipoUsuario: string,
 }
 
 const Contenido = (props: Props) => {
@@ -149,7 +148,7 @@ const Contenido = (props: Props) => {
                     {/*  */}
 
                     {/* Aside */}
-                    <Aside tipoUsuario={props.tipoUsuario} informacion={props.informacion} pathname={location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
+                    <Aside informacion={props.informacion} pathname={location.pathname} refAside={refAside} refOverlay={refOverlay} onEventOverlay={onEventOverlay} />
                     {/*  */}
 
                     {/*  */}

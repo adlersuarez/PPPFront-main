@@ -23,7 +23,6 @@ const Inicio = () => {
     const dispatch = useDispatch();
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
-    const tipUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
 
     const [primerLogin, setPrimerLogin] = useState<boolean>(false);
 
@@ -92,7 +91,7 @@ const Inicio = () => {
                 <PrimerLogin codigo={codigo} informacion={infoPrimerLogin} validarPrimerLogin={validarPrimerLogin} />
             ) :
             (
-                <Contenido cargando={cargando} informacion={informacion} tipoUsuario={tipUsuario}/>
+                <Contenido cargando={cargando} informacion={informacion}/>
 
             )
         }
