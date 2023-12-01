@@ -11,7 +11,8 @@ const InicioDocente = () => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                         <div className="grid grid-flow-row grid-cols-3 p-6">
-                            <div className="col-span-3 px-4 mb-8">
+
+                            {/* <div className="col-span-3 px-4 mb-8">
 
                                 <div className="rounded overflow-hidden shadow-lg mx-auto border border-blue-200">
                                     <div className="flex">
@@ -43,7 +44,8 @@ const InicioDocente = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
+
                             <div className="col-span-3 px-4 mb-8">
 
                                 <div className="rounded overflow-hidden shadow-lg mx-auto border border-blue-200">
@@ -51,17 +53,24 @@ const InicioDocente = () => {
                                         <div className="w-2/3 px-6 py-4 flex flex-col justify-between">
                                             <div>
                                                 <h2 className="text-xl font-mont uppercase font-bold pb-3 ">
-                                                    Reporte de Notas
+                                                    Operaciones de Notas
                                                 </h2>
                                                 <p className="font-mont text-justify">
                                                     Aqui puede subir, actulizar notas, crear un reporte de notas por aula
                                                 </p>
                                             </div>
                                             <button type="button" className="font-mont  text-white bg-upla-100 hover:bg-upla-200 hover:transition-all focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-1/3 px-5 py-2.5 text-center mt-3">
-                                                <NavLink to={'/inicio/reporte-notas'}>                                                 <div className="flex justify-center items-center">
+                                                {/* <NavLink to={'/inicio/reporte-notas'}>                                                 <div className="flex justify-center items-center">
                                                     <ArrowRightOnCicleSvg />
                                                     <span>
                                                         Ver Reporte de Notas
+                                                    </span>
+                                                </div>
+                                                </NavLink> */}
+                                                <NavLink to={'/inicio/reporte-nota'}>                                                 <div className="flex justify-center items-center">
+                                                    <ArrowRightOnCicleSvg />
+                                                    <span>
+                                                        Opciones
                                                     </span>
                                                 </div>
                                                 </NavLink>

@@ -6,18 +6,18 @@ const MatriculaInterna = () => {
 
     const navigate = useNavigate()
 
-    const [div1Visible, setDiv1Visible] = useState(false);
-    const [div2Visible, setDiv2Visible] = useState(true);
+    const [div1Visible, setDiv1Visible] = useState(true);
+    const [div2Visible, setDiv2Visible] = useState(false);
 
 
     const toggleDiv1 = () => {
-        setDiv1Visible(false);
-        setDiv2Visible(true);
+        setDiv1Visible(true);
+        setDiv2Visible(false);
     };
 
     const toggleDiv2 = () => {
-        setDiv2Visible(false);
-        setDiv1Visible(true);
+        setDiv2Visible(true);
+        setDiv1Visible(false);
     };
 
     return (
@@ -69,7 +69,7 @@ const MatriculaInterna = () => {
                                     { /* MATRICULA */}
                                     <div className={`rounded-s-lg transition-all duration-500 ${div1Visible ? 'w-3/4 bg-gray-100' : 'w-1/4 bg-white'}`}>
                                         <div className="flex justify-center items-center">
-                                            <button className={`text-white rounded-b-lg px-2 py-1 ${div1Visible ? 'cursor-pointer bg-blue-900' : 'cursor-default bg-blue-800'}`} onClick={toggleDiv2}>
+                                            <button className={`text-white rounded-b-lg px-2 py-1 ${div1Visible ? 'cursor-pointer bg-blue-900' : 'cursor-default bg-blue-800'}`} onClick={toggleDiv1}>
                                                 <p className="font-bold text-xs mx-1 my-1"><i className="bi bi-gear-fill text-xs text-white"></i> MATRICULA </p>
                                             </button>
                                         </div>
@@ -203,7 +203,7 @@ const MatriculaInterna = () => {
                                     { /* RECIBOS Y PAGOS */}
                                     <div className={`rounded-e-lg transition-all duration-500 ${div2Visible ? 'w-3/4 bg-gray-100' : 'w-1/4 bg-white'}`}>
                                         <div className="flex justify-center items-center">
-                                            <button className={`text-white rounded-b-lg px-2 py-1 ${div2Visible ? 'cursor-pointer bg-blue-900' : 'cursor-default bg-blue-800'}`} onClick={toggleDiv1}>
+                                            <button className={`text-white rounded-b-lg px-2 py-1 ${div2Visible ? 'cursor-pointer bg-blue-900' : 'cursor-default bg-blue-800'}`} onClick={toggleDiv2}>
                                                 <p className="font-bold text-xs mx-1 my-1"><i className="bi bi-receipt-cutoff text-xs text-white"></i> HISTORIAL DE PAGOS </p>
                                             </button>
                                         </div>

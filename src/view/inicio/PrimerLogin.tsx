@@ -8,17 +8,18 @@ import RestError from "../../model/class/resterror.model.class";
 import { Types } from "../../model/enum/types.model.enum";
 
 import EstudianteLogin from "../../model/interfaces/login/estudiante.login";
+
 import { logout } from "../../store/authSlice.store";
-import { ListarPrograma, ListarModalidad, InsertarDatosEstudiantePrimerLogin } from "../../network/rest/idiomas.network";
+import { ListarPrograma, ListarModalidad, InsertarDatosEstudiantePrimerLogin, ListarIdioma } from "../../network/rest/idiomas.network";
 
 import Listas from "../../model/interfaces/Listas.model.interface";
-import Modalidad from "../../model/interfaces/modalidad/modalidad";
-import Programa from "../../model/interfaces/programa/programa";
 import RespValue from "../../model/interfaces/RespValue.model.interface";
 
+import Modalidad from "../../model/interfaces/modalidad/modalidad";
+import Programa from "../../model/interfaces/programa/programa";
+import Idioma from "../../model/interfaces/idioma/idioma";
 
 import useSweerAlert from "../../component/hooks/useSweetAlert"
-
 
 type Props = {
     codigo: string,
@@ -30,13 +31,16 @@ const PrimerLogin = (props: Props) => {
 
     const dispatch = useDispatch();
 
+    const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
 
+    const [idioma, setIdioma] = useState("0")
     const [programa, setPrograma] = useState("0")
     const [modalidad, setModalidad] = useState("0")
     const [terminos, setTerminos] = useState(false)
 
+    const refIdioma = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
     const refModalidad = useRef<HTMLSelectElement>(null)
     const refTerminos = useRef<HTMLInputElement>(null)
@@ -46,10 +50,22 @@ const PrimerLogin = (props: Props) => {
     const sweet = useSweerAlert();
 
     useEffect(() => {
+        ListaIdioma()
         ListaProgramas()
         ListaModalidad()
     }, [])
 
+    const ListaIdioma = async () => {
+
+        const response = await ListarIdioma<Listas>(abortController.current)
+        if (response instanceof Response) {
+            setComboBoxIdioma(response.data.resultado as Idioma[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
 
     const ListaProgramas = async () => {
 
@@ -79,6 +95,10 @@ const PrimerLogin = (props: Props) => {
     const onEventRegEstDetalle = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
+        if (idioma == "0") {
+            refIdioma.current?.focus()
+            return
+        }
         if (programa == "0") {
             refPrograma.current?.focus()
             return
@@ -96,7 +116,7 @@ const PrimerLogin = (props: Props) => {
             if (value) {
                 sweet.openInformation("Mensaje", "Procesando información...")
 
-                const response = await InsertarDatosEstudiantePrimerLogin<RespValue>(props.codigo, parseInt(programa), parseInt(modalidad))
+                const response = await InsertarDatosEstudiantePrimerLogin<RespValue>(props.codigo, parseInt(idioma), parseInt(programa), parseInt(modalidad),)
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
                         sweet.openSuccess("Mensaje", response.data.value as string, () => { });
@@ -115,7 +135,6 @@ const PrimerLogin = (props: Props) => {
                 }
             }
         })
-
 
 
     }
@@ -170,7 +189,32 @@ const PrimerLogin = (props: Props) => {
 
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2 mt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2 mt-4">
+                                    <div>
+                                        <label
+                                            className="font-mont block mb-1 text-sm font-medium text-gray-900 "
+                                        >
+                                            Idioma <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                        </label>
+                                        <select
+                                            className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                            ref={refIdioma}
+                                            value={idioma}
+                                            onChange={(event) => setIdioma(event.currentTarget.value)}
+                                        >
+                                            <option value={"0"}>- Seleccione -</option>
+                                            {
+                                                comboBoxIdioma.map((item) => {
+                                                    return (
+                                                        <option key={item.idiomaId} value={item.idiomaId}>
+                                                            {item.idiomaNombre}
+                                                        </option>
+                                                    );
+                                                })
+                                            }
+
+                                        </select>
+                                    </div>
                                     <div>
                                         <label
                                             className="font-mont block mb-1 text-sm font-medium text-gray-900 "

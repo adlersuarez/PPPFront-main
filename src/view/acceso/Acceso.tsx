@@ -16,7 +16,7 @@ import Login from "../../model/interfaces/login/login";
 import { AiFillWarning } from "react-icons/ai";
 import { Types } from "../../model/enum/types.model.enum";
 
-//import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
+import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
 //import Checked from "./widget/Checked";
 
 const Acceso = () => {
@@ -36,7 +36,7 @@ const Acceso = () => {
 
     const [formRegEstExterno, setFormRegEstExterno] = useState<boolean>(false);
     
-    if(false) setFormRegEstExterno(false)
+    // if(false) setFormRegEstExterno(false)
 
     const refCodigo = useRef<HTMLInputElement>(null);
     const refClave = useRef<HTMLInputElement>(null);
@@ -75,10 +75,12 @@ const Acceso = () => {
 
         const response = await LoginRest<Login>(data);
 
-        //console.log(response)
 
         if (response instanceof Response) {
-            dispatch(login({ codigo: response.data.docNumId, token: response.data.token }));
+
+            const tipUsuario = response.data.docNumId.length == 7 ? 'est' : 'admin'
+
+            dispatch(login({ codigo: response.data.docNumId, token: response.data.token, tipoUsuario: tipUsuario }));
             return;
         }
 
@@ -100,9 +102,9 @@ const Acceso = () => {
         return <Navigate to="/inicio" />
     }
 
-    // const onEventFormRegEstExterno = () => {
-    //     setFormRegEstExterno(!formRegEstExterno)
-    // }
+    const onEventFormRegEstExterno = () => {
+        setFormRegEstExterno(!formRegEstExterno)
+    }
 
     return (
         <>
@@ -179,9 +181,9 @@ const Acceso = () => {
 
                                             <Button proceso={proceso} />
 
-                                            {/* <br />
+                                            <br />
                                             <span className="text-xs cursor-pointer text-upla-100 hover:underline"
-                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span> */}
+                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span>
 
                                         </form>
                                     </div>
@@ -191,11 +193,10 @@ const Acceso = () => {
                     )
                     :
                     (
-                        // <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
-                        ''
+                        <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
+                        // ''
                     )
             }
-
 
         </>
     )

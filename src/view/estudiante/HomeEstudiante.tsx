@@ -26,7 +26,7 @@ const HomeEstudiante = () => {
                                             Nuestros expertos te guiarán en tu aprendizaje de idiomas, comprometidos con tus metas y listos para cambiar tu mundo. Descubre el poder de los idiomas.
                                         </p>
                                         <button type="button" className="font-mont  text-white bg-upla-100 hover:bg-upla-200 hover:transition-all focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-1/3 px-5 py-2.5 text-center mt-3">
-                                            <NavLink to={'/inicio/matricula_interna'}>                                                 <div className="flex justify-center items-center">
+                                            <NavLink to={'/inicio/matricula-interna'}>                                                 <div className="flex justify-center items-center">
                                                 <ArrowRightOnCicleSvg />
                                                 <span>
                                                     Matriculate

@@ -35,6 +35,8 @@ const HorarioIdiomas = () => {
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
 
+    const [idHorario, setIdHorario] = useState<number>(0)
+
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>("0")
     const [idModalidad, setIdModalidad] = useState<number>(0)
@@ -218,13 +220,14 @@ const HorarioIdiomas = () => {
     }
 
 
-    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number) => {
+    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number) => {
         setModuloDetalle(true)
 
         setNombreIdioma(idiomaNombre)
         setNombreSede(sedeNombre)
         setNombreModalidad(modalidadNombre)
         setIdIdioma(idiomaId)
+        setIdHorario(horarioId)
     }
 
     const handleCloseModuloDetalle = () => {
@@ -251,6 +254,7 @@ const HorarioIdiomas = () => {
                         {
                             moduloDetalle == true ? (
                                 <HorarioDetalle
+                                    idHorario={idHorario}
                                     idIdioma={idIdioma}
                                     nombreIdioma={nombreIdioma}
                                     nombreSede={nombreSede}
@@ -469,7 +473,7 @@ const HorarioIdiomas = () => {
                                                                                         <button
                                                                                             title="Detalle"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={()=>handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId)}
+                                                                                            onClick={()=>handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 

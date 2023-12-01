@@ -33,14 +33,14 @@ const MatriculaExterna = () => {
         {
             nombre: 'Japonés',
             icono: 'globe',
-            color: 'teal',
+            color: 'green',
             desc: 'El japonés es un idioma aislado que se habla en Japón. Utiliza tres sistemas de escritura: kanji, hiragana y katakana.',
             ejemplos: ['こんにちは！', 'お元気ですか？', '私はデザートが好きです。'],
         },
         {
             nombre: 'Portugués',
             icono: 'globe',
-            color: 'indigo',
+            color: 'blue',
             desc: 'El portugués es una lengua romance hablada en Portugal, Brasil y otras antiguas colonias portuguesas. Es conocida por su musicalidad.',
             ejemplos: ['Olá!', 'Como você está?', 'Eu amo Brasil.'],
         },

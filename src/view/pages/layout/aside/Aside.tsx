@@ -5,10 +5,14 @@ import SubTitle from "./widget/SubTitle";
 import Overlay from "./widget/Overlay";
 import Body from "./widget/Body";
 import EstudianteLogin from "../../../../model/interfaces/login/estudiante.login";
-// import TrabajadorLogin from "../../../../model/interfaces/login/trabajador.login";
+import TrabajadorLogin from "../../../../model/interfaces/login/trabajador.login";
+
+import { useEffect } from "react";
+
 
 type Props = {
-    informacion: EstudianteLogin | undefined,
+
+    informacion: EstudianteLogin | TrabajadorLogin | undefined,
     pathname: string,
     refAside: React.RefObject<HTMLInputElement>,
     refOverlay: React.RefObject<HTMLInputElement>,
@@ -25,7 +29,108 @@ type MenuItem = {
     subMenu: boolean,
     subMenuItems?: MenuItem[]
 }
+const menusAdmin: MenuItem[] = [
+    {
+        id: "1",
+        titulo: "Incicio",
+        url: "/inicio/centro-idiomas",
+        icono: "bi-house-fill",
+        moduPadre: true,
+        modPosicion: 1,
+        subMenu: false,
+        subMenuItems: []
+    },
+    {
+        id: "2",
+        titulo: "Opciones",
+        icono: "bi-gear-fill",
+        moduPadre: true,
+        modPosicion: 1,
+        subMenu: false,
+        subMenuItems: [
+            {
+                id: "1",
+                titulo: "Matricula Admin",
+                url: "/inicio/matricula-interna",
+                icono: "bi-pencil-square",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            },
+            {
+                id: "2",
+                titulo: "Horario Admin",
+                url: "/inicio/horario",
+                icono: "bi-calendar-week",
+                moduPadre: false,
+                modPosicion: 2,
+                subMenu: false,
+            },
+            {
+                id: "3",
+                titulo: "Nota Admin",
+                url: "/inicio/inicio-docente",
+                icono: "bi-card-checklist",
+                moduPadre: false,
+                modPosicion: 3,
+                subMenu: false,
+            },
+        ],
+    },
+]
 
+
+
+const menusEst: MenuItem[] = [
+    {
+        id: "1",
+        titulo: "Incicio",
+        url: "/inicio/centro-idiomas",
+        icono: "bi-house-fill",
+        moduPadre: true,
+        modPosicion: 1,
+        subMenu: false,
+        subMenuItems: []
+    },
+    {
+        id: "2",
+        titulo: "Opciones",
+        icono: "bi-gear-fill",
+        moduPadre: true,
+        modPosicion: 1,
+        subMenu: false,
+        subMenuItems: [
+            {
+                id: "1",
+                titulo: "Matricula",
+                url: "/inicio/matricula-interna",
+                icono: "bi-pencil-square",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            },
+            {
+                id: "2",
+                titulo: "Horario",
+                url: "/inicio/horario",
+                icono: "bi-calendar-week",
+                moduPadre: false,
+                modPosicion: 2,
+                subMenu: false,
+            },
+            {
+                id: "3",
+                titulo: "Nota",
+                url: "/inicio/inicio-docente",
+                icono: "bi-card-checklist",
+                moduPadre: false,
+                modPosicion: 3,
+                subMenu: false,
+            },
+        ],
+    },
+]
+/*
 const menus: MenuItem[] = [
     {
         id: "1",
@@ -37,67 +142,29 @@ const menus: MenuItem[] = [
         subMenuItems: [
             {
                 id: "1",
-                titulo: "Inicio",
-                url: "/inicio/centro-idiomas",
-                icono: "bi-house-fill",
+                titulo: "Matricula Interna",
+                url: "/inicio/matricula-interna",
+                icono: "bi-pencil-square",
                 moduPadre: false,
                 modPosicion: 1,
                 subMenu: false,
             },
             {
                 id: "2",
-                titulo: "Matricula Interna",
-                url: "/inicio/matricula_interna",
+                titulo: "Matricula Externa",
+                url: "/inicio/matricula-externa",
                 icono: "bi-pencil-square",
                 moduPadre: false,
-                modPosicion: 1,
+                modPosicion: 2,
                 subMenu: false,
             },
             {
                 id: "3",
-                titulo: "Matricula Externa",
-                url: "/inicio/matricula_externa",
-                icono: "bi-pencil-square",
-                moduPadre: false,
-                modPosicion: 1,
-                subMenu: false,
-            },
-            {
-                id: "4",
                 titulo: "Horario",
                 url: "/inicio/horario",
                 icono: "bi-calendar-week",
                 moduPadre: false,
-                modPosicion: 1,
-                subMenu: false,
-            },
-        ],
-    },
-    {
-        id: "2",
-        titulo: "Docente",
-        icono: "bi-person-video3",
-        moduPadre: true,
-        modPosicion: 1,
-        subMenu: false,
-        subMenuItems: [
-            {
-                id: "1",
-                titulo: "Inicio Docente",
-                url: "/inicio/inicio-docente",
-                icono: "bi-house-fill",
-                moduPadre: false,
-                modPosicion: 4,
-                subMenu: false,
-                subMenuItems: [],
-            },
-            {
-                id: "2",
-                titulo: "Horario",
-                url: "/inicio/horario",
-                icono: "bi-calendar-week",
-                moduPadre: false,
-                modPosicion: 1,
+                modPosicion: 3,
                 subMenu: false,
             },
             {
@@ -121,21 +188,21 @@ const menus: MenuItem[] = [
         subMenuItems: [
             {
                 id: "1",
-                titulo: "Inicio Administratrivo",
-                url: "/inicio/inicio-administrativo",
+                titulo: "Inicio Docente",
+                url: "/inicio/inicio-docente",
                 icono: "bi-house-fill",
                 moduPadre: false,
-                modPosicion: 4,
+                modPosicion: 1,
                 subMenu: false,
                 subMenuItems: [],
             },
             {
                 id: "2",
-                titulo: "Visualizar Horarios",
-                url: "/inicio/horario-idiomas",
+                titulo: "Agregar Horario",
+                url: "/inicio/agregar-horario",
                 icono: "bi-calendar-plus",
                 moduPadre: false,
-                modPosicion: 4,
+                modPosicion: 2,
                 subMenu: false,
                 subMenuItems: [],
             },
@@ -145,7 +212,20 @@ const menus: MenuItem[] = [
 
 ];
 
+
 const Aside = (props: Props) => {
+
+    // const tipoUser = window.localStorage.getItem("tipoUsuario")
+    // const cod = window.localStorage.getItem("codigo")
+    const tipoUser = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
+
+
+    useEffect(()=>{
+        
+    }, [])
+
+    const menus: MenuItem[] = tipoUser == "est" ? menusEst : menusAdmin
+
 
     return (
         <Body refAside={props.refAside}>
