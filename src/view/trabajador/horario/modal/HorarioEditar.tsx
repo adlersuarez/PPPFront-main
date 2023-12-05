@@ -90,6 +90,8 @@ const HorarioEditar = (props: Props) => {
 
     const abortController = useRef(new AbortController());
 
+    const anioActual = new Date().getFullYear();
+
     useEffect(() => {
         setIdIdioma(props.idIdioma || 0);
         setIdSede(props.idSede || '0');
@@ -447,11 +449,15 @@ const HorarioEditar = (props: Props) => {
                                     <option value={0}>- Seleccione -</option>
                                     {
                                         comboBoxPeriodo.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.periodoId}>
-                                                    {item.anio} - {item.mes}
-                                                </option>
-                                            );
+                                            if (item.anio === anioActual) {
+                                                return (
+                                                    <option key={index} value={item.periodoId}>
+                                                        {item.anio} - {item.mes}
+                                                    </option>
+                                                );
+                                            }
+
+                                            return null;
                                         })
                                     }
                                 </select>
