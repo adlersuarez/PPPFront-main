@@ -34,6 +34,8 @@ const ReporteDeNotas = () => {
                                         <div className='flex justify-around items-center'>
                                             <h2>Idioma: Ingles II</h2>
 
+                                            <h2>Aula: 1</h2>
+
                                             <h2>Estudiantes: 20</h2>
 
                                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

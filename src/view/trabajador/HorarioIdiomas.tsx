@@ -203,7 +203,6 @@ const HorarioIdiomas = () => {
         }
     }
 
-
     const handleEstadoActivoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked)
         // setEstado(!estado);

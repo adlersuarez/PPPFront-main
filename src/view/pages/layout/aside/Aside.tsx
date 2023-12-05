@@ -29,6 +29,7 @@ type MenuItem = {
     subMenu: boolean,
     subMenuItems?: MenuItem[]
 }
+
 const menusAdmin: MenuItem[] = [
     {
         id: "1",
@@ -130,7 +131,7 @@ const menusEst: MenuItem[] = [
         ],
     },
 ]
-/*
+
 const menus: MenuItem[] = [
     {
         id: "1",
@@ -199,7 +200,7 @@ const menus: MenuItem[] = [
             {
                 id: "2",
                 titulo: "Agregar Horario",
-                url: "/inicio/agregar-horario",
+                url: "/inicio/horario-idiomas",
                 icono: "bi-calendar-plus",
                 moduPadre: false,
                 modPosicion: 2,
@@ -217,14 +218,14 @@ const Aside = (props: Props) => {
 
     // const tipoUser = window.localStorage.getItem("tipoUsuario")
     // const cod = window.localStorage.getItem("codigo")
-    const tipoUser = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
+    // const tipoUser = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
 
 
     useEffect(()=>{
         
     }, [])
 
-    const menus: MenuItem[] = tipoUser == "est" ? menusEst : menusAdmin
+    // const menus: MenuItem[] = tipoUser == "est" ? menusEst : menusAdmin
 
 
     return (

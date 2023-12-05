@@ -40,7 +40,6 @@ const HorarioDetalle = (props: Props) => {
         loadInit(props.idHorario)
     }, [])
 
-
     const handleOpenModalHorarioAgregra = () => {
         setIsOpenModal(true)
     }
@@ -67,7 +66,6 @@ const HorarioDetalle = (props: Props) => {
         dataRenderHorario()
         dataRenderHorarioColor()
     }, [listaHorarioDetalleId])
-
 
     const dataRenderHorario = async () => {
 
@@ -150,7 +148,6 @@ const HorarioDetalle = (props: Props) => {
         setIsOpenModalEditar(false)
     }
 
-
     return (
         <>
             <ModalHorarioDetAgregar
@@ -206,7 +203,6 @@ const HorarioDetalle = (props: Props) => {
                     <Horario data={dataHorario} color={color}  handleOpenModalHorarioDetProcesoEditar={handleOpenModalHorarioDetProcesoEditar}/>
                 </div>
             </div>
-
 
         </>
     )

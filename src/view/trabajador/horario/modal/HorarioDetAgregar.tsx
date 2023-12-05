@@ -18,7 +18,6 @@ import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 
-
 type Props = {
     isOpenModal: boolean,
     idHorario: number,
@@ -63,13 +62,10 @@ const HorarioDetAgregar = (props: Props) => {
     const [isDisabledInput, setIsDisabledInput] = useState(false)
     const refInputBusqueda = useRef<HTMLInputElement>(null)
 
-
     useEffect(() => {
         DataAsignatura()
 
     }, [])
-
-
 
     const DataAsignatura = async () => {
 
@@ -99,12 +95,9 @@ const HorarioDetAgregar = (props: Props) => {
         }
     }
 
-
-
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
-
 
     const onRegistrarHorarioDetalle = () => {
 
@@ -179,7 +172,6 @@ const HorarioDetAgregar = (props: Props) => {
 
                 }
 
-
                 if (response instanceof RestError) {
 
                     if (response.getType() === Types.CANCELED) return;
@@ -206,7 +198,6 @@ const HorarioDetAgregar = (props: Props) => {
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTermDocente(event.target.value);
     };
-
 
     const handleSearchInput = () => {
         if (searchTermDocente.trim() == '') {

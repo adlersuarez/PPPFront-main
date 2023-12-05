@@ -21,7 +21,6 @@ import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 
 import { seccionSelect } from '../../../../helper/herramienta.helper'
 
-
 type Props = {
     isOpenModal: boolean,
     idIdioma: number,
@@ -60,15 +59,12 @@ const HorarioProceso = (props: Props) => {
 
     const anioActual = new Date().getFullYear();
 
-
     useEffect(() => {
         DataTurno()
         DataPrograma()
         DataPeriodo()
         DataTipoEstudio()
     }, [])
-
-
 
     const DataTurno = async () => {
 
@@ -126,11 +122,9 @@ const HorarioProceso = (props: Props) => {
         }
     }
 
-
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
-
 
     const onRegistrarHorario = () => {
 
@@ -188,7 +182,6 @@ const HorarioProceso = (props: Props) => {
                     }
 
                 }
-
 
                 if (response instanceof RestError) {
 

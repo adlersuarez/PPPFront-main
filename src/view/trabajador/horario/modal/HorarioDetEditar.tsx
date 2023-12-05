@@ -18,7 +18,6 @@ import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 
-
 type Props = {
     isOpenModal: boolean,
     idHorario: number,
@@ -63,13 +62,9 @@ const HorarioDetEditar = (props: Props) => {
     const [isDisabledInput, setIsDisabledInput] = useState(false)
     const refInputBusqueda = useRef<HTMLInputElement>(null)
 
-
     useEffect(() => {
         DataAsignatura()
-
     }, [])
-
-
 
     const DataAsignatura = async () => {
 
@@ -103,7 +98,6 @@ const HorarioDetEditar = (props: Props) => {
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
-
 
     const onRegistrarHorarioDetalle = () => {
 
@@ -168,7 +162,8 @@ const HorarioDetEditar = (props: Props) => {
 
                 props.sweet.openInformation("Mensaje", "Procesando información...")
 
-                const response = await InsertarActualizarHorarioDetalle<RespValue>("CREAR", params, props.abortControl);
+                // const response = await InsertarActualizarHorarioDetalle<RespValue>("CREAR", params, props.abortControl);
+                const response = await InsertarActualizarHorarioDetalle<RespValue>("ACTUALIZAR", params, props.abortControl);
 
                 if (response instanceof Response) {
 
@@ -177,7 +172,6 @@ const HorarioDetEditar = (props: Props) => {
                     }
 
                 }
-
 
                 if (response instanceof RestError) {
 
@@ -205,7 +199,6 @@ const HorarioDetEditar = (props: Props) => {
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTermDocente(event.target.value);
     };
-
 
     const handleSearchInput = () => {
         if (searchTermDocente.trim() == '') {
@@ -493,7 +486,6 @@ const HorarioDetEditar = (props: Props) => {
                                         ))}
                                     </ul>
                                 )}
-
 
                             </div>
 
