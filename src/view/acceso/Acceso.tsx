@@ -69,8 +69,8 @@ const Acceso = () => {
         setProceso(true);
 
         const data = {
-            "codigo": codigo,
-            "contraseña": clave
+            "codigo": codigo.trim(),
+            "contraseña": clave.trim()
         }
 
         const response = await LoginRest<Login>(data);
@@ -78,7 +78,7 @@ const Acceso = () => {
 
         if (response instanceof Response) {
 
-            const tipUsuario = response.data.docNumId.length == 7 ? 'est' : 'admin'
+            const tipUsuario = response.data.docNumId.length == 7 ? "est" : "admin"
 
             dispatch(login({ codigo: response.data.docNumId, token: response.data.token, tipoUsuario: tipUsuario }));
             return;
