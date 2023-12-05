@@ -10,11 +10,10 @@ import { Types } from "../../../../model/enum/types.model.enum";
 
 import Turno from "../../../../model/interfaces/turno/turno";
 import Programa from "../../../../model/interfaces/programa/programa";
-import Periodo from "../../../../model/interfaces/periodo/periodo";
 import TipoEstudio from "../../../../model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarPeriodo, ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
+import { ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
@@ -27,9 +26,11 @@ type Props = {
     idIdioma: number,
     idSede: string,
     idModalidad: number,
+    idPeriodo: number,
     nombreIdioma: string,
     nombreSede: string
     nombreModalidad: string,
+    nombrePeriodo: string,
     sweet: Sweet,
 
     abortControl: AbortController,
@@ -42,35 +43,30 @@ const HorarioProceso = (props: Props) => {
 
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
-    const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
 
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [idPeriodo, setIdPeriodo] = useState<number>(0)
+
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
     const [seccion, setSeccion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
-    const refPeriodo = useRef<HTMLSelectElement>(null)
     const refTipoEstudio = useRef<HTMLSelectElement>(null)
     const refSeccion = useRef<HTMLSelectElement>(null)
 
-    const anioActual = new Date().getFullYear();
-
 
     useEffect(() => {
-        DataTurno()
-        DataPrograma()
-        DataPeriodo()
-        DataTipoEstudio()
+        LoadDataTurno()
+        LoadDataPrograma()
+        LoadDataTipoEstudio()
     }, [])
 
 
 
-    const DataTurno = async () => {
+    const LoadDataTurno = async () => {
 
         setComboBoxTurno([])
 
@@ -84,7 +80,7 @@ const HorarioProceso = (props: Props) => {
         }
     }
 
-    const DataPrograma = async () => {
+    const LoadDataPrograma = async () => {
 
         setComboBoxPrograma([])
 
@@ -98,21 +94,8 @@ const HorarioProceso = (props: Props) => {
         }
     }
 
-    const DataPeriodo = async () => {
 
-        setComboBoxPeriodo([])
-
-        const response = await ListarPeriodo<Listas>(props.abortControl)
-        if (response instanceof Response) {
-            setComboBoxPeriodo(response.data.resultado as Periodo[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
-
-    const DataTipoEstudio = async () => {
+    const LoadDataTipoEstudio = async () => {
 
         setComboBoxTipoEstudio([])
 
@@ -144,10 +127,6 @@ const HorarioProceso = (props: Props) => {
             refPrograma.current?.focus()
             return
         }
-        if (idPeriodo == 0) {
-            refPeriodo.current?.focus()
-            return
-        }
         if (idTipoEstudio == 0) {
             refTipoEstudio.current?.focus()
             return
@@ -164,7 +143,7 @@ const HorarioProceso = (props: Props) => {
             "programaId": idPrograma,
             "sedeId": props.idSede,
             "modalidadId": props.idModalidad,
-            "periodoId": idPeriodo,
+            "periodoId": props.idPeriodo,
             "tipEstudioId": idTipoEstudio,
             "seccion": seccion,
             "estado": estado ? 1 : 0,
@@ -220,7 +199,6 @@ const HorarioProceso = (props: Props) => {
                 onHidden={() => {
                     setIdTurno(0)
                     setIdPrograma(0)
-                    setIdPeriodo(0)
                     setIdTipoEstudio(0)
                     setSeccion("0")
                     setEstado(true)
@@ -251,6 +229,7 @@ const HorarioProceso = (props: Props) => {
                                         </div>
                                         <div className="text-sm">
                                             <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
+                                            <p>Periodo: <span className="text-blue-700 font-bold">{props.nombrePeriodo}</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -309,40 +288,6 @@ const HorarioProceso = (props: Props) => {
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Periodo <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refPeriodo}
-                                    value={idPeriodo}
-                                    onChange={(event) => {
-                                        setIdPeriodo(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={0}>- Seleccione -</option>
-                                    {
-                                        comboBoxPeriodo.map((item, index) => {
-
-                                            if (item.anio === anioActual) {
-                                                return (
-                                                    <option key={index} value={item.periodoId}>
-                                                        {item.anio} - {item.mes}
-                                                    </option>
-                                                );
-                                            }
-
-                                            return null;
-                                        })
-                                    }
-                                </select>
-                            </div>
-
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <select
@@ -366,6 +311,9 @@ const HorarioProceso = (props: Props) => {
                                     }
                                 </select>
                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
