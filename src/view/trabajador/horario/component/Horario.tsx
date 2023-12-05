@@ -7,7 +7,7 @@ type Props = {
     data: object[];
     color: object[];
     handleOpenModalHorarioDetProcesoEditar: () => void
-    
+
 }
 
 const Horario = (props: Props) => {
@@ -74,7 +74,7 @@ const Horario = (props: Props) => {
 
                                     <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
                                         <div className="text-sm">
-                                            <p>Docente: <span className="text-blue-700 font-bold">{horarioDetActual.docenteId} - {horarioDetActual.docente}</span></p>
+                                            <p>Instructor: <span className="text-blue-700 font-bold">{horarioDetActual.docenteId} - {horarioDetActual.docente}</span></p>
                                             <p>Seccion: <span className="text-blue-700 font-bold">{horarioDetActual.seccion}</span></p>
                                             <p>Turno: <span className="text-blue-700 font-bold">{horarioDetActual.turno}</span></p>
                                             <p>horario: Desde <span className="text-blue-700 font-bold">{horarioDetActual.horaIni}</span> hasta <span className="text-blue-700 font-bold">{horarioDetActual.horaFin}</span></p>

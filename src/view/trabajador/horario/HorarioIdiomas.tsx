@@ -20,7 +20,7 @@ import HorarioPag from "../../../model/interfaces/horario/horarioPag";
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
-import ModalHorarioProceso from "./modal/HorarioProceso";
+import ModalHorarioAgregar from "./modal/HorarioAgregar";
 
 import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "./HorarioDetalle";
@@ -303,7 +303,7 @@ const HorarioIdiomas = () => {
 
                                 <>
 
-                                    <ModalHorarioProceso
+                                    <ModalHorarioAgregar
                                         isOpenModal={isOpenModal}
                                         idIdioma={idIdioma}
                                         idSede={idSede}

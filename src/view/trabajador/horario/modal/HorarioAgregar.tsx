@@ -37,7 +37,7 @@ type Props = {
     handleCloseModal: () => void
 }
 
-const HorarioProceso = (props: Props) => {
+const HorarioAgregar = (props: Props) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
@@ -386,4 +386,4 @@ const HorarioProceso = (props: Props) => {
     )
 }
 
-export default HorarioProceso
+export default HorarioAgregar
