@@ -1,21 +1,28 @@
-import CustomModal from "@/component/Modal.component";
+// import CustomModal from "@/component/Modal.component";
 import Data from "@/component/importExcel/Data";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+// import { useState } from "react";
+// import { useNavigate } from 'react-router-dom';
 
 const SubirNotas = () => {
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const data = [
-        {
-            id: 1,
-            codigo: 'Q00499A',
-            nombre: 'Mauricio Curo, Anabel',
-        },
-    ]
+    // const data = [
+    //     {
+    //         id: 1,
+    //         codigo: 'Q00499A',
+    //         nombre: 'Mauricio Curo, Anabel',
+    //     },
+    // ]
 
-    const [open, setOpen] = useState<boolean>(false)
+    // const [open, setOpen] = useState<boolean>(false)
+
+    const [notasSubidas, SetNotasSubidas] = useState(false)
+
+    const handleNotas = () => {
+        SetNotasSubidas(true)
+    }
 
     return (
         <>
@@ -106,7 +113,9 @@ const SubirNotas = () => {
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
-                        <Data/>
+                        <Data handleNotas={handleNotas}/>
+
+                        
 
                     </div>
                 </div>
