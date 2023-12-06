@@ -1,34 +1,58 @@
 import CustomModal from "../../../../component/Modal.component";
 import { useEffect, useRef, useState, ChangeEvent } from "react";
-
 import { useSelector } from "react-redux";
 import { RootState } from '../../../../store/configureStore.store';
-
 import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
-
 import { keyNumberInteger, diaSelect, colorSelect } from '../../../../helper/herramienta.helper'
-
 import Listas from "../../../../model/interfaces/Listas.model.interface";
 import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle } from "../../../../network/rest/idiomas.network";
-
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
-import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
+import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 
+interface HorarioDetActual {
+    detHorarioId: number;
+    asignaturaId: string;
+    asignatura: string;
+    startDate: Date;
+    endDate: Date;
+    horaIni: string;
+    horaFin: string;
+    horaAcademica: string;
+    color: string;
+    nivel: number;
+    docente: string;
+    seccion: string;
+    turno: string;
+    tipoEstudio: string;
+    observacion: string;
+    dia: number;
+    recurrenceRule: string;
+    modHora: Date;
+    capacidad: number;
+    docenteId: number;
+    visibleeee: number;
+    roomId: string;
+}
 
 type Props = {
     isOpenModal: boolean,
     idHorario: number,
     idIdioma: number,
-    sweet: Sweet,
-    abortControl: AbortController,
     handleCloseModalHorarioDetProcesoEditar: () => void
 }
 
 const HorarioDetEditar = (props: Props) => {
+
+    const storedHorarioDetActualString = localStorage.getItem('horarioDetActual');
+    const storedHorarioDetActual: HorarioDetActual | null = storedHorarioDetActualString
+        ? JSON.parse(storedHorarioDetActualString)
+        : null;
+
+    const sweet = useSweerAlert();
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
@@ -36,18 +60,17 @@ const HorarioDetEditar = (props: Props) => {
     const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
 
     const [dia, setDia] = useState<number>(0)
+    const [detHorarioId, setDetHorarioId] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
     const [asiId, setAsiId] = useState<string>("0")
     const [color, setColor] = useState<string>("0")
     const [capacidad, setCapacidad] = useState<number>(0)
     const [nivel, setNivel] = useState<string>("")
-
     const [docenteId, setDocenteId] = useState<string>("")
-
     const [horaAcademica, setHoraAcademica] = useState<number>(0)
     const [observacion, setObservacion] = useState<string>("")
-    const [estado, setEstado] = useState<boolean>(true)
+    const [estado, setEstado] = useState<boolean>(false)
 
     const refDia = useRef<HTMLSelectElement>(null)
     const refHoraInicio = useRef<HTMLInputElement>(null)
@@ -63,19 +86,17 @@ const HorarioDetEditar = (props: Props) => {
     const [isDisabledInput, setIsDisabledInput] = useState(false)
     const refInputBusqueda = useRef<HTMLInputElement>(null)
 
+    const abortController = useRef(new AbortController());
 
     useEffect(() => {
         DataAsignatura()
-
     }, [])
-
-
 
     const DataAsignatura = async () => {
 
         setComboBoxAsignatura([])
 
-        const response = await ListarAsignatura<Listas>(props.abortControl)
+        const response = await ListarAsignatura<Listas>(abortController.current)
         if (response instanceof Response) {
             setComboBoxAsignatura(response.data.resultado as Asignatura[])
         }
@@ -89,7 +110,7 @@ const HorarioDetEditar = (props: Props) => {
 
         setComboBoxDocente([])
 
-        const response = await ListarDocenteIdiomasBusqueda<Listas>(buscar, props.abortControl)
+        const response = await ListarDocenteIdiomasBusqueda<Listas>(buscar, abortController.current)
         if (response instanceof Response) {
             setComboBoxDocente(response.data.resultado as DocenteInfo[])
         }
@@ -98,7 +119,7 @@ const HorarioDetEditar = (props: Props) => {
             console.log(response.getMessage())
         }
     }
-    
+
 
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
@@ -143,7 +164,7 @@ const HorarioDetEditar = (props: Props) => {
         }
 
         const params = {
-            "detHorarioId": 0,
+            "detHorarioId": detHorarioId,
             "horarioId": props.idHorario,
             "asiId": asiId,
             "aulasId": 1,
@@ -163,21 +184,20 @@ const HorarioDetEditar = (props: Props) => {
             "fechaModifica": new Date().toISOString(),
         }
 
-        props.sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+        sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
 
-                props.sweet.openInformation("Mensaje", "Procesando información...")
+                sweet.openInformation("Mensaje", "Procesando información...")
 
-                const response = await InsertarActualizarHorarioDetalle<RespValue>("CREAR", params, props.abortControl);
+                const response = await InsertarActualizarHorarioDetalle<RespValue>("ACTUALIZAR", params, abortController.current);
 
                 if (response instanceof Response) {
 
                     if (response.data.value == "procesado") {
-                        props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioDetProcesoEditar() });
+                        sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioDetProcesoEditar() });
                     }
 
                 }
-
 
                 if (response instanceof RestError) {
 
@@ -194,7 +214,7 @@ const HorarioDetEditar = (props: Props) => {
                     }
                     */
 
-                    props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioDetProcesoEditar() });
+                    sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioDetProcesoEditar() });
                 }
             }
         })
@@ -233,6 +253,27 @@ const HorarioDetEditar = (props: Props) => {
         setDocenteId("")
     }
 
+    useEffect(() => {
+        if (storedHorarioDetActual) {
+            //setIdHorario(storedHorarioDetActual.idHorario || 0);
+            setDia(storedHorarioDetActual.dia || 0);
+            setDetHorarioId(storedHorarioDetActual.detHorarioId || 0);
+            setHoraInicio(storedHorarioDetActual.horaIni || "");
+            setHoraFin(storedHorarioDetActual.horaFin || "");
+            setAsiId(storedHorarioDetActual.asignaturaId || "0");
+            setColor(storedHorarioDetActual.color || "0");
+            setCapacidad(storedHorarioDetActual.capacidad || 0);
+            setNivel(storedHorarioDetActual.nivel.toString() || "");
+            setDocenteId(storedHorarioDetActual.docenteId.toString() || '');
+            setHoraAcademica(parseInt(storedHorarioDetActual.horaAcademica) || 0);
+            setObservacion(storedHorarioDetActual.observacion || "");
+            setEstado(!!storedHorarioDetActual.visibleeee || false);
+
+            setSearchTermDocente(storedHorarioDetActual.docenteId + ' - ' + `${storedHorarioDetActual.docente}`)
+            setIsDisabledInput(true)
+        }
+    }, [storedHorarioDetActual?.dia]);
+
     return (
         <>
             <CustomModal
@@ -259,7 +300,7 @@ const HorarioDetEditar = (props: Props) => {
                 <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
                     <div className="flex justify-between">
-                        <h6 className="py-1 font-bold text-lg">Editar Asignatura</h6>
+                        <h6 className="py-1 font-bold text-lg">Editar Asignatura </h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                             onClick={props.handleCloseModalHorarioDetProcesoEditar}>

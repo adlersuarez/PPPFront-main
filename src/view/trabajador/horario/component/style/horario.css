@@ -1,0 +1,8 @@
+.dx-scheduler-header {
+    display: none;
+}
+
+.dx-scheduler {
+    border: 1px solid;
+    border-color: rgb(196, 196, 196);
+}

@@ -1,37 +1,41 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 import CustomModal from '../../../../component/Modal.component';
+import ModalHorarioDetEditar from '../modal/HorarioDetEditar';
+import '../component/style/horario.css'
 
 type Props = {
     data: object[];
     color: object[];
-    handleOpenModalHorarioDetProcesoEditar: () => void
-
+    idIdioma: number,
+    idHorario: number,
 }
 
 const Horario = (props: Props) => {
 
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
+    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
+
 
     const renderCard = (item: any) => {
 
         const horario = item.appointmentData
 
         return (
-
             <div className={`p-1  my-1 rounded-sm`} style={{ backgroundColor: `${horario.color}` }} >
                 <p className="mb-1 font-bold tracking-tight text-gray-900 dark:text-white">{horario.asignatura}</p>
                 {/* <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">{horario.docenteId}</p> */}
                 <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '10px' }}>{horario.docente}</p>
                 <p className="mb-1 font-bold text-xs text-gray-700 dark:text-gray-400">{horario.horaIni} - {horario.horaFin}</p>
             </div>
-
         )
     }
 
     const handleOpenModal = (e: any) => {
+
+        //console.log(e)
 
         setIsOpenModal(true)
         setHorarioDetActual(e.appointmentData)
@@ -39,6 +43,36 @@ const Horario = (props: Props) => {
 
     const handleCloseModal = () => {
         setIsOpenModal(false)
+    }
+
+    // Modal Editar
+    const handleOpenModalHorarioDetProcesoEditar = () => {
+        localStorage.setItem('horarioDetActual', JSON.stringify(horarioDetActual));
+        setIsOpenModalEditar(true)
+    }
+
+    const handleCloseModalHorarioDetProcesoEditar = () => {
+        localStorage.removeItem('horarioDetActual');
+        setIsOpenModalEditar(false)
+    }
+
+    //console.log(horarioDetActual)
+
+    const dayOfWeekNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+    function renderDateCell(cellData: any) {
+        return (
+            <React.Fragment>
+                {/*<div className="name">{dayOfWeekNames[cellData.date.getDay()]}</div>
+                <div className="number">{cellData.date.getDate()}</div>*/}
+                {
+                    <div className='flex justify-center gap-2 '>
+                        <div className="name my-auto text-sm sm:text-xl">{dayOfWeekNames[cellData.date.getDay()]}</div>
+                        {/*<div className="number text-xl my-auto">{cellData.date.getDate()}</div>*/}
+                    </div>
+                }
+            </React.Fragment>
+        );
     }
 
     return (
@@ -93,7 +127,8 @@ const Horario = (props: Props) => {
                             className="ml-1 flex items-center rounded border-md border-yellow-500 bg-yellow-500 text-white p-2 hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-400 active:ring-yellow-400"
                             onClick={() => {
                                 handleCloseModal();
-                                props.handleOpenModalHorarioDetProcesoEditar()
+                                //props.handleOpenModalHorarioDetProcesoEditar()
+                                handleOpenModalHorarioDetProcesoEditar()
                             }}
                         >
                             <i className="bi bi-pencil-fill mr-1"></i> Editar
@@ -120,6 +155,13 @@ const Horario = (props: Props) => {
 
             </CustomModal>
 
+            <ModalHorarioDetEditar
+                isOpenModal={isOpenModalEditar}
+                idHorario={props.idHorario}
+                idIdioma={props.idIdioma}
+                handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
+            />
+
             <Scheduler
                 timeZone="America/Lima"
 
@@ -141,7 +183,7 @@ const Horario = (props: Props) => {
                     type="week"
                     startDayHour={6}
                     endDayHour={22}
-
+                    dateCellRender={renderDateCell}
                 />
                 <Resource
                     dataSource={props.color}
@@ -153,6 +195,7 @@ const Horario = (props: Props) => {
         </>
     )
 }
+
 
 
 
