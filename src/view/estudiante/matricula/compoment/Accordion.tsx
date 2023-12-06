@@ -61,11 +61,11 @@ const Accordion = (props: Props) => {
             {/* ...otros pasos... */}
 
             {
-                // Paso 2
-                props.pasoActual === 2 &&
+                // Paso 1
+                props.pasoActual === 1 &&
                 <div className="border-l-4 border-blue-500 pl-4">
                     <h2 className="text-lg font-semibold">
-                        Paso 2 - <span className="text-red-600">Verificación de pagos</span>
+                        Paso 1 - <span className="text-red-600">Verificación de pagos</span>
                     </h2>
                     {/* <p>Paga tus Matricula  y Prension a tiempo</p> */}
 
@@ -134,11 +134,11 @@ const Accordion = (props: Props) => {
             }
 
             {
-                // Paso 3
-                props.pasoActual === 3 && (
+                // Paso 2
+                props.pasoActual === 2 && (
                     <div className="border-l-4 border-blue-500 pl-4">
                         <h2 className="text-lg font-semibold">
-                            Paso 3 - <span className="text-red-600">Matricúlate</span>
+                            Paso 2 - <span className="text-red-600">Matricúlate</span>
                         </h2>
                         <p>Completa tu matrícula, seleccionando tu idioma y horarios</p>
                         <div className="border border-gray-300 rounded-lg shadow-md mt-4">
