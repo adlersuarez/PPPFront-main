@@ -70,9 +70,9 @@ const MatriculaInterna = () => {
                                 <br/>
 
                                 <div className="flex justify-center mb-4">
-                                    <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCalendar} tipoPago={tipPago}/>
-                                    <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiDollarCircle} tipoPago={tipPago}/>
-                                    <StepButton paso={3} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCheck} tipoPago={tipPago}/>
+                                    {/* <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCalendar} tipoPago={tipPago}/> */}
+                                    <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiDollarCircle} tipoPago={tipPago}/>
+                                    <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCheck} tipoPago={tipPago}/>
                                 </div>
 
                                 <Accordion pasoActual={pasoActual} cambiarPaso={cambiarPaso} tipoPago={tipPago} pagoAnio={pagoAnio} pagoMes={pagoMes} />
