@@ -14,19 +14,19 @@ const IcoAprobado = () =>{
     )
 }
 
-const IcoDesbloqueado = () =>{
-    return(
-        <i className="bi bi-unlock-fill text-xl text-blue-500"></i> 
-    )
-}
+// const IcoDesbloqueado = () =>{
+//     return(
+//         <i className="bi bi-unlock-fill text-xl text-blue-500"></i> 
+//     )
+// }
 
-const IcoBloqueado = () =>{
-    return(
-        <i className="bi bi-lock-fill text-lg text-red-500"></i> 
-    )
-}
+// const IcoBloqueado = () =>{
+//     return(
+//         <i className="bi bi-lock-fill text-lg text-red-500"></i> 
+//     )
+// }
 
-const AccordionItem: React.FC<AccordionItemProps> = ({ icono: Icono, titulo, descripcion, enlace }) => {
+const AccordionItem: React.FC<AccordionItemProps> = ({ titulo, enlace }) => {
     return (
         <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between  hover:scale-105 transition-transform duration-300 mb-2">
             {/* <div className="text-purple-600 mr-4">

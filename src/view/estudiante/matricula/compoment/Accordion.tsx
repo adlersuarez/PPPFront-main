@@ -13,24 +13,29 @@ type Props = {
     pasoActual: number;
     cambiarPaso: (paso: number) => void;
     tipoPago: number;
-    pagoAnio: number;
-    pagoMes: number;
+    pagoAnio: boolean;
+    pagoMes: boolean;
+    anioActual: number,
+    mesActual: number,
+    loadPagos: boolean
+
 }
 
 const Accordion = (props: Props) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const fechaActual: Date = new Date();
+    // const fechaActual: Date = new Date();
 
-    const aniActual: number = fechaActual.getFullYear()
-    const mesActual: number = fechaActual.getMonth() + 1;
+    // const aniActual: number = fechaActual.getFullYear()
+    // const mesActual: number = fechaActual.getMonth() + 1;
 
     const [asigPreMatriEstudiante, setAsigPreMatriEstudiante] = useState<Asignatura[]>([])
 
     const abortController = useRef(new AbortController());
 
     useEffect(() => {
+        console.log(props.loadPagos)
         LoadDataAsigPreMatriEstudiante()
     }, [])
 
@@ -69,66 +74,84 @@ const Accordion = (props: Props) => {
                     </h2>
                     {/* <p>Paga tus Matricula  y Prension a tiempo</p> */}
 
-                    <div className="border border-gray-300 rounded-lg shadow-md mt-4">
-                        <div
-                            className="flex justify-between items-center p-3"
-                        >
-                            <h3 className="text-lg font-semibold">
-                                Matricula:
-                                {
-                                    aniActual == props.pagoAnio ?
-                                        (
-                                            <>
-                                                <span className="text-green-600"> Pagada para el año {aniActual}</span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span className="text-red-600"> Usted no pago para el año {aniActual} </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
-                                            </>
-                                        )
-                                }
-                            </h3>
-                        </div>
-                    </div>
+                    {
+                        props.loadPagos ?
+                            (
+                                <>
+                                    <p> cargandso info de pagos</p>
+                                </>
 
-                    <div className="border border-gray-300 rounded-lg shadow-md mt-4">
-                        <div
-                            className="flex justify-between items-center p-3"
-                        >
-                            <h3 className="text-lg font-semibold">
-                                Pension:
-                                {
-                                    mesActual == props.pagoMes ?
-                                        (
+                            ) : (
 
-                                            <>
+
+                                <>
+
+                                    <div className="border border-gray-300 rounded-lg shadow-md mt-4">
+                                        <div
+                                            className="flex justify-between items-center p-3"
+                                        >
+                                            <h3 className="text-lg font-semibold">
+                                                Matricula:
                                                 {
-                                                    props.tipoPago == 1 ? (
-                                                        <span className="mx-3 items-center rounded border-md border-blue-500 bg-blue-500 text-white px-2  py-1 hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 active:ring-blue-400">
-                                                            <i className="bi bi-check mr-1"></i> Normal
-                                                        </span>
-                                                    ) : props.tipoPago == 2 ? (
-                                                        <span className="mx-3 items-center rounded border-md border-green-500 bg-green-500 text-white px-2  py-1 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400">
-                                                            <i className="bi bi-check mr-1"></i> Intensivo
-                                                        </span>
-
-                                                    ) :
-                                                        <>
-                                                            <span className="text-red-600"> Pendiente </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
-                                                        </>
-
+                                                    props.pagoAnio ?
+                                                        (
+                                                            <>
+                                                                <span className="text-green-600"> Pagada para el año {props.anioActual}</span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <span className="text-red-600"> Usted no pago para el año {props.anioActual} </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                            </>
+                                                        )
                                                 }
-                                            </>
+                                            </h3>
+                                        </div>
+                                    </div>
 
-                                        ) : (
-                                            <>
-                                                <span className="text-red-600"> Pendiente </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
-                                            </>
-                                        )
-                                }
-                            </h3>
-                        </div>
-                    </div>
+                                    <div className="border border-gray-300 rounded-lg shadow-md mt-4">
+                                        <div
+                                            className="flex justify-between items-center p-3"
+                                        >
+                                            <h3 className="text-lg font-semibold">
+                                                Pension:
+                                                {
+                                                    props.pagoMes ?
+                                                        (
+
+                                                            <>
+                                                                {
+                                                                    props.tipoPago == 1 ? (
+                                                                        <span className="mx-3 items-center rounded border-md border-blue-500 bg-blue-500 text-white px-2  py-1 hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 active:ring-blue-400">
+                                                                            <i className="bi bi-check mr-1"></i> Normal
+                                                                        </span>
+                                                                    ) : props.tipoPago == 2 ? (
+                                                                        <span className="mx-3 items-center rounded border-md border-green-500 bg-green-500 text-white px-2  py-1 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400">
+                                                                            <i className="bi bi-check mr-1"></i> Intensivo
+                                                                        </span>
+
+                                                                    ) :
+                                                                        <>
+                                                                            <span className="text-red-600"> Pendiente </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                                        </>
+
+                                                                }
+                                                            </>
+
+                                                        ) : (
+                                                            <>
+                                                                <span className="text-red-600"> Pendiente </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                            </>
+                                                        )
+                                                }
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+
+                    }
+
+
 
                 </div>
             }

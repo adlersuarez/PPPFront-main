@@ -103,6 +103,15 @@ export async function ListarDocenteIdiomasBusqueda<Listas>( busqueda: string, ab
     return await Resolve.create<Listas>(instance.get<Listas>(`/Docente/ListarDocenteIdiomasBusqueda/${busqueda}`, { signal: abortController?.signal }));
 }
 
+// Pago
+export async function ValidarPagoMatriculaEstudiante<RespValue>(codigo: string, anio: number, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Pago/ValidarPagoMatriculaEstudiante/${codigo}/${anio}`, { signal: signal! }));
+}
+
+export async function ValidarPagoPensionMesEstudiante<RespValue>(codigo: string, anio: number, mes: number, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Pago/ValidarPagoPensionMesEstudiante/${codigo}/${anio}/${mes}`, { signal: signal! }));
+}
+
 
 
 

@@ -1,28 +1,103 @@
 
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
-import { BiCalendar, BiDollarCircle, BiCheck } from 'react-icons/bi';
+import { useEffect, useState } from 'react';
+import { BiDollarCircle, BiCheck } from 'react-icons/bi';
 
 import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 
+import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante } from "../../../network/rest/idiomas.network";
+
+import Response from '../../../model/class/response.model.class';
+import RestError from "../../../model/class/resterror.model.class";
+import RespValue from "../../../model/interfaces/RespValue.model.interface";
+import { useRafState } from "react-use";
+
+
 const MatriculaInterna = () => {
+
+    const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
 
     const navigate = useNavigate()
 
     const [pasoActual, setPasoActual] = useState<number>(1);
 
-    const [pagoAnio, setPagoAnio] = useState(2023)
-    const [pagoMes, setPagoMes] = useState(12)
+    const [pagoAnio, setPagoAnio] = useState(false)
+    const [pagoMes, setPagoMes] = useState(false)
+
+    const fechaActual: Date = new Date();
+
+    const aniActual: number = fechaActual.getFullYear()
+    const mesActual: number = fechaActual.getMonth() + 1;
+
+    const [loadPago, setLoadPago] = useState(true)
 
     // 0 -> no pago
     // 1 -> pago normal
     // 2 -> pago intensivo
-    const [tipPago] = useState(1)
+    const [tipPago, setTipPago] = useState(0)
+
+    useEffect(() => {
+        validarPagMatriEst(codigo, aniActual)
+        validarPagPesionMesEst(codigo, aniActual, mesActual)
+
+        handleLoadPago()
+
+    }, [])
+
+    const handleLoadPago = () => {
+        setLoadPago(false)
+    };
 
     const cambiarPaso = (paso: number) => {
         setPasoActual(paso);
     };
+    
+
+
+    const validarPagMatriEst= async (codigo: string, anio: number) => {
+
+        const validar = await ValidarPagoMatriculaEstudiante<RespValue>(codigo, anio)
+
+        if (validar instanceof Response) {
+
+            if (validar.data.value == "1") {
+                setPagoAnio(true)
+            } else {
+                setPagoAnio(false)
+                
+            }
+        }
+        if (validar instanceof RestError) {
+            console.log(validar.getMessage())
+        }
+    }
+
+
+    const validarPagPesionMesEst= async (codigo: string, anio: number, mes: number) => {
+
+        const validar = await ValidarPagoPensionMesEstudiante<RespValue>(codigo, anio, mes)
+
+        if (validar instanceof Response) {
+            if (validar.data.value == "1") {
+                setPagoMes(true)
+                setTipPago(1)
+                
+            } 
+            else if (validar.data.value == "2") {
+                setPagoMes(true)
+                setTipPago(2)
+                
+            }
+            else {
+                setPagoMes(false)
+                setTipPago(0)
+            }
+        }
+        if (validar instanceof RestError) {
+            console.log(validar.getMessage())
+        }
+    }
 
     return (
         <>
@@ -75,7 +150,7 @@ const MatriculaInterna = () => {
                                     <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCheck} tipoPago={tipPago}/>
                                 </div>
 
-                                <Accordion pasoActual={pasoActual} cambiarPaso={cambiarPaso} tipoPago={tipPago} pagoAnio={pagoAnio} pagoMes={pagoMes} />
+                                <Accordion pasoActual={pasoActual} cambiarPaso={cambiarPaso} tipoPago={tipPago} pagoAnio={pagoAnio} pagoMes={pagoMes} anioActual={aniActual} mesActual={mesActual} loadPagos={loadPago}/>
 
                             </div>
                         </div>

@@ -18,6 +18,7 @@ const Cargar = () => {
     const valid = async () => {       
         const token = window.localStorage.getItem("token");
         const codigo = window.localStorage.getItem("codigo");
+        // const tipUsuario = window.localStorage.getItem("tipoUsuario");
 
         if (token == null || codigo == null) {
             dispatch(starting());

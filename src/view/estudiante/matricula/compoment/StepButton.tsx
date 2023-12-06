@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconType } from 'react-icons';
-import { BiCalendar, BiDollarCircle, BiCheck } from 'react-icons/bi';
+// import { BiCalendar, BiDollarCircle, BiCheck } from 'react-icons/bi';
 
 interface StepButtonProps {
     paso: number;
