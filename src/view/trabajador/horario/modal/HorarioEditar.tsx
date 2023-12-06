@@ -535,9 +535,6 @@ const HorarioEditar = (props: Props) => {
                                     }
                                 </select>
                             </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
