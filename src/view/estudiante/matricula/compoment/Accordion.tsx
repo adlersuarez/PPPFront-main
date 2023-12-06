@@ -8,6 +8,7 @@ import Listas from '../../../../model/interfaces/Listas.model.interface';
 import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
+import Cargando from '@/component/Cargando';
 
 type Props = {
     pasoActual: number;
@@ -49,7 +50,7 @@ const Accordion = (props: Props) => {
         const response = await ListarAsignaturaPreMatriculaEstudiante<Listas>(cod, abortController.current)
         if (response instanceof Response) {
             setAsigPreMatriEstudiante(response.data.resultado as Asignatura[])
-            console.log(response.data.resultado)
+            //console.log(response.data.resultado)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -77,15 +78,11 @@ const Accordion = (props: Props) => {
                     {
                         props.loadPagos ?
                             (
-                                <>
-                                    <p> cargandso info de pagos</p>
-                                </>
-
+                                <div className='mt-4'>
+                                    <Cargando />
+                                </div>
                             ) : (
-
-
                                 <>
-
                                     <div className="border border-gray-300 rounded-lg shadow-md mt-4">
                                         <div
                                             className="flex justify-between items-center p-3"

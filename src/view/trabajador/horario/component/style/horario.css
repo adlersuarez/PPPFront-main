@@ -6,3 +6,19 @@
     border: 1px solid;
     border-color: rgb(196, 196, 196);
 }
+
+th.dx-scheduler-header-panel-cell[title]::after {
+    content: "";
+    /* Oculta visualmente el contenido */
+    display: none;
+    /* Oculta del flujo del documento */
+}
+
+.dx-scheduler-header-panel-cell.dx-scheduler-header-panel-current-time-cell {
+    color: black;
+    border: 0px;
+}
+
+.dx-scheduler-header-panel-cell.dx-scheduler-header-panel-current-time-cell::before {
+    display: none;
+}

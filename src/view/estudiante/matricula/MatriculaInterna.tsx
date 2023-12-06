@@ -11,7 +11,7 @@ import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante } from 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
 import RespValue from "../../../model/interfaces/RespValue.model.interface";
-import { useRafState } from "react-use";
+//import { useRafState } from "react-use";
 
 
 const MatriculaInterna = () => {
@@ -30,8 +30,9 @@ const MatriculaInterna = () => {
     const aniActual: number = fechaActual.getFullYear()
     const mesActual: number = fechaActual.getMonth() + 1;
 
-    const [loadPago, setLoadPago] = useState(true)
-
+    //const [loadPago, setLoadPago] = useState(true)
+    const [loadMes, setLoadMes] = useState(true)
+    const [loadAnio, setLoadAnio] = useState(true)
     // 0 -> no pago
     // 1 -> pago normal
     // 2 -> pago intensivo
@@ -41,21 +42,21 @@ const MatriculaInterna = () => {
         validarPagMatriEst(codigo, aniActual)
         validarPagPesionMesEst(codigo, aniActual, mesActual)
 
-        handleLoadPago()
+        //handleLoadPago()
 
     }, [])
 
-    const handleLoadPago = () => {
+    /*const handleLoadPago = () => {
         setLoadPago(false)
-    };
+    };*/
 
     const cambiarPaso = (paso: number) => {
         setPasoActual(paso);
     };
-    
 
 
-    const validarPagMatriEst= async (codigo: string, anio: number) => {
+
+    const validarPagMatriEst = async (codigo: string, anio: number) => {
 
         const validar = await ValidarPagoMatriculaEstudiante<RespValue>(codigo, anio)
 
@@ -65,8 +66,9 @@ const MatriculaInterna = () => {
                 setPagoAnio(true)
             } else {
                 setPagoAnio(false)
-                
             }
+
+            setLoadAnio(false)
         }
         if (validar instanceof RestError) {
             console.log(validar.getMessage())
@@ -74,7 +76,7 @@ const MatriculaInterna = () => {
     }
 
 
-    const validarPagPesionMesEst= async (codigo: string, anio: number, mes: number) => {
+    const validarPagPesionMesEst = async (codigo: string, anio: number, mes: number) => {
 
         const validar = await ValidarPagoPensionMesEstudiante<RespValue>(codigo, anio, mes)
 
@@ -82,17 +84,19 @@ const MatriculaInterna = () => {
             if (validar.data.value == "1") {
                 setPagoMes(true)
                 setTipPago(1)
-                
-            } 
+
+            }
             else if (validar.data.value == "2") {
                 setPagoMes(true)
                 setTipPago(2)
-                
+
             }
             else {
                 setPagoMes(false)
                 setTipPago(0)
             }
+
+            setLoadMes(false)
         }
         if (validar instanceof RestError) {
             console.log(validar.getMessage())
@@ -142,15 +146,17 @@ const MatriculaInterna = () => {
                                     </div>
                                 </div>
 
-                                <br/>
+                                <br />
 
                                 <div className="flex justify-center mb-4">
                                     {/* <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCalendar} tipoPago={tipPago}/> */}
-                                    <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiDollarCircle} tipoPago={tipPago}/>
-                                    <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCheck} tipoPago={tipPago}/>
+                                    <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiDollarCircle} tipoPago={tipPago} />
+                                    <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCheck} tipoPago={tipPago} />
                                 </div>
 
-                                <Accordion pasoActual={pasoActual} cambiarPaso={cambiarPaso} tipoPago={tipPago} pagoAnio={pagoAnio} pagoMes={pagoMes} anioActual={aniActual} mesActual={mesActual} loadPagos={loadPago}/>
+                                <Accordion pasoActual={pasoActual} cambiarPaso={cambiarPaso} tipoPago={tipPago} pagoAnio={pagoAnio} pagoMes={pagoMes} anioActual={aniActual} mesActual={mesActual}
+                                    loadPagos={loadAnio || loadMes}
+                                />
 
                             </div>
                         </div>

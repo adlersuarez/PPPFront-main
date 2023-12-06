@@ -12,6 +12,8 @@ type Props = {
     idHorario: number,
 }
 
+
+
 const Horario = (props: Props) => {
 
     const [isOpenModal, setIsOpenModal] = useState(false);
