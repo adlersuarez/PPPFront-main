@@ -21,6 +21,7 @@ import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
 import ModalHorarioAgregar from "./modal/HorarioAgregar";
+import ModalHorarioEditar from "./modal/HorarioEditar";
 
 import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "./HorarioDetalle";
@@ -45,6 +46,14 @@ const HorarioIdiomas = () => {
     const [idModalidad, setIdModalidad] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<number>(0)
 
+    const [idTurno, setIdTurno] = useState<number>(0)
+    const [idPrograma, setIdPrograma] = useState<number>(0)
+    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+
+    const [seccion, setSeccion] = useState<string>("0")
+    const [estado, setEstado] = useState<number>(0)
+
+
     const [nombreIdioma, setNombreIdioma] = useState<string>("")
     const [nombreSede, setNombreSede] = useState<string>("")
     const [nombreModalidad, setNombreModalidad] = useState<string>("")
@@ -57,6 +66,7 @@ const HorarioIdiomas = () => {
 
     const abortController = useRef(new AbortController());
     const abortControllerNuevo = useRef(new AbortController());
+    const abortControllerEditar = useRef(new AbortController());
 
     const anioActual = new Date().getFullYear();
 
@@ -71,6 +81,7 @@ const HorarioIdiomas = () => {
     const [mensajeCarga, setMensajeCarga] = useState<boolean>(true)
 
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
 
     const [moduloDetalle, setModuloDetalle] = useState(false);
 
@@ -161,6 +172,23 @@ const HorarioIdiomas = () => {
 
 
         handleOpenModal()
+    }
+
+    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: number, turnoId: number, programaId: number, tipEstudioId: number, seccion: string, estado: number) => {
+        setIdHorario(horarioId)
+
+        setIdIdioma(idiomaId)
+        setIdSede(sedeId)
+        setIdModalidad(modalidadId)
+        setIdPeriodo(periodoId)
+        setIdTurno(turnoId)
+        setIdPrograma(programaId)
+        setIdTipoEstudio(tipEstudioId)
+
+        setSeccion(seccion)
+        setEstado(estado)
+
+        handleOpenModalEditar()
     }
 
     // Tabla
@@ -281,6 +309,15 @@ const HorarioIdiomas = () => {
         setIsOpenModal(false);
     };
 
+    //Editar
+    const handleOpenModalEditar = () => {
+        setIsOpenModalEditar(true);
+    };
+
+    const handleCloseModalEditar = () => {
+        setIsOpenModalEditar(false);
+    };
+
 
     return (
         <>
@@ -317,7 +354,31 @@ const HorarioIdiomas = () => {
                                         abortControl={abortControllerNuevo.current}
                                         handleCloseModal={handleCloseModal} />
 
-                                    {/* Contenido */}    
+                                    <ModalHorarioEditar
+                                        isOpenModal={isOpenModalEditar}
+                                        idHorario={idHorario}
+                                        idIdioma={idIdioma}
+                                        idSede={idSede}
+                                        idModalidad={idModalidad}
+                                        idPeriodo={idPeriodo}
+                                        idTurno={idTurno}
+                                        idPrograma={idPrograma}
+                                        idTipoEstudio={idTipoEstudio}
+                                        seccion={seccion}
+                                        estado={estado}
+
+                                        nombreIdioma={nombreIdioma}
+                                        nombreSede={nombreSede}
+                                        nombreModalidad={nombreModalidad}
+                                        nombrePeriodo={nombrePeriodo}
+
+                                        loadinit={loadInit}
+
+                                        sweet={sweet}
+                                        abortControl={abortControllerEditar.current}
+                                        handleCloseModal={handleCloseModalEditar} />
+
+                                    {/* Contenido */}
 
                                     <div className="p-1 bg-Solid">
                                         <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
@@ -547,7 +608,7 @@ const HorarioIdiomas = () => {
                                                                                         <button
                                                                                             title="Editar"
                                                                                             className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                        // onClick={() => onEventDetalle(item.codigo)}
+                                                                                            onClick={() => EditarHorario(item.horarioId,item.idiomaId,item.sedeId,item.modalidadId, item.periodoId,item.turnoId, item.programaId, item.tipEstudioId, item.seccion, item.estado)}
                                                                                         >
                                                                                             <i className="bi bi-pencil-fill text-sm"></i>
 
