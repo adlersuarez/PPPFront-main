@@ -9,9 +9,10 @@ import { Types } from "../../../model/enum/types.model.enum";
 import Idioma from "../../../model/interfaces/idioma/idioma";
 import Sede from "../../../model/interfaces/sede/sede";
 import Modalidad from "../../../model/interfaces/modalidad/modalidad";
+import Periodo from "../../../model/interfaces/periodo/periodo";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarHorarioPag } from "../../../network/rest/idiomas.network";
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag } from "../../../network/rest/idiomas.network";
 
 import useSweerAlert from "../../../component/hooks/useSweetAlert"
 
@@ -19,38 +20,55 @@ import HorarioPag from "../../../model/interfaces/horario/horarioPag";
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
-import ModalHorarioProceso from "./modal/HorarioProceso";
+import ModalHorarioAgregar from "./modal/HorarioAgregar";
+import ModalHorarioEditar from "./modal/HorarioEditar";
 
 import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
-import HorarioDetalle from "./HorarioDetalle";
+import ModuloHorarioDetalle from "./HorarioDetalle";
+
 
 
 const HorarioIdiomas = () => {
 
     const navigate = useNavigate()
-    
+
     const sweet = useSweerAlert();
 
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
+    const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
 
     const [idHorario, setIdHorario] = useState<number>(0)
 
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>("0")
     const [idModalidad, setIdModalidad] = useState<number>(0)
+    const [idPeriodo, setIdPeriodo] = useState<number>(0)
+
+    const [idTurno, setIdTurno] = useState<number>(0)
+    const [idPrograma, setIdPrograma] = useState<number>(0)
+    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+
+    const [seccion, setSeccion] = useState<string>("0")
+    const [estado, setEstado] = useState<number>(0)
+
 
     const [nombreIdioma, setNombreIdioma] = useState<string>("")
     const [nombreSede, setNombreSede] = useState<string>("")
     const [nombreModalidad, setNombreModalidad] = useState<string>("")
+    const [nombrePeriodo, setNombrePeriodo] = useState<string>("")
 
     const refIdioma = useRef<HTMLSelectElement>(null)
     const refSede = useRef<HTMLSelectElement>(null)
     const refModalidad = useRef<HTMLSelectElement>(null)
+    const refPeriodo = useRef<HTMLSelectElement>(null)
 
     const abortController = useRef(new AbortController());
     const abortControllerNuevo = useRef(new AbortController());
+    const abortControllerEditar = useRef(new AbortController());
+
+    const anioActual = new Date().getFullYear();
 
     // Tabla
     const paginacion = useRef<number>(0);
@@ -63,19 +81,21 @@ const HorarioIdiomas = () => {
     const [mensajeCarga, setMensajeCarga] = useState<boolean>(true)
 
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
 
     const [moduloDetalle, setModuloDetalle] = useState(false);
 
     useEffect(() => {
-        DataIdioma()
-        DataSede()
-        DataModalidad()
+        LoadDataIdioma()
+        LoadDataSede()
+        LoadDataModalidad()
+        LoadDataPeriodo()
 
         setMensajeCarga(true)
 
     }, [])
 
-    const DataIdioma = async () => {
+    const LoadDataIdioma = async () => {
 
         setComboBoxIdioma([])
 
@@ -89,7 +109,7 @@ const HorarioIdiomas = () => {
         }
     }
 
-    const DataSede = async () => {
+    const LoadDataSede = async () => {
 
         setComboBoxSede([])
 
@@ -103,7 +123,7 @@ const HorarioIdiomas = () => {
         }
     }
 
-    const DataModalidad = async () => {
+    const LoadDataModalidad = async () => {
 
         setComboBoxModalidad([])
 
@@ -116,6 +136,21 @@ const HorarioIdiomas = () => {
             console.log(response.getMessage())
         }
     }
+
+    const LoadDataPeriodo = async () => {
+
+        setComboBoxPeriodo([])
+
+        const response = await ListarPeriodo<Listas>(abortController.current)
+        if (response instanceof Response) {
+            setComboBoxPeriodo(response.data.resultado as Periodo[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
 
     const NuevoHorario = () => {
         if (idIdioma == 0) {
@@ -130,8 +165,30 @@ const HorarioIdiomas = () => {
             refModalidad.current?.focus()
             return
         }
+        if (idPeriodo == 0) {
+            refPeriodo.current?.focus()
+            return
+        }
+
 
         handleOpenModal()
+    }
+
+    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: number, turnoId: number, programaId: number, tipEstudioId: number, seccion: string, estado: number) => {
+        setIdHorario(horarioId)
+
+        setIdIdioma(idiomaId)
+        setIdSede(sedeId)
+        setIdModalidad(modalidadId)
+        setIdPeriodo(periodoId)
+        setIdTurno(turnoId)
+        setIdPrograma(programaId)
+        setIdTipoEstudio(tipEstudioId)
+
+        setSeccion(seccion)
+        setEstado(estado)
+
+        handleOpenModalEditar()
     }
 
     // Tabla
@@ -150,6 +207,10 @@ const HorarioIdiomas = () => {
             refModalidad.current?.focus()
             return
         }
+        if (idPeriodo == 0) {
+            refPeriodo.current?.focus()
+            return
+        }
 
         if (loading) return;
 
@@ -157,7 +218,7 @@ const HorarioIdiomas = () => {
 
         paginacion.current = 1;
         restart.current = true;
-        fillTable(idIdioma, idSede, idModalidad);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo);
     }
 
     const paginacionTable = (listid: number) => {
@@ -180,13 +241,17 @@ const HorarioIdiomas = () => {
             refModalidad.current?.focus()
             return
         }
+        if (idPeriodo == 0) {
+            refPeriodo.current?.focus()
+            return
+        }
 
         if (loading) return;
 
-        fillTable(idIdioma, idSede, idModalidad);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo);
     }
 
-    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number) => {
+    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: number) => {
         setLoading(true)
 
         setHorarioLista([]);
@@ -194,7 +259,7 @@ const HorarioIdiomas = () => {
         const posPagina: number = ((paginacion.current - 1) * filasPorPagina.current)
         const filaPagina: number = filasPorPagina.current
 
-        const response = await ListarHorarioPag<ListasPag>(idIdioma, idSede, idModalidad, posPagina, filaPagina);
+        const response = await ListarHorarioPag<ListasPag>(idIdioma, idSede, idModalidad, idPeriodo, posPagina, filaPagina);
 
         if (response instanceof Response) {
             totalPaginacion.current = Math.ceil(response.data.total / filasPorPagina.current);
@@ -244,6 +309,15 @@ const HorarioIdiomas = () => {
         setIsOpenModal(false);
     };
 
+    //Editar
+    const handleOpenModalEditar = () => {
+        setIsOpenModalEditar(true);
+    };
+
+    const handleCloseModalEditar = () => {
+        setIsOpenModalEditar(false);
+    };
+
 
     return (
         <>
@@ -253,7 +327,7 @@ const HorarioIdiomas = () => {
 
                         {
                             moduloDetalle == true ? (
-                                <HorarioDetalle
+                                <ModuloHorarioDetalle
                                     idHorario={idHorario}
                                     idIdioma={idIdioma}
                                     nombreIdioma={nombreIdioma}
@@ -266,24 +340,52 @@ const HorarioIdiomas = () => {
 
                                 <>
 
-                                    <ModalHorarioProceso
+                                    <ModalHorarioAgregar
                                         isOpenModal={isOpenModal}
                                         idIdioma={idIdioma}
                                         idSede={idSede}
                                         idModalidad={idModalidad}
+                                        idPeriodo={idPeriodo}
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
+                                        nombrePeriodo={nombrePeriodo}
                                         sweet={sweet}
                                         abortControl={abortControllerNuevo.current}
                                         handleCloseModal={handleCloseModal} />
+
+                                    <ModalHorarioEditar
+                                        isOpenModal={isOpenModalEditar}
+                                        idHorario={idHorario}
+                                        idIdioma={idIdioma}
+                                        idSede={idSede}
+                                        idModalidad={idModalidad}
+                                        idPeriodo={idPeriodo}
+                                        idTurno={idTurno}
+                                        idPrograma={idPrograma}
+                                        idTipoEstudio={idTipoEstudio}
+                                        seccion={seccion}
+                                        estado={estado}
+
+                                        nombreIdioma={nombreIdioma}
+                                        nombreSede={nombreSede}
+                                        nombreModalidad={nombreModalidad}
+                                        nombrePeriodo={nombrePeriodo}
+
+                                        loadinit={loadInit}
+
+                                        sweet={sweet}
+                                        abortControl={abortControllerEditar.current}
+                                        handleCloseModal={handleCloseModalEditar} />
+
+                                    {/* Contenido */}
 
                                     <div className="p-1 bg-Solid">
                                         <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
 
                                         <div className="w-full">
 
-                                            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
                                                 <div>
                                                     <label
                                                         className="font-mont block mb-1 text-sm font-medium text-gray-900 "
@@ -320,6 +422,7 @@ const HorarioIdiomas = () => {
 
                                                     </select>
                                                 </div>
+
                                                 <div>
                                                     <label
                                                         className="font-mont block mb-1 text-sm font-medium text-gray-900 "
@@ -356,6 +459,7 @@ const HorarioIdiomas = () => {
 
                                                     </select>
                                                 </div>
+
                                                 <div>
                                                     <label
                                                         className="font-mont block mb-1 text-sm font-medium text-gray-900 "
@@ -392,6 +496,46 @@ const HorarioIdiomas = () => {
 
                                                     </select>
                                                 </div>
+
+                                                <div>
+                                                    <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                                        Periodo <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                                    </label>
+                                                    <select
+                                                        className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                                        ref={refPeriodo}
+                                                        value={idPeriodo}
+                                                        onChange={(event) => {
+                                                            const selectedPeriodoId = event.currentTarget.value;
+                                                            setIdPeriodo(parseInt(selectedPeriodoId));
+
+                                                            const selectedPeriodo = comboBoxPeriodo.find(item => item.periodoId.toString() === selectedPeriodoId);
+
+                                                            if (selectedPeriodo) {
+                                                                setNombrePeriodo(`${selectedPeriodo.anio} - ${selectedPeriodo.mes}`);
+                                                            } else {
+                                                                setNombrePeriodo("");
+                                                            }
+                                                        }}
+                                                    >
+                                                        <option value={0}>- Seleccione -</option>
+                                                        {
+                                                            comboBoxPeriodo.map((item, index) => {
+
+                                                                if (item.anio === anioActual) {
+                                                                    return (
+                                                                        <option key={index} value={item.periodoId}>
+                                                                            {item.anio} - {item.mes}
+                                                                        </option>
+                                                                    );
+                                                                }
+
+                                                                return null;
+                                                            })
+                                                        }
+                                                    </select>
+                                                </div>
+
                                                 <div>
                                                     <label
                                                         className="font-mont block mb-1 text-sm font-medium text-gray-900 "
@@ -423,6 +567,7 @@ const HorarioIdiomas = () => {
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '10%' }}>Idioma</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidas</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">F. Registro</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>Editar</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>Detalle</th>
@@ -434,7 +579,7 @@ const HorarioIdiomas = () => {
 
                                                             loading ? (
                                                                 <tr className="text-center bg-white border-b">
-                                                                    <td colSpan={8} className="text-sm p-2 border-b border-solid">
+                                                                    <td colSpan={9} className="text-sm p-2 border-b border-solid">
                                                                         <div className="flex items-center justify-center">
                                                                             <LoaderSvg /> <span>Cargando datos...</span>
                                                                         </div>
@@ -444,7 +589,7 @@ const HorarioIdiomas = () => {
                                                                 horarioLista.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={8} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione Idioma, Sede, Modalidad para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={9} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione Idioma, Sede, Modalidad para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :
@@ -457,12 +602,13 @@ const HorarioIdiomas = () => {
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.idiomaNombre}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{formatDateTimeToFecha(item.fechaRegistra)}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                                                                         <button
                                                                                             title="Editar"
                                                                                             className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                        // onClick={() => onEventDetalle(item.codigo)}
+                                                                                            onClick={() => EditarHorario(item.horarioId,item.idiomaId,item.sedeId,item.modalidadId, item.periodoId,item.turnoId, item.programaId, item.tipEstudioId, item.seccion, item.estado)}
                                                                                         >
                                                                                             <i className="bi bi-pencil-fill text-sm"></i>
 
@@ -473,7 +619,7 @@ const HorarioIdiomas = () => {
                                                                                         <button
                                                                                             title="Detalle"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={()=>handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId)}
+                                                                                            onClick={() => handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 

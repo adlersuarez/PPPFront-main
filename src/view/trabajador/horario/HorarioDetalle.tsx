@@ -1,7 +1,7 @@
 import Horario from "./component/Horario";
 import { useEffect, useState } from "react";
 import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
-import ModalHorarioDetEditar from "./modal/HorarioDetEditar";
+//import ModalHorarioDetEditar from "./modal/HorarioDetEditar";
 
 import Sweet from '../../../model/interfaces/Sweet.mode.interface'
 
@@ -34,7 +34,7 @@ const HorarioDetalle = (props: Props) => {
     const [color, setColor] = useState<object[]>([]);
 
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
+    //const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
 
     useEffect(() => {
         loadInit(props.idHorario)
@@ -86,12 +86,15 @@ const HorarioDetalle = (props: Props) => {
                     endDate.setHours(parseInt(endHour), parseInt(endMin), 0, 0);
 
                     return {
+                        detHorarioId: item.detHorarioId,
                         asignaturaId: item.asiId,
                         asignatura: item.asignatura,
+                        nivel: item.nivel,
                         startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(startHour), parseInt(startMin)),
                         endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
                         horaIni: item.horaIni,
                         horaFin: item.horaFin,
+                        horaAcademica: item.horaAcademica,
                         color: item.color,
                         docente: item.docente,
                         seccion: item.seccion,
@@ -140,13 +143,15 @@ const HorarioDetalle = (props: Props) => {
     }
 
     // Modal Editar
-    const handleOpenModalHorarioDetProcesoEditar = () => {
+    /*const handleOpenModalHorarioDetProcesoEditar = () => {
         setIsOpenModalEditar(true)
     }
 
     const handleCloseModalHorarioDetProcesoEditar = () => {
         setIsOpenModalEditar(false)
-    }
+    }*/
+
+    //console.log(dataHorario)
 
     return (
         <>
@@ -159,13 +164,13 @@ const HorarioDetalle = (props: Props) => {
                 handleCloseModalHorarioAgregra={handleCloseModalHorarioAgregra} />
                 
 
-            <ModalHorarioDetEditar
+            {/*<ModalHorarioDetEditar
                 isOpenModal={isOpenModalEditar}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
                 sweet={props.sweet}
                 abortControl={props.abortControl}
-                handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar} />
+    handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar} />*/}
 
             <div className="p-1 bg-Solid">
                 <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Configuracion de Horario</h2>
@@ -195,12 +200,14 @@ const HorarioDetalle = (props: Props) => {
 
                         </div>
                         <div className="text-center ">
-                            <span className="text-sm">{props.nombreIdioma} - {props.nombreSede} - {props.nombreModalidad}</span>
+                            <span className="text-lg font-semibold text-gray-500">{props.nombreIdioma} - {props.nombreSede} - {props.nombreModalidad}</span>
                         </div>
                         {/* <span className=" bg-blue-500 text-center">{props.nombreIdioma} - {props.nombreSede} - {props.nombreModalidad}</span> */}
                     </div>
 
-                    <Horario data={dataHorario} color={color}  handleOpenModalHorarioDetProcesoEditar={handleOpenModalHorarioDetProcesoEditar}/>
+                    <Horario data={dataHorario} color={color}  idIdioma={props.idIdioma} idHorario={props.idHorario}
+                    //handleOpenModalHorarioDetProcesoEditar={handleOpenModalHorarioDetProcesoEditar}
+                    />
                 </div>
             </div>
 

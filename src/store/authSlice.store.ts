@@ -21,12 +21,12 @@ export const authSlice = createSlice({
             state.autenticado = false;
             state.tipoUsuario = ""
         },
-        restore: (state, action: PayloadAction<{ codigo: string, token: string, authentication: boolean, tipoUsuario: string }>) => {
+        restore: (state, action: PayloadAction<{ codigo: string, token: string, authentication: boolean }>) => {
             state.cargando = false;
             state.codigo = action.payload.codigo
             state.token = action.payload.token;
             state.autenticado = action.payload.authentication;
-            state.tipoUsuario = action.payload.tipoUsuario;
+            // state.tipoUsuario = action.payload.tipoUsuario;
         },
         login: (state, action: PayloadAction<{ codigo: string, token: string, tipoUsuario: string }>) => {
             state.autenticado = true;

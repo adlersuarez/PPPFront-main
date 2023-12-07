@@ -7,8 +7,6 @@ import Body from "./widget/Body";
 import EstudianteLogin from "../../../../model/interfaces/login/estudiante.login";
 import TrabajadorLogin from "../../../../model/interfaces/login/trabajador.login";
 
-import { useEffect } from "react";
-
 
 type Props = {
 
@@ -29,7 +27,6 @@ type MenuItem = {
     subMenu: boolean,
     subMenuItems?: MenuItem[]
 }
-
 const menusAdmin: MenuItem[] = [
     {
         id: "1",
@@ -61,7 +58,7 @@ const menusAdmin: MenuItem[] = [
             {
                 id: "2",
                 titulo: "Horario Admin",
-                url: "/inicio/horario",
+                url: "/inicio/horario-idiomas",
                 icono: "bi-calendar-week",
                 moduPadre: false,
                 modPosicion: 2,
@@ -79,8 +76,6 @@ const menusAdmin: MenuItem[] = [
         ],
     },
 ]
-
-
 
 const menusEst: MenuItem[] = [
     {
@@ -131,7 +126,7 @@ const menusEst: MenuItem[] = [
         ],
     },
 ]
-
+/*
 const menus: MenuItem[] = [
     {
         id: "1",
@@ -212,20 +207,17 @@ const menus: MenuItem[] = [
     },
 
 ];
+*/
 
 
 const Aside = (props: Props) => {
 
     // const tipoUser = window.localStorage.getItem("tipoUsuario")
     // const cod = window.localStorage.getItem("codigo")
-    // const tipoUser = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
+    const tipoUser = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
 
 
-    useEffect(()=>{
-        
-    }, [])
-
-    // const menus: MenuItem[] = tipoUser == "est" ? menusEst : menusAdmin
+    const menus: MenuItem[] = tipoUser == "est" ? menusEst : menusAdmin
 
 
     return (

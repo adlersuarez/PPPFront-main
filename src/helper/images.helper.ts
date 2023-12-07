@@ -9,6 +9,9 @@ import portada from '../assets/images/portada.png';
 import modalidad_efectiva from '../assets/images/practicas-pre-profesionales.jpg';
 import modalidad_convalidacion from '../assets/images/convalidacion.jpg';
 
+//
+import no_user from '../assets/images/no-user.png'
+
 
 export default {
     logo,
@@ -19,5 +22,6 @@ export default {
     noimage,
     portada,
     modalidad_efectiva,
-    modalidad_convalidacion
+    modalidad_convalidacion,
+    no_user
 }
