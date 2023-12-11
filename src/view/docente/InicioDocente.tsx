@@ -267,6 +267,7 @@ const InicioDocente = () => {
             setHorarioLista(response.data.resultado as HorarioPag[])
             setLoading(false);
             // console.log(response.data.resultado)
+            console.log(response)
         }
 
         if (response instanceof RestError) {
@@ -319,6 +320,7 @@ const InicioDocente = () => {
         setIsOpenModalEditar(false);
     };
 
+    
 
     return (
         <>
@@ -386,7 +388,7 @@ const InicioDocente = () => {
 
                                         <div className="w-full">
 
-                                            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-6 gap-3 mb-4">
                                                 <div>
                                                     <label
                                                         className="font-mont block mb-1 text-sm font-medium text-gray-900 "
@@ -534,6 +536,43 @@ const InicioDocente = () => {
                                                                 return null;
                                                             })
                                                         }
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <label
+                                                        className="font-mont block mb-1 text-sm font-medium text-gray-900 "
+                                                    >
+                                                        Aula <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                                    </label>
+                                                    <select
+                                                        className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                                        ref={refSede}
+                                                        value={idSede}
+                                                        onChange={(event) => {
+                                                            const selectedSedeId = event.currentTarget.value;
+                                                            setIdSede(selectedSedeId);
+
+                                                            const selectedSede = comboBoxSede.find(item => item.sedeId.toString() === selectedSedeId);
+
+                                                            if (selectedSede) {
+                                                                setNombreSede(selectedSede.sede);
+                                                            } else {
+                                                                setNombreSede("");
+                                                            }
+                                                        }}
+                                                    >
+                                                        <option value="0">- Seleccione -</option>
+                                                        {
+                                                            comboBoxSede.map((item, index) => {
+                                                                return (
+                                                                    <option key={index} value={item.sedeId}>
+                                                                        {item.sede}
+                                                                    </option>
+                                                                );
+                                                            })
+                                                        }
+
                                                     </select>
                                                 </div>
 
