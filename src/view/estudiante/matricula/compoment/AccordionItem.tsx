@@ -1,4 +1,3 @@
-import ListHorarioDetId from '@/model/interfaces/horario/listHorarioDetId';
 import React, { useState } from 'react';
 import { IconType } from 'react-icons';
 import Horario from '../../modal/Horario';
@@ -7,6 +6,8 @@ interface AccordionItemProps {
     icono: IconType;
     titulo: string;
     descripcion: string;
+    data: object[];
+    color: object[];
     enlace: string;
 }
 
@@ -28,17 +29,9 @@ const IcoAprobado = () => {
 //     )
 // }
 
-const AccordionItem: React.FC<AccordionItemProps> = ({ titulo, enlace }) => {
+const AccordionItem: React.FC<AccordionItemProps> = ({ titulo, enlace, data , color}) => {
 
     const [isOpenModal, setIsOpenModal] = useState(false);
-
-    const [idIdioma, setIdIdioma] = useState(0);
-    const [idHorario, setIdHorario] = useState(0);
-
-    const [listaHorarioDetalleId, setListaHorarioDetalleId] = useState<ListHorarioDetId[]>([])
-
-    const [dataHorario, setDataHorario] = useState<object[]>([]);
-    const [color, setColor] = useState<object[]>([]);
 
     // Modal
     const handleOpenModal = () => {
@@ -49,9 +42,11 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ titulo, enlace }) => {
         setIsOpenModal(false);
     };
 
+    //console.log(data)
+
     return (
         <>
-            <Horario data={dataHorario} color={color} idIdioma={idIdioma} idHorario={idHorario} isOpenModal={isOpenModal} handleCloseModal={handleCloseModal} />
+            <Horario data={data} color={color} isOpenModal={isOpenModal} handleCloseModal={handleCloseModal} />
             
             <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between  hover:scale-105 transition-transform duration-300 mb-2">
                 {/* <div className="text-purple-600 mr-4">

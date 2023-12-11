@@ -1,7 +1,7 @@
 import React from 'react';
 import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
-import CustomModal from '../../../component/Modal.component';
+import CustomModal from '../../../component/Modal.horario';
 
 //import '../component/style/horario.css'
 
@@ -9,8 +9,6 @@ type Props = {
     isOpenModal: boolean,
     data: object[];
     color: object[];
-    idIdioma: number,
-    idHorario: number,
     handleCloseModal: () => void
 }
 
@@ -19,12 +17,13 @@ const Horario = (props: Props) => {
     const renderCard = (item: any) => {
 
         const horario = item.appointmentData
+        //console.log(horario)
 
         return (
-            <div className={`p-1  my-1 rounded-sm`} style={{ backgroundColor: `${horario.color}` }} >
-                <p className="mb-1 font-bold tracking-tight text-gray-900 dark:text-white">{horario.asignatura}</p>
+            <div className={`my-1 rounded-sm`} >
+                <p className="mb-1 font-bold tracking-tight text-gray-700 dark:text-white">{horario.asignatura}</p>
                 {/* <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">{horario.docenteId}</p> */}
-                <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '10px' }}>{horario.docente}</p>
+                <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '10px' }}>{horario.aula}</p>
                 <p className="mb-1 font-bold text-xs text-gray-700 dark:text-gray-400">{horario.horaIni} - {horario.horaFin}</p>
             </div>
         )
@@ -79,7 +78,7 @@ const Horario = (props: Props) => {
                             defaultCurrentView="week"
                             dataSource={props.data}
                             showAllDayPanel={false}
-                            firstDayOfWeek={1}
+                            firstDayOfWeek={0}
                             cellDuration={30}
                             showCurrentTimeIndicator={false}
 
@@ -92,7 +91,7 @@ const Horario = (props: Props) => {
                         >
                             <View
                                 type="week"
-                                startDayHour={6}
+                                startDayHour={7}
                                 endDayHour={12}
                                 dateCellRender={renderDateCell}
                             />

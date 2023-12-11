@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Sweet from '../../model/interfaces/Sweet.mode.interface'
-import ListHorarioDetId from "../../model/interfaces/horario/listHorarioDetId";
+//import ListHorarioDetId from "../../model/interfaces/horario/listHorarioDetId";
 
 type Props = {
     idHorario: number
@@ -16,7 +16,7 @@ type Props = {
 
 const HorarioEstudiante = (props: Props) => {
 
-    const [listaHorarioDetalleId, setListaHorarioDetalleId] = useState<ListHorarioDetId[]>([])
+    //const [listaHorarioDetalleId, setListaHorarioDetalleId] = useState<ListHorarioDetId[]>([])
 
     useEffect(() => {
         // loadInit(props.idHorario)
@@ -39,7 +39,7 @@ const HorarioEstudiante = (props: Props) => {
     useEffect(() => {
         //dataRenderHorario()
         // dataRenderHorarioColor()
-    }, [listaHorarioDetalleId])
+    }, [])
 
 
     /* const dataRenderHorario = async () => {
@@ -117,7 +117,6 @@ const HorarioEstudiante = (props: Props) => {
          }
      }*/
 
- 
 
     return (
         <>
@@ -147,7 +146,6 @@ const HorarioEstudiante = (props: Props) => {
 
                 </div>
             </div>
-
 
         </>
     )

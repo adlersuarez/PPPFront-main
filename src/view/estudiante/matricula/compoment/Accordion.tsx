@@ -9,6 +9,7 @@ import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
 import Cargando from '@/component/Cargando';
+//import { objetoApi } from '@/model/types/objetoApi.mode';
 
 type Props = {
     pasoActual: number;
@@ -19,25 +20,18 @@ type Props = {
     anioActual: number,
     mesActual: number,
     loadPagos: boolean
-
 }
 
 const Accordion = (props: Props) => {
 
     const [isOpen, setIsOpen] = useState(false);
-    
-
-    // const fechaActual: Date = new Date();
-
-    // const aniActual: number = fechaActual.getFullYear()
-    // const mesActual: number = fechaActual.getMonth() + 1;
 
     const [asigPreMatriEstudiante, setAsigPreMatriEstudiante] = useState<Asignatura[]>([])
 
     const abortController = useRef(new AbortController());
 
     useEffect(() => {
-        console.log(props.loadPagos)
+        //console.log(props.loadPagos)
         LoadDataAsigPreMatriEstudiante()
     }, [])
 
@@ -63,7 +57,116 @@ const Accordion = (props: Props) => {
         setIsOpen(!isOpen);
     };
 
-    
+    const fechaActual: Date = new Date();
+
+    function diaActual() {
+        switch (fechaActual.getDay()) {
+            case 1:
+                return [0, 1, 2, 3, 4, 5, 6]
+            case 2:
+                return [-1, 0, 1, 2, 3, 4, 5]
+            case 3:
+                return [-2, -1, 0, 1, 2, 3, 4]
+            case 4:
+                return [-3, -2, -1, 0, 1, 2, 3]
+            case 5:
+                return [-4, -3, -2, -1, 0, 1, 2]
+            case 6:
+                return [-5, -4, -3, -2, -1, 0, 1]
+            case 0:
+                return [-6, -5, -4, -3, -2, -1, 0]
+            default:
+                return []
+        }
+    }
+
+    const diaSemana = diaActual()
+
+    const data = [
+        {
+            asignatura: 'INGLÉS 1',
+            roomId: 2,
+            startDate: new Date(2023,11,11,8,0),
+            endDate: new Date(2023,11,11,9,30),
+            aula: 'ING - 001',
+            horaIni: '8:00',
+            horaFin: '9:30',
+            // recurrenceRule: 'FREQ=WEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
+        },
+        {
+            asignatura: 'INGLÉS 1',
+            roomId: 2,
+            startDate: new Date(2023,11,12,8,0),
+            endDate: new Date(2023,11,12,9,30),
+            aula: 'ING - 001',
+            horaIni: '8:00',
+            horaFin: '9:30',
+            // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
+        },
+        {
+            asignatura: 'INGLÉS 1',
+            roomId: 2,
+            startDate: new Date(2023,11,13,8,0),
+            endDate: new Date(2023,11,13,9,30),
+            aula: 'ING - 001',
+            horaIni: '8:00',
+            horaFin: '9:30',
+            // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
+        },
+        {
+            asignatura: 'INGLÉS 1',
+            roomId: 2,
+            startDate: new Date(2023,11,14,8,0),
+            endDate: new Date(2023,11,14,9,30),
+            aula: 'ING - 001',
+            horaIni: '8:00',
+            horaFin: '9:30',
+            // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
+        },
+        {
+            asignatura: 'INGLÉS 1',
+            roomId: 2,
+            startDate: new Date(2023,11,15,8,0),
+            endDate: new Date(2023,11,15,9,30),
+            aula: 'ING - 001',
+            horaIni: '8:00',
+            horaFin: '9:30',
+            // recurrenceRule: 'FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR;COUNT=5',
+        },
+    ];
+
+    const colorCR = [
+        {
+            text: 'ClassRoom 1',
+            id: 1,
+            color: '#6C3483',
+        },
+        {
+            text: 'ClassRoom 2',
+            id: 2,
+            color: '#1ABC9C',
+        },
+        {
+            text: 'ClassRoom 3',
+            id: 3,
+            color: '#F1C40F',
+        },
+        {
+            text: 'ClassRoom 4',
+            id: 4,
+            color: '#D35400',
+        },
+        {
+            text: 'ClassRoom 5',
+            id: 5,
+            color: '#2ECC71',
+        },
+        {
+            text: 'ClassRoom 6',
+            id: 6,
+            color: '#5D6D7E',
+        },
+    ];
 
     return (
         <div className="bg-gray-100 p-4 rounded-b">
@@ -179,47 +282,49 @@ const Accordion = (props: Props) => {
 
                             {isOpen && (
                                 <>
-                                <div className="p-3">
+                                    <div className="p-3">
 
-                                    {
-                                        asigPreMatriEstudiante.map((item, index) => {
-                                            return (
-                                                <AccordionItem key={index}
-                                                    icono={BiCalendar}
-                                                    titulo={`${item.asignatura} - ${item.asiNivel}`}
-                                                    descripcion="Super Intensivo Online"
-                                                    enlace="/pagos"
-                                                />
-                                            )
-                                        })
+                                        {
+                                            asigPreMatriEstudiante.map((item, index) => {
+                                                return (
+                                                    <AccordionItem key={index}
+                                                        icono={BiCalendar}
+                                                        titulo={`${item.asignatura} - ${item.asiNivel}`}
+                                                        descripcion="Super Intensivo Online"
+                                                        enlace="/pagos"
+                                                        data={data}
+                                                        color={colorCR}
+                                                    />
+                                                )
+                                            })
 
-                                        /*
-
+                                            /*
+    
+                                            <AccordionItem
+                                            icono={BiCalendar}
+                                            titulo="Ciclo de Inglés 1"
+                                            descripcion="Super Intensivo Online"
+                                            enlace="/pagos"
+                                        />
                                         <AccordionItem
-                                        icono={BiCalendar}
-                                        titulo="Ciclo de Inglés 1"
-                                        descripcion="Super Intensivo Online"
-                                        enlace="/pagos"
-                                    />
-                                    <AccordionItem
-                                        icono={BiCalendar}
-                                        titulo="Ciclo de Inglés 2"
-                                        descripcion="Super Intensivo Online"
-                                        enlace="/pagos"
-                                    />
-                                    <AccordionItem
-                                        icono={BiCalendar}
-                                        titulo="Ciclo de Inglés 3"
-                                        descripcion="Super Intensivo Online"
-                                        enlace="/pagos"
-                                    />
-                                    */
+                                            icono={BiCalendar}
+                                            titulo="Ciclo de Inglés 2"
+                                            descripcion="Super Intensivo Online"
+                                            enlace="/pagos"
+                                        />
+                                        <AccordionItem
+                                            icono={BiCalendar}
+                                            titulo="Ciclo de Inglés 3"
+                                            descripcion="Super Intensivo Online"
+                                            enlace="/pagos"
+                                        />
+                                        */
 
-                                    }
+                                        }
 
 
-                                    {/* Otros elementos del acordeón */}
-                                </div>
+                                        {/* Otros elementos del acordeón */}
+                                    </div>
                                 </>
                             )}
                         </div>
