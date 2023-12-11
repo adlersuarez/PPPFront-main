@@ -56,11 +56,15 @@ export async function ListarTipoEstudio<Listas>( abortController: AbortControlle
     return await Resolve.create<Listas>(instance.get<Listas>("/TipoEstudio/ListarTipoEstudio", { signal: abortController?.signal }));
 }
 
+export async function ListarAula<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>("/Aula/ListarAula", { signal: abortController?.signal }));
+}
+
 
 //Horario
 
-export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
-    return await Resolve.create(instance.get<ListasPag>(`/Horario/ListarHorarioPag/${IdiomaId}/${SedeId}/${ModalidadId}/${PeriodoId}/${posPagina}/${filaPagina}`, { signal: abortController?.signal }));
+export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: number, AulasId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
+    return await Resolve.create(instance.get<ListasPag>(`/Horario/ListarHorarioPag/${IdiomaId}/${SedeId}/${ModalidadId}/${PeriodoId}/${AulasId}/${posPagina}/${filaPagina}`, { signal: abortController?.signal }));
 }
 
 export async function ListarHorarioDetalleId<Listas>(HorarioId: number, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
@@ -102,6 +106,7 @@ export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId
 export async function ListarDocenteIdiomasBusqueda<Listas>( busqueda: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/Docente/ListarDocenteIdiomasBusqueda/${busqueda}`, { signal: abortController?.signal }));
 }
+
 
 // Pago
 export async function ValidarPagoMatriculaEstudiante<RespValue>(codigo: string, anio: number, signal = null): Promise<Response<RespValue> | RestError> {
