@@ -10,10 +10,9 @@ import { Types } from "../../../../model/enum/types.model.enum";
 
 import Turno from "../../../../model/interfaces/turno/turno";
 import Programa from "../../../../model/interfaces/programa/programa";
-// import TipoEstudio from "../../../../model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
+import { ListarPrograma, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
