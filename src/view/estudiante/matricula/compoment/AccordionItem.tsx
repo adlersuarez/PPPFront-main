@@ -1,5 +1,7 @@
-import React from 'react';
+import ListHorarioDetId from '@/model/interfaces/horario/listHorarioDetId';
+import React, { useState } from 'react';
 import { IconType } from 'react-icons';
+import Horario from '../../modal/Horario';
 
 interface AccordionItemProps {
     icono: IconType;
@@ -8,9 +10,9 @@ interface AccordionItemProps {
     enlace: string;
 }
 
-const IcoAprobado = () =>{
-    return(
-        <i className="bi bi-check-square-fill text-xl text-green-500"></i> 
+const IcoAprobado = () => {
+    return (
+        <i className="bi bi-check-square-fill text-xl text-green-500"></i>
     )
 }
 
@@ -27,33 +29,58 @@ const IcoAprobado = () =>{
 // }
 
 const AccordionItem: React.FC<AccordionItemProps> = ({ titulo, enlace }) => {
+
+    const [isOpenModal, setIsOpenModal] = useState(false);
+
+    const [idIdioma, setIdIdioma] = useState(0);
+    const [idHorario, setIdHorario] = useState(0);
+
+    const [listaHorarioDetalleId, setListaHorarioDetalleId] = useState<ListHorarioDetId[]>([])
+
+    const [dataHorario, setDataHorario] = useState<object[]>([]);
+    const [color, setColor] = useState<object[]>([]);
+
+    // Modal
+    const handleOpenModal = () => {
+        setIsOpenModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsOpenModal(false);
+    };
+
     return (
-        <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between  hover:scale-105 transition-transform duration-300 mb-2">
-            {/* <div className="text-purple-600 mr-4">
+        <>
+            <Horario data={dataHorario} color={color} idIdioma={idIdioma} idHorario={idHorario} isOpenModal={isOpenModal} handleCloseModal={handleCloseModal} />
+            
+            <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between  hover:scale-105 transition-transform duration-300 mb-2">
+                {/* <div className="text-purple-600 mr-4">
                 <Icono size={40} fill="currentColor" />
             </div> */}
-            <div>
-               
-                <h3 className="text-lg font-semibold "><IcoAprobado/> {titulo}</h3>
-                {/* <p className="text-gray-600 mb-2">{descripcion}</p> */}
+                <div>
 
-                {/* <a href={enlace} className="block mt-0 text-blue-600 hover:underline">
+                    <h3 className="text-lg font-semibold "><IcoAprobado /> {titulo}</h3>
+                    {/* <p className="text-gray-600 mb-2">{descripcion}</p> */}
+
+                    {/* <a href={enlace} className="block mt-0 text-blue-600 hover:underline">
                     Horario
                 </a> */}
+                </div>
+                <div className="text-green-600">
+                    {/* <h3 className="text-lg font-bold">Aprobado</h3> */}
+                    <a onClick={handleOpenModal} className="block mt-0 text-blue-600 hover:underline">
+                        Horario
+                    </a>
+                </div>
+                <div className="text-purple-600">
+                    {/* <Icono size={20} fill="currentColor" /> */}
+                    <a href={enlace} className="block mt-0 text-blue-600 hover:underline">
+                        Matricularme
+                    </a>
+                </div>
             </div>
-            <div className="text-green-600">
-                {/* <h3 className="text-lg font-bold">Aprobado</h3> */}
-                <a href={enlace} className="block mt-0 text-blue-600 hover:underline">
-                    Horario
-                </a>
-            </div>
-            <div className="text-purple-600">
-                {/* <Icono size={20} fill="currentColor" /> */}
-                <a href={enlace} className="block mt-0 text-blue-600 hover:underline">
-                    Matricularme
-                </a>
-            </div>
-        </div>
+        </>
+
     );
 };
 

@@ -25,6 +25,7 @@ type Props = {
 const Accordion = (props: Props) => {
 
     const [isOpen, setIsOpen] = useState(false);
+    
 
     // const fechaActual: Date = new Date();
 
@@ -61,6 +62,8 @@ const Accordion = (props: Props) => {
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
     };
+
+    
 
     return (
         <div className="bg-gray-100 p-4 rounded-b">
@@ -175,6 +178,7 @@ const Accordion = (props: Props) => {
 
 
                             {isOpen && (
+                                <>
                                 <div className="p-3">
 
                                     {
@@ -216,6 +220,7 @@ const Accordion = (props: Props) => {
 
                                     {/* Otros elementos del acordeón */}
                                 </div>
+                                </>
                             )}
                         </div>
                     </div>
