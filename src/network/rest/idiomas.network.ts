@@ -118,6 +118,11 @@ export async function ValidarPagoPensionMesEstudiante<RespValue>(codigo: string,
 }
 
 
+// Matricula
+export async function ValidarMatriculaExistente<RespValue>(EstudianteId: string, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Matricula/ValidarMatriculaExistente/${EstudianteId}`, { signal: signal! }));
+
+}
 
 
 

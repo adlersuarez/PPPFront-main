@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import AccordionItem from './AccordionItem';
 import { BiCalendar } from 'react-icons/bi';
 import Asignatura from '@/model/interfaces/asignatura/asignatura';
-import { ListarAsignaturaPreMatriculaEstudiante } from '@/network/rest/idiomas.network';
+import { ListarAsignaturaPreMatriculaEstudiante, ValidarMatriculaExistente } from '@/network/rest/idiomas.network';
 import Listas from '../../../../model/interfaces/Listas.model.interface';
 
 import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
 import Cargando from '@/component/Cargando';
+import RespValue from '@/model/interfaces/RespValue.model.interface';
 //import { objetoApi } from '@/model/types/objetoApi.mode';
 
 type Props = {
@@ -27,20 +28,26 @@ const Accordion = (props: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const [asigPreMatriEstudiante, setAsigPreMatriEstudiante] = useState<Asignatura[]>([])
+    const [primeraMatricula, setPrimeraMatricula] = useState(false)
+
+    const [nivelMatricula] = useState(2)
+
 
     const abortController = useRef(new AbortController());
+
+    const cod = JSON.parse(window.localStorage.getItem("codigo") || "");
 
     useEffect(() => {
         //console.log(props.loadPagos)
         LoadDataAsigPreMatriEstudiante()
+
+        
+        LoadValidarMatriculExistente()
     }, [])
 
     const LoadDataAsigPreMatriEstudiante = async () => {
 
         setAsigPreMatriEstudiante([])
-
-        const cod = await JSON.parse(window.localStorage.getItem("codigo") || "");
-
 
         const response = await ListarAsignaturaPreMatriculaEstudiante<Listas>(cod, abortController.current)
         if (response instanceof Response) {
@@ -53,6 +60,32 @@ const Accordion = (props: Props) => {
         }
     }
 
+    
+    const LoadValidarMatriculExistente = async () => {
+        setPrimeraMatricula(false)
+
+        const response = await ValidarMatriculaExistente<RespValue>(cod)
+        if (response instanceof Response) {
+
+            console.log(response)
+
+            if (response.data.value == "0"){
+                setPrimeraMatricula(true)
+            } 
+            if (response.data.value == "1"){
+                setPrimeraMatricula(false)
+            } 
+
+            //console.log(response.data.resultado)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
+
+    
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
     };
@@ -177,7 +210,7 @@ const Accordion = (props: Props) => {
                 props.pasoActual === 1 &&
                 <div className="border-l-4 border-blue-500 pl-4">
                     <h2 className="text-lg font-semibold">
-                        Paso 1 - <span className="text-red-600">Verificación de pagos</span>
+                        Paso 1 - <span className="text-blue-600">Verificación de pagos</span>
                     </h2>
                     {/* <p>Paga tus Matricula  y Prension a tiempo</p> */}
 
@@ -264,7 +297,7 @@ const Accordion = (props: Props) => {
                 props.pasoActual === 2 && (
                     <div className="border-l-4 border-blue-500 pl-4">
                         <h2 className="text-lg font-semibold">
-                            Paso 2 - <span className="text-red-600">Matricúlate</span>
+                            Paso 2 - <span className="text-blue-600">Matricúlate</span>
                         </h2>
                         <p>Completa tu matrícula, seleccionando tu idioma y horarios</p>
                         <div className="border border-gray-300 rounded-lg shadow-md mt-4">
@@ -294,6 +327,8 @@ const Accordion = (props: Props) => {
                                                         enlace="/pagos"
                                                         data={data}
                                                         color={colorCR}
+                                                        primeraMatricula={primeraMatricula}
+                                                        nivelMatricula={ primeraMatricula? 1 : nivelMatricula}
                                                     />
                                                 )
                                             })

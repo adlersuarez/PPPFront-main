@@ -71,6 +71,32 @@ const Horario = (props: Props) => {
                             <i className="bi bi-x-circle text-lg"></i>
                         </button>
                     </div>
+                    <div className="flex justify-between px-4 py-2">
+                    <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Turno <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    // ref={refTurno}
+                                    // value={idTurno}
+                                    // onChange={(event) => {
+                                    //     setIdTurno(parseInt(event.currentTarget.value));
+                                    // }}
+                                >
+                                    <option value={0}>- Seleccione -</option>
+                                    {/* {
+                                        comboBoxTurno.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.turnoId}>
+                                                    {item.turno}
+                                                </option>
+                                            );
+                                        })
+                                    } */}
+                                </select>
+                            </div>
+                    </div>
                     <div className="w-full px-4 pb-2 pt-4">
                         <Scheduler
                             timeZone="America/Lima"
