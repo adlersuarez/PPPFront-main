@@ -17,7 +17,6 @@ import { ListarPrograma, ListarTurno, InsertarActualizarHorario } from "../../..
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 
-import { seccionSelect } from '../../../../helper/herramienta.helper'
 
 
 type Props = {
@@ -56,15 +55,15 @@ const HorarioAgregar = (props: Props) => {
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
-    const refTipoEstudio = useRef<HTMLSelectElement>(null)
-    const refSeccion = useRef<HTMLSelectElement>(null)
 
 
     useEffect(() => {
         LoadDataTurno()
         LoadDataPrograma()
     }, [])
-    
+
+
+
     const LoadDataTurno = async () => {
 
         setComboBoxTurno([])
@@ -94,24 +93,10 @@ const HorarioAgregar = (props: Props) => {
     }
 
 
-    const LoadDataTipoEstudio = async () => {
-
-        setComboBoxTipoEstudio([])
-
-        const response = await ListarTipoEstudio<Listas>(props.abortControl)
-        if (response instanceof Response) {
-            setComboBoxTipoEstudio(response.data.resultado as TipoEstudio[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
-
-
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
+
 
     const onRegistrarHorario = () => {
 
@@ -156,6 +141,7 @@ const HorarioAgregar = (props: Props) => {
                     }
 
                 }
+
 
                 if (response instanceof RestError) {
 
@@ -287,11 +273,11 @@ const HorarioAgregar = (props: Props) => {
                                     onChange={(event) => { setSeccion(event.target.value) }}
                                 />
                             </div>
-                            
+
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                            
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Estado
