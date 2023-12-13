@@ -47,7 +47,7 @@ const HorarioIdiomas = () => {
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>("0")
     const [idModalidad, setIdModalidad] = useState<number>(0)
-    const [idPeriodo, setIdPeriodo] = useState<number>(0)
+    const [idPeriodo, setIdPeriodo] = useState<string>("0")
     const [idAula, setIdAula] = useState<number>(0)
 
     const [idTurno, setIdTurno] = useState<number>(0)
@@ -189,7 +189,7 @@ const HorarioIdiomas = () => {
             refModalidad.current?.focus()
             return
         }
-        if (idPeriodo == 0) {
+        if (idPeriodo == "0") {
             refPeriodo.current?.focus()
             return
         }
@@ -202,7 +202,7 @@ const HorarioIdiomas = () => {
         handleOpenModal()
     }
 
-    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: number, turnoId: number, programaId: number, seccion: string, estado: number) => {
+    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, seccion: string, estado: number) => {
         setIdHorario(horarioId)
 
         setIdIdioma(idiomaId)
@@ -234,7 +234,7 @@ const HorarioIdiomas = () => {
             refModalidad.current?.focus()
             return
         }
-        if (idPeriodo == 0) {
+        if (idPeriodo == "0") {
             refPeriodo.current?.focus()
             return
         }
@@ -272,7 +272,7 @@ const HorarioIdiomas = () => {
             refModalidad.current?.focus()
             return
         }
-        if (idPeriodo == 0) {
+        if (idPeriodo == "0") {
             refPeriodo.current?.focus()
             return
         }
@@ -286,7 +286,7 @@ const HorarioIdiomas = () => {
         fillTable(idIdioma, idSede, idModalidad, idPeriodo, idAula);
     }
 
-    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: number, idAula: number) => {
+    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: string, idAula: number) => {
         setLoading(true)
 
         setHorarioLista([]);
@@ -544,7 +544,7 @@ const HorarioIdiomas = () => {
                                                         value={idPeriodo}
                                                         onChange={(event) => {
                                                             const selectedPeriodoId = event.currentTarget.value;
-                                                            setIdPeriodo(parseInt(selectedPeriodoId));
+                                                            setIdPeriodo(selectedPeriodoId);
 
                                                             const selectedPeriodo = comboBoxPeriodo.find(item => item.periodoId.toString() === selectedPeriodoId);
 
@@ -555,7 +555,7 @@ const HorarioIdiomas = () => {
                                                             }
                                                         }}
                                                     >
-                                                        <option value={0}>- Seleccione -</option>
+                                                        <option value={"0"}>- Seleccione -</option>
                                                         {
                                                             comboBoxPeriodo.map((item, index) => {
 

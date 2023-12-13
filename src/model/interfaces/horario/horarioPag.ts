@@ -13,7 +13,7 @@ export default interface HorarioPag {
     sede: string
     modalidadId: number
     modalidad: string
-    periodoId: number
+    periodoId: string
     anio: number
     mes: number
     aulasId: number

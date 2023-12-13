@@ -24,7 +24,7 @@ type Props = {
     idIdioma: number,
     idSede: string,
     idModalidad: number,
-    idPeriodo: number,
+    idPeriodo: string,
     idAula: number,
 
     nombreIdioma: string,
