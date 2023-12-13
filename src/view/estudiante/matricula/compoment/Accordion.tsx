@@ -2,14 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import AccordionItem from './AccordionItem';
 import { BiCalendar } from 'react-icons/bi';
 import Asignatura from '@/model/interfaces/asignatura/asignatura';
-import { ListarAsignaturaPreMatriculaEstudiante, ValidarMatriculaExistente } from '@/network/rest/idiomas.network';
+import { ListarAsignaturaPreMatriculaEstudiante } from '@/network/rest/idiomas.network';
 import Listas from '../../../../model/interfaces/Listas.model.interface';
 
 import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
 import Cargando from '@/component/Cargando';
-import RespValue from '@/model/interfaces/RespValue.model.interface';
 //import { objetoApi } from '@/model/types/objetoApi.mode';
 
 type Props = {
@@ -28,10 +27,6 @@ const Accordion = (props: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const [asigPreMatriEstudiante, setAsigPreMatriEstudiante] = useState<Asignatura[]>([])
-    const [primeraMatricula, setPrimeraMatricula] = useState(false)
-
-    const [nivelMatricula] = useState(2)
-
 
     const abortController = useRef(new AbortController());
 
@@ -42,7 +37,7 @@ const Accordion = (props: Props) => {
         LoadDataAsigPreMatriEstudiante()
 
         
-        LoadValidarMatriculExistente()
+        
     }, [])
 
     const LoadDataAsigPreMatriEstudiante = async () => {
@@ -61,29 +56,7 @@ const Accordion = (props: Props) => {
     }
 
     
-    const LoadValidarMatriculExistente = async () => {
-        setPrimeraMatricula(false)
-
-        const response = await ValidarMatriculaExistente<RespValue>(cod)
-        if (response instanceof Response) {
-
-            console.log(response)
-
-            if (response.data.value == "0"){
-                setPrimeraMatricula(true)
-            } 
-            if (response.data.value == "1"){
-                setPrimeraMatricula(false)
-            } 
-
-            //console.log(response.data.resultado)
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-
-    }
+    
 
     
     const toggleAccordion = () => {
@@ -327,8 +300,7 @@ const Accordion = (props: Props) => {
                                                         enlace="/pagos"
                                                         data={data}
                                                         color={colorCR}
-                                                        primeraMatricula={primeraMatricula}
-                                                        nivelMatricula={ primeraMatricula? 1 : nivelMatricula}
+                    
                                                     />
                                                 )
                                             })

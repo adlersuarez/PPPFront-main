@@ -124,6 +124,16 @@ export async function ValidarMatriculaExistente<RespValue>(EstudianteId: string,
 
 }
 
+export async function PagoMatriculaLista<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoMatriculaLista/${EstudianteId}`, { signal: abortController?.signal }));
+}
+
+export async function PagoPensionLista<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoPensionLista/${EstudianteId}`, { signal: abortController?.signal }));
+}
+
+
+
 
 
 

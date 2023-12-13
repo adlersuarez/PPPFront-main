@@ -9,8 +9,6 @@ type Props =  {
     data: object[]
     color: object[]
     enlace: string
-    primeraMatricula: boolean
-    nivelMatricula: number
 }
 
 const IcoAprobado = () => {

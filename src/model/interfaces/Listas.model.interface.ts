@@ -11,6 +11,9 @@ import Aula from "./aula/aula"
 
 import ListHorarioDetId from "./horario/listHorarioDetId"
 
+import PagoMatriculaLista from './matricula/matriculaPago'
+import PagoPensionLista from './matricula/matriculaPago'
+
 export default interface Listas {
-    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] | ListHorarioDetId[]
+    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] | ListHorarioDetId[] | PagoMatriculaLista[] | PagoPensionLista[]
 }

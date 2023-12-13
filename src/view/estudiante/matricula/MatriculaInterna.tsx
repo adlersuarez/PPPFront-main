@@ -6,12 +6,15 @@ import { BiDollarCircle, BiCheck } from 'react-icons/bi';
 import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 
-import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante } from "../../../network/rest/idiomas.network";
+import { PagoMatriculaLista, ValidarMatriculaExistente, ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
 import RespValue from "../../../model/interfaces/RespValue.model.interface";
-//import { useRafState } from "react-use";
+import { Types } from "../../../model/enum/types.model.enum";
+import Listas from "@/model/interfaces/Listas.model.interface";
+import MatriculaPago from "@/model/interfaces/matricula/matriculaPago";
+
 
 
 const MatriculaInterna = () => {
@@ -30,30 +33,74 @@ const MatriculaInterna = () => {
     const aniActual: number = fechaActual.getFullYear()
     const mesActual: number = fechaActual.getMonth() + 1;
 
-    //const [loadPago, setLoadPago] = useState(true)
     const [loadMes, setLoadMes] = useState(true)
     const [loadAnio, setLoadAnio] = useState(true)
+
     // 0 -> no pago
     // 1 -> pago normal
     // 2 -> pago intensivo
     const [tipPago, setTipPago] = useState(0)
+    
+    /**/
+    const [primeraMatricula, setPrimeraMatricula] = useState(false)
+    const [pagoMatricula, setPagoMatricula] = useState<MatriculaPago[]>([])
+
+    const abortControl = new AbortController()
 
     useEffect(() => {
-        validarPagMatriEst(codigo, aniActual)
-        validarPagPesionMesEst(codigo, aniActual, mesActual)
+        // validarPagMatriEst(codigo, aniActual)
+        // validarPagPesionMesEst(codigo, aniActual, mesActual)
+        LoadValidarMatriculExistente()
 
-        //handleLoadPago()
+        ListPagoMatricula()
 
     }, [])
 
-    /*const handleLoadPago = () => {
-        setLoadPago(false)
-    };*/
+    const LoadValidarMatriculExistente = async () => {
+
+        setPrimeraMatricula(false)
+
+        const response = await ValidarMatriculaExistente<RespValue>(codigo)
+        if (response instanceof Response) {
+
+            if (response.data.value == "0"){
+                setPrimeraMatricula(true)
+            } 
+            if (response.data.value == "1"){
+                setPrimeraMatricula(false)
+            }
+
+
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
 
     const cambiarPaso = (paso: number) => {
         setPasoActual(paso);
     };
 
+
+    const ListPagoMatricula = async () => {
+        setPagoMatricula([])
+
+        const response = await PagoMatriculaLista<Listas>(codigo, abortControl)
+
+        if (response instanceof Response) {
+
+            const data = response.data.resultado as MatriculaPago[]
+            setPagoMatricula(data)
+            console.log(data)
+
+
+        }
+        if (response instanceof RestError) {
+            console.log(response.getMessage())
+        }
+    }
 
 
     const validarPagMatriEst = async (codigo: string, anio: number) => {
