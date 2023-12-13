@@ -7,11 +7,12 @@ import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
 import { keyNumberInteger, diaSelect, colorSelect } from '../../../../helper/herramienta.helper'
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, ListarTipoEstudio } from "../../../../network/rest/idiomas.network";
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
+import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 
 interface HorarioDetActual {
     detHorarioId: number;
@@ -57,9 +58,12 @@ const HorarioDetEditar = (props: Props) => {
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
     const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
+    const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
     const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
+    const [comboBoxRangeTurno, setcomboBoxRangeTurno] = useState<any>([])
 
     const [dia, setDia] = useState<number>(0)
+    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
     const [detHorarioId, setDetHorarioId] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
@@ -73,6 +77,7 @@ const HorarioDetEditar = (props: Props) => {
     const [estado, setEstado] = useState<boolean>(false)
 
     const refDia = useRef<HTMLSelectElement>(null)
+    const refTipoEstudio = useRef<HTMLSelectElement>(null)
     const refHoraInicio = useRef<HTMLInputElement>(null)
     const refHoraFin = useRef<HTMLInputElement>(null)
     const refAsignatura = useRef<HTMLSelectElement>(null)
@@ -89,10 +94,11 @@ const HorarioDetEditar = (props: Props) => {
     const abortController = useRef(new AbortController());
 
     useEffect(() => {
-        DataAsignatura()
+        LoadDataAsignatura()
+        LoadDataTipoEstudio()
     }, [])
 
-    const DataAsignatura = async () => {
+    const LoadDataAsignatura = async () => {
 
         setComboBoxAsignatura([])
 
@@ -120,6 +126,19 @@ const HorarioDetEditar = (props: Props) => {
         }
     }
 
+    const LoadDataTipoEstudio = async () => {
+
+        setComboBoxTipoEstudio([])
+
+        const response = await ListarTipoEstudio<Listas>(abortController.current)
+        if (response instanceof Response) {
+            setComboBoxTipoEstudio(response.data.resultado as TipoEstudio[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
 
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
@@ -132,6 +151,10 @@ const HorarioDetEditar = (props: Props) => {
 
         if (dia == 0) {
             refDia.current?.focus()
+            return
+        }
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
         if (horaInicio == "") {
@@ -309,7 +332,7 @@ const HorarioDetEditar = (props: Props) => {
                     </div>
                     <div className="w-full px-4 pb-2 pt-4">
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-2">
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Dia <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -330,6 +353,31 @@ const HorarioDetEditar = (props: Props) => {
                                                     {item.dia}
                                                 </option>
                                             );
+                                        })
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refTipoEstudio}
+                                    value={idTipoEstudio}
+                                    onChange={(event) => {
+                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
+                                    }}
+                                >
+                                    <option value={0}>- Seleccione -</option>
+                                    {
+                                        comboBoxTipoEstudio.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.tipEstudioId}>
+                                                    {item.tipoEstudio}
+                                                </option>
+                                            );
+
                                         })
                                     }
                                 </select>

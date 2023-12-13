@@ -15,15 +15,12 @@ import Periodo from "../../../../model/interfaces/periodo/periodo";
 
 import Turno from "../../../../model/interfaces/turno/turno";
 import Programa from "../../../../model/interfaces/programa/programa";
-import TipoEstudio from "../../../../model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo,ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarPrograma, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
-
-import { seccionSelect } from '../../../../helper/herramienta.helper'
 
 
 type Props = {
@@ -36,10 +33,13 @@ type Props = {
     idTurno: number,
     idPrograma: number,
     idTipoEstudio: number,
+    idAula: number,
 
     seccion: string,
     estado: number,
 
+    nombreAula: string,
+    nombreTipoEstudio: string,
     nombreIdioma: string,
     nombreSede: string
     nombreModalidad: string,
@@ -64,28 +64,29 @@ const HorarioEditar = (props: Props) => {
 
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
-    const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
+    //const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
 
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>('0')
     const [idModalidad, setIdModalidad] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<string>('0')
+    const [idAula, setIdAula] = useState<number>(0)
 
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+    //const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
     const [seccion, setSeccion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(false)
 
     const refIdioma = useRef<HTMLSelectElement>(null)
-    const refSede= useRef<HTMLSelectElement>(null)
+    const refSede = useRef<HTMLSelectElement>(null)
     const refModalidad = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
-    const refTipoEstudio = useRef<HTMLSelectElement>(null)
+    //const refTipoEstudio = useRef<HTMLSelectElement>(null)
     const refSeccion = useRef<HTMLSelectElement>(null)
 
     const abortController = useRef(new AbortController());
@@ -98,12 +99,13 @@ const HorarioEditar = (props: Props) => {
         setIdModalidad(props.idModalidad || 0);
         setIdPeriodo(props.idPeriodo || '0');
         setIdTurno(props.idTurno || 0);
+        setIdAula(props.idAula || 0);
         setIdPrograma(props.idPrograma || 0);
-        setIdTipoEstudio(props.idTipoEstudio || 0);
+        //setIdTipoEstudio(props.idTipoEstudio || 0);
         setSeccion(props.seccion || "");
         setEstado(!!props.estado || false)
 
-    }, [props.idIdioma, props.idSede, props.idModalidad, props.idPeriodo, props.idTurno, props.idPrograma, props.idTipoEstudio, props.seccion]);
+    }, [props.idIdioma, props.idSede, props.idModalidad, props.idPeriodo, props.idAula, props.idTurno, props.idPrograma, props.idTipoEstudio, props.seccion]);
 
     useEffect(() => {
         LoadDataIdioma()
@@ -113,7 +115,7 @@ const HorarioEditar = (props: Props) => {
 
         LoadDataTurno()
         LoadDataPrograma()
-        LoadDataTipoEstudio()
+        //LoadDataTipoEstudio()
 
     }, [])
 
@@ -202,7 +204,7 @@ const HorarioEditar = (props: Props) => {
     }
 
 
-    const LoadDataTipoEstudio = async () => {
+    /*const LoadDataTipoEstudio = async () => {
 
         setComboBoxTipoEstudio([])
 
@@ -214,7 +216,7 @@ const HorarioEditar = (props: Props) => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-    }
+    }*/
 
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
@@ -223,22 +225,22 @@ const HorarioEditar = (props: Props) => {
     const onEditarHorario = () => {
 
         //event.preventDefault()
-        if(idIdioma == 0){
+        if (idIdioma == 0) {
             refIdioma.current?.focus()
             return
         }
 
-        if(idSede == '0'){
+        if (idSede == '0') {
             refSede.current?.focus()
             return
         }
 
-        if(idModalidad == 0){
+        if (idModalidad == 0) {
             refModalidad.current?.focus()
             return
         }
 
-        if(idPeriodo == '0'){
+        if (idPeriodo == '0') {
             refPeriodo.current?.focus()
             return
         }
@@ -251,10 +253,10 @@ const HorarioEditar = (props: Props) => {
             refPrograma.current?.focus()
             return
         }
-        if (idTipoEstudio == 0) {
+        /*if (idTipoEstudio == 0) {
             refTipoEstudio.current?.focus()
             return
-        }
+        }*/
         if (seccion == "0") {
             refSeccion.current?.focus()
             return
@@ -268,7 +270,8 @@ const HorarioEditar = (props: Props) => {
             "sedeId": idSede,
             "modalidadId": idModalidad,
             "periodoId": idPeriodo,
-            "tipEstudioId": idTipoEstudio,
+            //"tipEstudioId": idTipoEstudio,
+            "aulasId": idAula,
             "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
@@ -311,8 +314,8 @@ const HorarioEditar = (props: Props) => {
             }
         })
 
-       
     }
+
 
     return (
         <>
@@ -322,7 +325,7 @@ const HorarioEditar = (props: Props) => {
 
                 }}
                 onHidden={() => {
-                   
+
                 }}
                 onClose={props.handleCloseModal}
             >
@@ -347,10 +350,12 @@ const HorarioEditar = (props: Props) => {
                                         <div className="text-sm">
                                             <p>Idioma: <span className="text-blue-700 font-bold">{props.nombreIdioma}</span></p>
                                             <p>Modalidad: <span className="text-blue-700 font-bold ">{props.nombreModalidad}</span></p>
+                                            <p>Aula: <span className="text-blue-700 font-bold ">{props.nombreAula}</span></p>
                                         </div>
                                         <div className="text-sm">
                                             <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
                                             <p>Periodo: <span className="text-blue-700 font-bold">{props.nombrePeriodo}</span></p>
+                                            <p>Tipo: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -512,55 +517,16 @@ const HorarioEditar = (props: Props) => {
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refTipoEstudio}
-                                    value={idTipoEstudio}
-                                    onChange={(event) => {
-                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={0}>- Seleccione -</option>
-                                    {
-                                        comboBoxTipoEstudio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.tipEstudioId}>
-                                                    {item.tipoEstudio}
-                                                </option>
-                                            );
-
-                                        })
-                                    }
-                                </select>
-                            </div>
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refSeccion}
+                                <input
+                                    type="text"
+                                    maxLength={3}
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
                                     value={seccion}
-                                    onChange={(event) => {
-                                        setSeccion(event.currentTarget.value);
-                                        console.log(event.currentTarget.value)
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        seccionSelect.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.nombreSeccion}>
-                                                    {item.nombreSeccion}
-                                                    {/* - {item.id} */}
-                                                </option>
-                                            );
-
-                                        })
-                                    }
-                                </select>
+                                    placeholder="Ejm: A"
+                                    onChange={(event) => { setSeccion(event.target.value) }}
+                                />
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

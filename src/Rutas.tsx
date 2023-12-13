@@ -9,7 +9,6 @@ import MatriculaHorario from './view/estudiante/matricula/MatriculaHorario';
 
 // Trabajador
 import HorarioIdiomas from './view/trabajador/horario/HorarioIdiomas';
-import AgregarHorario from './view/trabajador/AgregarHorario';
 import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
 import InicioDocente from './view/docente/InicioDocente';
@@ -46,10 +45,6 @@ const router = createBrowserRouter([
       {
         path:'horario-idiomas',
         element: <HorarioIdiomas/>
-      },
-      {
-        path:'agregar-horario',
-        element: <AgregarHorario/>
       },
       {
         path:'inicio-docente',
