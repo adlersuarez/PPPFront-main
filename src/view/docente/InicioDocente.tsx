@@ -28,7 +28,6 @@ import { formatDateTimeToFecha } from '../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "../trabajador/horario/HorarioDetalle";
 
 
-
 const InicioDocente = () => {
 
     const navigate = useNavigate()
@@ -320,7 +319,95 @@ const InicioDocente = () => {
         setIsOpenModalEditar(false);
     };
 
-    
+
+    // tabla
+
+    const dataTable = [
+        {
+            codigo: "Q004SA1",
+            nombre: "Juan Bartolome Sancho",
+            notaA: 15,
+            notaB: 15,
+            notaC: 15,
+            notaD: 15,
+            notaP1: 0,
+            notaEP: 0,
+            notaEF: 0,
+            notaPF: 0,
+        },
+        {
+            codigo: "Q004SA2",
+            nombre: "Maria Rosa Torres",
+            notaA: 15,
+            notaB: 15,
+            notaC: 15,
+            notaD: 15,
+            notaP1: 0,
+            notaEP: 0,
+            notaEF: 0,
+            notaPF: 0,
+        },
+        {
+            codigo: "Q004SA3",
+            nombre: "Pedro Mendez Loayza",
+            notaA: 15,
+            notaB: 15,
+            notaC: 15,
+            notaD: 15,
+            notaP1: 0,
+            notaEP: 0,
+            notaEF: 0,
+            notaPF: 0,
+        },
+    ]
+
+    const data = [
+        [
+            "Codigo",
+            "Nombre",
+            "Nota A",
+            "Nota B",
+            "Nota C",
+            "Nota D",
+            "Nota P1",
+            "Nota EP",
+            "Nota EF",
+            "Nota PF",
+        ],
+        [
+            "Q0004SA1",
+            "Juan Bartolome Sancho",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+        ],
+        [
+            "Q0004SA2",
+            "Maria Rosa Torres",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+            "15",
+        ],
+    ]
+
+    const [editableData, setEditableData] = useState([...data]);
+
+    const handleInputChange = (value: any, rowIndex: any, cellIndex: any) => {
+        const newData = [...editableData];
+        newData[rowIndex][cellIndex] = value;
+        setEditableData(newData);
+    };
+
 
     return (
         <>
@@ -328,7 +415,7 @@ const InicioDocente = () => {
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
-                        {
+                        {/*/
                             moduloDetalle == true ? (
                                 <ModuloHorarioDetalle
                                     idHorario={idHorario}
@@ -381,7 +468,9 @@ const InicioDocente = () => {
                                         abortControl={abortControllerEditar.current}
                                         handleCloseModal={handleCloseModalEditar} />
 
-                                    {/* Contenido */}
+                                    {
+                                        // Contenido  
+                                    }
 
                                     <div className="p-1 bg-Solid">
                                         <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Horarios</h2>
@@ -715,8 +804,203 @@ const InicioDocente = () => {
                                 </>
 
                             )
+                        /*/}
+                        {
+                            <table className="min-w-full divide-y divide-gray-200">
+                                {/* Encabezados de la tabla */}
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        {editableData[0].map((header, index) => (
+                                            <th
+                                                key={index}
+                                                scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                {header}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                {/* Cuerpo de la tabla */}
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {editableData.slice(1).map((row, rowIndex) => (
+                                        <tr key={rowIndex}>
+                                            {row.map((cell, cellIndex) => (
+                                                <td
+                                                    key={cellIndex}
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        value={cell}
+                                                        onChange={(e) =>
+                                                            handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1 w-full"
+                                                    />
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+
                         }
 
+                        {
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >CODIGO</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOMBRE</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA A</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA B</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA C</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA D</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA PRACTICA (20%)</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA EXAMEN MC (40%)</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA EXAMEN FINAL (40%)</th>
+                                        <th
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >NOTA FINAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                     {
+                                        dataTable.map((item , index) => {
+                                            return(
+                                                <tr 
+                                                key={index}
+                                                className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center"
+                                                >
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >{item.codigo}</td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >{item.nombre}</td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        value={item.notaA}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        value={item.notaB}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        value={item.notaC}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        value={item.notaD}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        disabled
+                                                        value={item.notaP1}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        value={item.notaEP}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        value={item.notaEF}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                    <td
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                    >
+                                                        <input
+                                                        type="text"
+                                                        value={item.notaPF}
+                                                        onChange={(e) => {}
+                                                            //handleInputChange(e.target.value, rowIndex, cellIndex)
+                                                        }
+                                                        className="border-2 border-gray-300 p-1"
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                     }
+                                </tbody>
+                            </table>
+                        }
                     </div>
                 </div>
             </div>
