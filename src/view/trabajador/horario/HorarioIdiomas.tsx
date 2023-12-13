@@ -74,8 +74,6 @@ const HorarioIdiomas = () => {
     const abortControllerNuevo = useRef(new AbortController());
     const abortControllerEditar = useRef(new AbortController());
 
-    const anioActual = new Date().getFullYear();
-
     // Tabla
     const paginacion = useRef<number>(0);
     const restart = useRef<boolean>(false);
@@ -197,7 +195,6 @@ const HorarioIdiomas = () => {
             refAula.current?.focus()
             return
         }
-
 
         handleOpenModal()
     }
@@ -396,6 +393,7 @@ const HorarioIdiomas = () => {
                                         idHorario={idHorario}
                                         idIdioma={idIdioma}
                                         idSede={idSede}
+                                        idAula={idAula}
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
                                         idTurno={idTurno}
@@ -404,6 +402,8 @@ const HorarioIdiomas = () => {
                                         seccion={seccion}
                                         estado={estado}
 
+                                        nombreTipoEstudio={""}
+                                        nombreAula={nombreAula}
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
@@ -559,15 +559,13 @@ const HorarioIdiomas = () => {
                                                         {
                                                             comboBoxPeriodo.map((item, index) => {
 
-                                                                if (item.anio === anioActual) {
-                                                                    return (
-                                                                        <option key={index} value={item.periodoId}>
-                                                                            {item.anio} - {item.mes}
-                                                                        </option>
-                                                                    );
-                                                                }
 
-                                                                return null;
+                                                                return (
+                                                                    <option key={index} value={item.periodoId}>
+                                                                        {item.anio} - {item.mes}
+                                                                    </option>
+                                                                );
+
                                                             })
                                                         }
                                                     </select>
