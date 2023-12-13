@@ -559,15 +559,13 @@ const HorarioIdiomas = () => {
                                                         {
                                                             comboBoxPeriodo.map((item, index) => {
 
-                                                                if (item.anio === anioActual) {
-                                                                    return (
-                                                                        <option key={index} value={item.periodoId}>
-                                                                            {item.anio} - {item.mes}
-                                                                        </option>
-                                                                    );
-                                                                }
 
-                                                                return null;
+                                                                return (
+                                                                    <option key={index} value={item.periodoId}>
+                                                                        {item.anio} - {item.mes}
+                                                                    </option>
+                                                                );
+
                                                             })
                                                         }
                                                     </select>

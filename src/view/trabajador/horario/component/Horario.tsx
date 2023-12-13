@@ -30,7 +30,7 @@ const Horario = (props: Props) => {
         const horario = item.appointmentData
 
         return (
-            <div className={`p-1  my-1 rounded-sm`} style={{ backgroundColor: `${horario.color}` }} >
+            <div className={`p-1  my-1 rounded-sm`}  >
                 <p className="mb-1 font-bold tracking-tight text-gray-900 dark:text-white">{horario.asignatura}</p>
                 {/* <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">{horario.docenteId}</p> */}
                 <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '12px' }}>{horario.docente}</p>

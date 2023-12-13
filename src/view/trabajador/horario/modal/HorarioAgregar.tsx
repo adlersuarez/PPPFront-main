@@ -270,7 +270,7 @@ const HorarioAgregar = (props: Props) => {
                                     maxLength={3}
                                     className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
                                     value={seccion}
-                                    onChange={(event) => { event.target.value.trim() }}
+                                    onChange={(event) => { setSeccion(event.target.value) }}
                                 />
                             </div>
                             
