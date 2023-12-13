@@ -6,10 +6,12 @@ import ModalHorarioDetEditar from '../modal/HorarioDetEditar';
 import '../component/style/horario.css'
 
 type Props = {
-    data: object[];
-    color: object[];
-    idIdioma: number,
-    idHorario: number,
+    data: object[]
+    color: object[]
+    idIdioma: number
+    idHorario: number
+    turnoInicio: string | undefined
+    turnoFin: string | undefined
 }
 
 
@@ -23,14 +25,19 @@ const Horario = (props: Props) => {
 
     const renderCard = (item: any) => {
 
+
+
         const horario = item.appointmentData
 
         return (
-            <div className={`p-1  my-1 rounded-sm`} style={{ backgroundColor: `${horario.color}` }} >
+            <div className={`p-1  my-1 rounded-sm`}  >
                 <p className="mb-1 font-bold tracking-tight text-gray-900 dark:text-white">{horario.asignatura}</p>
                 {/* <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">{horario.docenteId}</p> */}
-                <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '10px' }}>{horario.docente}</p>
+                <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '12px' }}>{horario.docente}</p>
                 <p className="mb-1 font-bold text-xs text-gray-700 dark:text-gray-400">{horario.horaIni} - {horario.horaFin}</p>
+                <div className="text-center rounded bg-white">
+                    <span className="text-black">{horario.tipEstudioId == 1 ? "INTENSIVO": "S. INTENSIVO"}</span>
+                </div>
             </div>
         )
     }
@@ -183,8 +190,8 @@ const Horario = (props: Props) => {
             >
                 <View
                     type="week"
-                    startDayHour={6}
-                    endDayHour={22}
+                    startDayHour={ props.turnoInicio != undefined ? parseInt(props.turnoInicio): 8}
+                    endDayHour={ props.turnoFin != undefined ? parseInt(props.turnoFin): 23 }
                     dateCellRender={renderDateCell}
                 />
                 <Resource

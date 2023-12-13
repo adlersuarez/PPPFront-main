@@ -3,6 +3,8 @@ export default interface HorarioPag {
     horarioId: number
     turnoId: number
     turno: string
+    turnoInicio: string
+	turnoFin: string
     idiomaId: number
     idiomaNombre: string
     programaId: number
@@ -11,11 +13,12 @@ export default interface HorarioPag {
     sede: string
     modalidadId: number
     modalidad: string
-    periodoId: number
+    periodoId: string
     anio: number
     mes: number
-    tipEstudioId: number
-    tipoEstudio: string
+    aulasId: number
+	aula: string
+	aulaNombre: string
     seccion: string
     estado: number
     fechaRegistra: string

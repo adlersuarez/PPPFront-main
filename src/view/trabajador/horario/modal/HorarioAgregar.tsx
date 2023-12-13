@@ -10,26 +10,29 @@ import { Types } from "../../../../model/enum/types.model.enum";
 
 import Turno from "../../../../model/interfaces/turno/turno";
 import Programa from "../../../../model/interfaces/programa/programa";
-import TipoEstudio from "../../../../model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
+import { ListarPrograma, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 
 import { seccionSelect } from '../../../../helper/herramienta.helper'
 
+
 type Props = {
     isOpenModal: boolean,
     idIdioma: number,
     idSede: string,
     idModalidad: number,
-    idPeriodo: number,
+    idPeriodo: string,
+    idAula: number,
+
     nombreIdioma: string,
     nombreSede: string
     nombreModalidad: string,
     nombrePeriodo: string,
+    nombreAula: string,
     sweet: Sweet,
 
     abortControl: AbortController,
@@ -42,12 +45,12 @@ const HorarioAgregar = (props: Props) => {
 
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
-    const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
+
 
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
 
-    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+
     const [seccion, setSeccion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
 
@@ -56,10 +59,10 @@ const HorarioAgregar = (props: Props) => {
     const refTipoEstudio = useRef<HTMLSelectElement>(null)
     const refSeccion = useRef<HTMLSelectElement>(null)
 
+
     useEffect(() => {
         LoadDataTurno()
         LoadDataPrograma()
-        LoadDataTipoEstudio()
     }, [])
     
     const LoadDataTurno = async () => {
@@ -105,13 +108,13 @@ const HorarioAgregar = (props: Props) => {
         }
     }
 
+
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
 
     const onRegistrarHorario = () => {
 
-        //event.preventDefault()
 
         if (idTurno == 0) {
             refTurno.current?.focus()
@@ -119,14 +122,6 @@ const HorarioAgregar = (props: Props) => {
         }
         if (idPrograma == 0) {
             refPrograma.current?.focus()
-            return
-        }
-        if (idTipoEstudio == 0) {
-            refTipoEstudio.current?.focus()
-            return
-        }
-        if(seccion == "0"){
-            refSeccion.current?.focus()
             return
         }
 
@@ -138,7 +133,7 @@ const HorarioAgregar = (props: Props) => {
             "sedeId": props.idSede,
             "modalidadId": props.idModalidad,
             "periodoId": props.idPeriodo,
-            "tipEstudioId": idTipoEstudio,
+            "aulasId": props.idAula,
             "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
@@ -192,8 +187,7 @@ const HorarioAgregar = (props: Props) => {
                 onHidden={() => {
                     setIdTurno(0)
                     setIdPrograma(0)
-                    setIdTipoEstudio(0)
-                    setSeccion("0")
+                    setSeccion("")
                     setEstado(true)
                 }}
                 onClose={props.handleCloseModal}
@@ -219,6 +213,7 @@ const HorarioAgregar = (props: Props) => {
                                         <div className="text-sm">
                                             <p>Idioma: <span className="text-blue-700 font-bold">{props.nombreIdioma}</span></p>
                                             <p>Modalidad: <span className="text-blue-700 font-bold ">{props.nombreModalidad}</span></p>
+                                            <p>Aula: <span className="text-blue-700 font-bold ">{props.nombreAula}</span></p>
                                         </div>
                                         <div className="text-sm">
                                             <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
@@ -279,61 +274,24 @@ const HorarioAgregar = (props: Props) => {
                                     }
                                 </select>
                             </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Seccion
                                 </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refTipoEstudio}
-                                    value={idTipoEstudio}
-                                    onChange={(event) => {
-                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={0}>- Seleccione -</option>
-                                    {
-                                        comboBoxTipoEstudio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.tipEstudioId}>
-                                                    {item.tipoEstudio}
-                                                </option>
-                                            );
-
-                                        })
-                                    }
-                                </select>
+                                <input
+                                    type="text"
+                                    maxLength={3}
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+                                    value={seccion}
+                                    onChange={(event) => { setSeccion(event.target.value) }}
+                                />
                             </div>
+                            
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refSeccion}
-                                    value={seccion}
-                                    onChange={(event) => {
-                                        setSeccion(event.currentTarget.value);
-                                        console.log(event.currentTarget.value)
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        seccionSelect.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.nombreSeccion}>
-                                                    {item.nombreSeccion} 
-                                                    {/* - {item.id} */}
-                                                </option>
-                                            );
-
-                                        })
-                                    }
-                                </select>
-                            </div>
+                            
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Estado

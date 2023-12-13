@@ -1,7 +1,6 @@
 import Horario from "./component/Horario";
 import { useEffect, useState } from "react";
 import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
-//import ModalHorarioDetEditar from "./modal/HorarioDetEditar";
 
 import Sweet from '../../../model/interfaces/Sweet.mode.interface'
 
@@ -13,13 +12,14 @@ import Listas from "../../../model/interfaces/Listas.model.interface";
 import { ListarHorarioDetalleId } from "../../../network/rest/idiomas.network";
 
 import ListHorarioDetId from "../../../model/interfaces/horario/listHorarioDetId";
+import HorarioPag from "@/model/interfaces/horario/horarioPag";
 
 type Props = {
     idHorario: number
     idIdioma: number,
-    nombreIdioma: string,
-    nombreSede: string,
-    nombreModalidad: string,
+
+
+    itemHorario: HorarioPag | undefined
     sweet: Sweet,
 
     abortControl: AbortController,
@@ -34,7 +34,9 @@ const HorarioDetalle = (props: Props) => {
     const [color, setColor] = useState<object[]>([]);
 
     const [isOpenModal, setIsOpenModal] = useState(false);
-    //const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
+
+
+    const { itemHorario } = props
 
     useEffect(() => {
         loadInit(props.idHorario)
@@ -53,6 +55,7 @@ const HorarioDetalle = (props: Props) => {
         setListaHorarioDetalleId([])
 
         const response = await ListarHorarioDetalleId<Listas>(horarioId, props.abortControl)
+        console.log(response)
         if (response instanceof Response) {
             setListaHorarioDetalleId(response.data.resultado as ListHorarioDetId[])
         }
@@ -60,6 +63,7 @@ const HorarioDetalle = (props: Props) => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
+
     }
 
     useEffect(() => {
@@ -73,6 +77,8 @@ const HorarioDetalle = (props: Props) => {
 
             setDataHorario(
                 listaHorarioDetalleId.map((item) => {
+
+                    // console.log(item)
 
                     const currentDate = new Date();
 
@@ -99,6 +105,7 @@ const HorarioDetalle = (props: Props) => {
                         docente: item.docente,
                         seccion: item.seccion,
                         turno: item.turno,
+                        tipEstudioId: item.tipEstudioId,
                         tipoEstudio: item.tipoEstudio,
                         // aula: item.aula,
                         observacion: item.observacion,
@@ -142,16 +149,7 @@ const HorarioDetalle = (props: Props) => {
         }
     }
 
-    // Modal Editar
-    /*const handleOpenModalHorarioDetProcesoEditar = () => {
-        setIsOpenModalEditar(true)
-    }
 
-    const handleCloseModalHorarioDetProcesoEditar = () => {
-        setIsOpenModalEditar(false)
-    }*/
-
-    //console.log(dataHorario)
 
     return (
         <>
@@ -159,18 +157,13 @@ const HorarioDetalle = (props: Props) => {
                 isOpenModal={isOpenModal}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
+                turnoInicio={itemHorario?.turnoInicio}
+                turnoFin={itemHorario?.turnoFin}
+
                 sweet={props.sweet}
                 abortControl={props.abortControl}
                 handleCloseModalHorarioAgregra={handleCloseModalHorarioAgregra} />
-                
 
-            {/*<ModalHorarioDetEditar
-                isOpenModal={isOpenModalEditar}
-                idHorario={props.idHorario}
-                idIdioma={props.idIdioma}
-                sweet={props.sweet}
-                abortControl={props.abortControl}
-    handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar} />*/}
 
             <div className="p-1 bg-Solid">
                 <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Configuracion de Horario</h2>
@@ -186,27 +179,20 @@ const HorarioDetalle = (props: Props) => {
                                 <i className="bi bi-plus-circle mr-1"></i> AGREGAR ASIGNATURA
                             </button>
 
-                            {/* <button
-                                className="ml-1 flex items-center rounded border-md p-2 text-xs border-blue-500 bg-blue-500 text-white hover:bg-blue-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
-                            >
-                                <i className="bi bi-printer-fill mr-1"></i> IMPRIMIR
-                            </button> */}
                             <button
                                 className="ml-1 flex items-center rounded border-md p-2 text-xs border-blue-500 bg-blue-500 text-white hover:bg-blue-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
-                                onClick={dataRenderHorario}
+                                onClick={() => loadInit(props.idHorario)}
                             >
-                                <i className="bi bi-eye-fill mr-1"></i> Ver Horarios
+                                <i className="bi bi-arrow-clockwise mr-1"></i> Recargar
                             </button>
 
                         </div>
                         <div className="text-center ">
-                            <span className="text-lg font-semibold text-gray-500">{props.nombreIdioma} - {props.nombreSede} - {props.nombreModalidad}</span>
+                            <span className="text-lg font-semibold text-gray-500">{itemHorario?.idiomaNombre} - {itemHorario?.sede} - {itemHorario?.modalidad} - ( {itemHorario?.anio} - {itemHorario?.mes}) - {itemHorario?.aulaNombre}</span>
                         </div>
-                        {/* <span className=" bg-blue-500 text-center">{props.nombreIdioma} - {props.nombreSede} - {props.nombreModalidad}</span> */}
                     </div>
 
-                    <Horario data={dataHorario} color={color}  idIdioma={props.idIdioma} idHorario={props.idHorario}
-                    //handleOpenModalHorarioDetProcesoEditar={handleOpenModalHorarioDetProcesoEditar}
+                    <Horario data={dataHorario} color={color} idIdioma={props.idIdioma} idHorario={props.idHorario} turnoInicio={itemHorario?.turnoInicio} turnoFin={itemHorario?.turnoFin}
                     />
                 </div>
             </div>

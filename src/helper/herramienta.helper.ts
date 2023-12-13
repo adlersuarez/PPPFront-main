@@ -17,6 +17,12 @@ export function formatDateTimeToFecha(fechaOriginal: string) {
     return formatoFecha
 }
 
+export function convertHourToNumberIntege(hourString: string) {
+    // usar este formato de cadena: '08:00:00.0000000', '13:00:00.0000000'
+    const hour = parseInt(hourString, 10); // Convierte la cadena a entero base 10
+    return hour;
+}
+
 export function keyNumberInteger(event: React.KeyboardEvent<HTMLInputElement>): void {
     const key: string = event.key;
     const c: string = key.length === 1 ? key : '';
@@ -37,6 +43,28 @@ export function keyNumberFloat(event: React.KeyboardEvent<HTMLInputElement>): vo
     }
 }
 
+export function GenerateRangeTurno(horaInicio: string, horaFin: string) {
+    // Convertir las horas de inicio y fin a objetos Date para cálculos
+    const fechaInicio = new Date(`2000-01-01T${horaInicio}`);
+    const fechaFin = new Date(`2000-01-01T${horaFin}`);
+
+    // Array para almacenar las horas generadas
+    const turnoTardeSelect = [];
+
+    // Generar horas con intervalo de 15 minutos
+    let horaActual = fechaInicio;
+    let id = 1;
+
+    while (horaActual <= fechaFin) {
+        const hora = horaActual.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        turnoTardeSelect.push({ id, hora });
+        horaActual.setMinutes(horaActual.getMinutes() + 15);
+        id++;
+    }
+
+    return turnoTardeSelect
+}
+
 
 export const diaSelect = [
     { "id": 1, "dia": 'Lunes' },
@@ -47,6 +75,122 @@ export const diaSelect = [
     { "id": 6, "dia": 'Sabado' },
     { "id": 7, "dia": 'Domingo' }
 ]
+
+export const colorSelect = [
+    { "id": 1, "nombreColor": 'Rojo', "codColor": '#EF9A9A' },
+    { "id": 2, "nombreColor": 'Verde', "codColor": '#81C784' },
+    { "id": 3, "nombreColor": 'Azul', "codColor": '#64B5F6' },
+    { "id": 4, "nombreColor": 'Amarillo', "codColor": '#FFF59D' },
+    { "id": 5, "nombreColor": 'Naranja', "codColor": '#FFCC80' },
+    { "id": 6, "nombreColor": 'Morado', "codColor": '#BA68C8' },
+    { "id": 7, "nombreColor": 'Rosa', "codColor": '#F48FB1' },
+    { "id": 8, "nombreColor": 'Cyan', "codColor": '#4DD0E1' },
+    { "id": 9, "nombreColor": 'Gris', "codColor": '#B0BEC5' },
+    { "id": 10, "nombreColor": 'Marrón', "codColor": '#8D6E63' }
+];
+
+
+export const turnoMananaSelect = [
+    { "id": 1, "hora": "7:45" },
+    { "id": 2, "hora": "8:00" },
+    { "id": 3, "hora": "8:15" },
+    { "id": 4, "hora": "8:30" },
+    { "id": 5, "hora": "8:45" },
+    { "id": 6, "hora": "9:00" },
+    { "id": 7, "hora": "9:15" },
+    { "id": 8, "hora": "9:30" },
+    { "id": 9, "hora": "9:45" },
+    { "id": 10, "hora": "10:00" },
+    { "id": 11, "hora": "10:15" },
+    { "id": 12, "hora": "10:30" },
+    { "id": 13, "hora": "10:45" },
+    { "id": 14, "hora": "11:00" },
+    { "id": 15, "hora": "11:15" },
+    { "id": 16, "hora": "11:30" },
+    { "id": 17, "hora": "11:45" },
+    { "id": 18, "hora": "12:00" },
+    { "id": 19, "hora": "12:15" },
+    { "id": 20, "hora": "12:30" },
+    { "id": 21, "hora": "12:45" },
+    { "id": 22, "hora": "13:00" }
+];
+
+export const turnoTardeSelect = [
+    { "id": 1, "hora": "13:00" },
+    { "id": 2, "hora": "13:15" },
+    { "id": 3, "hora": "13:30" },
+    { "id": 4, "hora": "13:45" },
+    { "id": 5, "hora": "14:00" },
+    { "id": 6, "hora": "14:15" },
+    { "id": 7, "hora": "14:30" },
+    { "id": 8, "hora": "14:45" },
+    { "id": 9, "hora": "15:00" },
+    { "id": 10, "hora": "15:15" },
+    { "id": 11, "hora": "15:30" },
+    { "id": 12, "hora": "15:45" },
+    { "id": 13, "hora": "16:00" },
+    { "id": 14, "hora": "16:15" },
+    { "id": 15, "hora": "16:30" },
+    { "id": 16, "hora": "16:45" },
+    { "id": 17, "hora": "17:00" },
+    { "id": 18, "hora": "17:15" },
+    { "id": 19, "hora": "17:30" },
+    { "id": 20, "hora": "17:45" },
+    { "id": 21, "hora": "18:00" }
+]
+
+export const turnoNocheSelect = [
+    { "id": 1, "hora": "18:00" },
+    { "id": 2, "hora": "18:15" },
+    { "id": 3, "hora": "18:30" },
+    { "id": 4, "hora": "18:45" },
+    { "id": 5, "hora": "19:00" },
+    { "id": 6, "hora": "19:15" },
+    { "id": 7, "hora": "19:30" },
+    { "id": 8, "hora": "19:45" },
+    { "id": 9, "hora": "20:00" },
+    { "id": 10, "hora": "20:15" },
+    { "id": 11, "hora": "20:30" },
+    { "id": 12, "hora": "20:45" },
+    { "id": 13, "hora": "21:00" },
+    { "id": 14, "hora": "21:15" },
+    { "id": 15, "hora": "21:30" },
+    { "id": 16, "hora": "21:45" },
+    { "id": 17, "hora": "22:00" },
+    { "id": 18, "hora": "22:15" },
+    { "id": 19, "hora": "22:30" },
+    { "id": 20, "hora": "22:45" },
+    { "id": 21, "hora": "23:00" }
+];
+
+export const seccionSelect = [
+    { "id": 1, "nombreSeccion": "A" },
+    { "id": 2, "nombreSeccion": "B" },
+    { "id": 3, "nombreSeccion": "C" },
+    { "id": 4, "nombreSeccion": "D" },
+    { "id": 5, "nombreSeccion": "E" },
+    { "id": 6, "nombreSeccion": "F" },
+    { "id": 7, "nombreSeccion": "G" },
+    { "id": 8, "nombreSeccion": "H" },
+    { "id": 9, "nombreSeccion": "I" },
+    { "id": 10, "nombreSeccion": "J" },
+    { "id": 11, "nombreSeccion": "K" },
+    { "id": 12, "nombreSeccion": "L" },
+    { "id": 13, "nombreSeccion": "M" },
+    { "id": 14, "nombreSeccion": "N" },
+    { "id": 15, "nombreSeccion": "O" },
+    { "id": 16, "nombreSeccion": "P" },
+    { "id": 17, "nombreSeccion": "Q" },
+    { "id": 18, "nombreSeccion": "R" },
+    { "id": 19, "nombreSeccion": "S" },
+    { "id": 20, "nombreSeccion": "T" },
+    { "id": 21, "nombreSeccion": "U" },
+    { "id": 22, "nombreSeccion": "V" },
+    { "id": 23, "nombreSeccion": "W" },
+    { "id": 24, "nombreSeccion": "X" },
+    { "id": 25, "nombreSeccion": "Y" },
+    { "id": 26, "nombreSeccion": "Z" }
+];
 
 export const horaSelect = [
     { "id": 1, "hora": "6:00" },
@@ -114,47 +258,5 @@ export const horaSelect = [
     { "id": 63, "hora": "21:30" },
     { "id": 64, "hora": "21:45" },
     { "id": 65, "hora": "22:00" }
-  ];
-
-export const colorSelect = [
-    { "id": 1, "nombreColor": 'Rojo', "codColor": '#EF9A9A' },
-    { "id": 2, "nombreColor": 'Verde', "codColor": '#81C784' },
-    { "id": 3, "nombreColor": 'Azul', "codColor": '#64B5F6' },
-    { "id": 4, "nombreColor": 'Amarillo', "codColor": '#FFF59D' },
-    { "id": 5, "nombreColor": 'Naranja', "codColor": '#FFCC80' },
-    { "id": 6, "nombreColor": 'Morado', "codColor": '#BA68C8' },
-    { "id": 7, "nombreColor": 'Rosa', "codColor": '#F48FB1' },
-    { "id": 8, "nombreColor": 'Cyan', "codColor": '#4DD0E1' },
-    { "id": 9, "nombreColor": 'Gris', "codColor": '#B0BEC5' },
-    { "id": 10, "nombreColor": 'Marrón', "codColor": '#8D6E63' }
-];
-
-export const seccionSelect = [
-    { "id": 1, "nombreSeccion": "A" },
-    { "id": 2, "nombreSeccion": "B" },
-    { "id": 3, "nombreSeccion": "C" },
-    { "id": 4, "nombreSeccion": "D" },
-    { "id": 5, "nombreSeccion": "E" },
-    { "id": 6, "nombreSeccion": "F" },
-    { "id": 7, "nombreSeccion": "G" },
-    { "id": 8, "nombreSeccion": "H" },
-    { "id": 9, "nombreSeccion": "I" },
-    { "id": 10, "nombreSeccion": "J" },
-    { "id": 11, "nombreSeccion": "K" },
-    { "id": 12, "nombreSeccion": "L" },
-    { "id": 13, "nombreSeccion": "M" },
-    { "id": 14, "nombreSeccion": "N" },
-    { "id": 15, "nombreSeccion": "O" },
-    { "id": 16, "nombreSeccion": "P" },
-    { "id": 17, "nombreSeccion": "Q" },
-    { "id": 18, "nombreSeccion": "R" },
-    { "id": 19, "nombreSeccion": "S" },
-    { "id": 20, "nombreSeccion": "T" },
-    { "id": 21, "nombreSeccion": "U" },
-    { "id": 22, "nombreSeccion": "V" },
-    { "id": 23, "nombreSeccion": "W" },
-    { "id": 24, "nombreSeccion": "X" },
-    { "id": 25, "nombreSeccion": "Y" },
-    { "id": 26, "nombreSeccion": "Z" }
 ];
 

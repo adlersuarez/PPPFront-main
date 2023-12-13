@@ -125,13 +125,15 @@ const Acceso = () => {
                                         initial={{ x: -1000, opacity: 0 }}
                                         animate={{ x: 0, opacity: 1 }}
                                         transition={{ duration: 1 }}
-                                    >CENTRO DE IDIOMAS</motion.h1>
+                                    >IDIOMAS UPLA</motion.h1>
                                     <motion.p
                                         className="text-lg md:text-xl lg:text-2xl font-mont font-thin flex justify-center items-center"
                                         initial={{ x: -1000, opacity: 0 }}
                                         transition={{ duration: 0.8 }}
                                         animate={{ x: 0, opacity: 1 }}
-                                        exit={{ opacity: 0 }}> <span className="px-1">UPLA</span> <AcedemicCapSvg size={"w-8 h-8"} /></motion.p>
+                                        exit={{ opacity: 0 }}> 
+                                        {/* <span className="px-1"></span> */}
+                                         <AcedemicCapSvg size={"w-8 h-8"} /></motion.p>
                                 </div>
                             </div>
                             <div className="px-6 md:px-12 sm:px-10 my-auto w-full md:w-1/2 xl:w-1/3">
@@ -149,10 +151,10 @@ const Acceso = () => {
                                     />
                                     <div className="flex flex-col items-center my-5">
                                         <p className="font-mont text-center my-1">Por favor ingrese a su cuenta</p>
-                                        <p className="md:hidden text-center font-mont">CENTRO DE IDIOMAS</p>
-                                        <p className="md:hidden text-center font-mont text-sm flex">
+                                        <p className="md:hidden text-center font-mont">IDIOMAS UPLA</p>
+                                        {/* <p className="md:hidden text-center font-mont text-sm flex">
                                             <span className="px-1">UPLA</span> <AcedemicCapSvg />
-                                        </p>
+                                        </p> */}
                                         {mensaje != "" && <p className="text-red-600 flex items-center"><AiFillWarning className="mr-1" /> <span>{mensaje}</span></p>}
 
                                         <form className="w-full lg:px-12 md:px-8 px-4" onSubmit={onEventAcceso}>

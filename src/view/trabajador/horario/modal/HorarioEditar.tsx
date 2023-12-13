@@ -32,7 +32,7 @@ type Props = {
     idIdioma: number,
     idSede: string,
     idModalidad: number,
-    idPeriodo: number,
+    idPeriodo: string,
     idTurno: number,
     idPrograma: number,
     idTipoEstudio: number,
@@ -69,7 +69,7 @@ const HorarioEditar = (props: Props) => {
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>('0')
     const [idModalidad, setIdModalidad] = useState<number>(0)
-    const [idPeriodo, setIdPeriodo] = useState<number>(0)
+    const [idPeriodo, setIdPeriodo] = useState<string>('0')
 
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
@@ -96,7 +96,7 @@ const HorarioEditar = (props: Props) => {
         setIdIdioma(props.idIdioma || 0);
         setIdSede(props.idSede || '0');
         setIdModalidad(props.idModalidad || 0);
-        setIdPeriodo(props.idPeriodo || 0);
+        setIdPeriodo(props.idPeriodo || '0');
         setIdTurno(props.idTurno || 0);
         setIdPrograma(props.idPrograma || 0);
         setIdTipoEstudio(props.idTipoEstudio || 0);
@@ -238,7 +238,7 @@ const HorarioEditar = (props: Props) => {
             return
         }
 
-        if(idPeriodo == 0){
+        if(idPeriodo == '0'){
             refPeriodo.current?.focus()
             return
         }
@@ -443,7 +443,7 @@ const HorarioEditar = (props: Props) => {
                                     ref={refPeriodo}
                                     value={idPeriodo}
                                     onChange={(event) => {
-                                        setIdPeriodo(parseInt(event.currentTarget.value));
+                                        setIdPeriodo(event.currentTarget.value);
                                     }}
                                 >
                                     <option value={0}>- Seleccione -</option>

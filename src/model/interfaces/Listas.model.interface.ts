@@ -7,8 +7,10 @@ import Periodo from "./periodo/periodo"
 import TipoEstudio from "./tipo-estudio/tipoEstudio"
 import Asignatura from "./asignatura/asignatura"
 import DocenteInfo from "./docente/docenteInfo"
+import Aula from "./aula/aula"
+
 import ListHorarioDetId from "./horario/listHorarioDetId"
 
 export default interface Listas {
-    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | ListHorarioDetId[]
+    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] | ListHorarioDetId[]
 }

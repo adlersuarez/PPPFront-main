@@ -56,11 +56,15 @@ export async function ListarTipoEstudio<Listas>( abortController: AbortControlle
     return await Resolve.create<Listas>(instance.get<Listas>("/TipoEstudio/ListarTipoEstudio", { signal: abortController?.signal }));
 }
 
+export async function ListarAula<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>("/Aula/ListarAula", { signal: abortController?.signal }));
+}
+
 
 //Horario
 
-export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
-    return await Resolve.create(instance.get<ListasPag>(`/Horario/ListarHorarioPag/${IdiomaId}/${SedeId}/${ModalidadId}/${PeriodoId}/${posPagina}/${filaPagina}`, { signal: abortController?.signal }));
+export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: string, AulasId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
+    return await Resolve.create(instance.get<ListasPag>(`/Horario/ListarHorarioPag/${IdiomaId}/${SedeId}/${ModalidadId}/${PeriodoId}/${AulasId}/${posPagina}/${filaPagina}`, { signal: abortController?.signal }));
 }
 
 export async function ListarHorarioDetalleId<Listas>(HorarioId: number, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
@@ -103,6 +107,7 @@ export async function ListarDocenteIdiomasBusqueda<Listas>( busqueda: string, ab
     return await Resolve.create<Listas>(instance.get<Listas>(`/Docente/ListarDocenteIdiomasBusqueda/${busqueda}`, { signal: abortController?.signal }));
 }
 
+
 // Pago
 export async function ValidarPagoMatriculaEstudiante<RespValue>(codigo: string, anio: number, signal = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create<RespValue>(instance.get<RespValue>(`/Pago/ValidarPagoMatriculaEstudiante/${codigo}/${anio}`, { signal: signal! }));
@@ -113,6 +118,11 @@ export async function ValidarPagoPensionMesEstudiante<RespValue>(codigo: string,
 }
 
 
+// Matricula
+export async function ValidarMatriculaExistente<RespValue>(EstudianteId: string, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Matricula/ValidarMatriculaExistente/${EstudianteId}`, { signal: signal! }));
+
+}
 
 
 
