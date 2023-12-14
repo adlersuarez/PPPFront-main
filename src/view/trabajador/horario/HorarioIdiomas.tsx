@@ -312,7 +312,7 @@ const HorarioIdiomas = () => {
     }
 
 
-    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number, turnoInicio: string, turnoFin: string, item: HorarioPag) => {
+    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number, item: HorarioPag) => {
         setModuloDetalle(true)
 
         setNombreIdioma(idiomaNombre)
@@ -320,6 +320,7 @@ const HorarioIdiomas = () => {
         setNombreModalidad(modalidadNombre)
         setIdIdioma(idiomaId)
         setIdHorario(horarioId)
+        setIdTipoEstudio(item.tipEstudioId)
 
         setItemHorario(item)
     }
@@ -347,7 +348,6 @@ const HorarioIdiomas = () => {
         setIsOpenModalEditar(false);
     };
 
-
     return (
         <>
             <div className="flex flex-wrap -mx-3">
@@ -359,7 +359,7 @@ const HorarioIdiomas = () => {
                                 <ModuloHorarioDetalle
                                     idHorario={idHorario}
                                     idIdioma={idIdioma}
-
+                                    idTipoEstudio={idTipoEstudio}
                                     itemHorario={itemHorario}
 
                                     sweet={sweet}
@@ -687,7 +687,7 @@ const HorarioIdiomas = () => {
                                                                                         <button
                                                                                             title="Detalle"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId, item.turnoInicio, item.turnoFin, item)}
+                                                                                            onClick={() => handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId, item)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 

@@ -10,6 +10,7 @@ type Props = {
     color: object[]
     idIdioma: number
     idHorario: number
+    idTipoEstudio: number
     turnoInicio: string | undefined
     turnoFin: string | undefined
 }
@@ -81,6 +82,8 @@ const Horario = (props: Props) => {
             </React.Fragment>
         );
     }
+
+    console.log(props.data)
 
     return (
         <>
@@ -159,6 +162,8 @@ const Horario = (props: Props) => {
                 isOpenModal={isOpenModalEditar}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
+                idTipoEstudio={props.idTipoEstudio}
+
                 turnoInicio={props.turnoInicio}
                 turnoFin={props.turnoFin}
                 

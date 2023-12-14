@@ -17,7 +17,7 @@ import HorarioPag from "@/model/interfaces/horario/horarioPag";
 type Props = {
     idHorario: number
     idIdioma: number,
-
+    idTipoEstudio: number,
 
     itemHorario: HorarioPag | undefined
     sweet: Sweet,
@@ -123,13 +123,13 @@ const HorarioDetalle = (props: Props) => {
                         docente: item.docente,
 
                         estado: item.estado,
-                        
+
                         startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(startHour), parseInt(startMin)),
                         endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
-      
-                   
+
+
                         recurrenceRule: 'FREQ=WEEKLY',
-                        
+
                         //modHora: item.fechaModifica,
                         // disponible: item.disponible,
                         // modalidad: item.modalidad,
@@ -166,6 +166,7 @@ const HorarioDetalle = (props: Props) => {
         }
     }
 
+    //console.log(itemHorario)
 
     return (
         <>
@@ -173,6 +174,8 @@ const HorarioDetalle = (props: Props) => {
                 isOpenModal={isOpenModal}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
+                idTipoEstudio={props.idTipoEstudio}
+
                 turnoInicio={itemHorario?.turnoInicio}
                 turnoFin={itemHorario?.turnoFin}
 
@@ -182,7 +185,7 @@ const HorarioDetalle = (props: Props) => {
 
 
             <div className="p-1 bg-Solid">
-                <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Configuracion de Horario</h2>
+                <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Configuración de Horario</h2>
 
                 <div className="w-full">
                     <div className="grid grid-cols-1 md:grid-cols-1 gap-1 mb-2">
@@ -204,11 +207,11 @@ const HorarioDetalle = (props: Props) => {
 
                         </div>
                         <div className="text-center ">
-                            <span className="text-lg font-semibold text-gray-500">{itemHorario?.idiomaNombre} - {itemHorario?.sede} - {itemHorario?.modalidad} - ( {itemHorario?.anio} - {itemHorario?.mes}) - {itemHorario?.aulaNombre} - {itemHorario?.modalidad}</span>
+                            <span className="text-lg font-semibold text-gray-500">{itemHorario?.idiomaNombre} - {itemHorario?.sede} - {itemHorario?.modalidad} - ({itemHorario?.anio} - {itemHorario?.mes}) - {itemHorario?.aulaNombre} - {itemHorario?.modalidad} - {itemHorario?.tipoEstudio}</span>
                         </div>
                     </div>
 
-                    <Horario data={dataHorario} color={color} idIdioma={props.idIdioma} idHorario={props.idHorario} turnoInicio={itemHorario?.turnoInicio} turnoFin={itemHorario?.turnoFin}
+                    <Horario data={dataHorario} color={color} idIdioma={props.idIdioma} idHorario={props.idHorario} idTipoEstudio={props.idTipoEstudio} turnoInicio={itemHorario?.turnoInicio} turnoFin={itemHorario?.turnoFin}
                     />
                 </div>
             </div>

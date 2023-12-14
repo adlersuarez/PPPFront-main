@@ -8,10 +8,10 @@ import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
 
-import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno } from '../../../../helper/herramienta.helper'
+import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorario } from '../../../../helper/herramienta.helper'
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle,  } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
@@ -23,6 +23,8 @@ type Props = {
     isOpenModal: boolean
     idHorario: number
     idIdioma: number
+    idTipoEstudio: number
+
     turnoInicio: string | undefined
     turnoFin: string | undefined
 
@@ -72,7 +74,11 @@ const HorarioDetAgregar = (props: Props) => {
         LoadDataAsignatura()
         LoadDataRangeTurno()
 
-    }, [])
+        if (horaInicio !== '' && dia !== 0 && props.idTipoEstudio) {
+            setHoraFin(FinalizarHorario(dia, props.idTipoEstudio, horaInicio));
+        }
+
+    }, [horaInicio, dia, props.idTipoEstudio])
 
 
     const LoadDataAsignatura = async () => {
@@ -335,18 +341,18 @@ const HorarioDetAgregar = (props: Props) => {
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Horario Fin <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
-                                {/* <input
+                                <input
                                     type="time"
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
-                                    ref={refHoraFin}
+                                    //ref={refHoraFin}
                                     value={horaFin}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    /*onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         setHoraFin(e.target.value)
-                                    }}
+                                    }}*/
+                                    disabled
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                />
 
-                                /> */}
-
-                                <select
+                                {/*<select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                     ref={refHoraFin}
                                     value={horaFin}
@@ -364,7 +370,7 @@ const HorarioDetAgregar = (props: Props) => {
                                             );
                                         })
                                     }
-                                </select>
+                                </select>*/}
                             </div>
 
                         </div>
