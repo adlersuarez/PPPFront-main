@@ -27,7 +27,7 @@ type Props = {
     hide: () => void;
 };
 
-const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
+const ModalDatosDuracionExtra: React.FC<Props> = (props: Props) => {
 
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
@@ -41,11 +41,20 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
     //console.log(dayCount)
 
+    const [dayTimeRanges, setDayTimeRanges] = useState<{ [day: string]: TimeRange[] | undefined }>({});
+
+
     const handleDayCheckboxChange = (day: string) => {
         const updatedDays = selectedDays.includes(day)
             ? selectedDays.filter((selectedDay) => selectedDay !== day)
             : [...selectedDays, day];
+
+        // Crea un array vacío para el día seleccionado si no existe
+        const updatedTimeRanges = { ...dayTimeRanges };
+        updatedTimeRanges[day] = updatedDays.includes(day) ? updatedTimeRanges[day] || [{ start: '', end: '' }] : undefined;
+
         setSelectedDays(updatedDays);
+        setDayTimeRanges(updatedTimeRanges);
     };
 
     const renderDayCheckboxes = () => {
@@ -164,6 +173,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
     const [descripTotal, setDescripTotal] = useState<string>('');
     const [descripSemanal, setDescripSemanal] = useState<string>('');
 
+
     //console.log(timeRanges)
 
     const handleInputChange = (index: number, key: keyof TimeRange, value: string) => {
@@ -172,14 +182,18 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         setTimeRanges(newTimeRanges);
     };
 
-    const addTimeRange = () => {
-        setTimeRanges([...timeRanges, { start: '', end: '' }]);
+    //
+    const addTimeRangeForDay = (day: string) => {
+        const existingTimeRanges = dayTimeRanges[day] || []; // Provide a default value of an empty array
+        const newTimeRanges = [...existingTimeRanges, { start: '', end: '' }];
+        setDayTimeRanges({ ...dayTimeRanges, [day]: newTimeRanges });
     };
 
-    const deleteTimeRange = (index: number) => {
-        const newTimeRanges = [...timeRanges];
+    const deleteTimeRangeForDay = (day: string, index: number) => {
+        const existingTimeRanges = dayTimeRanges[day] || []; // Provide a default value of an empty array
+        const newTimeRanges = [...existingTimeRanges];
         newTimeRanges.splice(index, 1);
-        setTimeRanges(newTimeRanges);
+        setDayTimeRanges({ ...dayTimeRanges, [day]: newTimeRanges });
     };
 
     useEffect(() => {
@@ -195,6 +209,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                 }
             }
         });
+
         setTotalHours(total);
         const totalHoursInt = Math.floor(total);
         const minutes = Math.round((total % 1) * 60);
@@ -225,14 +240,6 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
     }, [timeRanges]);
 
-    const handleAddButtonClick = () => {
-        //alert('agregado')
-        addTimeRange();
-    };
-
-    const handleDeleteButtonClick = (index: number) => {
-        deleteTimeRange(index);
-    };
 
     const [viewInfo, setViewInfo] = useState<boolean>(true);
 
@@ -359,54 +366,70 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
                             <div className='flex justify-between'>
                                 <h1 className='font-semibold my-auto'>SELECCIONE HORARIO</h1>
-                                <button onClick={handleAddButtonClick} className='flex gap-2 bg-gray-500 hover:bg-blue-700 text-white p-1 px-2 rounded-md'>
-                                    <i className="bi bi-plus-circle" />
-                                    <span>Agregar</span>
-                                </button>
+
                             </div>
 
                             <div className='flex flex-col'>
 
                                 <div className='flex flex-col gap-2'>
                                     {
-                                        timeRanges.map((range, index) => (
-                                            <div key={index} className='flex flex-row gap-2 justify-between '>
-                                                <div className='text-gray-500 flex gap-2 font-semibold w-20'>
-                                                    <i className="bi bi-clock hidden sm:flex my-auto mt-2" />
-                                                    <span className='my-auto'>N° {index + 1}</span>
-                                                </div>
-                                                <div className='flex flex-row items-center'>
-                                                    <div className='flex-1'>
-                                                        <input
-                                                            type="time"
-                                                            value={range.start}
-                                                            className='h-8 w-full'
-                                                            onChange={(e) => handleInputChange(index, 'start', e.target.value)}
-                                                            min={index > 0 ? timeRanges[index - 1].end : ''}
-                                                        />
-                                                    </div>
-                                                    <span className='mx-1 sm:mx-3'>-</span>
-                                                    <div className='flex-1'>
-                                                        <input
-                                                            type="time"
-                                                            value={range.end}
-                                                            className='h-8 w-full'
-                                                            onChange={(e) => handleInputChange(index, 'end', e.target.value)}
-                                                        />
-                                                    </div>
-                                                </div>
+                                        selectedDays.map((day) => (
+                                            <div key={day}>
 
-                                                <div className='my-auto text-lg w-10 flex'>
+                                                <div className='flex justify-between'>
+                                                    <h1 className='font-semibold uppercase'>{`${day}`}</h1>
+                                                    <button
+                                                        title='Agregar horario'
+                                                        onClick={() => addTimeRangeForDay(day)}
+                                                        className='flex gap-2 text-gray-700 p-1 px-2 rounded-md'>
+                                                        <i className="bi bi-plus-circle" />
+
+                                                    </button>
+                                                </div>
+                                                <div className='flex flex-col gap-2'>
                                                     {
-                                                        index === 0 ?
-                                                            <i className="bi bi-list m-auto" />
-                                                            :
-                                                            <button onClick={() => handleDeleteButtonClick(index)}
-                                                                className='m-auto'>
+                                                        dayTimeRanges[day]?.map((range, index) => (
+                                                            <div key={index} className='flex flex-row gap-2 justify-between '>
+                                                                <div className='text-gray-500 flex gap-2 font-semibold w-20'>
+                                                                    <i className="bi bi-clock hidden sm:flex my-auto mt-2" />
+                                                                    <span className='my-auto'>N° {index + 1}</span>
+                                                                </div>
+                                                                <div className='flex flex-row items-center'>
+                                                                    <div className='flex-1'>
+                                                                        <input
+                                                                            type="time"
+                                                                            value={range.start}
+                                                                            className='h-8 w-full'
+                                                                            onChange={(e) => handleInputChange(index, 'start', e.target.value)}
+                                                                            min={index > 0 ? timeRanges[index - 1].end : ''}
+                                                                        />
+                                                                    </div>
+                                                                    <span className='mx-1 sm:mx-3'>-</span>
+                                                                    <div className='flex-1'>
+                                                                        <input
+                                                                            type="time"
+                                                                            value={range.end}
+                                                                            className='h-8 w-full'
+                                                                            onChange={(e) => handleInputChange(index, 'end', e.target.value)}
+                                                                        />
+                                                                    </div>
+                                                                </div>
 
-                                                                <i className="bi bi-trash3 " />
+                                                                <div className='my-auto text-lg w-10 flex'>
+                                                                    {
+                                                                        index === 0 ?
+                                                                            <i className="bi bi-list m-auto" />
+                                                                            :
+                                                                            <button onClick={() => deleteTimeRangeForDay(day, index)}
+                                                                                className='m-auto'>
 
-                                                            </button>
+                                                                                <i className="bi bi-trash3 " />
+
+                                                                            </button>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        ))
                                                     }
                                                 </div>
                                             </div>
@@ -525,4 +548,4 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
     )
 }
 
-export default ModalDatosDuracion;
+export default ModalDatosDuracionExtra;

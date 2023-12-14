@@ -6,6 +6,7 @@ import ListaElementos from './Contenedor/ListaElementos';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
 import EstadoRequisito from './Contenedor/EstadoRequisito';
 import ModalDatosDuracion from '../../modalForms/ModalDatosDuracion';
+import ModalDatosDuracionExtra from '../../modalForms/ModalDatosDuracionExtra';
 
 const TemplateStep3 = () => {
 
@@ -60,7 +61,7 @@ const TemplateStep3 = () => {
 
             <ModalDatosJefeInmediato show={showJefe} hide={handleCloseJefe} />
 
-            <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} />
+            <ModalDatosDuracionExtra show={showHorario} hide={handleCloseHorario} />
 
             <ContenedorSteps
                 numero={3}
