@@ -132,6 +132,10 @@ export async function PagoPensionLista<Listas>(EstudianteId: string, abortContro
     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoPensionLista/${EstudianteId}`, { signal: abortController?.signal }));
 }
 
+export async function CiclosMatriculablesIdiomas<Listas>(EstudianteId: string, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create(instance.get<Listas>(`/Matricula/CiclosMatriculablesIdiomas/${EstudianteId}`, { signal: abortController?.signal }));
+}
+
 
 
 
