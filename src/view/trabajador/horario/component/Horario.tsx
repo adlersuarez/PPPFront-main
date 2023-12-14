@@ -13,6 +13,7 @@ type Props = {
     idTipoEstudio: number
     turnoInicio: string | undefined
     turnoFin: string | undefined
+    loadInit: () => void
 }
 
 
@@ -23,6 +24,13 @@ const Horario = (props: Props) => {
     const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
 
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
+
+
+
+    /*useEffect(() => {
+        // Lógica específica para actualizar datos
+        //console.log('Vista2 se ejecuta o actualiza cuando datos cambian:', props.data);
+    }, [props.data]);*/
 
 
     const renderCard = (item: any) => {
@@ -82,6 +90,8 @@ const Horario = (props: Props) => {
             </React.Fragment>
         );
     }
+
+    //console.log(props.color)
 
     return (
         <>
@@ -164,7 +174,8 @@ const Horario = (props: Props) => {
 
                 turnoInicio={props.turnoInicio}
                 turnoFin={props.turnoFin}
-                
+
+                loadInit={()=>props.loadInit()}
                 handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
             />
 
@@ -188,7 +199,7 @@ const Horario = (props: Props) => {
             >
                 <View
                     type="week"
-                    startDayHour={props.turnoInicio != undefined ? parseInt(props.turnoInicio) -1 : 8}
+                    startDayHour={props.turnoInicio != undefined ? parseInt(props.turnoInicio) - 1 : 8}
                     endDayHour={props.turnoFin != undefined ? parseInt(props.turnoFin) + 1 : 23}
                     // startDayHour={8}
                     // endDayHour={23}

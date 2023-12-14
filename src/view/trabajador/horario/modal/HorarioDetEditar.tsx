@@ -42,6 +42,7 @@ type Props = {
     idTipoEstudio: number
     turnoInicio: string | undefined
     turnoFin: string | undefined
+    loadInit: () => void
     handleCloseModalHorarioDetProcesoEditar: () => void
 }
 
@@ -236,6 +237,8 @@ const HorarioDetEditar = (props: Props) => {
 
                     sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioDetProcesoEditar() });
                 }
+
+                props.loadInit()
             }
         })
 
@@ -592,7 +595,7 @@ const HorarioDetEditar = (props: Props) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
 
-                            <div>
+                            {/*<div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     H. Academicas <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
@@ -610,7 +613,7 @@ const HorarioDetEditar = (props: Props) => {
                                     <option value={3}>Mixto</option>
                                 </select>
 
-                            </div>
+                            </div>*/}
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

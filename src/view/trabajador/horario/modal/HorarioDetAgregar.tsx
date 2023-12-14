@@ -8,7 +8,7 @@ import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
 
-import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorario } from '../../../../helper/herramienta.helper'
+import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorarioCheckBox } from '../../../../helper/herramienta.helper'
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
 import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
@@ -30,6 +30,7 @@ type Props = {
 
     sweet: Sweet
     abortControl: AbortController
+    loadInit: () => void
     handleCloseModalHorarioAgregra: () => void
 }
 
@@ -56,7 +57,7 @@ const HorarioDetAgregar = (props: Props) => {
     const [observacion, setObservacion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
 
-    const refDia = useRef<HTMLSelectElement>(null)
+    //const refDia = useRef<HTMLSelectElement>(null)
     const refHoraInicio = useRef<HTMLSelectElement>(null)
     const refHoraFin = useRef<HTMLSelectElement>(null)
     const refAsignatura = useRef<HTMLSelectElement>(null)
@@ -74,8 +75,8 @@ const HorarioDetAgregar = (props: Props) => {
         LoadDataAsignatura()
         LoadDataRangeTurno()
 
-        if (horaInicio !== '' && dia !== 0 && props.idTipoEstudio) {
-            setHoraFin(FinalizarHorario(dia, props.idTipoEstudio, horaInicio));
+        if (horaInicio !== '' && selectedDays.length>0 && props.idTipoEstudio) {
+            setHoraFin(FinalizarHorarioCheckBox(selectedDays, props.idTipoEstudio, horaInicio));
         }
 
     }, [horaInicio, dia, props.idTipoEstudio])
@@ -129,8 +130,8 @@ const HorarioDetAgregar = (props: Props) => {
         setEstado(event.target.checked);
     };
 
-
-    const onRegistrarHorarioDetalle = () => {
+    
+    /*const onRegistrarHorarioDetalle = () => {
 
         //event.preventDefault()
 
@@ -203,19 +204,115 @@ const HorarioDetAgregar = (props: Props) => {
 
                     if (response.getType() === Types.CANCELED) return;
 
-                    /*
-                    if (response.getStatus() == 401) {
+                    
+                    //if (response.getStatus() == 401) {
                         // dispatch(logout());
-                        return;
-                    }
+                       // return;
+                    //}
 
-                    if (response.getStatus() == 403) {
-                        return;
-                    }
-                    */
+                    //if (response.getStatus() == 403) {
+                     //   return;
+                   // }
+                    
 
                     props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
                 }
+            }
+        })
+
+    }*/
+
+    const onRegistrarHorarioDetalle = () => {
+
+        //event.preventDefault()
+
+        if (horaInicio == "") {
+            refHoraInicio.current?.focus()
+            return
+        }
+        if (horaFin == "") {
+            refHoraFin.current?.focus()
+            return
+        }
+        if (asiId == "0") {
+            refAsignatura.current?.focus()
+            return
+        }
+        if (color == "0") {
+            refColor.current?.focus()
+            return
+        }
+        if (capacidad == 0) {
+            refCapacidad.current?.focus()
+            return
+        }
+        if (docenteId == "") {
+            refInputBusqueda.current?.focus()
+            return
+        }
+
+        
+
+        props.sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+
+            if (value) {
+                props.sweet.openInformation("Mensaje", "Procesando información...")
+
+                await Promise.all(selectedDays.map(async (day) => {
+                    const params = {
+                        "detHorarioId": 0,
+                        "horarioId": props.idHorario,
+                        "asiId": asiId,
+                        "nivel": nivel,
+                        "capacidad": capacidad,
+                        "dia": day,
+                        "horaIni": horaInicio,
+                        "horaFin": horaFin,
+                        "horaAcademica": 1,
+                        "color": color,
+                        "observacion": observacion,
+                        "docenteId": docenteId,
+                        "estado": estado ? 1 : 0,
+                        "usuarioRegistra": codigo,
+                        "fechaRegistra": new Date().toISOString(),
+                        "usuarioModifica": "",
+                        "fechaModifica": new Date().toISOString(),
+                    }
+
+                    try {
+                        const response = await InsertarActualizarHorarioDetalle<RespValue>("CREAR", params, props.abortControl);
+
+                        if (response instanceof Response) {
+
+                            if (response.data.value == "procesado") {
+                                props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
+                            }
+                        }
+
+                        if (response instanceof RestError) {
+
+                            if (response.getType() === Types.CANCELED) return;
+
+                            /*
+                            if (response.getStatus() == 401) {
+                                // dispatch(logout());
+                                return;
+                            }
+        
+                            if (response.getStatus() == 403) {
+                                return;
+                            }
+                            */
+
+                            props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+
+                }));
+
+                props.loadInit()
             }
         })
 
@@ -251,8 +348,40 @@ const HorarioDetAgregar = (props: Props) => {
         setIsDisabledInput(false)
         setSearchTermDocente("")
         setDocenteId("")
+        setSelectedDays([])
     }
 
+    const [selectedDays, setSelectedDays] = useState<number[]>([]);
+
+    const handleDayCheckboxChange = (id: number) => {
+        const updatedDays = selectedDays.includes(id)
+            ? selectedDays.filter((selectedDay) => selectedDay !== id)
+            : [...selectedDays, id].sort((a, b) => a - b);
+    
+        setSelectedDays(updatedDays);
+    };
+    
+    const renderDayCheckboxes = () => {
+        return diaSelect.map((day) => (
+            <div key={day.id} className="flex gap-2">
+                <input
+                    type="checkbox"
+                    id={`day${day.id}`}
+                    className='my-auto text-gray-500'
+                    checked={selectedDays.includes(day.id)}
+                    onChange={() => handleDayCheckboxChange(day.id)}
+                />
+                <label
+                    className='my-auto'
+                    htmlFor={`day${day.id}`}>
+                    {day.dia}
+                </label>
+            </div>
+        ));
+    };
+
+    console.log(selectedDays)
+    
     return (
         <>
             <CustomModal
@@ -271,6 +400,7 @@ const HorarioDetAgregar = (props: Props) => {
                     setIsDisabledInput(false)
                     setSearchTermDocente("")
                     setDocenteId("")
+                    setSelectedDays([])
 
                 }}
                 onClose={props.handleCloseModalHorarioAgregra}
@@ -288,7 +418,15 @@ const HorarioDetAgregar = (props: Props) => {
                     <div className="w-full px-4 pb-2 pt-4">
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-                            <div>
+                            <div className="col-span-3">
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Dias de clases <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <div className="grid grid-cols-4">
+                                    {renderDayCheckboxes()}
+                                </div>
+                            </div>
+                            {/*<div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Dia <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
@@ -311,8 +449,41 @@ const HorarioDetAgregar = (props: Props) => {
                                         })
                                     }
                                 </select>
-                            </div>
+                            </div>*/}
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Asignatura <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refAsignatura}
+                                    value={asiId}
+                                    onChange={(event) => {
+                                        setAsiId(event.currentTarget.value);
 
+                                        const filterNivel = comboBoxAsignatura.filter((item) => event.currentTarget.value == item.asiId)
+
+                                        setNivel(filterNivel[0].asiNivel)
+
+                                    }}
+                                >
+                                    <option value={"0"}>- Seleccione -</option>
+                                    {
+                                        comboBoxAsignatura.map((item, index) => {
+
+                                            if (item.idiomaId === props.idIdioma) {
+                                                return (
+                                                    <option key={index} value={item.asiId}>
+                                                        {item.asignatura} - {item.asiNivel}
+                                                    </option>
+                                                );
+                                            }
+                                            return null;
+
+                                        })
+                                    }
+                                </select>
+                            </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -377,7 +548,7 @@ const HorarioDetAgregar = (props: Props) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
 
-                            <div>
+                            {/*<div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Asignatura <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
@@ -410,7 +581,19 @@ const HorarioDetAgregar = (props: Props) => {
                                         })
                                     }
                                 </select>
+                            </div>*/}
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Nivel
+                                </label>
+                                <input
+                                    type="text"
+                                    disabled
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                    value={nivel} />
+
                             </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Color <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -460,7 +643,7 @@ const HorarioDetAgregar = (props: Props) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
 
-                            <div>
+                            {/*<div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Nivel
                                 </label>
@@ -469,7 +652,18 @@ const HorarioDetAgregar = (props: Props) => {
                                     disabled
                                     className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
                                     value={nivel} />
-
+                            </div>*/}
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Observación
+                                </label>
+                                <textarea
+                                    rows={1}
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+                                    value={observacion}
+                                    onChange={(e) => setObservacion(e.target.value)}
+                                >
+                                </textarea>
                             </div>
 
                             <div className="col-span-2">
@@ -532,7 +726,7 @@ const HorarioDetAgregar = (props: Props) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
 
-                            <div>
+                            {/*<div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Observación
                                 </label>
@@ -543,7 +737,7 @@ const HorarioDetAgregar = (props: Props) => {
                                     onChange={(e) => setObservacion(e.target.value)}
                                 >
                                 </textarea>
-                            </div>
+                            </div>*/}
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

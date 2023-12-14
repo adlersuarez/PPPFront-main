@@ -98,6 +98,39 @@ export function FinalizarHorario(day: number, tipo: number, horaInicio: string) 
     return `${nuevaHoraStr}:${nuevoMinutoStr}`
 };
 
+export function FinalizarHorarioCheckBox(day: number[], tipo: number, horaInicio: string) {
+    let horasASumar: number;
+
+    if (tipo === 1) {
+        horasASumar = 1.5;
+    } else if (tipo === 2) {
+        horasASumar = 3;
+    } else {
+        throw new Error('El tipo debe ser 1 o 2');
+    }
+
+    if (day.includes(6) || day.includes(7)) {
+        horasASumar = 4;
+    }
+
+    // Convertir la hora inicial a minutos para facilitar la manipulación
+    const [horaStr, minutoStr] = horaInicio.split(':').map(Number);
+    const minutosTotales = horaStr * 60 + minutoStr;
+
+    // Sumar las horas
+    const nuevosMinutosTotales = minutosTotales + horasASumar * 60;
+
+    // Calcular la nueva hora y minutos
+    const nuevaHora = Math.floor(nuevosMinutosTotales / 60) % 24;
+    const nuevoMinuto = nuevosMinutosTotales % 60;
+
+    // Formatear la nueva hora y minutos
+    const nuevaHoraStr = nuevaHora.toString().padStart(2, '0');
+    const nuevoMinutoStr = nuevoMinuto.toString().padStart(2, '0');
+
+    return `${nuevaHoraStr}:${nuevoMinutoStr}`
+};
+
 
 export const diaSelect = [
     { "id": 1, "dia": 'Lunes' },
