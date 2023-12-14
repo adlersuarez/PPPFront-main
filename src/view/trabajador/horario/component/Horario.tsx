@@ -83,8 +83,6 @@ const Horario = (props: Props) => {
         );
     }
 
-    console.log(props.data)
-
     return (
         <>
             <CustomModal
