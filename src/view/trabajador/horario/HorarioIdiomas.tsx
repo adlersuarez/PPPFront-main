@@ -10,10 +10,10 @@ import Idioma from "../../../model/interfaces/idioma/idioma";
 import Sede from "../../../model/interfaces/sede/sede";
 import Modalidad from "../../../model/interfaces/modalidad/modalidad";
 import Periodo from "../../../model/interfaces/periodo/periodo";
-import Aula from "@/model/interfaces/aula/aula";
+import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag, ListarAula } from "../../../network/rest/idiomas.network";
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag, ListarTipoEstudio } from "../../../network/rest/idiomas.network";
 
 import useSweerAlert from "../../../component/hooks/useSweetAlert"
 
@@ -27,6 +27,7 @@ import ModalHorarioEditar from "./modal/HorarioEditar";
 import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "./HorarioDetalle";
 
+
 const HorarioIdiomas = () => {
 
     const navigate = useNavigate()
@@ -37,7 +38,8 @@ const HorarioIdiomas = () => {
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
     const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
-    const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
+    const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
+    // const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
 
     const [idHorario, setIdHorario] = useState<number>(0)
 
@@ -45,13 +47,12 @@ const HorarioIdiomas = () => {
     const [idSede, setIdSede] = useState<string>("0")
     const [idModalidad, setIdModalidad] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<string>("0")
+    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+    
     const [idAula, setIdAula] = useState<number>(0)
-
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
-    const [seccion, setSeccion] = useState<string>("0")
     const [estado, setEstado] = useState<number>(0)
 
 
@@ -59,13 +60,15 @@ const HorarioIdiomas = () => {
     const [nombreSede, setNombreSede] = useState<string>("")
     const [nombreModalidad, setNombreModalidad] = useState<string>("")
     const [nombrePeriodo, setNombrePeriodo] = useState<string>("")
-    const [nombreAula, setNombreAula] = useState<string>("")
+    const [nombreTipoEstudio, setNombreTipoEstudio] = useState("")
+   
 
     const refIdioma = useRef<HTMLSelectElement>(null)
     const refSede = useRef<HTMLSelectElement>(null)
     const refModalidad = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
-    const refAula = useRef<HTMLSelectElement>(null)
+    const refTipoEstudio = useRef<HTMLSelectElement>(null)
+
 
     const abortController = useRef(new AbortController());
     const abortControllerNuevo = useRef(new AbortController());
@@ -76,6 +79,7 @@ const HorarioIdiomas = () => {
     const restart = useRef<boolean>(false);
     const totalPaginacion = useRef<number>(0);
     const filasPorPagina = useRef<number>(10);
+
     const [horarioLista, setHorarioLista] = useState<HorarioPag[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -94,7 +98,8 @@ const HorarioIdiomas = () => {
         LoadDataSede()
         LoadDataModalidad()
         LoadDataPeriodo()
-        LoadDataAula()
+        LoadDataTipoEstudio()
+
 
         setMensajeCarga(true)
 
@@ -156,13 +161,16 @@ const HorarioIdiomas = () => {
         }
     }
 
-    const LoadDataAula = async () => {
 
-        setComboBoxAula([])
 
-        const response = await ListarAula<Listas>(abortController.current)
+
+    const LoadDataTipoEstudio = async () => {
+
+        setComboBoxTipoEstudio([])
+
+        const response = await ListarTipoEstudio<Listas>(abortController.current)
         if (response instanceof Response) {
-            setComboBoxAula(response.data.resultado as Aula[])
+            setComboBoxTipoEstudio(response.data.resultado as TipoEstudio[])
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -188,15 +196,19 @@ const HorarioIdiomas = () => {
             refPeriodo.current?.focus()
             return
         }
-        if (idAula == 0) {
-            refAula.current?.focus()
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
+        // if (idAula == 0) {
+        //     refAula.current?.focus()
+        //     return
+        // }
 
         handleOpenModal()
     }
 
-    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, tipEstudioId: number, seccion: string, estado: number) => {
+    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, tipEstudioId: number, estado: number, idAula: number) => {
         setIdHorario(horarioId)
 
         setIdIdioma(idiomaId)
@@ -206,8 +218,9 @@ const HorarioIdiomas = () => {
         setIdTurno(turnoId)
         setIdPrograma(programaId)
         setIdTipoEstudio(tipEstudioId)
-        setSeccion(seccion)
         setEstado(estado)
+
+        setIdAula(idAula)
 
         handleOpenModalEditar()
     }
@@ -232,10 +245,14 @@ const HorarioIdiomas = () => {
             refPeriodo.current?.focus()
             return
         }
-        if (idAula == 0) {
-            refAula.current?.focus()
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
+        // if (idAula == 0) {
+        //     refAula.current?.focus()
+        //     return
+        // }
 
         if (loading) return;
 
@@ -243,7 +260,7 @@ const HorarioIdiomas = () => {
 
         paginacion.current = 1;
         restart.current = true;
-        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idAula);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio);
     }
 
     const paginacionTable = (listid: number) => {
@@ -270,17 +287,21 @@ const HorarioIdiomas = () => {
             refPeriodo.current?.focus()
             return
         }
-        if (idAula == 0) {
-            refAula.current?.focus()
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
+        // if (idAula == 0) {
+        //     refAula.current?.focus()
+        //     return
+        // }
 
         if (loading) return;
 
-        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idAula);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio);
     }
 
-    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: string, idAula: number) => {
+    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: string, idTipoEstudio: number) => {
         setLoading(true)
 
         setHorarioLista([]);
@@ -288,7 +309,7 @@ const HorarioIdiomas = () => {
         const posPagina: number = ((paginacion.current - 1) * filasPorPagina.current)
         const filaPagina: number = filasPorPagina.current
 
-        const response = await ListarHorarioPag<ListasPag>(idIdioma, idSede, idModalidad, idPeriodo, idAula, posPagina, filaPagina);
+        const response = await ListarHorarioPag<ListasPag>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, posPagina, filaPagina);
         if (response instanceof Response) {
             totalPaginacion.current = Math.ceil(response.data.total / filasPorPagina.current);
             setHorarioLista(response.data.resultado as HorarioPag[])
@@ -375,13 +396,14 @@ const HorarioIdiomas = () => {
                                         idSede={idSede}
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
-                                        idAula={idAula}
+                                        idTipoEstudio={idTipoEstudio}
 
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
                                         nombrePeriodo={nombrePeriodo}
-                                        nombreAula={nombreAula}
+                                        nombreTipoEstudio={nombreTipoEstudio}
+                                        
                                         sweet={sweet}
                                         abortControl={abortControllerNuevo.current}
                                         handleCloseModal={handleCloseModal} />
@@ -393,18 +415,20 @@ const HorarioIdiomas = () => {
                                         idSede={idSede}
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
+                                        idTipoEstudio={idTipoEstudio}
+
                                         idAula={idAula}
                                         idTurno={idTurno}
                                         idPrograma={idPrograma}
-                                        idTipoEstudio={idTipoEstudio}
-                                        seccion={seccion}
+                                        
+                                    
                                         estado={estado}
                                         
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
                                         nombrePeriodo={nombrePeriodo}
-                                        nombreAula={nombreAula}
+                                        nombreTipoEstudio={nombreTipoEstudio}
 
                                         loadinit={loadInit}
 
@@ -570,31 +594,31 @@ const HorarioIdiomas = () => {
 
                                                 <div>
                                                     <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                                        Aula <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                                        Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
                                                     </label>
                                                     <select
                                                         className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                                        ref={refAula}
-                                                        value={idAula}
+                                                        ref={refTipoEstudio}
+                                                        value={idTipoEstudio}
                                                         onChange={(event) => {
-                                                            const selectedAulaId = event.currentTarget.value;
-                                                            setIdAula(parseInt(selectedAulaId));
+                                                            const selectedTipoEstudioId = event.currentTarget.value;
+                                                            setIdTipoEstudio(parseInt(selectedTipoEstudioId));
 
-                                                            const selectedAula = comboBoxAula.find(item => item.aulasId.toString() === selectedAulaId);
+                                                            const selectedTipoEstudio = comboBoxTipoEstudio.find(item => item.tipEstudioId.toString() === selectedTipoEstudioId);
 
-                                                            if (selectedAula) {
-                                                                setNombreAula(`${selectedAula.nombre}`);
+                                                            if (selectedTipoEstudio) {
+                                                                setNombreTipoEstudio(`${selectedTipoEstudio.tipoEstudio}`);
                                                             } else {
-                                                                setNombreAula("");
+                                                                setNombreTipoEstudio("");
                                                             }
                                                         }}
                                                     >
                                                         <option value={0}>- Seleccione -</option>
                                                         {
-                                                            comboBoxAula.map((item, index) => {
+                                                            comboBoxTipoEstudio.map((item, index) => {
                                                                 return (
-                                                                    <option key={index} value={item.aulasId}>
-                                                                        {item.nombre}
+                                                                    <option key={index} value={item.tipEstudioId}>
+                                                                        {item.tipoEstudio}
                                                                     </option>
                                                                 )
                                                             })
@@ -678,7 +702,7 @@ const HorarioIdiomas = () => {
                                                                                         <button
                                                                                             title="Editar"
                                                                                             className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.seccion, item.estado)}
+                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.estado, item.aulasId)}
                                                                                         >
                                                                                             <i className="bi bi-pencil-fill text-sm"></i>
 

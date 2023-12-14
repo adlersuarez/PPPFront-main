@@ -34,19 +34,20 @@ type Props = {
     idSede: string,
     idModalidad: number,
     idPeriodo: string,
+    idAula: number,
+
     idTurno: number,
     idPrograma: number,
     idTipoEstudio: number,
-    idAula: number,
 
-    seccion: string,
     estado: number,
 
-    nombreAula: string,
     nombreIdioma: string,
     nombreSede: string
     nombreModalidad: string,
     nombrePeriodo: string,
+    nombreTipoEstudio: string,
+
     sweet: Sweet,
 
     abortControl: AbortController,
@@ -78,7 +79,6 @@ const HorarioEditar = (props: Props) => {
     const [idPrograma, setIdPrograma] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
-    const [seccion, setSeccion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(false)
 
     const refIdioma = useRef<HTMLSelectElement>(null)
@@ -90,7 +90,7 @@ const HorarioEditar = (props: Props) => {
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
     const refTipoEstudio = useRef<HTMLSelectElement>(null)
-    const refSeccion = useRef<HTMLSelectElement>(null)
+
 
     const abortController = useRef(new AbortController());
 
@@ -104,10 +104,9 @@ const HorarioEditar = (props: Props) => {
         setIdTurno(props.idTurno || 0);
         setIdPrograma(props.idPrograma || 0);
         setIdTipoEstudio(props.idTipoEstudio || 0);
-        setSeccion(props.seccion || "");
         setEstado(!!props.estado || false)
 
-    }, [props.idIdioma, props.idSede, props.idModalidad, props.idPeriodo, props.idAula, props.idTurno, props.idPrograma, props.idTipoEstudio, props.seccion]);
+    }, [props.idIdioma, props.idSede, props.idModalidad, props.idPeriodo, props.idAula, props.idTurno, props.idPrograma, props.idTipoEstudio]);
 
     useEffect(() => {
         LoadDataIdioma()
@@ -239,6 +238,8 @@ const HorarioEditar = (props: Props) => {
         setEstado(event.target.checked);
     };
 
+
+
     const onEditarHorario = () => {
 
         //event.preventDefault()
@@ -260,8 +261,8 @@ const HorarioEditar = (props: Props) => {
             refPeriodo.current?.focus()
             return
         }
-        if (idAula == 0) {
-            refAula.current?.focus()
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
         if (idTurno == 0) {
@@ -272,14 +273,11 @@ const HorarioEditar = (props: Props) => {
             refPrograma.current?.focus()
             return
         }
-        if (idTipoEstudio == 0) {
-            refTipoEstudio.current?.focus()
+        if (idAula == 0) {
+            refAula.current?.focus()
             return
         }
-        if (seccion == "0") {
-            refSeccion.current?.focus()
-            return
-        }
+
 
         const params = {
             "horarioId": props.idHorario,
@@ -291,7 +289,6 @@ const HorarioEditar = (props: Props) => {
             "periodoId": idPeriodo,
             "tipEstudioId": idTipoEstudio,
             "aulasId": idAula,
-            "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
@@ -369,7 +366,7 @@ const HorarioEditar = (props: Props) => {
                                         <div className="text-sm">
                                             <p>Idioma: <span className="text-blue-700 font-bold">{props.nombreIdioma}</span></p>
                                             <p>Modalidad: <span className="text-blue-700 font-bold ">{props.nombreModalidad}</span></p>
-                                            <p>Aula: <span className="text-blue-700 font-bold ">{props.nombreAula}</span></p>
+                                            <p>Tipo Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                         </div>
                                         <div className="text-sm">
                                             <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
@@ -483,30 +480,33 @@ const HorarioEditar = (props: Props) => {
                                     }
                                 </select>
                             </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Aula <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refAula}
-                                    value={idAula}
+                                    ref={refTipoEstudio}
+                                    value={idTipoEstudio}
                                     onChange={(event) => {
-                                        setIdAula(parseInt(event.currentTarget.value));
+                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
                                     }}
                                 >
                                     <option value={0}>- Seleccione -</option>
                                     {
-                                        comboBoxAula.map((item, index) => {
+                                        comboBoxTipoEstudio.map((item, index) => {
                                             return (
-                                                <option key={index} value={item.aulasId}>
-                                                    {item.nombre}
+                                                <option key={index} value={item.tipEstudioId}>
+                                                    {item.tipoEstudio}
                                                 </option>
                                             );
+
                                         })
                                     }
                                 </select>
                             </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Turno <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -557,42 +557,30 @@ const HorarioEditar = (props: Props) => {
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Aula <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refTipoEstudio}
-                                    value={idTipoEstudio}
+                                    ref={refAula}
+                                    value={idAula}
                                     onChange={(event) => {
-                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
+                                        setIdAula(parseInt(event.currentTarget.value));
                                     }}
                                 >
                                     <option value={0}>- Seleccione -</option>
                                     {
-                                        comboBoxTipoEstudio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.tipEstudioId}>
-                                                    {item.tipoEstudio}
+                                        comboBoxAula.filter(item => item.modalidadId === idModalidad)
+                                            .map((item, index) => (
+                                                <option key={index} value={item.aulasId}>
+                                                    {item.nombre}
                                                 </option>
-                                            );
+                                            ))
 
-                                        })
                                     }
+
                                 </select>
                             </div>
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Seccion
-                                </label>
-                                <input
-                                    type="text"
-                                    maxLength={3}
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
-                                    value={seccion}
-                                    placeholder="Ejm: A"
-                                    onChange={(event) => { setSeccion(event.target.value) }}
-                                />
-                            </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Estado
