@@ -11,13 +11,12 @@ import { Types } from "../../../../model/enum/types.model.enum";
 import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno } from '../../../../helper/herramienta.helper'
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, ListarTipoEstudio } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle,  } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
-import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 
 
 type Props = {
@@ -37,13 +36,11 @@ const HorarioDetAgregar = (props: Props) => {
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
     const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
-    const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
     const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
 
     const [comboBoxRangeTurno, setcomboBoxRangeTurno] = useState<any>([])
 
     const [dia, setDia] = useState<number>(0)
-    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
     const [asiId, setAsiId] = useState<string>("0")
@@ -53,19 +50,18 @@ const HorarioDetAgregar = (props: Props) => {
 
     const [docenteId, setDocenteId] = useState<string>("")
 
-    const [horaAcademica, setHoraAcademica] = useState<number>(0)
+
     const [observacion, setObservacion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
 
     const refDia = useRef<HTMLSelectElement>(null)
-    const refTipoEstudio = useRef<HTMLSelectElement>(null)
     const refHoraInicio = useRef<HTMLSelectElement>(null)
     const refHoraFin = useRef<HTMLSelectElement>(null)
     const refAsignatura = useRef<HTMLSelectElement>(null)
     const refColor = useRef<HTMLSelectElement>(null)
     const refCapacidad = useRef<HTMLInputElement>(null)
 
-    const refHoraAcademica = useRef<HTMLSelectElement>(null)
+
 
     const [searchTermDocente, setSearchTermDocente] = useState("");
     const [isSearching, setIsSearching] = useState(false);
@@ -74,7 +70,6 @@ const HorarioDetAgregar = (props: Props) => {
 
     useEffect(() => {
         LoadDataAsignatura()
-        LoadDataTipoEstudio()
         LoadDataRangeTurno()
 
     }, [])
@@ -94,23 +89,9 @@ const HorarioDetAgregar = (props: Props) => {
         }
     }
 
-    const LoadDataTipoEstudio = async () => {
-
-        setComboBoxTipoEstudio([])
-
-        const response = await ListarTipoEstudio<Listas>(props.abortControl)
-        if (response instanceof Response) {
-            setComboBoxTipoEstudio(response.data.resultado as TipoEstudio[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
-
     const LoadDataRangeTurno = async () => {
 
-        setComboBoxTipoEstudio([])
+        setcomboBoxRangeTurno([])
 
         if (props.turnoInicio === undefined || props.turnoFin === undefined) {
             console.log('El rango de horas para el turno no se pudo crear');
@@ -151,10 +132,6 @@ const HorarioDetAgregar = (props: Props) => {
             refDia.current?.focus()
             return
         }
-        if (idTipoEstudio == 0) {
-            refTipoEstudio.current?.focus()
-            return
-        }
         if (horaInicio == "") {
             refHoraInicio.current?.focus()
             return
@@ -179,22 +156,17 @@ const HorarioDetAgregar = (props: Props) => {
             refInputBusqueda.current?.focus()
             return
         }
-        if (horaAcademica == 0) {
-            refHoraAcademica.current?.focus()
-            return
-        }
 
         const params = {
             "detHorarioId": 0,
             "horarioId": props.idHorario,
             "asiId": asiId,
-            "TipEstudioId": idTipoEstudio,
             "nivel": nivel,
             "capacidad": capacidad,
             "dia": dia,
             "horaIni": horaInicio,
             "horaFin": horaFin,
-            "horaAcademica": horaAcademica,
+            "horaAcademica": 1,
             "color": color,
             "observacion": observacion,
             "docenteId": docenteId,
@@ -284,7 +256,6 @@ const HorarioDetAgregar = (props: Props) => {
                 }}
                 onHidden={() => {
                     setDia(0)
-                    setIdTipoEstudio(0)
                     setHoraInicio("")
                     setHoraFin("")
                     setAsiId("0")
@@ -295,7 +266,6 @@ const HorarioDetAgregar = (props: Props) => {
                     setSearchTermDocente("")
                     setDocenteId("")
 
-                    setHoraAcademica(0)
                 }}
                 onClose={props.handleCloseModalHorarioAgregra}
             >
@@ -311,7 +281,7 @@ const HorarioDetAgregar = (props: Props) => {
                     </div>
                     <div className="w-full px-4 pb-2 pt-4">
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-2">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Dia <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -336,31 +306,7 @@ const HorarioDetAgregar = (props: Props) => {
                                     }
                                 </select>
                             </div>
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refTipoEstudio}
-                                    value={idTipoEstudio}
-                                    onChange={(event) => {
-                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={0}>- Seleccione -</option>
-                                    {
-                                        comboBoxTipoEstudio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.tipEstudioId}>
-                                                    {item.tipoEstudio}
-                                                </option>
-                                            );
 
-                                        })
-                                    }
-                                </select>
-                            </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -579,26 +525,6 @@ const HorarioDetAgregar = (props: Props) => {
                         {/* Observacion */}
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    H. Academicas <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refHoraAcademica}
-                                    value={horaAcademica}
-                                    onChange={(e) => {
-                                        setHoraAcademica(parseInt(e.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={0}>- Seleccione -</option>
-                                    <option value={1}>Prácticas</option>
-                                    <option value={2}>Teoricas</option>
-                                    <option value={3}>Mixto</option>
-                                </select>
-
-                            </div>
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

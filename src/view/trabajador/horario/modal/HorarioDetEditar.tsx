@@ -5,44 +5,43 @@ import { RootState } from '../../../../store/configureStore.store';
 import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
-import { keyNumberInteger, diaSelect, colorSelect } from '../../../../helper/herramienta.helper'
+import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno } from '../../../../helper/herramienta.helper'
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, ListarTipoEstudio } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
-import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
+
 
 interface HorarioDetActual {
-    detHorarioId: number;
-    asignaturaId: string;
-    asignatura: string;
-    startDate: Date;
-    endDate: Date;
-    horaIni: string;
-    horaFin: string;
-    horaAcademica: string;
-    color: string;
-    nivel: number;
-    docente: string;
-    seccion: string;
-    turno: string;
-    tipoEstudio: string;
+    detHorarioId: number
+    horarioId: number
+    dia: number
+    horaIni: string
+    horaFin: string
+    asignaturaId: string
+    color: string
+    capacidad: number
+    nivel: number
+    docenteId: number
+    horaAcademica: string
     observacion: string;
-    dia: number;
-    recurrenceRule: string;
-    modHora: Date;
-    capacidad: number;
-    docenteId: number;
-    visibleeee: number;
-    roomId: string;
+    estado: number
+
+    asignatura: string
+    docente: string
+
+    startDate: Date
+    endDate: Date
 }
 
 type Props = {
-    isOpenModal: boolean,
-    idHorario: number,
-    idIdioma: number,
+    isOpenModal: boolean
+    idHorario: number
+    idIdioma: number
+    turnoInicio: string | undefined
+    turnoFin: string | undefined
     handleCloseModalHorarioDetProcesoEditar: () => void
 }
 
@@ -58,13 +57,11 @@ const HorarioDetEditar = (props: Props) => {
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
     const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
-    const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
     const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
     const [comboBoxRangeTurno, setcomboBoxRangeTurno] = useState<any>([])
-
-    const [dia, setDia] = useState<number>(0)
-    const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+   
     const [detHorarioId, setDetHorarioId] = useState<number>(0)
+    const [dia, setDia] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
     const [asiId, setAsiId] = useState<string>("0")
@@ -76,10 +73,10 @@ const HorarioDetEditar = (props: Props) => {
     const [observacion, setObservacion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(false)
 
+
     const refDia = useRef<HTMLSelectElement>(null)
-    const refTipoEstudio = useRef<HTMLSelectElement>(null)
-    const refHoraInicio = useRef<HTMLInputElement>(null)
-    const refHoraFin = useRef<HTMLInputElement>(null)
+    const refHoraInicio = useRef<HTMLSelectElement>(null)
+    const refHoraFin = useRef<HTMLSelectElement>(null)
     const refAsignatura = useRef<HTMLSelectElement>(null)
     const refColor = useRef<HTMLSelectElement>(null)
     const refCapacidad = useRef<HTMLInputElement>(null)
@@ -95,7 +92,7 @@ const HorarioDetEditar = (props: Props) => {
 
     useEffect(() => {
         LoadDataAsignatura()
-        LoadDataTipoEstudio()
+        LoadDataRangeTurno()
     }, [])
 
     const LoadDataAsignatura = async () => {
@@ -109,6 +106,20 @@ const HorarioDetEditar = (props: Props) => {
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
+        }
+    }
+
+    const LoadDataRangeTurno = async () => {
+
+        setcomboBoxRangeTurno([])
+
+        if (props.turnoInicio === undefined || props.turnoFin === undefined) {
+            console.log('El rango de horas para el turno no se pudo crear');
+            // Aquí podrías hacer cualquier otra lógica o manejo de error que desees
+        } else {
+            const rangoTurno = GenerateRangeTurno(props.turnoInicio, props.turnoFin)
+            setcomboBoxRangeTurno(rangoTurno)
+
         }
     }
 
@@ -126,19 +137,6 @@ const HorarioDetEditar = (props: Props) => {
         }
     }
 
-    const LoadDataTipoEstudio = async () => {
-
-        setComboBoxTipoEstudio([])
-
-        const response = await ListarTipoEstudio<Listas>(abortController.current)
-        if (response instanceof Response) {
-            setComboBoxTipoEstudio(response.data.resultado as TipoEstudio[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
 
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
@@ -151,10 +149,6 @@ const HorarioDetEditar = (props: Props) => {
 
         if (dia == 0) {
             refDia.current?.focus()
-            return
-        }
-        if (idTipoEstudio == 0) {
-            refTipoEstudio.current?.focus()
             return
         }
         if (horaInicio == "") {
@@ -279,10 +273,12 @@ const HorarioDetEditar = (props: Props) => {
     useEffect(() => {
         if (storedHorarioDetActual) {
             //setIdHorario(storedHorarioDetActual.idHorario || 0);
+
+            console.log(storedHorarioDetActual)
             setDia(storedHorarioDetActual.dia || 0);
             setDetHorarioId(storedHorarioDetActual.detHorarioId || 0);
-            setHoraInicio(storedHorarioDetActual.horaIni || "");
-            setHoraFin(storedHorarioDetActual.horaFin || "");
+            setHoraInicio(storedHorarioDetActual.horaIni.split(':').slice(0, 2).join(':') || "");
+            setHoraFin(storedHorarioDetActual.horaFin.split(':').slice(0, 2).join(':') || "");
             setAsiId(storedHorarioDetActual.asignaturaId || "0");
             setColor(storedHorarioDetActual.color || "0");
             setCapacidad(storedHorarioDetActual.capacidad || 0);
@@ -290,7 +286,7 @@ const HorarioDetEditar = (props: Props) => {
             setDocenteId(storedHorarioDetActual.docenteId.toString() || '');
             setHoraAcademica(parseInt(storedHorarioDetActual.horaAcademica) || 0);
             setObservacion(storedHorarioDetActual.observacion || "");
-            setEstado(!!storedHorarioDetActual.visibleeee || false);
+            setEstado(!!storedHorarioDetActual.estado || false);
 
             setSearchTermDocente(storedHorarioDetActual.docenteId + ' - ' + `${storedHorarioDetActual.docente}`)
             setIsDisabledInput(true)
@@ -332,7 +328,7 @@ const HorarioDetEditar = (props: Props) => {
                     </div>
                     <div className="w-full px-4 pb-2 pt-4">
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-2">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Dia <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -357,32 +353,8 @@ const HorarioDetEditar = (props: Props) => {
                                     }
                                 </select>
                             </div>
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refTipoEstudio}
-                                    value={idTipoEstudio}
-                                    onChange={(event) => {
-                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={0}>- Seleccione -</option>
-                                    {
-                                        comboBoxTipoEstudio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.tipEstudioId}>
-                                                    {item.tipoEstudio}
-                                                </option>
-                                            );
 
-                                        })
-                                    }
-                                </select>
-                            </div>
-                            <div>
+                            {/* <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
@@ -396,23 +368,38 @@ const HorarioDetEditar = (props: Props) => {
                                     }}
 
                                 />
+                            </div> */}
+
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refHoraInicio}
+                                    value={horaInicio}
+                                    onChange={(event) => {
+                                        setHoraInicio(event.currentTarget.value);
+                                    }}
+                                >
+                                    <option value={"0"}>- Seleccione -</option>
+                                    {
+                                        comboBoxRangeTurno.map((item: any, index: any) => {
+                                            return (
+                                                <option key={index} value={item.hora}>
+                                                    {item.hora}
+                                                </option>
+                                            );
+                                        })
+                                    }
+                                </select>
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Horario Fin <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
-                                <input
-                                    type="time"
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
-                                    ref={refHoraFin}
-                                    value={horaFin}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        setHoraFin(e.target.value)
-                                    }}
 
-                                />
-
-                                {/* <select
+                                <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                     ref={refHoraFin}
                                     value={horaFin}
@@ -422,7 +409,7 @@ const HorarioDetEditar = (props: Props) => {
                                 >
                                     <option value={"0"}>- Seleccione -</option>
                                     {
-                                        horaSelect.map((item, index) => {
+                                        comboBoxRangeTurno.map((item: any, index: any) => {
                                             return (
                                                 <option key={index} value={item.hora}>
                                                     {item.hora}
@@ -430,7 +417,7 @@ const HorarioDetEditar = (props: Props) => {
                                             );
                                         })
                                     }
-                                </select> */}
+                                </select>
                             </div>
 
                         </div>

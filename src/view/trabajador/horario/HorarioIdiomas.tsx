@@ -27,9 +27,6 @@ import ModalHorarioEditar from "./modal/HorarioEditar";
 import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "./HorarioDetalle";
 
-
-
-
 const HorarioIdiomas = () => {
 
     const navigate = useNavigate()
@@ -199,7 +196,7 @@ const HorarioIdiomas = () => {
         handleOpenModal()
     }
 
-    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, seccion: string, estado: number) => {
+    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, tipEstudioId: number, seccion: string, estado: number) => {
         setIdHorario(horarioId)
 
         setIdIdioma(idiomaId)
@@ -208,7 +205,7 @@ const HorarioIdiomas = () => {
         setIdPeriodo(periodoId)
         setIdTurno(turnoId)
         setIdPrograma(programaId)
-
+        setIdTipoEstudio(tipEstudioId)
         setSeccion(seccion)
         setEstado(estado)
 
@@ -332,7 +329,7 @@ const HorarioIdiomas = () => {
     }
 
 
-    // Modal
+    // Nuevo
     const handleOpenModal = () => {
         setIsOpenModal(true);
     };
@@ -341,7 +338,7 @@ const HorarioIdiomas = () => {
         setIsOpenModal(false);
     };
 
-    //Editar
+    // Editar
     const handleOpenModalEditar = () => {
         setIsOpenModalEditar(true);
     };
@@ -379,6 +376,7 @@ const HorarioIdiomas = () => {
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
                                         idAula={idAula}
+
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
@@ -393,21 +391,20 @@ const HorarioIdiomas = () => {
                                         idHorario={idHorario}
                                         idIdioma={idIdioma}
                                         idSede={idSede}
-                                        idAula={idAula}
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
+                                        idAula={idAula}
                                         idTurno={idTurno}
                                         idPrograma={idPrograma}
                                         idTipoEstudio={idTipoEstudio}
                                         seccion={seccion}
                                         estado={estado}
-
-                                        nombreTipoEstudio={""}
-                                        nombreAula={nombreAula}
+                                        
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
                                         nombrePeriodo={nombrePeriodo}
+                                        nombreAula={nombreAula}
 
                                         loadinit={loadInit}
 
@@ -640,7 +637,7 @@ const HorarioIdiomas = () => {
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Programa</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">F. Registro</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Opciones</th>
                                                         </tr>
                                                     </thead>
@@ -659,7 +656,7 @@ const HorarioIdiomas = () => {
                                                                 horarioLista.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={10} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione Idioma, Sede, Modalidad para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={10} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :
@@ -667,7 +664,7 @@ const HorarioIdiomas = () => {
                                                                         horarioLista.map((item, index) => {
 
                                                                             return (
-                                                                                <tr key={index} className="bg-white border-b">
+                                                                                <tr key={index} className="bg-white border-b" title={formatDateTimeToFecha(item.fechaRegistra)}>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.idiomaNombre}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
@@ -676,12 +673,12 @@ const HorarioIdiomas = () => {
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aulaNombre}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.programa}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{formatDateTimeToFecha(item.fechaRegistra)}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                                                                         <button
                                                                                             title="Editar"
                                                                                             className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.seccion, item.estado)}
+                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.seccion, item.estado)}
                                                                                         >
                                                                                             <i className="bi bi-pencil-fill text-sm"></i>
 

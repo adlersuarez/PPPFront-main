@@ -18,16 +18,16 @@ type Props = {
 
 const Horario = (props: Props) => {
 
-    const [isOpenModal, setIsOpenModal] = useState(false);
-    const [horarioDetActual, setHorarioDetActual] = useState<any>({})
+    const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
     const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
+
+    const [horarioDetActual, setHorarioDetActual] = useState<any>({})
 
 
     const renderCard = (item: any) => {
 
-
-
         const horario = item.appointmentData
+        // console.log(horario)
 
         return (
             <div className={`p-1  my-1 rounded-sm`}  >
@@ -36,22 +36,20 @@ const Horario = (props: Props) => {
                 <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '12px' }}>{horario.docente}</p>
                 <p className="mb-1 font-bold text-xs text-gray-700 dark:text-gray-400">{horario.horaIni} - {horario.horaFin}</p>
                 <div className="text-center rounded bg-white">
-                    <span className="text-black">{horario.tipEstudioId == 1 ? "INTENSIVO": "S. INTENSIVO"}</span>
+                    <span className="text-black">{horario.tipoEstudio}</span>
                 </div>
             </div>
         )
     }
 
-    const handleOpenModal = (e: any) => {
+    const handleOpenModalInfo = (e: any) => {
 
-        //console.log(e)
-
-        setIsOpenModal(true)
+        setIsOpenModalInfo(true)
         setHorarioDetActual(e.appointmentData)
     }
 
-    const handleCloseModal = () => {
-        setIsOpenModal(false)
+    const handleCloseModalInfo = () => {
+        setIsOpenModalInfo(false)
     }
 
     // Modal Editar
@@ -87,7 +85,7 @@ const Horario = (props: Props) => {
     return (
         <>
             <CustomModal
-                isOpen={isOpenModal}
+                isOpen={isOpenModalInfo}
                 onOpen={() => {
 
                 }}
@@ -95,7 +93,7 @@ const Horario = (props: Props) => {
                     setHorarioDetActual({})
 
                 }}
-                onClose={handleCloseModal}
+                onClose={handleCloseModalInfo}
             >
 
                 <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
@@ -104,7 +102,7 @@ const Horario = (props: Props) => {
                         <h6 className="py-1 font-bold text-lg">Opciones de asignatura: {horarioDetActual.asignatura}</h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
-                            onClick={handleCloseModal}>
+                            onClick={handleCloseModalInfo}>
                             <i className="bi bi-x-circle text-lg"></i>
                         </button>
                     </div>
@@ -121,7 +119,6 @@ const Horario = (props: Props) => {
                                             <p>Seccion: <span className="text-blue-700 font-bold">{horarioDetActual.seccion}</span></p>
                                             <p>Turno: <span className="text-blue-700 font-bold">{horarioDetActual.turno}</span></p>
                                             <p>horario: Desde <span className="text-blue-700 font-bold">{horarioDetActual.horaIni}</span> hasta <span className="text-blue-700 font-bold">{horarioDetActual.horaFin}</span></p>
-                                            <p>Tipo de Estudio: <span className="text-blue-700 font-bold">{horarioDetActual.tipoEstudio}</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -135,7 +132,7 @@ const Horario = (props: Props) => {
                         <button
                             className="ml-1 flex items-center rounded border-md border-yellow-500 bg-yellow-500 text-white p-2 hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-400 active:ring-yellow-400"
                             onClick={() => {
-                                handleCloseModal();
+                                handleCloseModalInfo();
                                 //props.handleOpenModalHorarioDetProcesoEditar()
                                 handleOpenModalHorarioDetProcesoEditar()
                             }}
@@ -146,12 +143,6 @@ const Horario = (props: Props) => {
                             className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
                         >
                             <i className="bi bi-people-fill mr-1"></i> Matriculados
-                        </button>
-                        <button
-                            className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
-                            onClick={handleCloseModal}
-                        >
-                            <i className="bi bi-x-circle mr-1"></i> Cerrar
                         </button>
                     </div>
 
@@ -168,8 +159,12 @@ const Horario = (props: Props) => {
                 isOpenModal={isOpenModalEditar}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
+                turnoInicio={props.turnoInicio}
+                turnoFin={props.turnoFin}
+                
                 handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
             />
+
 
             <Scheduler
                 timeZone="America/Lima"
@@ -185,13 +180,13 @@ const Horario = (props: Props) => {
                 width={"100%"}
                 height={"100%"}
                 appointmentRender={renderCard}
-                onAppointmentClick={(e: any) => handleOpenModal(e)}
+                onAppointmentClick={(e: any) => handleOpenModalInfo(e)}
                 editing={false}
             >
                 <View
                     type="week"
-                    startDayHour={ props.turnoInicio != undefined ? parseInt(props.turnoInicio): 8}
-                    endDayHour={ props.turnoFin != undefined ? parseInt(props.turnoFin): 23 }
+                    startDayHour={props.turnoInicio != undefined ? parseInt(props.turnoInicio) : 8}
+                    endDayHour={props.turnoFin != undefined ? parseInt(props.turnoFin) : 23}
                     dateCellRender={renderDateCell}
                 />
                 <Resource

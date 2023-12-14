@@ -16,6 +16,8 @@ export default interface HorarioPag {
     periodoId: string
     anio: number
     mes: number
+    tipEstudioId: number,
+	tipoEstudio: string,
     aulasId: number
 	aula: string
 	aulaNombre: string

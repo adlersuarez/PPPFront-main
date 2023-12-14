@@ -43,7 +43,9 @@ const MatriculaInterna = () => {
     
     /**/
     const [primeraMatricula, setPrimeraMatricula] = useState(false)
-    const [pagoMatricula, setPagoMatricula] = useState<MatriculaPago[]>([])
+    const [pagoMatriculaList, setPagoMatriculaList] = useState<MatriculaPago[]>([])
+
+    const [pagMatricula, setPagMatricula] = useState("")
 
     const abortControl = new AbortController()
 
@@ -85,15 +87,22 @@ const MatriculaInterna = () => {
 
 
     const ListPagoMatricula = async () => {
-        setPagoMatricula([])
+        setPagoMatriculaList([])
 
         const response = await PagoMatriculaLista<Listas>(codigo, abortControl)
 
         if (response instanceof Response) {
 
             const data = response.data.resultado as MatriculaPago[]
-            setPagoMatricula(data)
-            console.log(data)
+            setPagoMatriculaList(data)
+            
+            if (data[0].total == "0"){
+                
+
+            } else {
+
+
+            }
 
 
         }

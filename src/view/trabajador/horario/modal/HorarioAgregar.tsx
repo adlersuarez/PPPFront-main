@@ -122,6 +122,11 @@ const HorarioAgregar = (props: Props) => {
             refPrograma.current?.focus()
             return
         }
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
+            return
+        }
+
 
         const params = {
             "horarioId": 0,
@@ -132,6 +137,7 @@ const HorarioAgregar = (props: Props) => {
             "modalidadId": props.idModalidad,
             "periodoId": props.idPeriodo,
             "aulasId": props.idAula,
+            "tipEstudioId": idTipoEstudio,
             "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
@@ -186,6 +192,7 @@ const HorarioAgregar = (props: Props) => {
                 onHidden={() => {
                     setIdTurno(0)
                     setIdPrograma(0)
+                    setIdTipoEstudio(0)
                     setSeccion("")
                     setEstado(true)
                 }}

@@ -56,7 +56,6 @@ const HorarioDetalle = (props: Props) => {
         setListaHorarioDetalleId([])
 
         const response = await ListarHorarioDetalleId<Listas>(horarioId, props.abortControl)
-        console.log(response)
         if (response instanceof Response) {
             setListaHorarioDetalleId(response.data.resultado as ListHorarioDetId[])
         }
@@ -80,8 +79,6 @@ const HorarioDetalle = (props: Props) => {
             setDataHorario(
                 listaHorarioDetalleId.map((item) => {
 
-                    // console.log(item)
-
                     const currentDate = new Date();
 
                     const startDate = new Date(currentDate);
@@ -95,35 +92,53 @@ const HorarioDetalle = (props: Props) => {
 
                     return {
                         detHorarioId: item.detHorarioId,
-                        asignaturaId: item.asiId,
-                        asignatura: item.asignatura,
-                        nivel: item.nivel,
-                        startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(startHour), parseInt(startMin)),
-                        endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
-                        horaIni: item.horaIni,
-                        horaFin: item.horaFin,
-                        horaAcademica: item.horaAcademica,
-                        color: item.color,
-                        docente: item.docente,
-                        seccion: item.seccion,
+                        horarioId: item.horarioId,
+                        turnoId: item.turnoId,
                         turno: item.turno,
+                        programaId: item.programaId,
+                        programa: item.programa,
+                        periodoId: item.periodoId,
+                        anio: item.anio,
+                        mes: item.mes,
                         tipEstudioId: item.tipEstudioId,
                         tipoEstudio: item.tipoEstudio,
-                        // aula: item.aula,
-                        observacion: item.observacion,
+
+                        seccion: item.seccion,
+                        asignaturaId: item.asiId,
+                        asignatura: item.asignatura,
+
+
+                        nivel: item.nivel,
+                        capacidad: item.capacidad,
                         dia: item.dia,
+
+                        horaIni: item.horaIni,
+                        horaFin: item.horaFin,
+
+                        horaAcademica: item.horaAcademica,
+                        color: item.color,
+                        observacion: item.observacion,
+
+                        docenteId: item.docenteId,
+                        docente: item.docente,
+
+                        estado: item.estado,
+                        
+                        startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(startHour), parseInt(startMin)),
+                        endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
+      
+                   
                         recurrenceRule: 'FREQ=WEEKLY',
+                        
+                        //modHora: item.fechaModifica,
                         // disponible: item.disponible,
-                        modHora: item.fechaModifica,
                         // modalidad: item.modalidad,
                         // ocupado: item.ocupado,
-                        capacidad: item.capacidad,
-                        docenteId: item.docenteId,
-
-                        //codCursal: item.codCursal,
-                        visibleeee: item.estado,
+                        // codCursal: item.codCursal,
+                        visible: item.estado,
 
                         roomId: item.color
+
                     };
 
                 })
@@ -189,7 +204,7 @@ const HorarioDetalle = (props: Props) => {
 
                         </div>
                         <div className="text-center ">
-                            <span className="text-lg font-semibold text-gray-500">{itemHorario?.idiomaNombre} - {itemHorario?.sede} - {itemHorario?.modalidad} - ( {itemHorario?.anio} - {itemHorario?.mes}) - {itemHorario?.aulaNombre}</span>
+                            <span className="text-lg font-semibold text-gray-500">{itemHorario?.idiomaNombre} - {itemHorario?.sede} - {itemHorario?.modalidad} - ( {itemHorario?.anio} - {itemHorario?.mes}) - {itemHorario?.aulaNombre} - {itemHorario?.modalidad}</span>
                         </div>
                     </div>
 
