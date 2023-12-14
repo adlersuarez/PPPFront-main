@@ -9,7 +9,7 @@ import Turno from "@/model/interfaces/turno/turno"
 import { ListarModalidad, ListarSede, ListarTipoEstudio, ListarTurno } from "@/network/rest/idiomas.network"
 import { useEffect, useRef, useState } from "react"
 import ModalVistaHorario from "./modal/VistaHorario.modal"
-import Asignatura from '@/model/interfaces/asignatura/asignatura';
+import { useNavigate } from "react-router-dom"
 
 type DatosType = {
     id: number;
@@ -32,6 +32,8 @@ type DatosType = {
 };
 
 const VistaHorarioEstudiante = () => {
+
+    const navigate = useNavigate()
 
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
@@ -236,6 +238,7 @@ const VistaHorarioEstudiante = () => {
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
+                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registrar Matricula</h2>
 
                         <div className="w-full mx-auto text-center rounded-md border-black-light border-2 p-4">
                             <h1 className="text-2xl font-bold mb-4"><i className={`bi bi-stack  text-xl pr-2`} ></i>Asignatura a matricular</h1>
@@ -402,12 +405,12 @@ const VistaHorarioEstudiante = () => {
                                                         </td>
                                                         <td className="border py-2">
                                                             <button
-                                                                className={`${item.inscritos==item.capacidad? 'bg-red-500 cursor-not-allowed': 'bg-blue-500'} text-white px-4 py-2 rounded font-semibold`}
+                                                                className={`${item.inscritos == item.capacidad ? 'bg-red-500 cursor-not-allowed' : 'bg-blue-500'} text-white px-4 py-2 rounded font-semibold`}
                                                                 onClick={() => {
                                                                 }}
-                                                                disabled={item.inscritos==item.capacidad}
+                                                                disabled={item.inscritos == item.capacidad}
                                                             >
-                                                                {item.inscritos==item.capacidad?'Sin Vacantes ':'  Matricular  '}
+                                                                {item.inscritos == item.capacidad ? 'Sin Vacantes ' : '  Matricular  '}
                                                             </button>
                                                         </td>
                                                     </tr>

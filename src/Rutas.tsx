@@ -18,6 +18,7 @@ import ReporteDeNotas from './view/docente/ReporteDeNotas';
 import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
 import SubirNotas from './view/docente/SubirNotas';
 import IniciAdministrativo from './view/Administrativo/InicioAdministrativo';
+import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path:'vista-horario-estudiante',
         element: <VistaHorarioEstudiante/>
+      },
+      {
+        path:'seleccion-idioma',
+        element: <SeleccionDeIdiomas/>
       },
       {
         path:'matricula-interna',
