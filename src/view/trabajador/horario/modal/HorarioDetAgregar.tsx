@@ -30,6 +30,7 @@ type Props = {
 
     sweet: Sweet
     abortControl: AbortController
+    loadInit: () => void
     handleCloseModalHorarioAgregra: () => void
 }
 
@@ -129,7 +130,7 @@ const HorarioDetAgregar = (props: Props) => {
         setEstado(event.target.checked);
     };
 
-
+    
     /*const onRegistrarHorarioDetalle = () => {
 
         //event.preventDefault()
@@ -250,6 +251,8 @@ const HorarioDetAgregar = (props: Props) => {
             return
         }
 
+        
+
         props.sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
 
             if (value) {
@@ -308,6 +311,8 @@ const HorarioDetAgregar = (props: Props) => {
                     }
 
                 }));
+
+                props.loadInit()
             }
         })
 
@@ -375,6 +380,8 @@ const HorarioDetAgregar = (props: Props) => {
         ));
     };
 
+    console.log(selectedDays)
+    
     return (
         <>
             <CustomModal

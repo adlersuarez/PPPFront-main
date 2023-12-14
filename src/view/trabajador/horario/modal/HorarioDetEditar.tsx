@@ -42,6 +42,7 @@ type Props = {
     idTipoEstudio: number
     turnoInicio: string | undefined
     turnoFin: string | undefined
+    loadInit: () => void
     handleCloseModalHorarioDetProcesoEditar: () => void
 }
 
@@ -236,6 +237,8 @@ const HorarioDetEditar = (props: Props) => {
 
                     sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioDetProcesoEditar() });
                 }
+
+                props.loadInit()
             }
         })
 

@@ -69,8 +69,8 @@ const HorarioDetalle = (props: Props) => {
     useEffect(() => {
         dataRenderHorario()
         dataRenderHorarioColor()
+        //loadInit(props.idHorario)
     }, [listaHorarioDetalleId])
-
 
     const dataRenderHorario = async () => {
 
@@ -181,6 +181,7 @@ const HorarioDetalle = (props: Props) => {
 
                 sweet={props.sweet}
                 abortControl={props.abortControl}
+                loadInit={() => loadInit(props.idHorario)}
                 handleCloseModalHorarioAgregra={handleCloseModalHorarioAgregra} />
 
 
@@ -211,7 +212,15 @@ const HorarioDetalle = (props: Props) => {
                         </div>
                     </div>
 
-                    <Horario data={dataHorario} color={color} idIdioma={props.idIdioma} idHorario={props.idHorario} idTipoEstudio={props.idTipoEstudio} turnoInicio={itemHorario?.turnoInicio} turnoFin={itemHorario?.turnoFin}
+                    <Horario
+                        data={dataHorario}
+                        color={color}
+                        idIdioma={props.idIdioma}
+                        idHorario={props.idHorario}
+                        idTipoEstudio={props.idTipoEstudio}
+                        turnoInicio={itemHorario?.turnoInicio}
+                        turnoFin={itemHorario?.turnoFin}
+                        loadInit={() => loadInit(props.idHorario)}
                     />
                 </div>
             </div>
