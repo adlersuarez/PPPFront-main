@@ -188,8 +188,10 @@ const Horario = (props: Props) => {
             >
                 <View
                     type="week"
-                    startDayHour={props.turnoInicio != undefined ? parseInt(props.turnoInicio) : 8}
-                    endDayHour={props.turnoFin != undefined ? parseInt(props.turnoFin) : 23}
+                    startDayHour={props.turnoInicio != undefined ? parseInt(props.turnoInicio) -1 : 8}
+                    endDayHour={props.turnoFin != undefined ? parseInt(props.turnoFin) + 1 : 23}
+                    // startDayHour={8}
+                    // endDayHour={23}
                     dateCellRender={renderDateCell}
                 />
                 <Resource
