@@ -12,11 +12,11 @@ import Seccion from "./seccion/seccion"
 
 import ListHorarioDetId from "./horario/listHorarioDetId"
 
-import PagoMatriculaLista from './matricula/matriculaPago'
-import PagoPensionLista from './matricula/matriculaPago'
+import MatriculaPago from './matricula/matriculaPago'
+import MatriculaPension from './matricula/matriculaPension'
 
 import CicloInfo from "./matricula/ciclosInfo"
 
 export default interface Listas {
-    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] |  Seccion[] | ListHorarioDetId[] | PagoMatriculaLista[] | PagoPensionLista[] | CicloInfo[]
+    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] |  Seccion[] | ListHorarioDetId[] | MatriculaPago[] | MatriculaPension[] | CicloInfo[]
 }

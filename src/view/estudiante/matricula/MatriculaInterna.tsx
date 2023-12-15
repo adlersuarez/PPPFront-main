@@ -6,22 +6,23 @@ import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante, } from "../../../network/rest/idiomas.network";
+import { PagoMatriculaLista, ValidarMatriculaExistente, ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante, } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
 import RespValue from "../../../model/interfaces/RespValue.model.interface";
 
-// import { Types } from "../../../model/enum/types.model.enum";
-// import Listas from "@/model/interfaces/Listas.model.interface";
-// import MatriculaPago from "@/model/interfaces/matricula/matriculaPago";
-// import { NavLink } from "react-router-dom";
+import { Types } from "../../../model/enum/types.model.enum";
 
+import MatriculaPago from "@/model/interfaces/matricula/matriculaPago";
+import MatriculaPension from "@/model/interfaces/matricula/matriculaPension";
 
 import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../component/Iconos';
 
 import MatriculaModalidad from "./MatriculaModalidad"
+import Listas from "@/model/interfaces/Listas.model.interface";
 
+import { Toaster } from 'react-hot-toast';
 
 const MatriculaInterna = () => {
 
@@ -47,9 +48,15 @@ const MatriculaInterna = () => {
     // 2 -> pago intensivo
     const [tipPago, setTipPago] = useState(0)
 
+
     useEffect(() => {
-        validarPagMatriEst(codigo, aniActual)
-        validarPagPesionMesEst(codigo, aniActual, mesActual)
+        LoadValidarMatriculExistente()
+
+        LoadPagosMatriculaLista()
+
+
+        // validarPagMatriEst(codigo, aniActual)
+        // validarPagPesionMesEst(codigo, aniActual, mesActual)
 
         //handleLoadPago()
 
@@ -118,12 +125,71 @@ const MatriculaInterna = () => {
 
 
     // Ruber
+
+    const [primeraMatricula, setPrimeraMatricula] = useState(false)
+
     const [moduloMatriculaModalidad, setModuloMatriculaModalidad] = useState(false);
 
+    const [pagoMatriculaLista, setPagoMatriculaLista] = useState<MatriculaPago[]>([]);
+    const [pagoPensionLista, setPagoPensionLista] = useState<MatriculaPension[]>([]);
+
+
+
+    const abortControl = new AbortController()
 
     const handleMatriculaModalidad = () => {
         setModuloMatriculaModalidad(!moduloMatriculaModalidad)
     }
+
+    const LoadValidarMatriculExistente = async () => {
+
+        setPrimeraMatricula(false)
+
+        const response = await ValidarMatriculaExistente<RespValue>(codigo)
+        if (response instanceof Response) {
+
+            if (response.data.value == "0"){
+                setPrimeraMatricula(true)
+            } 
+            if (response.data.value == "1"){
+                setPrimeraMatricula(false)
+            } 
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
+
+    const LoadPagosMatriculaLista = async () => {
+
+        setPagoMatriculaLista([])
+
+        const response = await PagoMatriculaLista<Listas>(codigo, abortControl)
+        if (response instanceof Response) {
+
+            const matriculas = response.data.resultado as MatriculaPago[]
+
+            if(matriculas[0].total == '0'){
+                
+            } else{
+                setPagoMatriculaLista(matriculas)
+            }
+
+            console.log(matriculas)
+
+
+            console.log(response.data.resultado)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
+    
+    
 
 
 
@@ -152,9 +218,12 @@ const MatriculaInterna = () => {
 
                                             <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                                                 <div
-                                                    className="border-b-2 border-gray-200 p-2">
+                                                    className="border-b-2 border-gray-200 p-2 flex justify-between">
                                                     <div className="text-sm font-bold">
                                                         TENER EN CUENTA
+                                                    </div>
+                                                    <div className="text-sm font-bold">
+                                                        {!primeraMatricula ? 'Ya se matriculo por lo menos una vez' : 'Usted no cuenta con ninguna matricula'}
                                                     </div>
                                                 </div>
                                                 <div className="m-2">
@@ -249,6 +318,7 @@ const MatriculaInterna = () => {
                 </div>
             </div>
 
+            <Toaster />
 
         </>
     )
