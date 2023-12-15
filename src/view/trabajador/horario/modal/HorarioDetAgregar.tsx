@@ -11,11 +11,12 @@ import { Types } from "../../../../model/enum/types.model.enum";
 import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorarioCheckBox } from '../../../../helper/herramienta.helper'
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, ListarSeccion, } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
+import Seccion from "../../../../model/interfaces/seccion/seccion";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 
 
@@ -42,6 +43,7 @@ const HorarioDetAgregar = (props: Props) => {
     const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
 
     const [comboBoxRangeTurno, setcomboBoxRangeTurno] = useState<any>([])
+    // const [comboBoxSeccion, setcomboBoxSeccio] = useState<>([])
 
     const [dia, setDia] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
@@ -129,6 +131,20 @@ const HorarioDetAgregar = (props: Props) => {
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
+
+    // const LoadDataSeccion = async (buscar: string) => {
+
+    //     setComboBoxDocente([])
+
+    //     const response = await ListarSeccion<Listas>(a)
+    //     if (response instanceof Response) {
+    //         setComboBoxDocente(response.data.resultado as Seccion[])
+    //     }
+    //     if (response instanceof RestError) {
+    //         if (response.getType() === Types.CANCELED) return;
+    //         console.log(response.getMessage())
+    //     }
+    // }
 
     
     /*const onRegistrarHorarioDetalle = () => {
