@@ -14,6 +14,7 @@ import RespValue from "../../../model/interfaces/RespValue.model.interface";
 import { Types } from "../../../model/enum/types.model.enum";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import MatriculaPago from "@/model/interfaces/matricula/matriculaPago";
+import { NavLink } from "react-router-dom";
 
 
 
@@ -215,6 +216,19 @@ const MatriculaInterna = () => {
                                 />
 
                             </div>
+                        </div>
+
+                        <div className="flex justify-end">
+                            <NavLink
+                                to={'/inicio/seleccion-idioma'}
+                            >
+                                <button
+                                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 font-semibold"
+                                    onClick={() => { }}
+                                >
+                                    Seleccionar
+                                </button>
+                            </NavLink>
                         </div>
 
                     </div>
