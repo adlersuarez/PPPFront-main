@@ -1,5 +1,5 @@
-export default interface Sede {
-    SeccionId: number
-    NombreSeccion: string
-    EstadoSeccion: boolean
+export default interface Seccion {
+    seccionId: number
+    nombreSeccion: string
+    estadoSeccion: boolean
 }

@@ -10,7 +10,8 @@ export default interface ListHorarioDetId {
     mes: number
     tipEstudioId: number
 	tipoEstudio: string
-    seccion: string
+    seccionId: number
+    nombreSeccion: string
     asiId: string
     nivel: number
     capacidad: number

@@ -7,9 +7,10 @@ import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
 import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorario } from '../../../../helper/herramienta.helper'
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, ListarSeccion, } from "../../../../network/rest/idiomas.network";
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
+import Seccion from "../../../../model/interfaces/seccion/seccion";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 
@@ -27,6 +28,9 @@ interface HorarioDetActual {
     horaAcademica: string
     observacion: string;
     estado: number
+
+    seccionId: number
+    seccion: string
 
     asignatura: string
     docente: string
@@ -58,14 +62,18 @@ const HorarioDetEditar = (props: Props) => {
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
     const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
+    const [comboBoxSeccion, setComboBoxSeccion] = useState<Seccion[]>([])
     const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
     const [comboBoxRangeTurno, setcomboBoxRangeTurno] = useState<any>([])
-   
+
     const [detHorarioId, setDetHorarioId] = useState<number>(0)
     const [dia, setDia] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
     const [asiId, setAsiId] = useState<string>("0")
+
+    const [seccionId, setSeccionId] = useState<number>(0)
+
     const [color, setColor] = useState<string>("0")
     const [capacidad, setCapacidad] = useState<number>(0)
     const [nivel, setNivel] = useState<string>("")
@@ -74,7 +82,7 @@ const HorarioDetEditar = (props: Props) => {
     const [observacion, setObservacion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(false)
 
-
+    const refSeccion = useRef<HTMLSelectElement>(null)
     const refDia = useRef<HTMLSelectElement>(null)
     const refHoraInicio = useRef<HTMLSelectElement>(null)
     const refHoraFin = useRef<HTMLSelectElement>(null)
@@ -94,12 +102,14 @@ const HorarioDetEditar = (props: Props) => {
     useEffect(() => {
         LoadDataAsignatura()
         LoadDataRangeTurno()
+        LoadDataSeccion()
 
         if (horaInicio !== '' && dia !== 0 && props.idTipoEstudio) {
             setHoraFin(FinalizarHorario(dia, props.idTipoEstudio, horaInicio));
         }
 
     }, [horaInicio, dia, props.idTipoEstudio])
+
     const LoadDataAsignatura = async () => {
 
         setComboBoxAsignatura([])
@@ -107,6 +117,20 @@ const HorarioDetEditar = (props: Props) => {
         const response = await ListarAsignatura<Listas>(abortController.current)
         if (response instanceof Response) {
             setComboBoxAsignatura(response.data.resultado as Asignatura[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    const LoadDataSeccion = async () => {
+
+        setComboBoxSeccion([])
+
+        const response = await ListarSeccion<Listas>(abortController.current)
+        if (response instanceof Response) {
+            setComboBoxSeccion(response.data.resultado as Seccion[])
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -124,7 +148,6 @@ const HorarioDetEditar = (props: Props) => {
         } else {
             const rangoTurno = GenerateRangeTurno(props.turnoInicio, props.turnoFin)
             setcomboBoxRangeTurno(rangoTurno)
-
         }
     }
 
@@ -189,6 +212,7 @@ const HorarioDetEditar = (props: Props) => {
             "detHorarioId": detHorarioId,
             "horarioId": props.idHorario,
             "asiId": asiId,
+            "seccionId": seccionId,
             "nivel": nivel,
             "capacidad": capacidad,
             "dia": dia,
@@ -223,6 +247,8 @@ const HorarioDetEditar = (props: Props) => {
                 if (response instanceof RestError) {
 
                     if (response.getType() === Types.CANCELED) return;
+
+                    console.log(response)
 
                     /*
                     if (response.getStatus() == 401) {
@@ -288,6 +314,7 @@ const HorarioDetEditar = (props: Props) => {
             setAsiId(storedHorarioDetActual.asignaturaId || "0");
             setColor(storedHorarioDetActual.color || "0");
             setCapacidad(storedHorarioDetActual.capacidad || 0);
+            setSeccionId(storedHorarioDetActual.seccionId || 0);
             setNivel(storedHorarioDetActual.nivel.toString() || "");
             setDocenteId(storedHorarioDetActual.docenteId.toString() || '');
             setHoraAcademica(parseInt(storedHorarioDetActual.horaAcademica) || 0);
@@ -313,6 +340,7 @@ const HorarioDetEditar = (props: Props) => {
                     setAsiId("0")
                     setColor("0")
                     setCapacidad(0)
+                    setSeccionId(0)
 
                     setIsDisabledInput(false)
                     setSearchTermDocente("")
@@ -476,24 +504,24 @@ const HorarioDetEditar = (props: Props) => {
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Color <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Sección <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refColor}
-                                    value={color}
+                                    ref={refSeccion}
+                                    value={seccionId}
                                     onChange={(event) => {
-                                        setColor(event.currentTarget.value);
+                                        setSeccionId(parseInt(event.currentTarget.value))
                                     }}
                                 >
                                     <option value={"0"}>- Seleccione -</option>
                                     {
-                                        colorSelect.map((item, index) => {
+                                        comboBoxSeccion.map((item, index) => {
                                             return (
-                                                <option key={index} value={item.codColor} style={{ backgroundColor: item.codColor }}>
-                                                    {item.nombreColor}
+                                                <option key={index} value={item.seccionId}>
+                                                    {item.nombreSeccion}
                                                 </option>
-                                            );
+                                            )
                                         })
                                     }
                                 </select>
@@ -614,6 +642,30 @@ const HorarioDetEditar = (props: Props) => {
                                 </select>
 
                             </div>*/}
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Color <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refColor}
+                                    value={color}
+                                    onChange={(event) => {
+                                        setColor(event.currentTarget.value);
+                                    }}
+                                >
+                                    <option value={"0"}>- Seleccione -</option>
+                                    {
+                                        colorSelect.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.codColor} style={{ backgroundColor: item.codColor }}>
+                                                    {item.nombreColor}
+                                                </option>
+                                            );
+                                        })
+                                    }
+                                </select>
+                            </div>
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

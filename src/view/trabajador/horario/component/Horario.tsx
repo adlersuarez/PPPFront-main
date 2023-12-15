@@ -30,6 +30,8 @@ const Horario = (props: Props) => {
     //console.log(props.data)
     //console.log(colorRender)
 
+    //console.log(props)
+
     useEffect(() => {
         // Lógica específica para actualizar datos
         //console.log('Vista2 se ejecuta o actualiza cuando datos cambian:', props.data);
@@ -176,6 +178,7 @@ const Horario = (props: Props) => {
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
                 idTipoEstudio={props.idTipoEstudio}
+                //idSeccion={props.}
 
                 turnoInicio={props.turnoInicio}
                 turnoFin={props.turnoFin}
