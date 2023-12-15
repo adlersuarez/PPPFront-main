@@ -11,14 +11,13 @@ import { Types } from "../../../../model/enum/types.model.enum";
 import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorarioCheckBox } from '../../../../helper/herramienta.helper'
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, ListarSeccion, } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, ListarSeccion, InsertarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import Seccion from "../../../../model/interfaces/seccion/seccion";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
-
 
 type Props = {
     isOpenModal: boolean
@@ -142,102 +141,9 @@ const HorarioDetAgregar = (props: Props) => {
         }
     }
 
-
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
-
-
-    /*const onRegistrarHorarioDetalle = () => {
-
-        //event.preventDefault()
-
-        if (dia == 0) {
-            refDia.current?.focus()
-            return
-        }
-        if (horaInicio == "") {
-            refHoraInicio.current?.focus()
-            return
-        }
-        if (horaFin == "") {
-            refHoraFin.current?.focus()
-            return
-        }
-        if (asiId == "0") {
-            refAsignatura.current?.focus()
-            return
-        }
-        if (color == "0") {
-            refColor.current?.focus()
-            return
-        }
-        if (capacidad == 0) {
-            refCapacidad.current?.focus()
-            return
-        }
-        if (docenteId == "") {
-            refInputBusqueda.current?.focus()
-            return
-        }
-
-        const params = {
-            "detHorarioId": 0,
-            "horarioId": props.idHorario,
-            "asiId": asiId,
-            "nivel": nivel,
-            "capacidad": capacidad,
-            "dia": dia,
-            "horaIni": horaInicio,
-            "horaFin": horaFin,
-            "horaAcademica": 1,
-            "color": color,
-            "observacion": observacion,
-            "docenteId": docenteId,
-            "estado": estado ? 1 : 0,
-            "usuarioRegistra": codigo,
-            "fechaRegistra": new Date().toISOString(),
-            "usuarioModifica": "",
-            "fechaModifica": new Date().toISOString(),
-        }
-
-        props.sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
-            if (value) {
-
-                props.sweet.openInformation("Mensaje", "Procesando información...")
-
-                const response = await InsertarActualizarHorarioDetalle<RespValue>("CREAR", params, props.abortControl);
-
-                if (response instanceof Response) {
-
-                    if (response.data.value == "procesado") {
-                        props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
-                    }
-
-                }
-
-
-                if (response instanceof RestError) {
-
-                    if (response.getType() === Types.CANCELED) return;
-
-                    
-                    //if (response.getStatus() == 401) {
-                        // dispatch(logout());
-                       // return;
-                    //}
-
-                    //if (response.getStatus() == 403) {
-                     //   return;
-                   // }
-                    
-
-                    props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
-                }
-            }
-        })
-
-    }*/
 
     const onRegistrarHorarioDetalle = () => {
 
@@ -268,18 +174,19 @@ const HorarioDetAgregar = (props: Props) => {
             return
         }
 
-
-
         props.sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
 
             if (value) {
                 props.sweet.openInformation("Mensaje", "Procesando información...")
 
-                await Promise.all(selectedDays.map(async (day) => {
-                    const params = {
+                let params : any = []
+
+                selectedDays.map(async (day) => {
+                    const datos = {
                         "detHorarioId": 0,
                         "horarioId": props.idHorario,
                         "asiId": asiId,
+                        'seccionId': idSeccion,
                         "nivel": nivel,
                         "capacidad": capacidad,
                         "dia": day,
@@ -296,38 +203,24 @@ const HorarioDetAgregar = (props: Props) => {
                         "fechaModifica": new Date().toISOString(),
                     }
 
-                    try {
-                        const response = await InsertarActualizarHorarioDetalle<RespValue>("CREAR", params, props.abortControl);
+                    params.push(datos)
+                })
 
-                        if (response instanceof Response) {
+                const response = await InsertarHorarioDetalle<RespValue>(params, props.abortControl);
 
-                            if (response.data.value == "procesado") {
-                                props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
-                            }
-                        }
+                if (response instanceof Response) {
 
-                        if (response instanceof RestError) {
-
-                            if (response.getType() === Types.CANCELED) return;
-
-                            /*
-                            if (response.getStatus() == 401) {
-                                // dispatch(logout());
-                                return;
-                            }
-        
-                            if (response.getStatus() == 403) {
-                                return;
-                            }
-                            */
-
-                            props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
-                        }
-                    } catch (error) {
-                        console.error(error);
+                    if (response.data.value == "procesado") {
+                        props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
                     }
+                }
 
-                }));
+                if (response instanceof RestError) {
+
+                    if (response.getType() === Types.CANCELED) return;
+
+                    props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
+                }
 
                 props.loadInit()
             }
@@ -441,30 +334,6 @@ const HorarioDetAgregar = (props: Props) => {
                                     {renderDayCheckboxes()}
                                 </div>
                             </div>
-                            {/*<div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Dia <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refDia}
-                                    value={dia}
-                                    onChange={(event) => {
-                                        setDia(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={0}>- Seleccione -</option>
-                                    {
-                                        diaSelect.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.id}>
-                                                    {item.dia}
-                                                </option>
-                                            );
-                                        })
-                                    }
-                                </select>
-                            </div>*/}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
@@ -498,11 +367,7 @@ const HorarioDetAgregar = (props: Props) => {
                                 </label>
                                 <input
                                     type="time"
-                                    //ref={refHoraFin}
                                     value={horaFin}
-                                    /*onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        setHoraFin(e.target.value)
-                                    }}*/
                                     disabled
                                     className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
                                 />
@@ -545,40 +410,6 @@ const HorarioDetAgregar = (props: Props) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
 
-                            {/*<div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Asignatura <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refAsignatura}
-                                    value={asiId}
-                                    onChange={(event) => {
-                                        setAsiId(event.currentTarget.value);
-
-                                        const filterNivel = comboBoxAsignatura.filter((item) => event.currentTarget.value == item.asiId)
-
-                                        setNivel(filterNivel[0].asiNivel)
-
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        comboBoxAsignatura.map((item, index) => {
-
-                                            if (item.idiomaId === props.idIdioma) {
-                                                return (
-                                                    <option key={index} value={item.asiId}>
-                                                        {item.asignatura} - {item.asiNivel}
-                                                    </option>
-                                                );
-                                            }
-                                            return null;
-
-                                        })
-                                    }
-                                </select>
-                            </div>*/}
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -718,10 +549,7 @@ const HorarioDetAgregar = (props: Props) => {
                                     </ul>
                                 )}
 
-
                             </div>
-
-
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">

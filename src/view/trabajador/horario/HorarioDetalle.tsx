@@ -1,6 +1,4 @@
-import Horario from "./component/Horario";
 import { useEffect, useState } from "react";
-import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
 
 import Sweet from '../../../model/interfaces/Sweet.mode.interface'
 
@@ -10,9 +8,17 @@ import { Types } from "../../../model/enum/types.model.enum";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
 import { ListarHorarioDetalleId } from "../../../network/rest/idiomas.network";
-
 import ListHorarioDetId from "../../../model/interfaces/horario/listHorarioDetId";
-import HorarioPag from "@/model/interfaces/horario/horarioPag";
+import HorarioPag from "../../../model/interfaces/horario/horarioPag";
+
+import 'devextreme/dist/css/dx.light.css';
+import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
+
+import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
+import ModalHorarioDetEditar from './modal/HorarioDetEditar';
+
+import '../horario/component/style/horario.css'
+import VistaPreviaDetalle from "./modal/VistaPreviaDetalle";
 
 type Props = {
     idHorario: number
@@ -35,13 +41,11 @@ const HorarioDetalle = (props: Props) => {
 
     const [isOpenModal, setIsOpenModal] = useState(false);
 
-
     const { itemHorario } = props
 
     useEffect(() => {
         loadInit(props.idHorario)
     }, [])
-
 
     const handleOpenModalHorarioAgregra = () => {
         setIsOpenModal(true)
@@ -58,22 +62,18 @@ const HorarioDetalle = (props: Props) => {
         const response = await ListarHorarioDetalleId<Listas>(horarioId, props.abortControl)
         if (response instanceof Response) {
             setListaHorarioDetalleId(response.data.resultado as ListHorarioDetId[])
-            //console.log(response)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-
     }
 
     useEffect(() => {
         dataRenderHorario()
     }, [listaHorarioDetalleId])
 
-    //console.log(listaHorarioDetalleId)
-
-    const dataRenderHorario = async () => {
+    const dataRenderHorario = () => {
 
         if (listaHorarioDetalleId.length > 0) {
 
@@ -138,7 +138,8 @@ const HorarioDetalle = (props: Props) => {
                         // codCursal: item.codCursal,
                         visible: item.estado,
 
-                        roomId: item.color
+                        roomId: item.color,
+                        id: item.detHorarioId
 
                     };
 
@@ -157,12 +158,69 @@ const HorarioDetalle = (props: Props) => {
 
             )
         }
-
     }
 
-    //console.log(itemHorario)
-    //console.log(dataHorario)
-    //console.log(color)
+    const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
+    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
+
+    const [horarioDetActual, setHorarioDetActual] = useState<any>({})
+
+    const renderCard = (item: any) => {
+
+        const horario = item.appointmentData
+
+        return (
+            <div className="p-2 flex flex-col h-full justify-between gap-2">
+                <div className="flex flex-col gap-1">
+                    <div className="flex justify-between tracking-tight text-gray-900 dark:text-white">
+                        <p className="font-bold">{horario.asignatura}</p>
+                        <p>Sección: <span className="font-bold">{horario.seccion}</span></p>
+                    </div>
+                    <div className="border-b border-dashed border-black my-1"></div>
+                    <p className="text-xs font-normal text-gray-700 dark:text-gray-400 whitespace-normal break-words">
+                        {horario.docente}
+                    </p>
+                    <div className="font-semibold text-center text-sm text-gray-700 dark:text-gray-400">
+                        {horario.horaIni.slice(0, -3)} <span>{" - "}</span> {horario.horaFin.slice(0, -3)}
+                    </div>
+                </div>
+                <div className="text-center rounded bg-white p-1">
+                    <span className="font-bold text-gray-500">{horario.tipoEstudio}</span>
+                </div>
+            </div>
+        )
+    }
+
+    const handleOpenModalInfo = (e: any) => {
+        setIsOpenModalInfo(true)
+        setHorarioDetActual(e.appointmentData)
+    }
+
+    const handleCloseModalInfo = () => {
+        setIsOpenModalInfo(false)
+    }
+
+    // Modal Editar
+    const handleOpenModalHorarioDetProcesoEditar = () => {
+        localStorage.setItem('horarioDetActual', JSON.stringify(horarioDetActual));
+        setIsOpenModalEditar(true)
+    }
+
+    const handleCloseModalHorarioDetProcesoEditar = () => {
+        localStorage.removeItem('horarioDetActual');
+        setIsOpenModalEditar(false)
+    }
+
+    const dayOfWeekNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+    function renderDateCell(cellData: any) {
+        return (
+            <div className='flex justify-center gap-2 '>
+                <div className="name my-auto text-sm sm:text-xl">{dayOfWeekNames[cellData.date.getDay()]}</div>
+                {/*<div className="number text-xl my-auto">{cellData.date.getDate()}</div>*/}
+            </div>
+        );
+    }
 
     return (
         <>
@@ -180,6 +238,25 @@ const HorarioDetalle = (props: Props) => {
                 loadInit={() => loadInit(props.idHorario)}
                 handleCloseModalHorarioAgregra={handleCloseModalHorarioAgregra} />
 
+            <ModalHorarioDetEditar
+                isOpenModal={isOpenModalEditar}
+                idHorario={props.idHorario}
+                idIdioma={props.idIdioma}
+                idTipoEstudio={props.idTipoEstudio}
+
+                turnoInicio={itemHorario?.turnoInicio}
+                turnoFin={itemHorario?.turnoFin}
+
+                loadInit={() => loadInit(props.idHorario)}
+                handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
+            />
+            <VistaPreviaDetalle
+                isOpenModal={isOpenModalInfo}
+                horario={horarioDetActual}
+                setHorarioDetActual={()=>setHorarioDetActual({})}
+                handleOpenModalDetEditar={()=>handleOpenModalHorarioDetProcesoEditar()}
+                handleCloseModalInfo={handleCloseModalInfo}
+            />
 
             <div className="p-1 bg-Solid">
                 <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Configuración de Horario</h2>
@@ -208,7 +285,9 @@ const HorarioDetalle = (props: Props) => {
                         </div>
                     </div>
 
-                    <Horario
+                    <>
+                        {/*
+                        <Horario
                         data={dataHorario}
                         color={color}
                         idIdioma={props.idIdioma}
@@ -217,7 +296,42 @@ const HorarioDetalle = (props: Props) => {
                         turnoInicio={itemHorario?.turnoInicio}
                         turnoFin={itemHorario?.turnoFin}
                         loadInit={() => loadInit(props.idHorario)}
-                    />
+                            />
+                        */}
+
+                        <Scheduler
+                            timeZone="America/Lima"
+
+                            defaultCurrentView="week"
+                            dataSource={dataHorario}
+                            showAllDayPanel={false}
+                            firstDayOfWeek={1}
+                            cellDuration={30}
+                            showCurrentTimeIndicator={false}
+
+                            onAppointmentTooltipShowing={(e) => e.cancel = true}
+                            width={"100%"}
+                            height={"100%"}
+                            appointmentRender={renderCard}
+                            onAppointmentClick={(e: any) => handleOpenModalInfo(e)}
+                            editing={false}
+                        >
+                            <View
+                                type="week"
+                                startDayHour={itemHorario?.turnoInicio != undefined ? parseInt(itemHorario?.turnoInicio) - 1 : 8}
+                                endDayHour={itemHorario?.turnoFin != undefined ? parseInt(itemHorario?.turnoFin) + 1 : 23}
+                                // startDayHour={8}
+                                // endDayHour={23}
+                                dateCellRender={renderDateCell}
+                            />
+                            <Resource
+                                dataSource={color}
+                                //dataSource={colorRender}
+                                fieldExpr="detHorarioId"
+                            // label="Room"
+                            />
+                        </Scheduler>
+                    </>
                 </div>
             </div>
 
