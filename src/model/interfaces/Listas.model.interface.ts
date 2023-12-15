@@ -8,6 +8,7 @@ import TipoEstudio from "./tipo-estudio/tipoEstudio"
 import Asignatura from "./asignatura/asignatura"
 import DocenteInfo from "./docente/docenteInfo"
 import Aula from "./aula/aula"
+import Seccion from "./seccion/seccion"
 
 import ListHorarioDetId from "./horario/listHorarioDetId"
 
@@ -15,5 +16,5 @@ import PagoMatriculaLista from './matricula/matriculaPago'
 import PagoPensionLista from './matricula/matriculaPago'
 
 export default interface Listas {
-    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] | ListHorarioDetId[] | PagoMatriculaLista[] | PagoPensionLista[]
+    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] |  Seccion[] | ListHorarioDetId[] | PagoMatriculaLista[] | PagoPensionLista[]
 }
