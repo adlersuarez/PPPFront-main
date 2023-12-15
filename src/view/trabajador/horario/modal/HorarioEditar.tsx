@@ -292,7 +292,7 @@ const HorarioEditar = (props: Props) => {
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
-            "usuarioModifica": "",
+            "usuarioModifica": codigo,
             "fechaModifica": new Date().toISOString(),
         }
 

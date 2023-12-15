@@ -28,6 +28,7 @@ const StepButton: React.FC<StepButtonProps> = ({ paso, pasoActual, cambiarPaso, 
             ) : (
                 <span className="text-xl">{paso}</span>
             )}
+            
             {texto && <p className="text-sm">{texto}</p>}
         </button>
     );
