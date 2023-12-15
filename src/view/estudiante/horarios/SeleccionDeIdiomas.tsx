@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import StepButtonMatriculaIdioma from "./component/StepButtonMatriculaIdioma"
 import { useState } from "react"
-import { BiDollarCircle, BiCheck } from 'react-icons/bi';
+import { BiGlobe, BiBook } from 'react-icons/bi';
 import AccordionMatriculaIdioma from "./component/AccordionMatriculaIdioma";
 
 const SeleccionDeIdiomas = () => {
@@ -36,10 +36,10 @@ const SeleccionDeIdiomas = () => {
 
                                             <ol className="w-full text-gray-500 list-decimal dark:text-gray-400 text-sm">
                                                 <li className="pl-4">
-                                                    <span className="font-semibold text-gray-900 dark:text-white">Idioma a escoger: </span> Asegúrate de conocer las fechas límite para realizar los pagos de matrícula y pensiones. Cumplir con estos plazos es fundamental.
+                                                    <span className="font-semibold text-gray-900 dark:text-white">Idioma a escoger: </span> Asegúrate de seleccionar el idioma correctamente.
                                                 </li>
                                                 <li className="pl-4">
-                                                    <span className="font-semibold text-gray-900 dark:text-white">Modalidad a escoger:</span> Verifica qué métodos de pago acepta la institución. Asegúrate de tener la información necesaria para cada método de pago.
+                                                    <span className="font-semibold text-gray-900 dark:text-white">Modalidad a escoger:</span> Asegúrate de seleccionar la modalidad correctamente.
                                                 </li>
                                                 
                                             </ol>
@@ -52,8 +52,8 @@ const SeleccionDeIdiomas = () => {
                                 <br />
 
                                 <div className="flex justify-center mb-4">
-                                    <StepButtonMatriculaIdioma paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiDollarCircle}  />
-                                    <StepButtonMatriculaIdioma paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCheck}  />
+                                    <StepButtonMatriculaIdioma paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiGlobe}  />
+                                    <StepButtonMatriculaIdioma paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiBook}  />
                                 </div>
 
                                 <AccordionMatriculaIdioma

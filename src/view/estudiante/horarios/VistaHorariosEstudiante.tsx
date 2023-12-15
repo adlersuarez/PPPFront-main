@@ -208,8 +208,8 @@ const VistaHorarioEstudiante = () => {
             idAsign: 1,
             asignatura: "Ingles 1",
             aula: "Aula-A1",
-            sede: "Huancayo",
-            idsede: 1,
+            sede: "Chanchamayo",
+            idsede: 2,
             turno: "Tarde",
             idTurno: 1,
             horario: "15:00 - 18:00",
@@ -238,13 +238,13 @@ const VistaHorarioEstudiante = () => {
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
-                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registrar Matricula</h2>
+                        {/* <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registrar Matricula</h2> */}
 
                         <div className="w-full mx-auto text-center rounded-md border-black-light border-2 p-4">
                             <h1 className="text-2xl font-bold mb-4"><i className={`bi bi-stack  text-xl pr-2`} ></i>Asignatura a matricular</h1>
                             <div>
-                                <div className="grid grid-cols-4 gap-8 mb-5">
-                                    <div>
+                                <div className="grid grid-cols-3 gap-8 mb-5">
+                                    {/* <div>
                                         <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                             Modalidad <i className="bi bi-asterisk text-xs text-red-500"></i>
                                         </label>
@@ -267,7 +267,7 @@ const VistaHorarioEstudiante = () => {
                                                 })
                                             }
                                         </select>
-                                    </div>
+                                    </div> */}
                                     <div>
                                         <label
                                             className="font-mont block mb-1 text-sm font-medium text-gray-900 text-left"
@@ -296,7 +296,7 @@ const VistaHorarioEstudiante = () => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                        <label className="font-mont block mb-1 text-sm font-medium text-gray-900 text-left">
                                             Sede <i className="bi bi-asterisk text-xs text-red-500"></i>
                                         </label>
                                         <select
@@ -320,7 +320,7 @@ const VistaHorarioEstudiante = () => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                        <label className="font-mont block mb-1 text-sm font-medium text-gray-900 text-left">
                                             Turno <i className="bi bi-asterisk text-xs text-red-500"></i>
                                         </label>
                                         <select
@@ -410,7 +410,7 @@ const VistaHorarioEstudiante = () => {
                                                                 }}
                                                                 disabled={item.inscritos == item.capacidad}
                                                             >
-                                                                {item.inscritos == item.capacidad ? 'Sin Vacantes ' : '  Matricular  '}
+                                                                {item.inscritos == item.capacidad ? ' Sin Vacantes' : '  Matricular  '}
                                                             </button>
                                                         </td>
                                                     </tr>

@@ -11,6 +11,7 @@ import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante } from 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
 import RespValue from "../../../model/interfaces/RespValue.model.interface";
+import { NavLink } from "react-router-dom";
 //import { useRafState } from "react-use";
 
 
@@ -159,6 +160,19 @@ const MatriculaInterna = () => {
                                 />
 
                             </div>
+                        </div>
+
+                        <div className="flex justify-end">
+                            <NavLink
+                                to={'/inicio/seleccion-idioma'}
+                            >
+                                <button
+                                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 font-semibold"
+                                    onClick={() => { }}
+                                >
+                                    Seleccionar
+                                </button>
+                            </NavLink>
                         </div>
 
                     </div>
