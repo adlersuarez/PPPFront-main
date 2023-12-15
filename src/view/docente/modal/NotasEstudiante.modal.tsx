@@ -1,4 +1,5 @@
 import CustomModal from "@/component/Modal.component"
+import { useState } from "react";
 
 type Props = {
     show: boolean;
@@ -6,6 +7,9 @@ type Props = {
 }
 
 const ModalNotasEstudiante = (props: Props) => {
+
+    const[data, setData] = useState()
+
     return (
         <CustomModal
             isOpen={props.show}

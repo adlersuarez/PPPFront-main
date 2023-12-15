@@ -140,7 +140,7 @@ const InicioDocente = () => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                         <div>
-                            <h1 className="py-1 font-semibold text-2xl"><i className="bi bi-1-circle"></i> Ingles - Aula A1</h1>
+                            <h1 className="py-1 font-semibold text-2xl"><i className="bi bi-arrow-right-circle"></i> Ingles - Aula A1</h1>
                         </div>
                         {
                             <table className="w-full border-collapse border">
