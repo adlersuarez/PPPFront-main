@@ -28,7 +28,7 @@ const Horario = (props: Props) => {
     const [colorRender, setColorRender] = useState<object[]>([]);
 
     //console.log(props.data)
-    //console.log(colorRender)
+    console.log(colorRender)
 
     //console.log(props)
 

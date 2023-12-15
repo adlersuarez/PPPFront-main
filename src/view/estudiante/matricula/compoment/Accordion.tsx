@@ -31,7 +31,7 @@ const Accordion = (props: Props) => {
     const [asigPreMatriEstudiante, setAsigPreMatriEstudiante] = useState<Asignatura[]>([])
     const [primeraMatricula, setPrimeraMatricula] = useState(false)
 
-    const [nivelMatricula] = useState(2)
+    // const [nivelMatricula] = useState(2)
 
 
     const abortController = useRef(new AbortController());
@@ -41,6 +41,8 @@ const Accordion = (props: Props) => {
     useEffect(() => {
         LoadDataAsigPreMatriEstudiante()
         LoadValidarMatriculExistente()
+        console.log(asigPreMatriEstudiante)
+        console.log(primeraMatricula)
     }, [])
 
     const LoadDataAsigPreMatriEstudiante = async () => {

@@ -6,10 +6,10 @@ import Modalidad from "@/model/interfaces/modalidad/modalidad"
 import Sede from "@/model/interfaces/sede/sede"
 import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio"
 import Turno from "@/model/interfaces/turno/turno"
-import { ListarModalidad, ListarSede, ListarTipoEstudio, ListarTurno } from "@/network/rest/idiomas.network"
+import { ListarSede, ListarTipoEstudio, ListarTurno, ListarModalidad } from "@/network/rest/idiomas.network"
 import { useEffect, useRef, useState } from "react"
 import ModalVistaHorario from "./modal/VistaHorario.modal"
-import { useNavigate } from "react-router-dom"
+
 
 type DatosType = {
     id: number;
@@ -33,22 +33,21 @@ type DatosType = {
 
 const VistaHorarioEstudiante = () => {
 
-    const navigate = useNavigate()
 
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([])
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
 
-    // const [dataModel, setDataModel] = useState<DatosType>()
     const [dataModel, setDataModel] = useState<DatosType>()
+    // const [dataModel, setDataModel] = useState<DatosType>()
 
-    const [idModalidad, setIdModalidad] = useState<number>(0)
+    // const [idModalidad, setIdModalidad] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>('0')
     const [idTurno, setIdTurno] = useState<number>(0)
 
-    const refModalidad = useRef<HTMLSelectElement>(null)
+    // const refModalidad = useRef<HTMLSelectElement>(null)
     const refTipoEstudio = useRef<HTMLSelectElement>(null)
     const refSede = useRef<HTMLSelectElement>(null)
     const refTurno = useRef<HTMLSelectElement>(null)
@@ -77,6 +76,7 @@ const VistaHorarioEstudiante = () => {
         const response = await ListarModalidad<Listas>(abortController.current)
         if (response instanceof Response) {
             setComboBoxModalidad(response.data.resultado as Modalidad[])
+            console.log(comboBoxModalidad)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;

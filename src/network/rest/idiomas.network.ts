@@ -83,6 +83,11 @@ export async function InsertarActualizarHorarioDetalle<RespValue>(mode: string, 
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarActualizarHorarioDetalle/${mode} `, params, { signal: abortController?.signal }));
 }
 
+export async function InsertarHorarioDetalle<RespValue>(params: object[] , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioDetalle`, params, { signal: abortController?.signal }));
+}
+
+
 // Asignatura
 
 export async function ListarAsignatura<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {

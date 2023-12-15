@@ -6,7 +6,7 @@ import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante } from "../../../network/rest/idiomas.network";
+import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante, } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
@@ -110,11 +110,11 @@ const MatriculaInterna = () => {
         }
     }
 
-    const datosModalidad = [
-        { titulo: 'Revisa tus pendientes', info: 'Información 1', infoExtra: 'dimelo' },
-        { titulo: '¡Importante!', info: 'Información 2' },
-        // Agrega más datos si es necesario
-    ];
+    // const datosModalidad = [
+    //     { titulo: 'Revisa tus pendientes', info: 'Información 1', infoExtra: 'dimelo' },
+    //     { titulo: '¡Importante!', info: 'Información 2' },
+
+    // ];
 
 
     // Ruber
