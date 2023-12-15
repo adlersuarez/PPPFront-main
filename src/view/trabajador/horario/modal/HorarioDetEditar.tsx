@@ -5,13 +5,9 @@ import { RootState } from '../../../../store/configureStore.store';
 import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
-import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorario } from '../../../../helper/herramienta.helper'
-import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarActualizarHorarioDetalle, ListarSeccion, } from "../../../../network/rest/idiomas.network";
+import { keyNumberInteger, diaSelect, GenerateRangeTurno, FinalizarHorario } from '../../../../helper/herramienta.helper'
+import {  InsertarActualizarHorarioDetalle } from "../../../../network/rest/idiomas.network";
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
-import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
-import Seccion from "../../../../model/interfaces/seccion/seccion";
-import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 
 interface HorarioDetActual {
@@ -61,20 +57,25 @@ const HorarioDetEditar = (props: Props) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
-    const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
-    const [comboBoxSeccion, setComboBoxSeccion] = useState<Seccion[]>([])
-    const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
+    //const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
+    //const [comboBoxSeccion, setComboBoxSeccion] = useState<Seccion[]>([])
+    //const [comboBoxDocente, setComboBoxDocente] = useState<DocenteInfo[]>([])
     const [comboBoxRangeTurno, setcomboBoxRangeTurno] = useState<any>([])
 
     const [detHorarioId, setDetHorarioId] = useState<number>(0)
     const [dia, setDia] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
+
     const [asiId, setAsiId] = useState<string>("0")
+    const [nombreAsig, setNombreAsig] = useState<string>("")
 
     const [seccionId, setSeccionId] = useState<number>(0)
+    const [nombreSecc, setNombreSecc] = useState<string>("")
 
     const [color, setColor] = useState<string>("0")
+    //const [nombreColor, setNombreColor] = useState<string>("")
+
     const [capacidad, setCapacidad] = useState<number>(0)
     const [nivel, setNivel] = useState<string>("")
     const [docenteId, setDocenteId] = useState<string>("")
@@ -82,7 +83,7 @@ const HorarioDetEditar = (props: Props) => {
     const [observacion, setObservacion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(false)
 
-    const refSeccion = useRef<HTMLSelectElement>(null)
+    //const refSeccion = useRef<HTMLSelectElement>(null)
     const refDia = useRef<HTMLSelectElement>(null)
     const refHoraInicio = useRef<HTMLSelectElement>(null)
     const refHoraFin = useRef<HTMLSelectElement>(null)
@@ -93,16 +94,16 @@ const HorarioDetEditar = (props: Props) => {
     const refHoraAcademica = useRef<HTMLSelectElement>(null)
 
     const [searchTermDocente, setSearchTermDocente] = useState("");
-    const [isSearching, setIsSearching] = useState(false);
+    //const [isSearching, setIsSearching] = useState(false);
     const [isDisabledInput, setIsDisabledInput] = useState(false)
     const refInputBusqueda = useRef<HTMLInputElement>(null)
 
     const abortController = useRef(new AbortController());
 
     useEffect(() => {
-        LoadDataAsignatura()
+        //LoadDataAsignatura()
         LoadDataRangeTurno()
-        LoadDataSeccion()
+        //LoadDataSeccion()
 
         if (horaInicio !== '' && dia !== 0 && props.idTipoEstudio) {
             setHoraFin(FinalizarHorario(dia, props.idTipoEstudio, horaInicio));
@@ -110,7 +111,7 @@ const HorarioDetEditar = (props: Props) => {
 
     }, [horaInicio, dia, props.idTipoEstudio])
 
-    const LoadDataAsignatura = async () => {
+    /*const LoadDataAsignatura = async () => {
 
         setComboBoxAsignatura([])
 
@@ -122,9 +123,9 @@ const HorarioDetEditar = (props: Props) => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-    }
+    }*/
 
-    const LoadDataSeccion = async () => {
+    /*const LoadDataSeccion = async () => {
 
         setComboBoxSeccion([])
 
@@ -136,7 +137,7 @@ const HorarioDetEditar = (props: Props) => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-    }
+    }*/
 
     const LoadDataRangeTurno = async () => {
 
@@ -151,7 +152,7 @@ const HorarioDetEditar = (props: Props) => {
         }
     }
 
-    const DataDocente = async (buscar: string) => {
+    /*const DataDocente = async (buscar: string) => {
 
         setComboBoxDocente([])
 
@@ -163,7 +164,7 @@ const HorarioDetEditar = (props: Props) => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-    }
+    }*/
 
 
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -248,19 +249,6 @@ const HorarioDetEditar = (props: Props) => {
 
                     if (response.getType() === Types.CANCELED) return;
 
-                    console.log(response)
-
-                    /*
-                    if (response.getStatus() == 401) {
-                        // dispatch(logout());
-                        return;
-                    }
-
-                    if (response.getStatus() == 403) {
-                        return;
-                    }
-                    */
-
                     sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioDetProcesoEditar() });
                 }
 
@@ -275,8 +263,7 @@ const HorarioDetEditar = (props: Props) => {
         setSearchTermDocente(event.target.value);
     };
 
-
-    const handleSearchInput = () => {
+    /*const handleSearchInput = () => {
         if (searchTermDocente.trim() == '') {
             refInputBusqueda.current?.focus()
             return
@@ -285,36 +272,37 @@ const HorarioDetEditar = (props: Props) => {
         DataDocente(searchTermDocente)
 
         setIsSearching(true);
-    };
+    };*/
 
-    const handleListClick = (docente: DocenteInfo) => {
+    /*const handleListClick = (docente: DocenteInfo) => {
 
         setDocenteId(docente.numdocuttraba)
         setSearchTermDocente(docente.numdocuttraba + ' - ' + `${docente.apepatttraba} ${docente.apemattraba} ${docente.nomttraba}`);
 
         setIsSearching(false); // Oculta la lista al seleccionar un elemento
         setIsDisabledInput(true)
-    };
+    };*/
 
-    const handleClearInput = () => {
+    /*const handleClearInput = () => {
         setIsDisabledInput(false)
         setSearchTermDocente("")
         setDocenteId("")
-    }
+    }*/
 
     useEffect(() => {
         if (storedHorarioDetActual) {
-            //setIdHorario(storedHorarioDetActual.idHorario || 0);
 
-            //console.log(storedHorarioDetActual)
             setDia(storedHorarioDetActual.dia || 0);
             setDetHorarioId(storedHorarioDetActual.detHorarioId || 0);
             setHoraInicio(storedHorarioDetActual.horaIni.split(':').slice(0, 2).join(':') || "");
             setHoraFin(storedHorarioDetActual.horaFin.split(':').slice(0, 2).join(':') || "");
             setAsiId(storedHorarioDetActual.asignaturaId || "0");
+            setNombreAsig(storedHorarioDetActual.asignatura || "")
             setColor(storedHorarioDetActual.color || "0");
+            //setNombreColor(storedHorarioDetActual.color || "0")
             setCapacidad(storedHorarioDetActual.capacidad || 0);
             setSeccionId(storedHorarioDetActual.seccionId || 0);
+            setNombreSecc(storedHorarioDetActual.seccion || "");
             setNivel(storedHorarioDetActual.nivel.toString() || "");
             setDocenteId(storedHorarioDetActual.docenteId.toString() || '');
             setHoraAcademica(parseInt(storedHorarioDetActual.horaAcademica) || 0);
@@ -388,22 +376,6 @@ const HorarioDetEditar = (props: Props) => {
                                 </select>
                             </div>
 
-                            {/* <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <input
-                                    type="time"
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
-                                    ref={refHoraInicio}
-                                    value={horaInicio}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        setHoraInicio(e.target.value)
-                                    }}
-
-                                />
-                            </div> */}
-
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -433,35 +405,13 @@ const HorarioDetEditar = (props: Props) => {
                                     Horario Fin <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <input
-                                    type="time"
-                                    //ref={refHoraFin}
+                                    type="text"
+                                    //type="time"
                                     value={horaFin}
-                                    /*onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        setHoraFin(e.target.value)
-                                    }}*/
                                     disabled
                                     className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
                                 />
 
-                                {/*<select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refHoraFin}
-                                    value={horaFin}
-                                    onChange={(event) => {
-                                        setHoraFin(event.currentTarget.value);
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        comboBoxRangeTurno.map((item: any, index: any) => {
-                                            return (
-                                                <option key={index} value={item.hora}>
-                                                    {item.hora}
-                                                </option>
-                                            );
-                                        })
-                                    }
-                                </select>*/}
                             </div>
 
                         </div>
@@ -472,7 +422,13 @@ const HorarioDetEditar = (props: Props) => {
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Asignatura <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
-                                <select
+                                <input
+                                    type="text"
+                                    value={nombreAsig}
+                                    disabled
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                />
+                                {/*<select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                     ref={refAsignatura}
                                     value={asiId}
@@ -500,13 +456,19 @@ const HorarioDetEditar = (props: Props) => {
 
                                         })
                                     }
-                                </select>
+                                </select>*/}
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Sección <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
-                                <select
+                                <input
+                                    type="text"
+                                    value={nombreSecc}
+                                    disabled
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                />
+                                {/*<select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                     ref={refSeccion}
                                     value={seccionId}
@@ -524,7 +486,7 @@ const HorarioDetEditar = (props: Props) => {
                                             )
                                         })
                                     }
-                                </select>
+                                </select>*/}
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
@@ -533,9 +495,10 @@ const HorarioDetEditar = (props: Props) => {
                                 <input
                                     type="text"
                                     maxLength={3}
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center"
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
                                     ref={refCapacidad}
                                     value={capacidad}
+                                    disabled
                                     onChange={(event) => {
                                         if (event.target.value.trim().length > 0) {
                                             setCapacidad(parseInt(event.currentTarget.value));
@@ -570,15 +533,15 @@ const HorarioDetEditar = (props: Props) => {
                                 <div className="relative flex flex-wrap">
                                     <input
                                         type="text"
-                                        className={`relative flex-auto rounded-l border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 p-1 ${isDisabledInput && 'bg-gray-100'}`}
+                                        className={`relative flex-auto rounded-l border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 p-1 px-4 ${isDisabledInput && 'bg-gray-100'}`}
                                         placeholder="Ingrese el dni o apellidos para buscar"
                                         style={{ fontSize: '12px' }}
-                                        disabled={isDisabledInput}
+                                        disabled
                                         ref={refInputBusqueda}
                                         value={searchTermDocente}
                                         onChange={handleSearch}
                                     />
-                                    {
+                                    {/*
                                         isDisabledInput === false ? (
                                             <button
                                                 title="Buscar"
@@ -596,10 +559,10 @@ const HorarioDetEditar = (props: Props) => {
                                                 <i className="bi bi-x-circle"></i>
                                             </button>
                                         )
-                                    }
+                                        */}
 
                                 </div>
-                                {isSearching && (
+                                {/*isSearching && (
                                     <ul
                                         className="absolute mt-1 bg-blue-50 border border-gray-00 rounded-md shadow-md overflow-y-auto z-10 max-h-36"
                                     >
@@ -612,7 +575,7 @@ const HorarioDetEditar = (props: Props) => {
                                             </li>
                                         ))}
                                     </ul>
-                                )}
+                                        )*/}
 
 
                             </div>
@@ -642,10 +605,16 @@ const HorarioDetEditar = (props: Props) => {
                                 </select>
 
                             </div>*/}
-                            <div>
+                            {/*<div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Color <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
+                                <input
+                                    type="text"
+                                    disabled
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                    value={nombreColor} />
+
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                     ref={refColor}
@@ -665,7 +634,7 @@ const HorarioDetEditar = (props: Props) => {
                                         })
                                     }
                                 </select>
-                            </div>
+                            </div>*/}
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

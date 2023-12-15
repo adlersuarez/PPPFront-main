@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 import CustomModal from '../../../../component/Modal.component';
@@ -16,8 +16,6 @@ type Props = {
     loadInit: () => void
 }
 
-
-
 const Horario = (props: Props) => {
 
     const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
@@ -25,30 +23,13 @@ const Horario = (props: Props) => {
 
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
 
-    const [colorRender, setColorRender] = useState<object[]>([]);
-
-    //console.log(props.data)
-    console.log(colorRender)
-
-    //console.log(props)
-
-    useEffect(() => {
-        // Lógica específica para actualizar datos
-        //console.log('Vista2 se ejecuta o actualiza cuando datos cambian:', props.data);
-        const nuevoObjetoExtraido = (props.data as { detHorarioId: number; color: string }[]).map(({ detHorarioId, color }) => ({ detHorarioId, color }));
-        setColorRender(nuevoObjetoExtraido);
-    }, [props.data]);
-
-
     const renderCard = (item: any) => {
 
         const horario = item.appointmentData
-        // console.log(horario)
 
         return (
             <div className={`p-1  my-1 rounded-sm`}  >
                 <p className="mb-1 font-bold tracking-tight text-gray-900 dark:text-white">{horario.asignatura}</p>
-                {/* <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">{horario.docenteId}</p> */}
                 <p className="mb-1 text-xs font-normal text-gray-700 dark:text-gray-400" style={{ fontSize: '12px' }}>{horario.docente}</p>
                 <p className="mb-1 font-bold text-xs text-gray-700 dark:text-gray-400">{horario.horaIni} - {horario.horaFin}</p>
                 <div className="text-center rounded bg-white">
@@ -79,26 +60,15 @@ const Horario = (props: Props) => {
         setIsOpenModalEditar(false)
     }
 
-    //console.log(horarioDetActual)
-
     const dayOfWeekNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
     function renderDateCell(cellData: any) {
         return (
-            <React.Fragment>
-                {/*<div className="name">{dayOfWeekNames[cellData.date.getDay()]}</div>
-                <div className="number">{cellData.date.getDate()}</div>*/}
-                {
-                    <div className='flex justify-center gap-2 '>
-                        <div className="name my-auto text-sm sm:text-xl">{dayOfWeekNames[cellData.date.getDay()]}</div>
-                        {/*<div className="number text-xl my-auto">{cellData.date.getDate()}</div>*/}
-                    </div>
-                }
-            </React.Fragment>
+            <div className='flex justify-center gap-2 '>
+                <div className="name my-auto text-sm sm:text-xl">{dayOfWeekNames[cellData.date.getDay()]}</div>
+            </div>
         );
     }
-
-    //console.log(props.color)
 
     return (
         <>
@@ -208,7 +178,7 @@ const Horario = (props: Props) => {
                 <View
                     type="week"
                     startDayHour={props.turnoInicio != undefined ? parseInt(props.turnoInicio) - 1 : 8}
-                    endDayHour={props.turnoFin != undefined ? parseInt(props.turnoFin) + 1 : 23}
+                    endDayHour={props.turnoFin != undefined ? parseInt(props.turnoFin) + 2 : 23}
                     // startDayHour={8}
                     // endDayHour={23}
                     dateCellRender={renderDateCell}
