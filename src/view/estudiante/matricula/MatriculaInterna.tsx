@@ -12,6 +12,12 @@ import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
 import RespValue from "../../../model/interfaces/RespValue.model.interface";
 
+// import { Types } from "../../../model/enum/types.model.enum";
+// import Listas from "@/model/interfaces/Listas.model.interface";
+// import MatriculaPago from "@/model/interfaces/matricula/matriculaPago";
+// import { NavLink } from "react-router-dom";
+
+
 import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../component/Iconos';
 
 import MatriculaModalidad from "./MatriculaModalidad"
@@ -56,10 +62,6 @@ const MatriculaInterna = () => {
     const cambiarPaso = (paso: number) => {
         setPasoActual(paso);
     };
-
-
-
-
 
     const validarPagMatriEst = async (codigo: string, anio: number) => {
 
@@ -229,6 +231,19 @@ const MatriculaInterna = () => {
 
                                 )
                         }
+
+                        {/* <div className="flex justify-end">
+                            <NavLink
+                                to={'/inicio/seleccion-idioma'}
+                            >
+                                <button
+                                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 font-semibold"
+                                    onClick={() => { }}
+                                >
+                                    Seleccionar
+                                </button>
+                            </NavLink>
+                        </div> */}
 
                     </div>
                 </div>

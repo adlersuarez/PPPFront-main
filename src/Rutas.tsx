@@ -16,6 +16,9 @@ import ListaClasesAsignados from './view/docente/ListaClasesAsignados';
 import ReporteDeNotas from './view/docente/ReporteDeNotas';
 import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
 import SubirNotas from './view/docente/SubirNotas';
+import VistaHorarioEstudiante from './view/estudiante/horarios/VistaHorariosEstudiante';
+import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
+import ComponenteNotas from './view/estudiante/notas/ComponenteNotas';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +32,14 @@ const router = createBrowserRouter([
       {
         path:'centro-idiomas',
         element: <HomeEstudiante/>
+      },
+      {
+        path:'vista-horario-estudiante',
+        element: <VistaHorarioEstudiante/>
+      },
+      {
+        path:'seleccion-idioma',
+        element: <SeleccionDeIdiomas/>
       },
       {
         path:'matricula-interna',
@@ -75,6 +86,10 @@ const router = createBrowserRouter([
   {
     path: '*',
     element: <NotFound />
+  },
+  {
+    path: 'notas',
+    element: <ComponenteNotas />
   },
   {
     path: '/',

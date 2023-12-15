@@ -71,6 +71,8 @@ const HorarioDetalle = (props: Props) => {
         dataRenderHorario()
     }, [listaHorarioDetalleId])
 
+    //console.log(listaHorarioDetalleId)
+
     const dataRenderHorario = async () => {
 
         if (listaHorarioDetalleId.length > 0) {
@@ -101,8 +103,8 @@ const HorarioDetalle = (props: Props) => {
                         mes: item.mes,
                         tipEstudioId: item.tipEstudioId,
                         tipoEstudio: item.tipoEstudio,
-
-                        seccion: item.seccion,
+                        seccionId: item.seccionId,
+                        seccion: item.nombreSeccion,
                         asignaturaId: item.asiId,
                         asignatura: item.asignatura,
 
