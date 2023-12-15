@@ -58,6 +58,7 @@ const HorarioDetalle = (props: Props) => {
         const response = await ListarHorarioDetalleId<Listas>(horarioId, props.abortControl)
         if (response instanceof Response) {
             setListaHorarioDetalleId(response.data.resultado as ListHorarioDetId[])
+            //console.log(response)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -68,8 +69,6 @@ const HorarioDetalle = (props: Props) => {
 
     useEffect(() => {
         dataRenderHorario()
-        dataRenderHorarioColor()
-        //loadInit(props.idHorario)
     }, [listaHorarioDetalleId])
 
     const dataRenderHorario = async () => {
@@ -145,28 +144,23 @@ const HorarioDetalle = (props: Props) => {
 
             );
 
-        }
-
-    }
-
-    const dataRenderHorarioColor = async () => {
-        if (listaHorarioDetalleId.length > 0) {
-
             setColor(
                 listaHorarioDetalleId.map((item) => {
                     return {
-                        id: item.color,
+                        id: item.detHorarioId,
                         color: item.color,
                         // text: ""
                     }
                 })
 
             )
-
         }
+
     }
 
     //console.log(itemHorario)
+    //console.log(dataHorario)
+    //console.log(color)
 
     return (
         <>
@@ -230,3 +224,4 @@ const HorarioDetalle = (props: Props) => {
     )
 }
 export default HorarioDetalle
+

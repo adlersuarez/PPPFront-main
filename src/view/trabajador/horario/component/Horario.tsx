@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 import CustomModal from '../../../../component/Modal.component';
@@ -25,12 +25,17 @@ const Horario = (props: Props) => {
 
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
 
+    const [colorRender, setColorRender] = useState<object[]>([]);
 
+    //console.log(props.data)
+    //console.log(colorRender)
 
-    /*useEffect(() => {
+    useEffect(() => {
         // Lógica específica para actualizar datos
         //console.log('Vista2 se ejecuta o actualiza cuando datos cambian:', props.data);
-    }, [props.data]);*/
+        const nuevoObjetoExtraido = (props.data as { detHorarioId: number; color: string }[]).map(({ detHorarioId, color }) => ({ detHorarioId, color }));
+        setColorRender(nuevoObjetoExtraido);
+    }, [props.data]);
 
 
     const renderCard = (item: any) => {
@@ -175,7 +180,7 @@ const Horario = (props: Props) => {
                 turnoInicio={props.turnoInicio}
                 turnoFin={props.turnoFin}
 
-                loadInit={()=>props.loadInit()}
+                loadInit={() => props.loadInit()}
                 handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
             />
 
@@ -207,7 +212,8 @@ const Horario = (props: Props) => {
                 />
                 <Resource
                     dataSource={props.color}
-                    fieldExpr="roomId"
+                    //dataSource={colorRender}
+                    fieldExpr="detHorarioId"
                 // label="Room"
                 />
             </Scheduler>

@@ -379,8 +379,6 @@ const HorarioDetAgregar = (props: Props) => {
             </div>
         ));
     };
-
-    console.log(selectedDays)
     
     return (
         <>
