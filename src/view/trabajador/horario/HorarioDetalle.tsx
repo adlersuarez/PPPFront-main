@@ -222,6 +222,20 @@ const HorarioDetalle = (props: Props) => {
         );
     }
 
+    //console.log(listaHorarioDetalleId)
+    const colorRender = [
+        { id: '#EF9A9A', nombreColor: 'Rojo', color: '#EF9A9A' },
+        { id: '#81C784', nombreColor: 'Verde', color: '#81C784' },
+        { id: '#64B5F6', nombreColor: 'Azul', color: '#64B5F6' },
+        { id: '#FFF59D', nombreColor: 'Amarillo', color: '#FFF59D' },
+        { id: '#FFCC80', nombreColor: 'Naranja', color: '#FFCC80' },
+        { id: '#BA68C8', nombreColor: 'Morado', color: '#BA68C8' },
+        { id: '#F48FB1', nombreColor: 'Rosa', color: '#F48FB1' },
+        { id: '#4DD0E1', nombreColor: 'Cyan', color: '#4DD0E1' },
+        { id: '#B0BEC5', nombreColor: 'Gris', color: '#B0BEC5' },
+        { id: '#8D6E63', nombreColor: 'Marrón', color: '#8D6E63' },
+    ];
+
     return (
         <>
             <ModalHorarioDetAgregar
@@ -253,8 +267,8 @@ const HorarioDetalle = (props: Props) => {
             <VistaPreviaDetalle
                 isOpenModal={isOpenModalInfo}
                 horario={horarioDetActual}
-                setHorarioDetActual={()=>setHorarioDetActual({})}
-                handleOpenModalDetEditar={()=>handleOpenModalHorarioDetProcesoEditar()}
+                setHorarioDetActual={() => setHorarioDetActual({})}
+                handleOpenModalDetEditar={() => handleOpenModalHorarioDetProcesoEditar()}
                 handleCloseModalInfo={handleCloseModalInfo}
             />
 
@@ -325,9 +339,10 @@ const HorarioDetalle = (props: Props) => {
                                 dateCellRender={renderDateCell}
                             />
                             <Resource
-                                dataSource={color}
-                                //dataSource={colorRender}
-                                fieldExpr="detHorarioId"
+                                //dataSource={color}
+                                //fieldExpr="detHorarioId"
+                                dataSource={colorRender}
+                                fieldExpr="color"
                             // label="Room"
                             />
                         </Scheduler>

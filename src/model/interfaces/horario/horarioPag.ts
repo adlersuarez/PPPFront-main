@@ -21,7 +21,8 @@ export default interface HorarioPag {
     aulasId: number
 	aula: string
 	aulaNombre: string
-    seccion: string
+    seccionId: number
+    nombreSeccion: string
     estado: number
     fechaRegistra: string
 
