@@ -19,6 +19,7 @@ import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
 import SubirNotas from './view/docente/SubirNotas';
 import IniciAdministrativo from './view/Administrativo/InicioAdministrativo';
 import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
+import ReporteNotas from './view/docente/notas/ReporteNotas';
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
       {
         path:'subir-notas',
         element: <SubirNotas/>
+      },
+      {
+        path:'notas-reporte-subir',
+        element: <ReporteNotas/>
       },
     ]
   },
