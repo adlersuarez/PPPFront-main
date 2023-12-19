@@ -1,28 +1,31 @@
 
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { PagoMatriculaLista, ValidarMatriculaExistente, ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante, } from "../../../network/rest/idiomas.network";
+import { PagadoMatriculaLista, PagadoPensionLista, PagoMatriculaUsados } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
-import RespValue from "../../../model/interfaces/RespValue.model.interface";
 
 import { Types } from "../../../model/enum/types.model.enum";
 
-import MatriculaPago from "@/model/interfaces/matricula/matriculaPago";
-import MatriculaPension from "@/model/interfaces/matricula/matriculaPension";
+import MatriculaPago from "@/model/interfaces/pago/matriculaPago";
+import PensionPago from "@/model/interfaces/pago/pensionPago";
 
 import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../component/Iconos';
 
-import MatriculaModalidad from "./MatriculaModalidad"
 import Listas from "@/model/interfaces/Listas.model.interface";
 
-import { Toaster } from 'react-hot-toast';
+import MatriculaUsados from "@/model/interfaces/matricula/matriculaUsados";
+import PensionUsados from "@/model/interfaces/matricula/pensionUsados";
+
+import MatriculaModalidad from "./MatriculaModalidad"
+
+
 
 const MatriculaInterna = () => {
 
@@ -40,25 +43,29 @@ const MatriculaInterna = () => {
     const aniActual: number = fechaActual.getFullYear()
     const mesActual: number = fechaActual.getMonth() + 1;
 
-    //const [loadPago, setLoadPago] = useState(true)
+
     const [loadMes, setLoadMes] = useState(true)
     const [loadAnio, setLoadAnio] = useState(true)
-    // 0 -> no pago
-    // 1 -> pago normal
-    // 2 -> pago intensivo
-    const [tipPago, setTipPago] = useState(0)
+
+
 
 
     useEffect(() => {
+
+        /*
         LoadValidarMatriculExistente()
 
         LoadPagosMatriculaLista()
+        LoadPagosPensionLista()
 
-
-        // validarPagMatriEst(codigo, aniActual)
-        // validarPagPesionMesEst(codigo, aniActual, mesActual)
+        //Usados
+        PagMatriculaUsados()
+        PagPensionUsados()
 
         //handleLoadPago()
+        compararMatricula()
+        */
+        loadInitData()
 
     }, [])
 
@@ -70,117 +77,72 @@ const MatriculaInterna = () => {
         setPasoActual(paso);
     };
 
-    const validarPagMatriEst = async (codigo: string, anio: number) => {
-
-        const validar = await ValidarPagoMatriculaEstudiante<RespValue>(codigo, anio)
-
-        if (validar instanceof Response) {
-
-            if (validar.data.value == "1") {
-                setPagoAnio(true)
-            } else {
-                setPagoAnio(false)
-            }
-
-            setLoadAnio(false)
-        }
-        if (validar instanceof RestError) {
-            console.log(validar.getMessage())
-        }
-    }
-
-
-    const validarPagPesionMesEst = async (codigo: string, anio: number, mes: number) => {
-
-        const validar = await ValidarPagoPensionMesEstudiante<RespValue>(codigo, anio, mes)
-
-        if (validar instanceof Response) {
-            if (validar.data.value == "1") {
-                setPagoMes(true)
-                setTipPago(1)
-
-            }
-            else if (validar.data.value == "2") {
-                setPagoMes(true)
-                setTipPago(2)
-
-            }
-            else {
-                setPagoMes(false)
-                setTipPago(0)
-            }
-
-            setLoadMes(false)
-        }
-        if (validar instanceof RestError) {
-            console.log(validar.getMessage())
-        }
-    }
-
-    // const datosModalidad = [
-    //     { titulo: 'Revisa tus pendientes', info: 'Información 1', infoExtra: 'dimelo' },
-    //     { titulo: '¡Importante!', info: 'Información 2' },
-
-    // ];
-
-
     // Ruber
-
-    const [primeraMatricula, setPrimeraMatricula] = useState(false)
 
     const [moduloMatriculaModalidad, setModuloMatriculaModalidad] = useState(false);
 
     const [pagoMatriculaLista, setPagoMatriculaLista] = useState<MatriculaPago[]>([]);
-    const [pagoPensionLista, setPagoPensionLista] = useState<MatriculaPension[]>([]);
+    const [pagoPensionLista, setPagoPensionLista] = useState<PensionPago[]>([]);
+
+    const [pagoMatriculaUsados, setPagoMatriculaUsados] = useState<MatriculaUsados[]>([])
+    const [pagoPensionUsados, setPagoPensionUsados] = useState<PensionUsados[]>([])
+
+    const [estadoMatricula, setEstadoMatricula] = useState(false)
+    const [estadoPension, setEstadoPension] = useState(false)
+
+    const [opeMatricula, SetOpeMatricula] = useState("")
+    const [opePension, SetOpePension] = useState("")
+
+    const [load, setLoad] = useState(true)
+    const [idRangoMat, setIdRangoMat] = useState(0)
 
 
+    const [nuevaMatricula, setNuevaMatricula] = useState(false)
+    const [nuevoPeriodo, setNuevoPeriodo] = useState(false)
 
-    const abortControl = new AbortController()
+
+    const abortController = useRef(new AbortController());
 
     const handleMatriculaModalidad = () => {
         setModuloMatriculaModalidad(!moduloMatriculaModalidad)
     }
 
-    const LoadValidarMatriculExistente = async () => {
+    const loadInitData = async () => {
 
-        setPrimeraMatricula(false)
 
-        const response = await ValidarMatriculaExistente<RespValue>(codigo)
-        if (response instanceof Response) {
+        await Promise.all([
 
-            if (response.data.value == "0"){
-                setPrimeraMatricula(true)
-            } 
-            if (response.data.value == "1"){
-                setPrimeraMatricula(false)
-            } 
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
+            await LoadPagosMatriculaLista(),
+            await LoadPagosPensionLista(),
+            await PagMatriculaUsados(),
+            await PagPensionUsados(),
+            await compararMatricula(),
+            await compararPension()
+        ])
+
+        //compararMatricula()
+        setLoad(false)
+
+        console.log(pagoMatriculaLista)
+        console.log(pagoMatriculaUsados)
 
     }
+
 
     const LoadPagosMatriculaLista = async () => {
 
-        setPagoMatriculaLista([])
+        //setPagoMatriculaLista([])
 
-        const response = await PagoMatriculaLista<Listas>(codigo, abortControl)
+        const response = await PagadoMatriculaLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
 
             const matriculas = response.data.resultado as MatriculaPago[]
-
-            if(matriculas[0].total == '0'){
-                
-            } else{
+            if (matriculas[0].total == '0') {
+                setPagoMatriculaLista([])
+            } else {
                 setPagoMatriculaLista(matriculas)
             }
 
-            console.log(matriculas)
-
-
-            console.log(response.data.resultado)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -188,10 +150,153 @@ const MatriculaInterna = () => {
         }
 
     }
-    
-    
 
+    const LoadPagosPensionLista = async () => {
 
+        //setPagoPensionLista([])
+
+        const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
+        if (response instanceof Response) {
+
+            const pensiones = response.data.resultado as PensionPago[]
+
+            if (pensiones[0].total == '0') {
+                setPagoPensionLista([])
+            } else {
+                setPagoPensionLista(pensiones)
+            }
+
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
+
+    // Usados
+    const PagMatriculaUsados = async () => {
+
+        //setPagoMatriculaUsados([])
+
+        const response = await PagoMatriculaUsados<Listas>(codigo, abortController.current)
+        if (response instanceof Response) {
+
+            const matriUsados = response.data.resultado as MatriculaUsados[]
+            if (matriUsados.length == 0) {
+                setPagoMatriculaUsados([])
+            } else {
+                setPagoMatriculaUsados(matriUsados)
+            }
+
+        }
+        if (response instanceof RestError) {
+            console.log(response.getMessage())
+        }
+    }
+
+    const PagPensionUsados = async () => {
+
+        // setPagoPensionUsados([])
+
+        const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
+        if (response instanceof Response) {
+
+            const penUsados = response.data.resultado as PensionUsados[]
+
+            if (penUsados.length == 0) {
+                setPagoPensionUsados([])
+            } else {
+                setPagoPensionUsados(penUsados)
+            }
+
+        }
+        if (response instanceof RestError) {
+            console.log(response.getMessage())
+        }
+    }
+
+    // Compara Matricula
+    const compararMatricula = async () => {
+
+        
+
+        if (pagoMatriculaLista.length == 0) {
+            // no pago ninguna matricula
+            setEstadoMatricula(false)
+        }
+        else {
+
+            setEstadoMatricula(true)
+
+            if (pagoMatriculaUsados.length == 0) {
+                // no usó ningun pago
+                SetOpeMatricula(pagoMatriculaLista[0].operacion)
+                setIdRangoMat(1)
+
+                setNuevaMatricula(true)
+
+            }
+            else {
+                
+
+                const diferentes: MatriculaPago[] = []
+
+                pagoMatriculaLista.forEach(obj1 => {
+
+                    pagoMatriculaUsados.forEach((obj2) => {
+                        if (obj1.operacion != obj2.opeMat) {
+                            diferentes.push(obj1);
+                        }
+                    });
+
+                });
+
+                SetOpeMatricula(diferentes[0].operacion)
+                setNuevaMatricula(false)
+
+            }
+
+        }
+
+    }
+
+    const compararPension = async () => {
+
+        if (pagoPensionLista.length == 0) {
+            // no pago ninguna pension
+            setEstadoPension(false)
+        }
+        else {
+
+            setEstadoPension(true)
+
+            if (pagoPensionUsados.length == 0) {
+                // no usó ningun pago
+                SetOpePension(pagoPensionLista[0].operacion)
+
+            }
+            else {
+
+                const diferentes: PensionPago[] = []
+
+                pagoPensionLista.forEach(obj1 => {
+
+                    pagoPensionUsados.forEach((obj2) => {
+                        if (obj1.operacion != obj2.opePen) {
+                            diferentes.push(obj1);
+                        }
+                    });
+
+                });
+
+                SetOpePension(diferentes[0].operacion)
+
+            }
+
+        }
+
+    }
 
 
     return (
@@ -222,9 +327,6 @@ const MatriculaInterna = () => {
                                                     <div className="text-sm font-bold">
                                                         TENER EN CUENTA
                                                     </div>
-                                                    <div className="text-sm font-bold">
-                                                        {!primeraMatricula ? 'Ya se matriculo por lo menos una vez' : 'Usted no cuenta con ninguna matricula'}
-                                                    </div>
                                                 </div>
                                                 <div className="m-2">
 
@@ -252,12 +354,11 @@ const MatriculaInterna = () => {
                                             <br />
 
                                             <div className="flex justify-center mb-4">
-                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} tipoPago={tipPago} />
-                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} tipoPago={tipPago} />
+                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} />
+                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} />
                                             </div>
 
-                                            <Accordion pasoActual={pasoActual} tipoPago={tipPago} pagoAnio={pagoAnio} pagoMes={pagoMes} anioActual={aniActual} handleMatriculaModalidad={handleMatriculaModalidad}
-                                                loadPagos={loadAnio || loadMes}
+                                            <Accordion pasoActual={pasoActual} opeMatricula={opeMatricula} opePension={opePension}  handleMatriculaModalidad={handleMatriculaModalidad} load={load}
                                             />
 
 
@@ -317,8 +418,6 @@ const MatriculaInterna = () => {
                     </div>
                 </div>
             </div>
-
-            <Toaster />
 
         </>
     )

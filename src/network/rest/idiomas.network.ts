@@ -118,12 +118,12 @@ export async function ListarDocenteIdiomasBusqueda<Listas>( busqueda: string, ab
 
 
 // Pago
-export async function ValidarPagoMatriculaEstudiante<RespValue>(codigo: string, anio: number, signal = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Pago/ValidarPagoMatriculaEstudiante/${codigo}/${anio}`, { signal: signal! }));
+export async function PagadoMatriculaLista<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Pago/PagoMatriculaLista/${EstudianteId}`, { signal: abortController?.signal }));
 }
 
-export async function ValidarPagoPensionMesEstudiante<RespValue>(codigo: string, anio: number, mes: number, signal = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Pago/ValidarPagoPensionMesEstudiante/${codigo}/${anio}/${mes}`, { signal: signal! }));
+export async function PagadoPensionLista<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Pago/PagoPensionLista/${EstudianteId}`, { signal: abortController?.signal }));
 }
 
 
@@ -133,18 +133,18 @@ export async function ValidarMatriculaExistente<RespValue>(EstudianteId: string,
 
 }
 
-export async function PagoMatriculaLista<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoMatriculaLista/${EstudianteId}`, { signal: abortController?.signal }));
-}
-
-export async function PagoPensionLista<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoPensionLista/${EstudianteId}`, { signal: abortController?.signal }));
-}
-
 export async function CiclosMatriculablesIdiomas<Listas>(EstudianteId: string, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
     return await Resolve.create(instance.get<Listas>(`/Matricula/CiclosMatriculablesIdiomas/${EstudianteId}`, { signal: abortController?.signal }));
 }
 
+
+export async function PagoMatriculaUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoMatriculaUsados/${EstudianteId}`, { signal: abortController?.signal }));
+}
+
+export async function PagoPensionUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoPensionUsados/${EstudianteId}`, { signal: abortController?.signal }));
+}
 
 
 
