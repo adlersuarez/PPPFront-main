@@ -34,8 +34,6 @@ const ReporteNotas = () => {
         }
     };
 
-    console.log(excelData)
-    
     return (
         <>
             <div>
@@ -43,20 +41,24 @@ const ReporteNotas = () => {
                 {excelData && (
                     <div>
                         <h2>Excel Data:</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    {Object.keys(excelData[0]).map((header) => (
-                                        <th key={header}>{header}</th>
-                                    ))}
+                        <table  className="table-auto min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr className='text-center text-lg font-medium text-gray-500 uppercase tracking-wider'>
+                                    {(excelData[0]).map((item: any , key :any) => {
+                                        return (
+                                            <th key={key} className='px-6 py-3'>{item}</th>
+                                        )
+                                    })}
                                 </tr>
                             </thead>
-                            <tbody>
-                                {excelData.map((row: any, index: any) => (
-                                    <tr key={index}>
-                                        {Object.values(row).map((value, colIndex) => (
-                                            <td key={colIndex}>{value}</td>
-                                        ))}
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {excelData.slice(1).map((row: any, keyRow: any) => (
+                                    <tr key={keyRow} className='whitespace-nowrap text-sm text-gray-900 text-center'>
+                                        {row.map((item: any, keyCol: any) => {
+                                            return (
+                                                <td key={keyCol} className='px-6 py-4'>{item}</td>
+                                            )
+                                        })}
                                     </tr>
                                 ))}
                             </tbody>
