@@ -8,7 +8,7 @@ export default interface Horario {
     periodoId: number
     aulasId: number
     tipEstudioId: number
-    seccion: string
+    seccionId: number
     estado: number
     usuarioRegistra: string
     fechaRegistra: Date | null

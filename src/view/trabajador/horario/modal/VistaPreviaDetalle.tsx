@@ -10,7 +10,7 @@ type Props = {
 
 const VistaPreviaDetalle = (props: Props) => {
 
-    console.log(props.horario)
+    //console.log(props.horario)
 
     return (
         <>

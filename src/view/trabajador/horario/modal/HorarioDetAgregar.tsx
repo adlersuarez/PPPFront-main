@@ -11,12 +11,11 @@ import { Types } from "../../../../model/enum/types.model.enum";
 import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorarioCheckBox } from '../../../../helper/herramienta.helper'
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, ListarSeccion, InsertarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
-import Seccion from "../../../../model/interfaces/seccion/seccion";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
 
 type Props = {
@@ -44,8 +43,6 @@ const HorarioDetAgregar = (props: Props) => {
 
     const [comboBoxRangeTurno, setcomboBoxRangeTurno] = useState<any>([])
 
-    const [comboBoxSeccion, setcomboBoxSeccion] = useState<Seccion[]>([])
-
     const [dia, setDia] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
@@ -56,8 +53,6 @@ const HorarioDetAgregar = (props: Props) => {
 
     const [docenteId, setDocenteId] = useState<string>("")
 
-    const [idSeccion, setIdSeccion] = useState(0)
-
     const [observacion, setObservacion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
 
@@ -66,7 +61,6 @@ const HorarioDetAgregar = (props: Props) => {
     const refAsignatura = useRef<HTMLSelectElement>(null)
     const refColor = useRef<HTMLSelectElement>(null)
     const refCapacidad = useRef<HTMLInputElement>(null)
-    const refSeccion = useRef<HTMLSelectElement>(null)
 
     const [searchTermDocente, setSearchTermDocente] = useState("");
     const [isSearching, setIsSearching] = useState(false);
@@ -76,7 +70,6 @@ const HorarioDetAgregar = (props: Props) => {
     useEffect(() => {
         LoadDataAsignatura()
         LoadDataRangeTurno()
-        LoadDataSeccion()
 
         if (horaInicio !== '' && selectedDays.length > 0 && props.idTipoEstudio) {
             setHoraFin(FinalizarHorarioCheckBox(selectedDays, props.idTipoEstudio, horaInicio));
@@ -127,20 +120,6 @@ const HorarioDetAgregar = (props: Props) => {
         }
     }
 
-    const LoadDataSeccion = async () => {
-
-        setcomboBoxSeccion([])
-
-        const response = await ListarSeccion<Listas>(props.abortControl)
-        if (response instanceof Response) {
-            setcomboBoxSeccion(response.data.resultado as Seccion[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
-
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
@@ -179,14 +158,13 @@ const HorarioDetAgregar = (props: Props) => {
             if (value) {
                 props.sweet.openInformation("Mensaje", "Procesando información...")
 
-                let params : any = []
+                let params: any = []
 
                 selectedDays.map(async (day) => {
                     const datos = {
                         "detHorarioId": 0,
                         "horarioId": props.idHorario,
                         "asiId": asiId,
-                        'seccionId': idSeccion,
                         "nivel": nivel,
                         "capacidad": capacidad,
                         "dia": day,
@@ -412,33 +390,6 @@ const HorarioDetAgregar = (props: Props) => {
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refSeccion}
-                                    value={idSeccion}
-                                    onChange={(event) => {
-                                        setIdSeccion(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        comboBoxSeccion.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.seccionId}>
-                                                    {item.nombreSeccion}
-                                                </option>
-                                            );
-
-
-                                        })
-                                    }
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Color <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <select
@@ -482,11 +433,6 @@ const HorarioDetAgregar = (props: Props) => {
                                     onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberInteger(event)}
                                 />
                             </div>
-
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Nivel
@@ -498,6 +444,23 @@ const HorarioDetAgregar = (props: Props) => {
                                     value={nivel} />
 
                             </div>
+
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Observación
+                                </label>
+                                <textarea
+                                    rows={1}
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+                                    value={observacion}
+                                    onChange={(e) => setObservacion(e.target.value)}
+                                >
+                                </textarea>
+                            </div>
+
                             <div className="col-span-2">
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Instructor <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -554,18 +517,7 @@ const HorarioDetAgregar = (props: Props) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
 
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Observación
-                                </label>
-                                <textarea
-                                    rows={1}
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
-                                    value={observacion}
-                                    onChange={(e) => setObservacion(e.target.value)}
-                                >
-                                </textarea>
-                            </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Estado

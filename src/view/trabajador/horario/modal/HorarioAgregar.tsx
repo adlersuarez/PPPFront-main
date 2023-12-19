@@ -12,11 +12,12 @@ import Turno from "../../../../model/interfaces/turno/turno";
 import Programa from "../../../../model/interfaces/programa/programa";
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarAula } from "../../../../network/rest/idiomas.network";
+import { ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarAula, ListarSeccion } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Aula from "@/model/interfaces/aula/aula";
+import Seccion from "@/model/interfaces/seccion/seccion";
 
 
 type Props = {
@@ -46,21 +47,26 @@ const HorarioAgregar = (props: Props) => {
     const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
+    const [comboBoxSeccion, setcomboBoxSeccion] = useState<Seccion[]>([])
 
     const [idAula, setIdAula] = useState<number>(0)
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
+    const [idSeccion, setIdSeccion] = useState(0)
 
     const [estado, setEstado] = useState<boolean>(true)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
     const refAula = useRef<HTMLSelectElement>(null)
+    const refSeccion = useRef<HTMLSelectElement>(null)
 
     useEffect(() => {
         LoadDataTurno()
         LoadDataPrograma()
         LoadDataAula()
+        LoadDataSeccion()
+
     }, [])
 
     const LoadDataTurno = async () => {
@@ -106,6 +112,20 @@ const HorarioAgregar = (props: Props) => {
         }
     }
 
+    const LoadDataSeccion = async () => {
+
+        setcomboBoxSeccion([])
+
+        const response = await ListarSeccion<Listas>(props.abortControl)
+        if (response instanceof Response) {
+            setcomboBoxSeccion(response.data.resultado as Seccion[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
     };
@@ -125,6 +145,10 @@ const HorarioAgregar = (props: Props) => {
             refAula.current?.focus()
             return
         }
+        if (idSeccion == 0) {
+            refSeccion.current?.focus()
+            return
+        }
 
         const params = {
             "horarioId": 0,
@@ -136,6 +160,7 @@ const HorarioAgregar = (props: Props) => {
             "periodoId": props.idPeriodo,
             "aulasId": idAula,
             "tipEstudioId": props.idTipoEstudio,
+            "seccionId": idSeccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
@@ -297,6 +322,32 @@ const HorarioAgregar = (props: Props) => {
                                             </option>
                                         ))
                                         
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refSeccion}
+                                    value={idSeccion}
+                                    onChange={(event) => {
+                                        setIdSeccion(parseInt(event.currentTarget.value));
+                                    }}
+                                >
+                                    <option value={"0"}>- Seleccione -</option>
+                                    {
+                                        comboBoxSeccion.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.seccionId}>
+                                                    {item.nombreSeccion}
+                                                </option>
+                                            );
+
+
+                                        })
                                     }
                                 </select>
                             </div>
