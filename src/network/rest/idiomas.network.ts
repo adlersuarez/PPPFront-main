@@ -88,7 +88,7 @@ export async function InsertarHorarioDetalle<RespValue>(params: object[] , abort
 }
 
 export async function ListarHorarioDisponibleEst<Listas>(EstudianteId: string, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create(instance.get<Listas>(`/Horario/ListarHorarioDisponibleEst/${EstudianteId}`, { signal: abortController?.signal }));
+    return await Resolve.create(instance.get<Listas>(`/Horario/ListarHorariosDisponiblesEst/${EstudianteId}`, { signal: abortController?.signal }));
 }
 
 

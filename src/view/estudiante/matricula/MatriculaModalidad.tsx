@@ -9,7 +9,7 @@ import CiclosInfo from '../../../model/interfaces/matricula/ciclosInfo';
 import { useSelector } from "react-redux";
 import { RootState } from '../../../store/configureStore.store';
 import { Barras, Bandera, Matricula } from '../../../component/Iconos';
-import ModalVistaHorario from '../../../view/trabajador/horario/modal/VistaHorario.modal'
+import ModalVistaHorario from '../../../view/estudiante/matricula/modal/ListasHorarios'
 
 
 type DatosType = {
@@ -59,9 +59,10 @@ const MatriculaModalidad = (props: Props) => {
         setCiclosDisponibles([])
 
         const response = await CiclosMatriculablesIdiomas<Listas>(codigo, abortController.current)
+        //console.log(response)
         if (response instanceof Response) {
             // setComboBoxAsignatura(response.data.resultado as Asignatura[])
-            console.log(response.data.resultado)
+            //console.log(response.data.resultado)
             setCiclosDisponibles(response.data.resultado as CiclosInfo[]);
 
         }

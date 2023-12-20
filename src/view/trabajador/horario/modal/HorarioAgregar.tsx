@@ -216,6 +216,7 @@ const HorarioAgregar = (props: Props) => {
                     setIdPrograma(0)
                     setIdAula(0)
                     setEstado(true)
+                    setIdSeccion(0)
                 }}
                 onClose={props.handleCloseModal}
             >
