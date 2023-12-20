@@ -114,8 +114,8 @@ const MatriculaModalidad = (props: Props) => {
                     <div className="flex flex-col shadow-md border border-gray-300 ">
                         <div className="bg-green-400 h-1 flex flex-col justify-center items-center"></div>
 
-                        {ciclosDisponibles.map((ciclo) => (
-                            <div className="flex flex-wrap">
+                        {ciclosDisponibles.map((ciclo, index) => (
+                            <div className="flex flex-wrap" key={index}>
                                 {/* Tarjeta 1 */}
                                 <div className="w-full sm:w-1/2 p-4">
                                     <div className="bg-green-500 rounded-md p-4 flex items-center">

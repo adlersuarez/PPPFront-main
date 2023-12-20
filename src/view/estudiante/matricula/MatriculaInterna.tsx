@@ -22,7 +22,7 @@ import Listas from "@/model/interfaces/Listas.model.interface";
 
 import MatriculaModalidad from "./MatriculaModalidad"
 import RespValue from "@/model/interfaces/RespValue.model.interface";
-import { Value } from "devextreme-react/range-selector";
+
 
 
 const MatriculaInterna = () => {
@@ -44,7 +44,7 @@ const MatriculaInterna = () => {
     const [loadMatricula, setLoadMatricula] = useState(true)
     const [loadPension, setLoadPension] = useState(true)
 
-    const [validezMatri, setValidezMatri] = useState(true)
+    const [validezMesesMatri, setValidezMesesMatri] = useState("0")
 
     const abortController = useRef(new AbortController());
 
@@ -116,19 +116,15 @@ const MatriculaInterna = () => {
     const LoadValidezMatriculaMeses = async () =>{
         const response = await ValidezMatriculaMeses<RespValue>(codigo)
         if (response instanceof Response) {
-            console.log(response)
-
-            // const pensiones = response.data.value as Value
-            // setPagoPensionLista(pensiones)
-            // setLoadPension(false)
-
+            setValidezMesesMatri(response.data.value)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-    }
 
+
+    }
 
     return (
         <>
@@ -185,9 +181,9 @@ const MatriculaInterna = () => {
                                             <br />
 
                                             <div className="flex justify-center mb-4">
-                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
+                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
                                                     dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
-                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
+                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
                                                     dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
                                             </div>
 

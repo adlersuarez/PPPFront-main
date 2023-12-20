@@ -180,7 +180,7 @@ const Accordion = (props: Props) => {
                                 onClick={toggleAccordion}
                             >
                                 <h3 className="text-lg font-semibold">
-                                    Realiza tu matrícula <span className="text-red-600"> ¡Este paso es imprescindible!</span>
+                                    Realiza tu matrícula <span className="text-blue-600"> ¡Este paso es imprescindible!</span>
                                 </h3>
                             </div>
 
@@ -192,7 +192,7 @@ const Accordion = (props: Props) => {
                                     <div className="p-3">
                                         <AccordionItem
                                             icono={BiCalendar}
-                                            titulo={`Matricúlate - elige tus horarios`}
+                                            titulo={`Matricúlate - elige tu horario`}
                                             handleMatriculaModalidad={props.handleMatriculaModalidad}
                                         />
 
