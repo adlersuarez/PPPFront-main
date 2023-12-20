@@ -15,7 +15,7 @@ const Inscripcion = () => {
                     <div className="flex rounded-lg h-60">
                         <div className="w-7/12 bg-gray-50 p-4 flex flex-col justify-between">
                             <div className='flex flex-col gap-2'>
-                                <h1 className='font-bold text-xl'>Centro de Idiomas</h1>
+                                <h1 className='font-bold text-xl'>Idiomas</h1>
                                 <p>
                                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,

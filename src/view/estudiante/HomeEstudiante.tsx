@@ -1,7 +1,9 @@
 import { ArrowRightOnCicleSvg } from "@/component/Svg.component";
 import { NavLink } from "react-router-dom";
+import Card from "../../component/pages/cards/CardDash"
 
 import { images } from "../../helper/index.helper";
+import { IconoCalendario, MultipleCheck, Documento, Vida, Matricula } from '../../component/Iconos';
 
 const HomeEstudiante = () => {
 
@@ -12,8 +14,39 @@ const HomeEstudiante = () => {
 
                     <div className="grid grid-flow-row grid-cols-3 p-6">
                         <div className="col-span-3 px-4 mb-8">
-
-                            <div className="rounded overflow-hidden shadow-lg mx-auto border border-blue-200">
+                        <div className="flex flex-wrap justify-center mt-5">
+                                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<Matricula />}
+                                                        titulo={'Matrícula'}
+                                                        subTitulo={'Realiza tu matrícula.'}
+                                                        color={'green'}
+                                                        to={'/inicio/proceso'}
+                                                        info={''}
+                                                    />
+                                                </div>
+                                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<Vida />}
+                                                        titulo={'Vida académica'}
+                                                        subTitulo={'Revisa tu experiencia en Idiomas Upla.'}
+                                                        color={'yellow'}
+                                                        to={'/inicio/vida-academica'}
+                                                        info={''}
+                                                    />
+                                                </div>
+                                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<MultipleCheck />}
+                                                        titulo={'Trámites'}
+                                                        subTitulo={'Administra tus peticiones.'}
+                                                        color={'blue'}
+                                                        to={'/inicio/proceso'}
+                                                        info={''}
+                                                    />
+                                                </div>
+                                            </div>
+                            {/* <div className="rounded overflow-hidden shadow-lg mx-auto border border-blue-200">
                                 <div className="flex">
                                     <div className="w-1/2 px-6 py-4">
                                         <h2 className="text-xl font-mont uppercase font-bold pb-3 ">
@@ -43,94 +76,13 @@ const HomeEstudiante = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
-                        {
-                            /*
-                            <div className="">
-                                <div className="max-w-sm rounded overflow-hidden shadow-lg mx-auto">
-                                    <div className="w-full">
-                                        <img
-                                            className="w-full"
-                                            src={images.portada}
-                                            alt="Card Image"
-                                        />
-                                    </div>
-                                    <div className="px-6 py-4">
-                                        <div className="font-bold text-xl mb-2">Notas del estudiante</div>
-                                        <p className="text-gray-700 text-base">
-                                            This is the content of the card. You can put any text or elements here.
-                                        </p>
-                                        <button type="button" className="font-mont  text-white bg-upla-100 hover:bg-upla-200 hover:transition-all focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-2/3 px-5 py-2.5 text-center mt-3">
-                                            <NavLink to={'/inicio/matricula_interna'}>
-                                                <div className="flex justify-center items-center">
-                                                    <ArrowRightOnCicleSvg />
-                                                    <span>
-                                                        Ver Registro de Notas
-                                                    </span>
-                                                </div>
-                                            </NavLink>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="">
-                                <div className="max-w-sm rounded overflow-hidden shadow-lg mx-auto">
-                                    <div className="w-full">
-                                        <img
-                                            className="w-full"
-                                            src={images.portada}
-                                            alt="Card Image"
-                                        />
-                                    </div>
-                                    <div className="px-6 py-4">
-                                        <div className="font-bold font-mont text-xl mb-2">Noticias</div>
-                                        <p className="text-gray-700 text-base">
-                                            This is the content of the card. You can put any text or elements here.
-                                        </p>
-                                        <button type="button" className="font-mont  text-white bg-upla-100 hover:bg-upla-200 hover:transition-all focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-2/3 px-5 py-2.5 text-center mt-3">
-                                            <NavLink to={'/inicio/matricula_interna'}>
-                                                <div className="flex justify-center items-center">
-                                                    <ArrowRightOnCicleSvg />
-                                                    <span>
-                                                        Ver Noticias
-                                                    </span>
-                                                </div>
-                                            </NavLink>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="">
-                                <div className="max-w-sm rounded overflow-hidden shadow-lg mx-auto">
-                                    <div className="w-full">
-                                        <img
-                                            className="w-full"
-                                            src={images.portada}
-                                            alt="Card Image"
-                                        />
-                                    </div>
-                                    <div className="px-6 py-4">
-                                        <div className="font-bold text-xl mb-2">Información</div>
-                                        <p className="text-gray-700 text-base">
-                                            This is the content of the card. You can put any text or elements here.
-                                        </p>
-                                        <button type="button" className="font-mont  text-white bg-upla-100 hover:bg-upla-200 hover:transition-all focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-2/3 px-5 py-2.5 text-center mt-3">
-                                            <NavLink to={'/inicio/matricula_interna'}>
-                                                <div className="flex justify-center items-center">
-                                                    <ArrowRightOnCicleSvg />
-                                                    <span>
-                                                        Más Información
-                                                    </span>
-                                                </div>
-                                            </NavLink>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            */
-                        }
+                        
+
+                            
+                        
                     </div>
                 </div>
             </div>

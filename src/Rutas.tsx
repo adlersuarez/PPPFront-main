@@ -19,6 +19,7 @@ import SubirNotas from './view/docente/SubirNotas';
 import VistaHorarioEstudiante from './view/estudiante/horarios/VistaHorariosEstudiante';
 import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
 import ComponenteNotas from './view/estudiante/notas/ComponenteNotas';
+import VidaAcademica from './view/estudiante/VidaAcademica';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path:'matricula-interna',
         element: <MatriculaInterna/>
+      },
+      {
+        path:'vida-academica',
+        element: <VidaAcademica/>
       },
       {
         path:'matricula-externa',

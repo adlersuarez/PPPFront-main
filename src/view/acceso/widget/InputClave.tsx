@@ -21,7 +21,7 @@ const InputClave = (props: Props) => {
             <input
                 type="text"
                 className="font-mont bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Dijite su código"
+                placeholder="Digité su código"
                 ref={props.refCodigo}
                 value={props.codigo}
                 onChange={(changeevent: React.ChangeEvent<HTMLInputElement>) => {
