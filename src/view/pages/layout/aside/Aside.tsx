@@ -117,7 +117,7 @@ const menusEst: MenuItem[] = [
             {
                 id: "3",
                 titulo: "Nota",
-                url: "/inicio/inicio-docente",
+                url: "/inicio/seleccion-notas-estudiante",
                 icono: "bi-card-checklist",
                 moduPadre: false,
                 modPosicion: 3,

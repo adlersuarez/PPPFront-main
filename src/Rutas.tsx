@@ -12,7 +12,7 @@ import VistaHorarioEstudiante from './view/estudiante/horarios/VistaHorariosEstu
 import HorarioIdiomas from './view/trabajador/horario/HorarioIdiomas';
 import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
-import InicioDocente from './view/docente/InicioDocente';
+import NotasEstudiante from './view/estudiante/Notas/NotasEstudiante';
 import ListaClasesAsignados from './view/docente/ListaClasesAsignados';
 import ReporteDeNotas from './view/docente/ReporteDeNotas';
 import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
@@ -21,6 +21,7 @@ import IniciAdministrativo from './view/Administrativo/InicioAdministrativo';
 import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
 import ReporteNotas from './view/docente/notas/ReporteNotas';
 import ListaAulas from './view/docente/notas/ListasAulas';
+import SelecionRegistroDeNotas from './view/estudiante/Notas/SeleccionRegistroDeNotas';
 
 const router = createBrowserRouter([
   {
@@ -60,8 +61,12 @@ const router = createBrowserRouter([
         element: <HorarioIdiomas/>
       },
       {
-        path:'inicio-docente',
-        element: <InicioDocente/>
+        path:'notas-estudiante',
+        element: <NotasEstudiante/>
+      },
+      {
+        path:'seleccion-notas-estudiante',
+        element: <SelecionRegistroDeNotas/>
       },
       {
         path:'inicio-administrativo',

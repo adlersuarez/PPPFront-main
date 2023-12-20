@@ -1,14 +1,46 @@
 import CustomModal from "@/component/Modal.component"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+type NotasCiclo = {
+    notaA: number;
+    notaB: number;
+    notaC: number;
+    notaD: number;
+    notaEP: number;
+    notaEF: number;
+}
 
 type Props = {
     show: boolean;
     hide: () => void;
+    mostrarNota: NotasCiclo;
 }
 
 const ModalNotasEstudiante = (props: Props) => {
 
-    const[data, setData] = useState()
+    const [notaPractica, setNotaPractica] = useState<number>(0)
+    const [notaPracticaPorcentaje, setNotaPracticaPorcentaje] = useState<number>(0)
+    const [notaExamenMedioCiclo, setNotaExamenMedioCiclo] = useState<number>(0)
+    const [notaExamenMedioCicloPorcentaje, setExamenMedioCicloPorcentajea] = useState<number>(0)
+    const [notaExamenFinal, setNotaExamenFinal] = useState<number>(0)
+    const [notaExamenFinalPorcentaje, setExamenFinalPorcentajea] = useState<number>(0)
+    const [notaPromedioFinal, setnotaPromedioFinal] = useState<number>(0)
+    
+    
+    useEffect(() => {
+        setNotaPractica(((props.mostrarNota.notaA + props.mostrarNota.notaB + props.mostrarNota.notaC + props.mostrarNota.notaD) / 4));
+
+        setNotaPracticaPorcentaje(parseFloat((((props.mostrarNota.notaA + props.mostrarNota.notaB + props.mostrarNota.notaC + props.mostrarNota.notaD) / 4) * 0.2).toFixed(2)));
+
+        setNotaExamenMedioCiclo(props.mostrarNota.notaEP);
+        setExamenMedioCicloPorcentajea(parseFloat((props.mostrarNota.notaEP * 0.4).toFixed(2)));
+
+        setNotaExamenFinal(props.mostrarNota.notaEF);
+        setExamenFinalPorcentajea(parseFloat((props.mostrarNota.notaEF * 0.4).toFixed(2)));
+
+        setnotaPromedioFinal(((props.mostrarNota.notaA + props.mostrarNota.notaB + props.mostrarNota.notaC + props.mostrarNota.notaD) * 0.2 / 4) + props.mostrarNota.notaEP * 0.4 + props.mostrarNota.notaEF * 0.4);
+        setnotaPromedioFinal(parseFloat((((props.mostrarNota.notaA + props.mostrarNota.notaB + props.mostrarNota.notaC + props.mostrarNota.notaD) * 0.2 / 4) + props.mostrarNota.notaEP * 0.4 + props.mostrarNota.notaEF * 0.4).toFixed(1)));
+    }, [props.mostrarNota]);
 
     return (
         <CustomModal
@@ -57,50 +89,23 @@ const ModalNotasEstudiante = (props: Props) => {
                                     <tbody>
                                         <tr className="text-center">
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{props.mostrarNota.notaA}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{props.mostrarNota.notaB}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{props.mostrarNota.notaC}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{props.mostrarNota.notaD}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    disabled
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaPractica}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={6}
-                                                    disabled
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaPracticaPorcentaje}</label>
                                             </td>
-                                            
                                         </tr>
                                     </tbody>
                                 </table>
@@ -117,21 +122,11 @@ const ModalNotasEstudiante = (props: Props) => {
                                     <tbody>
                                         <tr className="text-center">
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaExamenMedioCiclo}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={6}
-                                                    disabled
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaExamenMedioCicloPorcentaje}</label>
                                             </td>
-                                            
                                         </tr>
                                     </tbody>
                                 </table>
@@ -143,27 +138,18 @@ const ModalNotasEstudiante = (props: Props) => {
                                         <tr>
                                             <th className="py-2 px-6">Nota de examen final</th>
                                             <th className="py-2 px-6">40%</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr className="text-center">
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaExamenFinal}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={6}
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaExamenFinalPorcentaje}</label>
                                             </td>
-                                            
-                                            
+
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -182,39 +168,18 @@ const ModalNotasEstudiante = (props: Props) => {
                                     <tbody>
                                         <tr className="text-center">
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={3}
-                                                    disabled
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaPracticaPorcentaje}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={6}
-                                                    disabled
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaExamenMedioCicloPorcentaje}</label>
                                             </td>
                                             <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={6}
-                                                    disabled
-                                                    className="w-full text-center"
-                                                />
+                                                <label className="">{notaExamenFinalPorcentaje}</label>
+                                            </td>
+                                            <td className={`border py-2 ${notaPromedioFinal > 10.5 ? 'bg-green-400' : 'bg-red-400'}`}>
+                                                <label className="">{notaPromedioFinal}</label>
                                             </td>
 
-                                            <td className="border py-2">
-                                                <input
-                                                    type="number"
-                                                    value={15}
-                                                    disabled
-                                                    className={`w-full text-center ${15>10.5?'bg-green-400':'bg-red-400'}`}
-                                                />
-                                            </td>
-                                            
                                         </tr>
                                     </tbody>
                                 </table>
