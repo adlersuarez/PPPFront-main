@@ -15,7 +15,7 @@ type Props = {
 
     dataMatricula: MatriculaPago[]
     dataPension: PensionPago[]
-    handleMatriculaModalidad: () => void;
+    handleMatriculaProceso: () => void;
 }
 
 const Accordion = (props: Props) => {
@@ -187,7 +187,7 @@ const Accordion = (props: Props) => {
                                         <AccordionItem
                                             icono={BiCalendar}
                                             titulo={`Matricúlate - elige tu horario`}
-                                            handleMatriculaModalidad={props.handleMatriculaModalidad}
+                                            handleMatriculaModalidad={props.handleMatriculaProceso}
                                         />
 
                                     </div>

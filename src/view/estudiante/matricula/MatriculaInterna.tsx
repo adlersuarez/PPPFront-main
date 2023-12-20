@@ -20,7 +20,7 @@ import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../compo
 
 import Listas from "@/model/interfaces/Listas.model.interface";
 
-import MatriculaModalidad from "./MatriculaModalidad"
+import MatriculaProceso from "./MatriculaProceso"
 import RespValue from "@/model/interfaces/RespValue.model.interface";
 
 
@@ -33,7 +33,7 @@ const MatriculaInterna = () => {
 
     const [pasoActual, setPasoActual] = useState<number>(1);
 
-    const [moduloMatriculaModalidad, setModuloMatriculaModalidad] = useState(false);
+    const [moduloMatriculaProceso, setModuloMatriculaProceso] = useState(false);
 
     const [pagoMatriculaLista, setPagoMatriculaLista] = useState<MatriculaPago[]>([]);
     const [pagoPensionLista, setPagoPensionLista] = useState<PensionPago[]>([]);
@@ -53,8 +53,8 @@ const MatriculaInterna = () => {
         setPasoActual(paso);
     };
 
-    const handleMatriculaModalidad = () => {
-        setModuloMatriculaModalidad(!moduloMatriculaModalidad)
+    const handleMatriculaProceso = () => {
+        setModuloMatriculaProceso(!moduloMatriculaProceso)
     }
 
     useEffect(() => {
@@ -66,9 +66,9 @@ const MatriculaInterna = () => {
     const loadInitData = async () => {
 
         await LoadPagosMatriculaLista(),
-        await LoadPagosPensionLista(),
-        await LoadValidezMatriculaMeses(),
-        setLoad(false)
+            await LoadPagosPensionLista(),
+            await LoadValidezMatriculaMeses(),
+            setLoad(false)
 
     }
 
@@ -113,7 +113,7 @@ const MatriculaInterna = () => {
 
     }
 
-    const LoadValidezMatriculaMeses = async () =>{
+    const LoadValidezMatriculaMeses = async () => {
         const response = await ValidezMatriculaMeses<RespValue>(codigo)
         if (response instanceof Response) {
             setValidezMesesMatri(response.data.value)
@@ -134,10 +134,10 @@ const MatriculaInterna = () => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                         {
-                            moduloMatriculaModalidad == true ?
+                            moduloMatriculaProceso == true ?
                                 (
-                                    <MatriculaModalidad
-                                        handleMatriculaModalidad={handleMatriculaModalidad}
+                                    <MatriculaProceso
+                                        handleMatriculaProceso={handleMatriculaProceso}
 
                                     />
                                 ) :
@@ -187,7 +187,7 @@ const MatriculaInterna = () => {
                                                     dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
                                             </div>
 
-                                            <Accordion pasoActual={pasoActual} handleMatriculaModalidad={handleMatriculaModalidad} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
+                                            <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
                                                 dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista}
                                             />
 
