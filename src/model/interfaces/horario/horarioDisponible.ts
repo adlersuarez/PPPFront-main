@@ -22,4 +22,7 @@ export default interface HorarioDisponible {
     asiNivel: string
     asignatura: string
     cantidad: number
+    sedeId: string
+    sede: string
+    periodoId: string
 }

@@ -79,14 +79,14 @@ const ListasHorario = (props: Props) => {
         '7': 'Domingo',
     };
 
-    const matriculaHorarioElegido = (asiId: string, horarioId: number, tipoEstudioId: number, periodoId: string, seccionId: number) => {
+    const matriculaHorarioElegido = (idiomaId:number, modalidadId:number,sedeId:string, asiId: string, horarioId: number, tipoEstudioId: number, periodoId: string, seccionId: number) => {
 
         const paramsMatricula = {
-            "periodoId": '',
+            "periodoId": periodoId,
             "estudianteId": codigo,
-            "idiomaId": "",
-            "modalidadId": "",
-            "sedeId":"",
+            "idiomaId": idiomaId,
+            "modalidadId":modalidadId,
+            "sedeId":sedeId,
             "matriculaRegistro": new Date().toISOString(),
             "usuarioRegistro": codigo,
             "matriculaEstado": 1,
@@ -238,7 +238,7 @@ const ListasHorario = (props: Props) => {
                                                 <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
                                                 <td className="border p-2">
                                                     <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
-                                                        onClick={() => matriculaHorarioElegido(horario.asiId, horario.horarioId, horario.tipEstudioId, '202401', horario.seccionId)}>
+                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId,horario.modalidadId,horario.sedeId,horario.asiId, horario.horarioId, horario.tipEstudioId, horario.periodoId, horario.seccionId)}>
                                                         Matricular
                                                     </button>
                                                 </td>
