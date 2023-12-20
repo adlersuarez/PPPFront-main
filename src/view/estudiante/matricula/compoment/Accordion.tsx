@@ -1,13 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AccordionItem from './AccordionItem';
 import { BiCalendar } from 'react-icons/bi';
-// import Asignatura from '@/model/interfaces/asignatura/asignatura';
-// import { ListarAsignaturaPreMatriculaEstudiante } from '@/network/rest/idiomas.network';
-// import Listas from '../../../../model/interfaces/Listas.model.interface';
 
-// import Response from "../../../../model/class/response.model.class";
-// import RestError from "../../../../model/class/resterror.model.class";
-// import { Types } from "../../../../model/enum/types.model.enum";
 import Cargando from '@/component/Cargando';
 import MatriculaPago from '@/model/interfaces/pago/matriculaPago';
 import PensionPago from '@/model/interfaces/pago/pensionPago';
@@ -21,15 +15,15 @@ type Props = {
 
     dataMatricula: MatriculaPago[]
     dataPension: PensionPago[]
-    handleMatriculaModalidad: () => void;
+    handleMatriculaProceso: () => void;
 }
 
 const Accordion = (props: Props) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const operMatri = props.dataMatricula[0]?.operacion
-    const operPens = props.dataPension[0]?.operacion
+    // const operMatri = props.dataMatricula[0]?.operacion
+    // const operPens = props.dataPension[0]?.operacion
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
@@ -193,7 +187,7 @@ const Accordion = (props: Props) => {
                                         <AccordionItem
                                             icono={BiCalendar}
                                             titulo={`Matricúlate - elige tu horario`}
-                                            handleMatriculaModalidad={props.handleMatriculaModalidad}
+                                            handleMatriculaModalidad={props.handleMatriculaProceso}
                                         />
 
                                     </div>

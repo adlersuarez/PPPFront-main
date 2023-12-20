@@ -35,7 +35,7 @@ const Acceso = () => {
     const [claveMensaje, setClaveMensaje] = useState<string>('');
 
     // const [formRegEstExterno, setFormRegEstExterno] = useState<boolean>(false);
-    
+
     // if(false) setFormRegEstExterno(false)
 
     const refCodigo = useRef<HTMLInputElement>(null);
@@ -110,7 +110,7 @@ const Acceso = () => {
         <>
             {
                 // formRegEstExterno == false ?
-                true?
+                true ?
 
                     (
                         <div className="flex flex-wrap w-screen h-screen">
@@ -133,9 +133,9 @@ const Acceso = () => {
                                         initial={{ x: -1000, opacity: 0 }}
                                         transition={{ duration: 0.8 }}
                                         animate={{ x: 0, opacity: 1 }}
-                                        exit={{ opacity: 0 }}> 
+                                        exit={{ opacity: 0 }}>
                                         {/* <span className="px-1"></span> */}
-                                         <AcedemicCapSvg size={"w-8 h-8"} /></motion.p>
+                                        <AcedemicCapSvg size={"w-8 h-8"} /></motion.p>
                                 </div>
                             </div>
                             <div className="px-6 md:px-12 sm:px-10 my-auto w-full md:w-1/2 xl:w-1/3">
@@ -188,6 +188,9 @@ const Acceso = () => {
                                             {/* <br />
                                             <span className="text-xs cursor-pointer text-upla-100 hover:underline"
                                                 onClick={onEventFormRegEstExterno}>Registro estudiante externo</span> */}
+
+                                            {/* <br />
+                                            <span className="text-lg cursor-pointer text-upla-100">Apertura del sistema 21/12/2023</span> */}
 
                                         </form>
                                     </div>
