@@ -7,6 +7,7 @@ type Props = {
 const Button = (props: Props) => {
     return (
         <button
+            // disabled
             type="submit"
             className="font-mont
             block 

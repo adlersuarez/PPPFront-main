@@ -22,8 +22,8 @@ const Accordion = (props: Props) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const operMatri = props.dataMatricula[0]?.operacion
-    const operPens = props.dataPension[0]?.operacion
+    // const operMatri = props.dataMatricula[0]?.operacion
+    // const operPens = props.dataPension[0]?.operacion
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen);

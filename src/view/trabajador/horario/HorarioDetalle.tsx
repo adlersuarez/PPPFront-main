@@ -39,6 +39,8 @@ const HorarioDetalle = (props: Props) => {
     const [dataHorario, setDataHorario] = useState<object[]>([]);
     const [color, setColor] = useState<object[]>([]);
 
+    console.log(color)
+
     const [isOpenModal, setIsOpenModal] = useState(false);
 
     const { itemHorario } = props
