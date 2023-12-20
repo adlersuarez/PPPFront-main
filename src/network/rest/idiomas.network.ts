@@ -130,21 +130,24 @@ export async function PagadoPensionLista<Listas>(EstudianteId: string, abortCont
 // Matricula
 export async function ValidarMatriculaExistente<RespValue>(EstudianteId: string, signal = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create<RespValue>(instance.get<RespValue>(`/Matricula/ValidarMatriculaExistente/${EstudianteId}`, { signal: signal! }));
-
 }
 
 export async function CiclosMatriculablesIdiomas<Listas>(EstudianteId: string, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
     return await Resolve.create(instance.get<Listas>(`/Matricula/CiclosMatriculablesIdiomas/${EstudianteId}`, { signal: abortController?.signal }));
 }
 
-
-export async function PagoMatriculaUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoMatriculaUsados/${EstudianteId}`, { signal: abortController?.signal }));
+export async function ValidezMatriculaMeses<RespValue>(EstudianteId: string, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Matricula/ValidezMatriculaMeses/${EstudianteId}`, { signal: signal! }));
 }
 
-export async function PagoPensionUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoPensionUsados/${EstudianteId}`, { signal: abortController?.signal }));
-}
+
+// export async function PagoMatriculaUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+//     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoMatriculaUsados/${EstudianteId}`, { signal: abortController?.signal }));
+// }
+
+// export async function PagoPensionUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+//     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoPensionUsados/${EstudianteId}`, { signal: abortController?.signal }));
+// }
 
 
 

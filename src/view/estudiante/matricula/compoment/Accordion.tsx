@@ -9,13 +9,18 @@ import { BiCalendar } from 'react-icons/bi';
 // import RestError from "../../../../model/class/resterror.model.class";
 // import { Types } from "../../../../model/enum/types.model.enum";
 import Cargando from '@/component/Cargando';
+import MatriculaPago from '@/model/interfaces/pago/matriculaPago';
+import PensionPago from '@/model/interfaces/pago/pensionPago';
 
 type Props = {
     pasoActual: number
-    opeMatricula: string
-    opePension: string
 
     load: boolean
+    loadMatricula: boolean
+    loadPension: boolean
+
+    dataMatricula: MatriculaPago[]
+    dataPension: PensionPago[]
     handleMatriculaModalidad: () => void;
 }
 
@@ -23,22 +28,14 @@ const Accordion = (props: Props) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    // console.log(props.opeMatricula)
-
-    // const [nivelMatricula] = useState(2)
-
-    //const abortController = useRef(new AbortController());
-
-    // const cod = JSON.parse(window.localStorage.getItem("codigo") || "");
-
-    useEffect(() => {
-
-    }, [])
-
+    const operMatri = props.dataMatricula[0]?.operacion
+    const operPens = props.dataPension[0]?.operacion
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
     };
+
+
 
     return (
         <div className="border border-gray-300 p-4 rounded-b">
@@ -68,16 +65,46 @@ const Accordion = (props: Props) => {
                                             <h3 className="text-lg font-semibold">
                                                 Matricula:
                                                 {
-                                                    props.opeMatricula == "" ?
+
+                                                    props.loadMatricula ?
+                                                        (
+                                                            <div className='mt-4'>
+                                                                <Cargando />
+                                                            </div>
+
+                                                        )
+                                                        :
                                                         (
                                                             <>
-                                                                <span className="text-red-600"> No tiene operaciones asociadas </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                                {
+                                                                    props.dataMatricula[0].operacion == "utilizado" ?
+                                                                        (
+                                                                            <>
+                                                                                <span className="text-green-600"> Pago registrado en uso </span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
+                                                                            </>
+                                                                        ) :
+
+                                                                        props.dataMatricula[0].operacion == "inpago" ?
+
+                                                                            (
+                                                                                <>
+                                                                                    <span className="text-red-600"> No hay pagos registrados </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                                                </>
+                                                                            )
+                                                                            :
+                                                                            (
+                                                                                <>
+                                                                                    <span className="text-green-600"> Pagado - {props.dataMatricula[0].operacion}  </span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
+                                                                                </>
+
+                                                                            )
+                                                                }
+
                                                             </>
-                                                        ) : (
-                                                            <>
-                                                                <span className="text-green-600"> Número de operación. {props.opeMatricula}</span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
-                                                            </>
+
+
                                                         )
+
                                                 }
                                             </h3>
                                         </div>
@@ -90,16 +117,39 @@ const Accordion = (props: Props) => {
                                             <h3 className="text-lg font-semibold">
                                                 Pension:
                                                 {
-                                                    props.opePension == "" ?
+                                                    props.loadPension ?
                                                         (
-                                                            <>
-                                                                <span className="text-red-600"> Pendiente </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
-                                                            </>
+                                                            <div className='mt-4'>
+                                                                <Cargando />
+                                                            </div>
 
                                                         ) : (
 
                                                             <>
-                                                                <span className="text-red-600"> Pendiente </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                                {
+                                                                    props.dataPension[0].operacion == "utilizado" ?
+                                                                        (
+                                                                            <>
+                                                                                <span className="text-red-600"> No hay pago de pension registrado </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                                            </>
+                                                                        ) :
+
+                                                                        props.dataPension[0].operacion == "inpago" ?
+
+                                                                            (
+                                                                                <>
+                                                                                    <span className="text-red-600"> No hay pagos registrados </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                                                </>
+                                                                            )
+                                                                            :
+                                                                            (
+                                                                                <>
+                                                                                    <span className="text-green-600"> Pagado - {props.dataPension[0].operacion} </span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
+                                                                                </>
+
+                                                                            )
+                                                                }
+
                                                             </>
                                                         )
                                                 }
@@ -130,7 +180,7 @@ const Accordion = (props: Props) => {
                                 onClick={toggleAccordion}
                             >
                                 <h3 className="text-lg font-semibold">
-                                    Realiza tu matrícula <span className="text-red-600"> ¡Este paso es imprescindible!</span>
+                                    Realiza tu matrícula <span className="text-blue-600"> ¡Este paso es imprescindible!</span>
                                 </h3>
                             </div>
 
@@ -142,7 +192,7 @@ const Accordion = (props: Props) => {
                                     <div className="p-3">
                                         <AccordionItem
                                             icono={BiCalendar}
-                                            titulo={`Matricúlate - elige tus horarios`}
+                                            titulo={`Matricúlate - elige tu horario`}
                                             handleMatriculaModalidad={props.handleMatriculaModalidad}
                                         />
 

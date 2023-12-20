@@ -6,7 +6,7 @@ import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { PagadoMatriculaLista, PagadoPensionLista, PagoMatriculaUsados } from "../../../network/rest/idiomas.network";
+import { PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
@@ -20,10 +20,8 @@ import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../compo
 
 import Listas from "@/model/interfaces/Listas.model.interface";
 
-import MatriculaUsados from "@/model/interfaces/matricula/matriculaUsados";
-import PensionUsados from "@/model/interfaces/matricula/pensionUsados";
-
 import MatriculaModalidad from "./MatriculaModalidad"
+import RespValue from "@/model/interfaces/RespValue.model.interface";
 
 
 
@@ -35,96 +33,42 @@ const MatriculaInterna = () => {
 
     const [pasoActual, setPasoActual] = useState<number>(1);
 
-    const [pagoAnio, setPagoAnio] = useState(false)
-    const [pagoMes, setPagoMes] = useState(false)
-
-    const fechaActual: Date = new Date();
-
-    const aniActual: number = fechaActual.getFullYear()
-    const mesActual: number = fechaActual.getMonth() + 1;
-
-
-    const [loadMes, setLoadMes] = useState(true)
-    const [loadAnio, setLoadAnio] = useState(true)
-
-
-
-
-    useEffect(() => {
-
-        /*
-        LoadValidarMatriculExistente()
-
-        LoadPagosMatriculaLista()
-        LoadPagosPensionLista()
-
-        //Usados
-        PagMatriculaUsados()
-        PagPensionUsados()
-
-        //handleLoadPago()
-        compararMatricula()
-        */
-        loadInitData()
-
-    }, [])
-
-    /*const handleLoadPago = () => {
-        setLoadPago(false)
-    };*/
-
-    const cambiarPaso = (paso: number) => {
-        setPasoActual(paso);
-    };
-
-    // Ruber
-
     const [moduloMatriculaModalidad, setModuloMatriculaModalidad] = useState(false);
 
     const [pagoMatriculaLista, setPagoMatriculaLista] = useState<MatriculaPago[]>([]);
     const [pagoPensionLista, setPagoPensionLista] = useState<PensionPago[]>([]);
 
-    const [pagoMatriculaUsados, setPagoMatriculaUsados] = useState<MatriculaUsados[]>([])
-    const [pagoPensionUsados, setPagoPensionUsados] = useState<PensionUsados[]>([])
-
-    const [estadoMatricula, setEstadoMatricula] = useState(false)
-    const [estadoPension, setEstadoPension] = useState(false)
-
-    const [opeMatricula, SetOpeMatricula] = useState("")
-    const [opePension, SetOpePension] = useState("")
-
     const [load, setLoad] = useState(true)
-    const [idRangoMat, setIdRangoMat] = useState(0)
 
 
-    const [nuevaMatricula, setNuevaMatricula] = useState(false)
-    const [nuevoPeriodo, setNuevoPeriodo] = useState(false)
+    const [loadMatricula, setLoadMatricula] = useState(true)
+    const [loadPension, setLoadPension] = useState(true)
 
+    const [validezMesesMatri, setValidezMesesMatri] = useState("0")
 
     const abortController = useRef(new AbortController());
+
+
+    const cambiarPaso = (paso: number) => {
+        setPasoActual(paso);
+    };
 
     const handleMatriculaModalidad = () => {
         setModuloMatriculaModalidad(!moduloMatriculaModalidad)
     }
 
+    useEffect(() => {
+
+        loadInitData()
+
+    }, [])
+
     const loadInitData = async () => {
 
-
-        await Promise.all([
-
-            await LoadPagosMatriculaLista(),
-            await LoadPagosPensionLista(),
-            await PagMatriculaUsados(),
-            await PagPensionUsados(),
-            await compararMatricula(),
-            await compararPension()
-        ])
-
-        //compararMatricula()
+        await LoadPagosMatriculaLista(),
+        await LoadPagosPensionLista(),
+        await LoadValidezMatriculaMeses(),
         setLoad(false)
-
-        console.log(pagoMatriculaLista)
-        console.log(pagoMatriculaUsados)
 
     }
 
@@ -137,11 +81,10 @@ const MatriculaInterna = () => {
         if (response instanceof Response) {
 
             const matriculas = response.data.resultado as MatriculaPago[]
-            if (matriculas[0].total == '0') {
-                setPagoMatriculaLista([])
-            } else {
-                setPagoMatriculaLista(matriculas)
-            }
+
+            setPagoMatriculaLista(matriculas)
+            setLoadMatricula(false)
+
 
         }
         if (response instanceof RestError) {
@@ -159,12 +102,8 @@ const MatriculaInterna = () => {
         if (response instanceof Response) {
 
             const pensiones = response.data.resultado as PensionPago[]
-
-            if (pensiones[0].total == '0') {
-                setPagoPensionLista([])
-            } else {
-                setPagoPensionLista(pensiones)
-            }
+            setPagoPensionLista(pensiones)
+            setLoadPension(false)
 
         }
         if (response instanceof RestError) {
@@ -174,130 +113,18 @@ const MatriculaInterna = () => {
 
     }
 
-    // Usados
-    const PagMatriculaUsados = async () => {
-
-        //setPagoMatriculaUsados([])
-
-        const response = await PagoMatriculaUsados<Listas>(codigo, abortController.current)
+    const LoadValidezMatriculaMeses = async () =>{
+        const response = await ValidezMatriculaMeses<RespValue>(codigo)
         if (response instanceof Response) {
-
-            const matriUsados = response.data.resultado as MatriculaUsados[]
-            if (matriUsados.length == 0) {
-                setPagoMatriculaUsados([])
-            } else {
-                setPagoMatriculaUsados(matriUsados)
-            }
-
+            setValidezMesesMatri(response.data.value)
         }
         if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-    }
 
-    const PagPensionUsados = async () => {
-
-        // setPagoPensionUsados([])
-
-        const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
-        if (response instanceof Response) {
-
-            const penUsados = response.data.resultado as PensionUsados[]
-
-            if (penUsados.length == 0) {
-                setPagoPensionUsados([])
-            } else {
-                setPagoPensionUsados(penUsados)
-            }
-
-        }
-        if (response instanceof RestError) {
-            console.log(response.getMessage())
-        }
-    }
-
-    // Compara Matricula
-    const compararMatricula = async () => {
-
-        
-
-        if (pagoMatriculaLista.length == 0) {
-            // no pago ninguna matricula
-            setEstadoMatricula(false)
-        }
-        else {
-
-            setEstadoMatricula(true)
-
-            if (pagoMatriculaUsados.length == 0) {
-                // no usó ningun pago
-                SetOpeMatricula(pagoMatriculaLista[0].operacion)
-                setIdRangoMat(1)
-
-                setNuevaMatricula(true)
-
-            }
-            else {
-                
-
-                const diferentes: MatriculaPago[] = []
-
-                pagoMatriculaLista.forEach(obj1 => {
-
-                    pagoMatriculaUsados.forEach((obj2) => {
-                        if (obj1.operacion != obj2.opeMat) {
-                            diferentes.push(obj1);
-                        }
-                    });
-
-                });
-
-                SetOpeMatricula(diferentes[0].operacion)
-                setNuevaMatricula(false)
-
-            }
-
-        }
 
     }
-
-    const compararPension = async () => {
-
-        if (pagoPensionLista.length == 0) {
-            // no pago ninguna pension
-            setEstadoPension(false)
-        }
-        else {
-
-            setEstadoPension(true)
-
-            if (pagoPensionUsados.length == 0) {
-                // no usó ningun pago
-                SetOpePension(pagoPensionLista[0].operacion)
-
-            }
-            else {
-
-                const diferentes: PensionPago[] = []
-
-                pagoPensionLista.forEach(obj1 => {
-
-                    pagoPensionUsados.forEach((obj2) => {
-                        if (obj1.operacion != obj2.opePen) {
-                            diferentes.push(obj1);
-                        }
-                    });
-
-                });
-
-                SetOpePension(diferentes[0].operacion)
-
-            }
-
-        }
-
-    }
-
 
     return (
         <>
@@ -354,11 +181,14 @@ const MatriculaInterna = () => {
                                             <br />
 
                                             <div className="flex justify-center mb-4">
-                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} />
-                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} />
+                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
+                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
                                             </div>
 
-                                            <Accordion pasoActual={pasoActual} opeMatricula={opeMatricula} opePension={opePension}  handleMatriculaModalidad={handleMatriculaModalidad} load={load}
+                                            <Accordion pasoActual={pasoActual} handleMatriculaModalidad={handleMatriculaModalidad} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
+                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista}
                                             />
 
 

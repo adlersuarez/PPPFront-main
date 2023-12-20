@@ -1,9 +1,9 @@
 import { ArrowRightOnCicleSvg } from "@/component/Svg.component";
 import { NavLink } from "react-router-dom";
 import Card from "../../component/pages/cards/CardDash"
-
 import { images } from "../../helper/index.helper";
-import { IconoCalendario, MultipleCheck, Documento, Vida, Matricula } from '../../component/Iconos';
+import { Pregunta, Identificacion, MultipleCheck, Boleta, Horario, Libro } from '../../component/Iconos';
+
 
 const HomeEstudiante = () => {
 
@@ -17,17 +17,17 @@ const HomeEstudiante = () => {
                             <div className="flex flex-wrap justify-center mt-5">
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
-                                        imagen={<Matricula />}
+                                        imagen={<Libro />}
                                         titulo={'Consolidado de matrícula'}
                                         subTitulo={'Realiza tu matrícula.'}
                                         color={'yellow'}
-                                        to={'/inicio/proceso'}
+                                        to={'/inicio/consolidado'}
                                         info={''}
                                     />
                                 </div>
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
-                                        imagen={<Vida />}
+                                        imagen={<Horario />}
                                         titulo={'Horario'}
                                         subTitulo={'Revisa tu experiencia en Idiomas Upla.'}
                                         color={'yellow'}
@@ -37,27 +37,27 @@ const HomeEstudiante = () => {
                                 </div>
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
-                                        imagen={<MultipleCheck />}
+                                        imagen={<Boleta />}
                                         titulo={'Boleta de notas'}
                                         subTitulo={'Administra tus peticiones.'}
                                         color={'yellow'}
-                                        to={'/inicio/proceso'}
+                                        to={'/inicio/boleta-notas'}
                                         info={''}
                                     />
                                 </div>
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
-                                        imagen={<MultipleCheck />}
+                                        imagen={<Horario />}
                                         titulo={'Inasistencia por ciclo'}
                                         subTitulo={'Administra tus peticiones.'}
                                         color={'yellow'}
-                                        to={'/inicio/proceso'}
+                                        to={'/inicio/inasistencia'}
                                         info={''}
                                     />
                                 </div>
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
-                                        imagen={<MultipleCheck />}
+                                        imagen={<Identificacion />}
                                         titulo={'Datos personales'}
                                         subTitulo={'Administra tus peticiones.'}
                                         color={'yellow'}
@@ -67,11 +67,11 @@ const HomeEstudiante = () => {
                                 </div>
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
-                                        imagen={<MultipleCheck />}
+                                        imagen={<Pregunta />}
                                         titulo={'Resultado Postulante'}
                                         subTitulo={'Administra tus peticiones.'}
                                         color={'yellow'}
-                                        to={'/inicio/proceso'}
+                                        to={'/inicio/resultados-postulante'}
                                         info={''}
                                     />
                                 </div>
