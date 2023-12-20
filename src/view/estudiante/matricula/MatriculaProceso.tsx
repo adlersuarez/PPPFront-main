@@ -11,32 +11,9 @@ import { RootState } from '../../../store/configureStore.store';
 import { Barras, Bandera, Matricula } from '../../../component/Iconos';
 import ModalVistaHorario from './modal/ListasHorarios'
 
-
-type DatosType = {
-    id: number;
-    idAsign: number,
-    asignatura: string,
-    aula: string,
-    sede: string,
-    idsede: number,
-    turno: string,
-    idTurno: number,
-    horario: string,
-    idHorario: number,
-    modalidad: string,
-    idModalidad: number,
-    tipo: string,
-    idTipo: number,
-    inscritos: number,
-    capacidad: number,
-    estado: number,
-};
-
-
 type Props = {
     handleMatriculaProceso: () => void;
 }
-
 
 const MatriculaProceso = (props: Props) => {
 
@@ -67,9 +44,7 @@ const MatriculaProceso = (props: Props) => {
 
             const data = response.data.resultado as CiclosInfo[]
             setCiclosDisponibles(data);
-
-            console.log(data)
-
+            //console.log(data)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
