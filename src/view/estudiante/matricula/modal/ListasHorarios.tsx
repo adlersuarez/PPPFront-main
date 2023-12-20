@@ -9,6 +9,7 @@ import { ListarHorarioDisponibleEst } from "@/network/rest/idiomas.network";
 import { RootState } from "@/store/configureStore.store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 
 type Props = {
 
@@ -22,6 +23,7 @@ type Props = {
 const ListasHorario = (props: Props) => {
 
     // console.log(props.asigId)
+    const sweet = useSweerAlert();
 
     const [expandirTD, setExpandirTD] = useState<number | null>(null);
 
@@ -77,6 +79,65 @@ const ListasHorario = (props: Props) => {
         '7': 'Domingo',
     };
 
+    const matriculaHorarioElegido = (matriculaId: number, asiId: string, horarioId: number, opePen: string, tipoEstudioId: number, periodoId: string, seccionId: number) => {
+
+        const params = {
+            "matriculaId": matriculaId,
+            "asiId": asiId,
+            "horarioId": horarioId,
+            "convalidacion": 0,
+            "promedio": 0,
+            "asistencia": 0,
+            "estado": 1,
+            "fechRegistro": new Date().toISOString(),
+            "observacion": '',
+            "estadoOperacion": 1,
+            "opePen": opePen,
+            "condicion": 'N',
+            "tipoEstudioId": tipoEstudioId,
+            "periodoId": periodoId,
+            "seccionId": seccionId,
+        }
+
+        sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+            if (value) {
+
+                console.log(params)
+                /*
+
+                sweet.openInformation("Mensaje", "Procesando información...")
+
+                const response = await InsertarActualizarHorario<RespValue>("CREAR", params, props.abortControl);
+
+                if (response instanceof Response) {
+
+                    if (response.data.value == "procesado") {
+                        sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModal() });
+                    }
+
+                }
+
+
+                if (response instanceof RestError) {
+
+                    if (response.getType() === Types.CANCELED) return;
+
+                    if (response.getStatus() == 401) {
+                        // dispatch(logout());
+                        return;
+                    }
+
+                    if (response.getStatus() == 403) {
+                        return;
+                    }
+
+                    sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModal() });
+                }
+            */}
+        })
+
+    }
+
 
     return (
         <CustomModal
@@ -113,7 +174,7 @@ const ListasHorario = (props: Props) => {
                                 <th className="py-2 px-6">Horarios</th>
                                 <th className="py-2 px-6">Aula</th>
                                 <th className="py-2 px-6">Sección</th>
-                                <th className="py-2 px-6">Cap</th>
+                                <th className="py-2 px-6">Cant / Cap</th>
                                 <th className="py-2 px-6">Acción</th>
                             </tr>
                         </thead>
@@ -159,9 +220,10 @@ const ListasHorario = (props: Props) => {
 
                                                 <td className="border p-2">{horario.aula}</td>
                                                 <td className="border p-2">{horario.nombreSeccion}</td>
-                                                <td className="border p-2">{horario.capacidad}</td>
+                                                <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
                                                 <td className="border p-2">
-                                                    <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg">
+                                                    <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
+                                                        onClick={() => matriculaHorarioElegido(4, horario.asiId, horario.horarioId, '0004', horario.tipEstudioId, '202401', horario.seccionId)}>
                                                         Matricular
                                                     </button>
                                                 </td>
