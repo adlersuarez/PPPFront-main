@@ -73,7 +73,7 @@ const Consolidado = () => {
                             <div>
                                 <h2 className="text-xl font-bold mb-2 text-white">Información</h2>
                                 <h3 className="text-gray-200">Te mostramos el consolidado de matrícula</h3>
-                                <h3 className="text-gray-200">El ciclo pertence al perido académico 202320 y es la que fue eligida hasta la fecha 9/08/2023.</h3>
+                                <h3 className="text-gray-200">El ciclo pertence al perido académico 202401 y es la que fue eligida hasta la fecha 21/12/2023.</h3>
 
                             </div>
                         </div>
@@ -87,7 +87,7 @@ const Consolidado = () => {
                                     <Barras className="w-3 h-3 mr-2 ml-5" />
                                     Nº {ciclo.nivelAsign}
                                 </h2>
-                                <p className="text-center mb-4">Modalidad: Super Intensivo Online</p>
+                                {/* <p className="text-center mb-4">Modalidad: Super Intensivo Online</p> */}
                                 {/* <p className="text-center">Clases: del 02/01/2023 al 31/12/2023</p> */}
                             </div>
                         ))}
@@ -96,7 +96,7 @@ const Consolidado = () => {
                         {ciclosDisponibles.map((ciclo, index) => (
                             <div className="flex flex-wrap" key={index}>
                                 {/* Tarjeta 1 */}
-                                <div className="w-full sm:w-1/2 p-4">
+                                <div className="w-full  p-4">
                                     <div className="rounded-md border justify-center text-center border-gray-300 p-4 flex items-center">
                                         <div>
                                             <h2 className="text-xl font-bold mb-2">{codigo}</h2>
@@ -106,14 +106,14 @@ const Consolidado = () => {
                                 </div>
 
                                 {/* Tarjeta 2 */}
-                                <div className="w-full sm:w-1/2 p-4">
+                                {/* <div className="w-full sm:w-1/2 p-4">
                                     <div className="rounded-md border justify-center text-center border-gray-300 p-4 flex items-center">
                                         <div>
                                             <h2 className="text-xl TEX font-bold mb-2">YANG YHONATAN QUINTANA ORE</h2>
                                             <h3 className="">Estudiante</h3>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         ))}
 

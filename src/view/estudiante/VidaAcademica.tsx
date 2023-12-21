@@ -25,7 +25,7 @@ const HomeEstudiante = () => {
                                         info={''}
                                     />
                                 </div>
-                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
                                         imagen={<Horario />}
                                         titulo={'Horario'}
@@ -34,7 +34,7 @@ const HomeEstudiante = () => {
                                         to={'/inicio/proceso'}
                                         info={''}
                                     />
-                                </div>
+                                </div> */}
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
                                         imagen={<Boleta />}
@@ -55,7 +55,7 @@ const HomeEstudiante = () => {
                                         info={''}
                                     />
                                 </div>
-                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
                                         imagen={<Identificacion />}
                                         titulo={'Datos personales'}
@@ -64,7 +64,7 @@ const HomeEstudiante = () => {
                                         to={'/inicio/proceso'}
                                         info={''}
                                     />
-                                </div>
+                                </div> */}
                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                     <Card
                                         imagen={<Pregunta />}

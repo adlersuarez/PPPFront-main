@@ -72,7 +72,7 @@ const Consolidado = () => {
                             </div>
                             <div>
                                 <h2 className="text-xl font-bold mb-2 text-white">Ciclos:</h2>
-                                <h3 className="text-gray-200">Te mostramos el consolidado de matrícula</h3>
+                                <h3 className="text-gray-200">Te mostramos el consolidado de las inasistencias por ciclo</h3>
 
                             </div>
                         </div>

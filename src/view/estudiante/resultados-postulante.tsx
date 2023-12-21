@@ -111,7 +111,7 @@ const Consolidado = () => {
                         {ciclosDisponibles.map((ciclo, index) => (
                             <div className="flex flex-wrap" key={index}>
                                 {/* Tarjeta 1 */}
-                                <div className="w-full sm:w-1/2 p-4">
+                                <div className="w-full  p-4">
                                     <div className="rounded-md border justify-center text-center border-gray-300 p-4 flex items-center">
                                         <div>
                                             <h2 className="text-xl font-bold mb-2">{codigo}</h2>
@@ -121,14 +121,14 @@ const Consolidado = () => {
                                 </div>
 
                                 {/* Tarjeta 2 */}
-                                <div className="w-full sm:w-1/2 p-4">
+                                {/* <div className="w-full sm:w-1/2 p-4">
                                     <div className="rounded-md border justify-center text-center border-gray-300 p-4 flex items-center">
                                         <div>
                                             <h2 className="text-xl TEX font-bold mb-2">YANG YHONATAN QUINTANA ORE</h2>
                                             <h3 className="">Estudiante</h3>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         ))}
 

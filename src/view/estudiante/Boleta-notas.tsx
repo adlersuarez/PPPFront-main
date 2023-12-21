@@ -72,7 +72,7 @@ const Consolidado = () => {
                             </div>
                             <div>
                                 <h2 className="text-xl font-bold mb-2 text-white">Periodos:</h2>
-                                <h3 className="text-gray-200">Te mostramos el consolidado de matrícula</h3>
+                                {/* <h3 className="text-gray-200">Te mostramos el consolidado de matrícula</h3> */}
 
                             </div>
                         </div>
@@ -86,7 +86,7 @@ const Consolidado = () => {
                                     <Barras className="w-3 h-3 mr-2 ml-5" />
                                     Nº {ciclo.nivelAsign}
                                 </h2>
-                                <p className="text-center mb-4">Modalidad: Super Intensivo Online</p>
+                                {/* <p className="text-center mb-4">Modalidad: Super Intensivo Online</p> */}
                                 {/* <p className="text-center">Clases: del 02/01/2023 al 31/12/2023</p> */}
                             </div>
                         ))}
