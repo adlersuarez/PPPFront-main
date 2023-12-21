@@ -201,30 +201,30 @@ const MatriculaInterna = () => {
                                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                                     <Card
                                                         imagen={<IconoCalendario />}
-                                                        titulo={'Calendario Académico'}
+                                                        titulo={'Cronograma de matrícula'}
                                                         color={'green'}
-                                                        to={'/inicio/proceso'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
                                                         info={''}
                                                     />
                                                 </div>
                                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                                     <Card
                                                         imagen={<MultipleCheck />}
-                                                        titulo={'Cronograma de trámites '}
+                                                        titulo={'Reglamento Académico'}
                                                         color={'yellow'}
-                                                        to={'/inicio/proceso'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/REGLAMENTO%20IDIOMAS%20UPLA%202024%20.pdf?_t=1703008912'}
                                                         info={''}
                                                     />
                                                 </div>
-                                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                                     <Card
                                                         imagen={<MultipleCheck />}
                                                         titulo={'Cronograma de matrícula'}
                                                         color={'blue'}
-                                                        to={'/inicio/proceso'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
                                                         info={''}
                                                     />
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
