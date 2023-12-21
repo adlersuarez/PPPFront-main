@@ -67,7 +67,7 @@ const menusAdmin: MenuItem[] = [
             {
                 id: "3",
                 titulo: "Nota Admin",
-                url: "/inicio/notas-reporte-subir",
+                url: "/inicio/lista-aulas",
                 icono: "bi-card-checklist",
                 moduPadre: false,
                 modPosicion: 3,
