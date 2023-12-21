@@ -79,10 +79,24 @@ const ListasHorario = (props: Props) => {
         '7': 'Domingo',
     };
 
-    const matriculaHorarioElegido = (matriculaId: number, asiId: string, horarioId: number, opePen: string, tipoEstudioId: number, periodoId: string, seccionId: number) => {
+    const matriculaHorarioElegido = (idiomaId:number, modalidadId:number,sedeId:string, asiId: string, horarioId: number, tipoEstudioId: number, periodoId: string, seccionId: number) => {
 
-        const params = {
-            "matriculaId": matriculaId,
+        const paramsMatricula = {
+            "periodoId": periodoId,
+            "estudianteId": codigo,
+            "idiomaId": idiomaId,
+            "modalidadId":modalidadId,
+            "sedeId":sedeId,
+            "matriculaRegistro": new Date().toISOString(),
+            "usuarioRegistro": codigo,
+            "matriculaEstado": 1,
+            "estadoOperacion": 1,
+            "opeMat": localStorage.getItem("codMat"),
+            "matRangoId": 1,
+        }
+
+        const paramsPension = {
+            "matriculaId": 4,
             "asiId": asiId,
             "horarioId": horarioId,
             "convalidacion": 0,
@@ -92,7 +106,7 @@ const ListasHorario = (props: Props) => {
             "fechRegistro": new Date().toISOString(),
             "observacion": '',
             "estadoOperacion": 1,
-            "opePen": opePen,
+            "opePen": localStorage.getItem("codPen"),
             "condicion": 'N',
             "tipoEstudioId": tipoEstudioId,
             "periodoId": periodoId,
@@ -102,7 +116,8 @@ const ListasHorario = (props: Props) => {
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
 
-                console.log(params)
+                console.log(paramsMatricula)
+                console.log(paramsPension)
                 /*
 
                 sweet.openInformation("Mensaje", "Procesando información...")
@@ -223,7 +238,7 @@ const ListasHorario = (props: Props) => {
                                                 <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
                                                 <td className="border p-2">
                                                     <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
-                                                        onClick={() => matriculaHorarioElegido(4, horario.asiId, horario.horarioId, '0004', horario.tipEstudioId, '202401', horario.seccionId)}>
+                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId,horario.modalidadId,horario.sedeId,horario.asiId, horario.horarioId, horario.tipEstudioId, horario.periodoId, horario.seccionId)}>
                                                         Matricular
                                                     </button>
                                                 </td>

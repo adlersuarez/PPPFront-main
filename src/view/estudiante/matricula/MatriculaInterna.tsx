@@ -84,6 +84,7 @@ const MatriculaInterna = () => {
 
             setPagoMatriculaLista(matriculas)
             setLoadMatricula(false)
+            localStorage.setItem('codMat', matriculas[0].operacion);
 
 
         }
@@ -104,6 +105,7 @@ const MatriculaInterna = () => {
             const pensiones = response.data.resultado as PensionPago[]
             setPagoPensionLista(pensiones)
             setLoadPension(false)
+            localStorage.setItem('codPen', pensiones[0].operacion);
 
         }
         if (response instanceof RestError) {
