@@ -149,10 +149,17 @@ export async function InsertarActualizarMatricula<RespValue>(mode: string, TipEs
     return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarActualizarMatricula/${mode}/${TipEstId}`, params, { signal: abortController?.signal  }));
 }
 
-export async function InsertarActualizarMatriculaDetalle<RespValue>(mode: string, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarActualizarMatriculaDetalle/${mode}`, params, { signal: abortController?.signal  }));
+export async function InsertarActualizarMatriculaDetalle<RespValue>(mode: string, estudianteId: string,  params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarActualizarMatriculaDetalle/${mode}/${estudianteId}`, params, { signal: abortController?.signal  }));
 }
 
+export async function InsertarMatricula<RespValue>(TipEstId: number, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatricula/${TipEstId}`, params, { signal: abortController?.signal  }));
+}
+
+export async function InsertarMatriculaDetalle<RespValue>(estudianteId: string, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatriculaDetalle/${estudianteId}`, params, { signal: abortController?.signal  }));
+}
 
 // export async function PagoMatriculaUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
 //     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoMatriculaUsados/${EstudianteId}`, { signal: abortController?.signal }));
