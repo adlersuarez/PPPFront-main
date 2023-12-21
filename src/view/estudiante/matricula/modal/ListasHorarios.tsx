@@ -5,11 +5,12 @@ import { Types } from "@/model/enum/types.model.enum";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import HorarioDisponible from "@/model/interfaces/horario/horarioDisponible";
 import CiclosInfo from "@/model/interfaces/matricula/ciclosInfo";
-import { ListarHorarioDisponibleEst } from "@/network/rest/idiomas.network";
+import { InsertarMatricula, InsertarMatriculaDetalle, ListarHorarioDisponibleEst } from "@/network/rest/idiomas.network";
 import { RootState } from "@/store/configureStore.store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
+import RespValue from "@/model/interfaces/RespValue.model.interface";
 
 type Props = {
 
@@ -79,36 +80,38 @@ const ListasHorario = (props: Props) => {
         '7': 'Domingo',
     };
 
-    const matriculaHorarioElegido = (idiomaId:number, modalidadId:number,sedeId:string, asiId: string, horarioId: number, tipoEstudioId: number, periodoId: string, seccionId: number) => {
+    const matriculaHorarioElegido = (idiomaId: number, sedeId: string, asiId: string, horarioId: number, tipoEstudioId: number, periodoId: string, seccionId: number) => {
 
         const paramsMatricula = {
+            "matriculaId": 0,
             "periodoId": periodoId,
             "estudianteId": codigo,
             "idiomaId": idiomaId,
-            "modalidadId":modalidadId,
-            "sedeId":sedeId,
+            "sedeId": sedeId,
             "matriculaRegistro": new Date().toISOString(),
             "usuarioRegistro": codigo,
+            "matriculaUpdate": new Date().toISOString(),//new Date().toISOString(),
+            "usuarioUpdate": "",// codigo,
             "matriculaEstado": 1,
-            "estadoOperacion": 1,
+            "estadoOperacion": true,
             "opeMat": localStorage.getItem("codMat"),
-            "matRangoId": 1,
         }
 
         const paramsPension = {
-            "matriculaId": 4,
+            "detMatriculaId": 0,
+            "matriculaId": 0,
             "asiId": asiId,
             "horarioId": horarioId,
-            "convalidacion": 0,
+            "convalidacion": "",
             "promedio": 0,
             "asistencia": 0,
-            "estado": 1,
+            "estado": 0,
             "fechRegistro": new Date().toISOString(),
             "observacion": '',
-            "estadoOperacion": 1,
+            "estadoOperacion": true,
             "opePen": localStorage.getItem("codPen"),
             "condicion": 'N',
-            "tipoEstudioId": tipoEstudioId,
+            "tipEstudioId": tipoEstudioId,
             "periodoId": periodoId,
             "seccionId": seccionId,
         }
@@ -116,43 +119,78 @@ const ListasHorario = (props: Props) => {
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
 
-                console.log(paramsMatricula)
-                console.log(paramsPension)
-                /*
+
 
                 sweet.openInformation("Mensaje", "Procesando información...")
 
-                const response = await InsertarActualizarHorario<RespValue>("CREAR", params, props.abortControl);
+                if (localStorage.getItem("codMat") !== 'utilizado') {
+                    const response = await InsertarMatricula<RespValue>(tipoEstudioId, paramsMatricula);
 
-                if (response instanceof Response) {
+                    if (response instanceof Response) {
 
-                    if (response.data.value == "procesado") {
-                        sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModal() });
+                        if (response.data.value == "insert") {
+                            /*sweet.openSuccess("Mensaje", response.data.value as string, () => {
+                                props.hide()
+                            });*/
+                            localStorage.removeItem("codMat")
+
+                        }
                     }
 
+                    if (response instanceof RestError) {
+
+
+                        if (response.getType() === Types.CANCELED) return;
+
+                        if (response.getStatus() == 401) {
+                            // dispatch(logout());
+                            return;
+                        }
+
+                        if (response.getStatus() == 403) {
+                            return;
+                        }
+
+                        sweet.openWarning("Mensaje", response.getMessage(), () => {
+                            props.hide()
+                        });
+                    }
                 }
 
+                const responseMatDet = await InsertarMatriculaDetalle<RespValue>(codigo, paramsPension);
 
-                if (response instanceof RestError) {
+                if (responseMatDet instanceof Response) {
 
-                    if (response.getType() === Types.CANCELED) return;
+                    if (responseMatDet.data.value == "insert") {
+                        sweet.openSuccess("Mensaje", responseMatDet.data.value as string, () => {
+                            props.hide()
+                        });
+                        localStorage.removeItem("codPen")
+                    }
+                }
 
-                    if (response.getStatus() == 401) {
+                if (responseMatDet instanceof RestError) {
+
+
+                    if (responseMatDet.getType() === Types.CANCELED) return;
+
+                    if (responseMatDet.getStatus() == 401) {
                         // dispatch(logout());
                         return;
                     }
 
-                    if (response.getStatus() == 403) {
+                    if (responseMatDet.getStatus() == 403) {
                         return;
                     }
 
-                    sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModal() });
+                    sweet.openWarning("Mensaje", responseMatDet.getMessage(), () => {
+                        props.hide()
+                    });
                 }
-            */}
+
+            }
         })
-
     }
-
 
     return (
         <CustomModal
@@ -238,7 +276,8 @@ const ListasHorario = (props: Props) => {
                                                 <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
                                                 <td className="border p-2">
                                                     <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
-                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId,horario.modalidadId,horario.sedeId,horario.asiId, horario.horarioId, horario.tipEstudioId, horario.periodoId, horario.seccionId)}>
+                                                        disabled={horario.cantidad >= horario.capacidad}
+                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.asiId, horario.horarioId, horario.tipEstudioId, horario.periodoId, horario.seccionId)}>
                                                         Matricular
                                                     </button>
                                                 </td>
