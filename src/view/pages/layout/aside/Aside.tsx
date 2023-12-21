@@ -32,7 +32,7 @@ type MenuItem = {
 const menusAdmin: MenuItem[] = [
     {
         id: "1",
-        titulo: "Incicio",
+        titulo: "Inicio",
         url: "/inicio/centro-idiomas",
         icono: "bi-house-fill",
         moduPadre: true,
@@ -82,7 +82,7 @@ const menusAdmin: MenuItem[] = [
 const menusEst: MenuItem[] = [
     {
         id: "1",
-        titulo: "Incicio",
+        titulo: "Inicio",
         url: "/inicio/centro-idiomas",
         icono: "bi-house-fill",
         moduPadre: true,

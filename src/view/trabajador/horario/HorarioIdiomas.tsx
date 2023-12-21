@@ -659,7 +659,7 @@ const HorarioIdiomas = () => {
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '10%' }}>Idioma</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidas</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Programa</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>

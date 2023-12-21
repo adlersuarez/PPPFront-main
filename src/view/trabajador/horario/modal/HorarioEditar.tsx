@@ -390,7 +390,7 @@ const HorarioEditar = (props: Props) => {
                                         <div className="text-sm">
                                             <p>Idioma: <span className="text-blue-700 font-bold">{props.nombreIdioma}</span></p>
                                             <p>Modalidad: <span className="text-blue-700 font-bold ">{props.nombreModalidad}</span></p>
-                                            <p>Tipo Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
+                                            <p>Tipo de Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                         </div>
                                         <div className="text-sm">
                                             <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
@@ -606,7 +606,7 @@ const HorarioEditar = (props: Props) => {
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Sección <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
