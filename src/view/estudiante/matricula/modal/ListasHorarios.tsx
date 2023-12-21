@@ -267,7 +267,7 @@ const ListasHorario = (props: Props) => {
                             <tr>
                                 <th className="py-2 px-6">NIVEL</th>
                                 <th className="py-2 px-6">Tipo</th>
-                                <th className="py-2 px-6">Modalidad</th>
+                                
                                 <th className="py-2 px-6">Horarios</th>
                                 <th className="py-2 px-6">Aula</th>
                                 <th className="py-2 px-6">Sección</th>
@@ -289,7 +289,7 @@ const ListasHorario = (props: Props) => {
                                             <tr key={horario.horarioId} className="text-center text-sm">
                                                 <td className="border p-2">{horario.asignatura}</td>
                                                 <td className="border p-2">{horario.tipoEstudio}</td>
-                                                <td className="border p-2">{horario.modalidad}</td>
+                                                
                                                 <td className={`border p-2 gap-2 ${expandirTD === horario.horarioId ? 'flex-col flex' : ''}`}>
                                                     <button className="bg-gray-200 px-2 p-1 rounded-lg" onClick={() => handleExpandirTD(horario.horarioId)}>
                                                         <i className={`bi ${expandirTD === horario.horarioId ? 'bi-dash' : 'bi-plus'}`} />
