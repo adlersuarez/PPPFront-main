@@ -1,8 +1,8 @@
-import { ArrowRightOnCicleSvg } from "@/component/Svg.component";
-import { NavLink } from "react-router-dom";
+// import { ArrowRightOnCicleSvg } from "@/component/Svg.component";
+// import { NavLink } from "react-router-dom";
 import Card from "../../component/pages/cards/CardDash"
-import { images } from "../../helper/index.helper";
-import { Pregunta, Identificacion, MultipleCheck, Boleta, Horario, Libro } from '../../component/Iconos';
+// import { images } from "../../helper/index.helper";
+import { Pregunta, Boleta, Horario, Libro } from '../../component/Iconos';
 
 
 const HomeEstudiante = () => {

@@ -10,6 +10,7 @@ import RespValue from '@/model/interfaces/RespValue.model.interface';
 import RestError from '@/model/class/resterror.model.class';
 import { Types } from '@/model/enum/types.model.enum';
 
+
 type Props = {
     pasoActual: number
 
@@ -19,50 +20,51 @@ type Props = {
 
     dataMatricula: MatriculaPago[]
     dataPension: PensionPago[]
+
     handleMatriculaProceso: () => void;
 }
 
 const Accordion = (props: Props) => {
 
+
     const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
 
     const [isOpen, setIsOpen] = useState(false);
 
-    // const operMatri = props.dataMatricula[0]?.operacion
-    // const operPens = props.dataPension[0]?.operacion
+    const [matriculaExistente, setMatriculaExistente] = useState(false)
 
-    const [ matriculaExistente, setMatriculaExistente ] = useState(false)
+    const [matriculaEstado, setMatriculaEstado] = useState("")
 
 
     const abortController = useRef(new AbortController());
 
-    const toggleAccordion = () => {
+    const toggleAccordion = async () => {
 
-        tieneMatricula()
-        
-        if(matriculaExistente) return
+        await Promise.all([
+            await  matriculaExistentePeriodo(),
+        ])
+
+        // matriculaExistentePeriodo(),
 
         setIsOpen(!isOpen);
-    };
 
-    const tieneMatricula = async () =>{
+    };    
 
+    const matriculaExistentePeriodo = async() => {
 
         const response = await MatriculaExistentePeriodo<RespValue>(codigo, abortController.current)
         if (response instanceof Response) {
 
-
             const result = response.data.value
 
-            if(result == "MATRICULADO"){
+            setMatriculaEstado(result)
+        
+            if (result === "NOMATRICULADO") {
                 setMatriculaExistente(true)
-
-            }else if(result == "NOMATRICULADO"){
-                setMatriculaExistente(false)
             }
-            
 
         }
+
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
@@ -221,19 +223,31 @@ const Accordion = (props: Props) => {
 
                             <hr />
 
+                            {
+                                // load? (
+                                //     <Cargando/>
 
-                            {isOpen && (
-                                <>
-                                    <div className="p-3">
-                                        <AccordionItem
-                                            icono={BiCalendar}
-                                            titulo={`Matricúlate - elige tu horario`}
-                                            handleMatriculaModalidad={props.handleMatriculaProceso}
-                                        />
+                                // ):(
+                                    isOpen && (
+                                        <>
+                                            <div className="p-3">
+                                                <AccordionItem
+                                                    icono={BiCalendar}
+                                                    titulo={`Matricúlate - elige tu horario`}
+                                                    estadoBtn={matriculaExistente}
+                                                    matriculaDescripcion={matriculaEstado}
+                                                    handleMatriculaModalidad={ props.handleMatriculaProceso}
+                                                />
+        
+                                            </div>
+                                        </>
+                                    )
 
-                                    </div>
-                                </>
-                            )}
+                                // )
+                            }
+
+
+                            
                         </div>
                     </div>
                 )}

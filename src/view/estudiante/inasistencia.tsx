@@ -8,11 +8,11 @@ import Response from "../../model/class/response.model.class";
 import CiclosInfo from '../../model/interfaces/matricula/ciclosInfo';
 import { useSelector } from "react-redux";
 import { RootState } from '../../store/configureStore.store';
-import { Barras, Bandera, Matricula, Boleta } from '../../component/Iconos';
-import ModalVistaHorario from '../../view/trabajador/horario/modal/VistaHorario.modal'
-import { BiCalendar } from "react-icons/bi";
-import Estudiante from "../../model/interfaces/login/estudiante.login";
-import Trabajador from "../../model/interfaces/login/trabajador.login";
+import { Bandera, Boleta } from '../../component/Iconos';
+// import ModalVistaHorario from '../../view/trabajador/horario/modal/VistaHorario.modal'
+// import { BiCalendar } from "react-icons/bi";
+// import Estudiante from "../../model/interfaces/login/estudiante.login";
+// import Trabajador from "../../model/interfaces/login/trabajador.login";
 
 
 
@@ -20,10 +20,10 @@ import Trabajador from "../../model/interfaces/login/trabajador.login";
 const Consolidado = () => {
     const [ciclosDisponibles, setCiclosDisponibles] = useState<CiclosInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
-    const [show, setShow] = useState<boolean>(false);
+    // const [show, setShow] = useState<boolean>(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
 
     const abortController = useRef(new AbortController());
 
