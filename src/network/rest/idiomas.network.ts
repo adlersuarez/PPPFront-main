@@ -152,8 +152,8 @@ export async function InsertarMatriculaDetalle<RespValue>(estudianteId: string, 
     return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatriculaDetalle/${estudianteId}`, params, { signal: abortController?.signal  }));
 }
 
-export async function MatriculaExistentePeriodo<RespValue>(estudianteId: string, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/MatriculaExistentePeriodo/${estudianteId}`, { signal: abortController?.signal  }));
+export async function MatriculaExistentePeriodo<RespValue>(estudianteId: string, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.get<RespValue>(`/Matricula/MatriculaExistentePeriodo/${estudianteId}`, { signal: signal! }));
 }
 
 // export async function InsertarActualizarMatricula<RespValue>(mode: string, TipEstId: number, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {

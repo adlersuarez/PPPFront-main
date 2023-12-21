@@ -6,7 +6,7 @@ import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { MatriculaExistentePeriodo, PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
+import { PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";

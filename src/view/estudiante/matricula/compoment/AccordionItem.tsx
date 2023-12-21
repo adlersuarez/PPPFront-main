@@ -5,20 +5,12 @@ type Props = {
     icono: IconType
     titulo: string
     estadoBtn: boolean
-
-    matriculaDescripcion: string
     handleMatriculaModalidad: () => void;
 }
 
 const IcoAprobado = () => {
     return (
         <i className="bi bi-check-square-fill text-xl text-green-500"></i>
-    )
-}
-
-const IcoInfoError = () => {
-    return (
-        <i className="bi bi-info-circle-fill text-xl text-red-500"></i>
     )
 }
 
@@ -30,7 +22,7 @@ const AccordionItem = (props: Props) => {
             <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between mb-2">
 
                 {
-                    props.matriculaDescripcion == "NOMATRICULADO" ?
+                    props.estadoBtn ?
                         (
                             <>
                                 <div>
@@ -50,20 +42,12 @@ const AccordionItem = (props: Props) => {
                         )
                         :
 
-                        props.matriculaDescripcion == "MATRICULADO" ? 
                         (
                             <div>
                                 <h3 className="text-lg font-semibold "><IcoAprobado /> Usted ya cuanta con una matricula para el periodo actual</h3>
                             </div>
 
-                        ) : (
-                            <div>
-                                <h3 className="text-lg font-semibold "><IcoInfoError /> Algo salio mal vuelva a recargar la pagina</h3>
-                            </div>
-                            
                         )
-
-
 
                 }
             </div>
