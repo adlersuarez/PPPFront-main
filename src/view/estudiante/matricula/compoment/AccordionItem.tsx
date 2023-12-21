@@ -20,7 +20,7 @@ const AccordionItem = (props: Props) => {
 
     return (
         <>
-            <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between  hover:scale-105 transition-transform duration-300 mb-2">
+            <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between mb-2">
 
                 <div>
 
@@ -30,7 +30,7 @@ const AccordionItem = (props: Props) => {
                 <div className="text-green-600">
 
                     <button 
-                    className="block mt-0 text-sm text-white bg-blue-600 border border-blue-600 rounded-4xl py-2 px-4 text-center hover:bg-blue-700"
+                    className="block mt-0 text-sm text-white bg-blue-500 border border-blue-500 rounded-4xl py-2 px-4 text-center hover:bg-blue-700"
                     onClick={()=>props.handleMatriculaModalidad()}>
                         Matricularme
                     </button>

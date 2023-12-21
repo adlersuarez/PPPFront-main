@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import AccordionItem from './AccordionItem';
 import { BiCalendar } from 'react-icons/bi';
 
 import Cargando from '@/component/Cargando';
 import MatriculaPago from '@/model/interfaces/pago/matriculaPago';
 import PensionPago from '@/model/interfaces/pago/pensionPago';
+import { MatriculaExistentePeriodo } from '@/network/rest/idiomas.network';
+import RespValue from '@/model/interfaces/RespValue.model.interface';
+import RestError from '@/model/class/resterror.model.class';
+import { Types } from '@/model/enum/types.model.enum';
 
 type Props = {
     pasoActual: number
@@ -20,14 +24,51 @@ type Props = {
 
 const Accordion = (props: Props) => {
 
+    const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
+
     const [isOpen, setIsOpen] = useState(false);
 
     // const operMatri = props.dataMatricula[0]?.operacion
     // const operPens = props.dataPension[0]?.operacion
 
+    const [ matriculaExistente, setMatriculaExistente ] = useState(false)
+
+
+    const abortController = useRef(new AbortController());
+
     const toggleAccordion = () => {
+
+        tieneMatricula()
+        
+        if(matriculaExistente) return
+
         setIsOpen(!isOpen);
     };
+
+    const tieneMatricula = async () =>{
+
+
+        const response = await MatriculaExistentePeriodo<RespValue>(codigo, abortController.current)
+        if (response instanceof Response) {
+
+
+            const result = response.data.value
+
+            if(result == "MATRICULADO"){
+                setMatriculaExistente(true)
+
+            }else if(result == "NOMATRICULADO"){
+                setMatriculaExistente(false)
+            }
+            
+
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
 
 
 

@@ -25,7 +25,7 @@ const InputPassword = (props: Props) => {
             <div className="relative w-full">
                 <input
                     type={props.see ? "text" : "password"}
-                    placeholder="Digite su contraseña"
+                    placeholder="Digité su contraseña"
                     className="font-mont bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     ref={props.refClave}
                     value={props.clave}

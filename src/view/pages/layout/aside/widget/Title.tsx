@@ -15,7 +15,9 @@ const Title = () => {
                     </span>
                 </div>
             </div>
-            <small className="font-bold my-2 text-white">IDIOMAS</small>
+
+            <small className="font-bold my-2 text-white">IDIOMAS UPLA</small>
+
         </Link>
     );
 }

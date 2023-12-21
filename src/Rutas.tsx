@@ -19,6 +19,13 @@ import SubirNotas from './view/docente/SubirNotas';
 import VistaHorarioEstudiante from './view/estudiante/horarios/VistaHorariosEstudiante';
 import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
 import ComponenteNotas from './view/estudiante/notas/ComponenteNotas';
+import VidaAcademica from './view/estudiante/VidaAcademica';
+import Consolidado from './view/estudiante/Consolidado';
+import Boleta from './view/estudiante/Boleta-notas';
+import Inasistencia from './view/estudiante/inasistencia';
+import ResultadoPostulante from './view/estudiante/resultados-postulante';
+
+
 
 const router = createBrowserRouter([
   {
@@ -46,9 +53,30 @@ const router = createBrowserRouter([
         element: <MatriculaInterna/>
       },
       {
+        path:'vida-academica',
+        element: <VidaAcademica/>
+      },
+      {
         path:'matricula-externa',
         element: <MatriculaExterna/>
       },
+      {
+        path:'consolidado',
+        element: <Consolidado/>
+      },
+      {
+        path:'boleta-notas',
+        element: <Boleta/>
+      },
+      {
+        path:'inasistencia',
+        element: <Inasistencia/>
+      },
+      {
+        path:'resultados-postulante',
+        element: <ResultadoPostulante/>
+      },
+
       {
         path:'horario',
         element: <MatriculaHorario/>
