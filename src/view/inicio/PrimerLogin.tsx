@@ -35,9 +35,9 @@ const PrimerLogin = (props: Props) => {
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
 
-    const [idioma, setIdioma] = useState("0")
-    const [programa, setPrograma] = useState("0")
-    const [modalidad, setModalidad] = useState("0")
+    const [idioma, setIdioma] = useState("1")
+    const [programa, setPrograma] = useState("1") // por defecto 0
+    const [modalidad, setModalidad] = useState("1") // por defecto 0
     const [terminos, setTerminos] = useState(false)
 
     const refIdioma = useRef<HTMLSelectElement>(null)
@@ -189,7 +189,7 @@ const PrimerLogin = (props: Props) => {
 
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2 mt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mb-2 mt-4">
                                     <div>
                                         <label
                                             className="font-mont block mb-1 text-sm font-medium text-gray-900 "
@@ -200,6 +200,7 @@ const PrimerLogin = (props: Props) => {
                                             className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                             ref={refIdioma}
                                             value={idioma}
+                                            disabled
                                             onChange={(event) => setIdioma(event.currentTarget.value)}
                                         >
                                             <option value={"0"}>- Seleccione -</option>
@@ -215,7 +216,7 @@ const PrimerLogin = (props: Props) => {
 
                                         </select>
                                     </div>
-                                    <div>
+                                    <div className="hidden">
                                         <label
                                             className="font-mont block mb-1 text-sm font-medium text-gray-900 "
                                         >
@@ -225,7 +226,7 @@ const PrimerLogin = (props: Props) => {
                                             className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                             ref={refPrograma}
                                             value={programa}
-                                            onChange={(event) => setPrograma(event.currentTarget.value)}
+                                            onChange={() => setPrograma("1")}
                                         >
                                             <option value="0">- Seleccione -</option>
                                             {
@@ -240,7 +241,7 @@ const PrimerLogin = (props: Props) => {
 
                                         </select>
                                     </div>
-                                    <div>
+                                    <div className="hidden">
                                         <label
                                             className="font-mont block mb-1 text-sm font-medium text-gray-900 "
                                         >
@@ -250,7 +251,7 @@ const PrimerLogin = (props: Props) => {
                                             className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                             ref={refModalidad}
                                             value={modalidad}
-                                            onChange={(event) => setModalidad(event.currentTarget.value)}
+                                            onChange={() => setModalidad("1")}
                                         >
                                             <option value="0">- Seleccione -</option>
                                             {
