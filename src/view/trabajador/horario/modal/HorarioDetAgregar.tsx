@@ -11,18 +11,20 @@ import { Types } from "../../../../model/enum/types.model.enum";
 import { keyNumberInteger, diaSelect, colorSelect, GenerateRangeTurno, FinalizarHorarioCheckBox } from '../../../../helper/herramienta.helper'
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarHorarioDetalle, } from "../../../../network/rest/idiomas.network";
+import { ListarAsignatura, ListarDocenteIdiomasBusqueda, InsertarHorarioDetalle, InsertarHorarioAsignatura, } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Asignatura from "../../../../model/interfaces/asignatura/asignatura";
 import DocenteInfo from "../../../../model/interfaces/docente/docenteInfo";
+import toast from "react-hot-toast";
 
 type Props = {
     isOpenModal: boolean
     idHorario: number
     idIdioma: number
     idTipoEstudio: number
+    aula: string | undefined
 
     turnoInicio: string | undefined
     turnoFin: string | undefined
@@ -148,56 +150,85 @@ const HorarioDetAgregar = (props: Props) => {
             refCapacidad.current?.focus()
             return
         }
-        if (docenteId == "") {
+        /*if (docenteId == "") {
             refInputBusqueda.current?.focus()
             return
-        }
+        }*/
 
         props.sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+
+            let horarioAsignId: number
+
+            
 
             if (value) {
                 props.sweet.openInformation("Mensaje", "Procesando información...")
 
-                let params: any = []
+                const paramsHorarioAsign = {
+                    "horarioAsigId": 0,
+                    "horarioId": props.idHorario,
+                    "asignaturaId": asiId,
+                    "docenteId": docenteId,
+                    "capacidad": capacidad,
+                    "color": color
+                }
 
-                selectedDays.map(async (day) => {
-                    const datos = {
-                        "detHorarioId": 0,
-                        "horarioId": props.idHorario,
-                        "asiId": asiId,
-                        "nivel": nivel,
-                        "capacidad": capacidad,
-                        "dia": day,
-                        "horaIni": horaInicio,
-                        "horaFin": horaFin,
-                        "horaAcademica": 1,
-                        "color": color,
-                        "observacion": observacion,
-                        "docenteId": docenteId,
-                        "estado": estado ? 1 : 0,
-                        "usuarioRegistra": codigo,
-                        "fechaRegistra": new Date().toISOString(),
-                        "usuarioModifica": "",
-                        "fechaModifica": new Date().toISOString(),
-                    }
+                const responseHorAsig = await InsertarHorarioAsignatura<RespValue>(paramsHorarioAsign, props.abortControl);
 
-                    params.push(datos)
-                })
+                if (responseHorAsig instanceof Response) {
 
-                const response = await InsertarHorarioDetalle<RespValue>(params, props.abortControl);
+                    if (responseHorAsig.data.value) {
+                        //props.sweet.openSuccess("Mensaje", responseHorAsig.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
+                        horarioAsignId = parseInt(responseHorAsig.data.value)
 
-                if (response instanceof Response) {
+                        // detalle
+                        let paramsDetalle: any = []
 
-                    if (response.data.value == "procesado") {
-                        props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
+                        selectedDays.map(async (day) => {
+                            const datos = {
+                                "detHorarioId": 0,
+                                "horarioAsigId": horarioAsignId,
+                                "dia": day,
+                                "horaIni": horaInicio,
+                                "horaFin": horaFin,
+                                "horaAcademica": 1,
+                                "observacion": observacion,
+                                "estado": estado ? 1 : 0,
+                                "usuarioRegistra": codigo,
+                                "fechaRegistra": new Date().toISOString(),
+                                "usuarioModifica": "",
+                                "fechaModifica": new Date().toISOString(),
+                            }
+
+                            paramsDetalle.push(datos)
+                        })
+
+                        //cambiar o¿por el id
+                        const response = await InsertarHorarioDetalle<RespValue>(paramsDetalle, props.abortControl);
+
+                        if (response instanceof Response) {
+
+                            if (response.data.value == "procesado") {
+                                props.sweet.openSuccess("Mensaje", response.data.value as string, () => { props.handleCloseModalHorarioAgregra() });
+                            }
+                        }
+
+                        if (response instanceof RestError) {
+
+                            if (response.getType() === Types.CANCELED) return;
+
+                            props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
+                        }
+
+
                     }
                 }
 
-                if (response instanceof RestError) {
+                if (responseHorAsig instanceof RestError) {
 
-                    if (response.getType() === Types.CANCELED) return;
+                    if (responseHorAsig.getType() === Types.CANCELED) return;
 
-                    props.sweet.openWarning("Mensaje", response.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
+                    props.sweet.openWarning("Mensaje", responseHorAsig.getMessage(), () => { props.handleCloseModalHorarioAgregra() });
                 }
 
                 props.loadInit()
@@ -242,11 +273,39 @@ const HorarioDetAgregar = (props: Props) => {
     const [selectedDays, setSelectedDays] = useState<number[]>([]);
 
     const handleDayCheckboxChange = (id: number) => {
-        const updatedDays = selectedDays.includes(id)
-            ? selectedDays.filter((selectedDay) => selectedDay !== id)
+        const isWeekend = id === 6 || id === 7;
+        const selectedWeekdays = selectedDays.filter(day => day < 6);
+
+        if (isWeekend && selectedWeekdays.length > 0) {
+            //alert('No puedes seleccionar fin de semana junto con días de la semana');
+            toast.error("No puedes seleccionar fin de semana junto con días de la semana")
+            return;
+        }
+
+        if (!isWeekend && selectedDays.some(day => day === 6 || day === 7)) {
+            //alert('No puedes seleccionar días de la semana junto con fin de semana');
+            toast.error("No puedes seleccionar días de la semana junto con fin de semana")
+            return;
+        }
+
+        const isDaySelected = selectedDays.includes(id);
+        const updatedDays = isDaySelected
+            ? selectedDays.filter(selectedDay => selectedDay !== id)
             : [...selectedDays, id].sort((a, b) => a - b);
 
         setSelectedDays(updatedDays);
+    };
+
+    const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+
+        if (value === 'weekday') {
+            setSelectedDays([1, 2, 3, 4, 5]);
+        } else if (value === 'weekend') {
+            setSelectedDays([6, 7]);
+        } else {
+            setSelectedDays([]); // Limpiar los días seleccionados si se elige la opción sin valor
+        }
     };
 
     const renderDayCheckboxes = () => {
@@ -294,62 +353,15 @@ const HorarioDetAgregar = (props: Props) => {
                 <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
                     <div className="flex justify-between">
-                        <h6 className="py-1 font-bold text-lg">Nueva Asignatura</h6>
+                        <h6 className="py-1 pl-4 font-bold text-lg uppercase">Nueva Asignatura {props.aula && `- ${props.aula}`}</h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                             onClick={props.handleCloseModalHorarioAgregra}>
                             <i className="bi bi-x-circle text-lg"></i>
                         </button>
                     </div>
-                    <div className="w-full px-4 pb-2 pt-4">
-
+                    <div className="w-full p-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-                            <div className="col-span-3">
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Dias de clases <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <div className="grid grid-cols-4">
-                                    {renderDayCheckboxes()}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refHoraInicio}
-                                    value={horaInicio}
-                                    onChange={(event) => {
-                                        setHoraInicio(event.currentTarget.value);
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        comboBoxRangeTurno.map((item: any, index: any) => {
-                                            return (
-                                                <option key={index} value={item.hora}>
-                                                    {item.hora}
-                                                </option>
-                                            );
-                                        })
-                                    }
-                                </select>
-                            </div>
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Horario Fin <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                </label>
-                                <input
-                                    type="time"
-                                    value={horaFin}
-                                    disabled
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
-                                />
-                            </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Asignatura <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -363,7 +375,7 @@ const HorarioDetAgregar = (props: Props) => {
 
                                         const filterNivel = comboBoxAsignatura.filter((item) => event.currentTarget.value == item.asiId)
 
-                                        setNivel(filterNivel[0].asiNivel)
+                                        setNivel(filterNivel[0]?.asiNivel)
 
                                     }}
                                 >
@@ -374,7 +386,7 @@ const HorarioDetAgregar = (props: Props) => {
                                             if (item.idiomaId === props.idIdioma) {
                                                 return (
                                                     <option key={index} value={item.asiId}>
-                                                        {item.asignatura} - {item.asiNivel}
+                                                        {item.asignatura}
                                                     </option>
                                                 );
                                             }
@@ -384,35 +396,17 @@ const HorarioDetAgregar = (props: Props) => {
                                     }
                                 </select>
                             </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Color <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Nivel
                                 </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refColor}
-                                    value={color}
-                                    onChange={(event) => {
-                                        setColor(event.currentTarget.value);
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        colorSelect.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.codColor} style={{ backgroundColor: item.codColor }}>
-                                                    {item.nombreColor}
-                                                </option>
-                                            );
-                                        })
-                                    }
-                                </select>
-                            </div>
+                                <input
+                                    type="text"
+                                    disabled
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                    value={nivel} />
 
+                            </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Capacidad <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -433,20 +427,8 @@ const HorarioDetAgregar = (props: Props) => {
                                     onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberInteger(event)}
                                 />
                             </div>
-                            <div>
-                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Nivel
-                                </label>
-                                <input
-                                    type="text"
-                                    disabled
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
-                                    value={nivel} />
-
-                            </div>
 
                         </div>
-
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
@@ -463,7 +445,7 @@ const HorarioDetAgregar = (props: Props) => {
 
                             <div className="col-span-2">
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Instructor <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Instructor
                                 </label>
                                 <div className="relative flex flex-wrap">
                                     <input
@@ -514,9 +496,31 @@ const HorarioDetAgregar = (props: Props) => {
 
                             </div>
                         </div>
-
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
-
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Color <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refColor}
+                                    value={color}
+                                    onChange={(event) => {
+                                        setColor(event.currentTarget.value);
+                                    }}
+                                >
+                                    <option value={"0"}>- Seleccione -</option>
+                                    {
+                                        colorSelect.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.codColor} style={{ backgroundColor: item.codColor }}>
+                                                    {item.nombreColor}
+                                                </option>
+                                            );
+                                        })
+                                    }
+                                </select>
+                            </div>
 
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
@@ -534,7 +538,71 @@ const HorarioDetAgregar = (props: Props) => {
                             </div>
 
                         </div>
+                        <hr className="mt-6 mb-4" />
 
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
+                            <div className="col-span-1 flex flex-col">
+
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900 my-auto">
+                                    Dias de clases <i className="bi bi-asterisk text-xs text-red-500" />
+                                </label>
+                                <select
+                                    id="selectDays"
+                                    className="block my-auto bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 p-1"
+                                    onChange={handleSelectChange}>
+                                    <option value="">- Seleccione -</option>
+                                    <option value="weekday">Lunes a Viernes</option>
+                                    <option value="weekend">Sábados y Domingos</option>
+                                </select>
+
+                            </div>
+                            <div className="col-span-2 flex flex-col">
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Días manual
+                                </label>
+                                <div className="grid grid-cols-4 px-2 text-sm">
+                                    {renderDayCheckboxes()}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Horario Inicio <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refHoraInicio}
+                                    value={horaInicio}
+                                    onChange={(event) => {
+                                        setHoraInicio(event.currentTarget.value);
+                                    }}
+                                >
+                                    <option value={"0"}>- Seleccione -</option>
+                                    {
+                                        comboBoxRangeTurno.map((item: any, index: any) => {
+                                            return (
+                                                <option key={index} value={item.hora}>
+                                                    {item.hora}
+                                                </option>
+                                            );
+                                        })
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Horario Fin <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <input
+                                    type="time"
+                                    value={horaFin}
+                                    disabled
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <div className="relative flex flex-wrap justify-center">
