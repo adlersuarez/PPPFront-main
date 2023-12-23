@@ -34,7 +34,8 @@ type Props = {
     idModalidad: number,
     idPeriodo: string,
     idAula: number,
-    idSeccion: number,
+
+    seccion: string,
 
     idTurno: number,
     idPrograma: number,
@@ -79,7 +80,7 @@ const HorarioEditar = (props: Props) => {
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
-    const [idSeccion, setIdSeccion] = useState(0)
+    const [seccion, setSeccion] = useState("")
 
     const [estado, setEstado] = useState<boolean>(false)
 
@@ -88,7 +89,7 @@ const HorarioEditar = (props: Props) => {
     const refModalidad = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
     const refAula = useRef<HTMLSelectElement>(null)
-    const refSeccion = useRef<HTMLSelectElement>(null)
+    const refSeccion = useRef<HTMLInputElement>(null)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
@@ -108,7 +109,7 @@ const HorarioEditar = (props: Props) => {
         setIdPrograma(props.idPrograma || 0)
         setIdTipoEstudio(props.idTipoEstudio || 0)
         setEstado(!!props.estado || false)
-        setIdSeccion(props.idSeccion || 0)
+        setSeccion(props.seccion || '')
 
     }, [props.idIdioma, props.idSede, props.idModalidad, props.idPeriodo, props.idAula, props.idTurno, props.idPrograma, props.idTipoEstudio]);
 
@@ -296,10 +297,7 @@ const HorarioEditar = (props: Props) => {
             refAula.current?.focus()
             return
         }
-        if (idSeccion == 0) {
-            refSeccion.current?.focus()
-            return
-        }
+
 
 
         const params = {
@@ -312,7 +310,7 @@ const HorarioEditar = (props: Props) => {
             "periodoId": idPeriodo,
             "aulasId": idAula,
             "tipEstudioId": idTipoEstudio,
-            "seccionId": idSeccion,
+            "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
@@ -606,29 +604,20 @@ const HorarioEditar = (props: Props) => {
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Sección <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Sección
                                 </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                <input
+                                    maxLength={3}
+                                    type="text"
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
                                     ref={refSeccion}
-                                    value={idSeccion}
-                                    onChange={(event) => {
-                                        setIdSeccion(parseInt(event.currentTarget.value));
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        comboBoxSeccion.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.seccionId}>
-                                                    {item.nombreSeccion}
-                                                </option>
-                                            );
-
-
-                                        })
+                                    value={seccion}
+                                    onChange={(e) =>
+                                        setSeccion(e.target.value)
                                     }
-                                </select>
+                                />
+
+                                
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

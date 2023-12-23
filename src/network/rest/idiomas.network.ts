@@ -154,6 +154,9 @@ export async function InsertarMatricula<RespValue>(TipEstId: number, params: obj
 }
 
 export async function InsertarMatriculaDetalle<RespValue>(estudianteId: string, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    
+    console.log(estudianteId)
+    console.log(params)
     return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatriculaDetalle/${estudianteId}`, params, { signal: abortController?.signal  }));
 }
 

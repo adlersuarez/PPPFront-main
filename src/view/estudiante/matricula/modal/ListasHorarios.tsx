@@ -112,7 +112,7 @@ const ListasHorario = (props: Props) => {
         '7': 'Domingo',
     };
 
-    const matriculaHorarioElegido = (idiomaId: number, sedeId: string, asiId: string, horarioId: number, tipoEstudioId: number, periodoId: string, seccionId: number) => {
+    const matriculaHorarioElegido = (idiomaId: number, sedeId: string,  horarioAsigId: number, tipoEstudioId: number, periodoId: number) => {
 
         const paramsMatricula = {
             "matriculaId": 0,
@@ -126,14 +126,13 @@ const ListasHorario = (props: Props) => {
             "usuarioUpdate": "",// codigo,
             "matriculaEstado": 1,
             "estadoOperacion": true,
-            "opeMat": localStorage.getItem("codMat"),
+            "opeMat": localStorage.getItem("codMat")
         }
 
         const paramsPension = {
             "detMatriculaId": 0,
             "matriculaId": 0,
-            "asiId": asiId,
-            "horarioId": horarioId,
+            "HorarioAsigId": horarioAsigId,
             "convalidacion": "",
             "promedio": 0,
             "asistencia": 0,
@@ -144,13 +143,12 @@ const ListasHorario = (props: Props) => {
             "opePen": localStorage.getItem("codPen"),
             "condicion": 'N',
             "tipEstudioId": tipoEstudioId,
-            "periodoId": periodoId,
-            "seccionId": seccionId,
+            "periodoId": periodoId
         }
+
 
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
-
 
 
                 sweet.openInformation("Mensaje", "Procesando información...")
@@ -316,12 +314,12 @@ const ListasHorario = (props: Props) => {
                                                 </td>
 
                                                 <td className="border p-2">{horario.aula}</td>
-                                                <td className="border p-2">{horario.nombreSeccion}</td>
+                                                <td className="border p-2">{horario.seccion}</td>
                                                 <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
                                                 <td className="border p-2">
                                                     <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
                                                         disabled={horario.cantidad >= horario.capacidad}
-                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.asiId, horario.horarioId, horario.tipEstudioId, horario.periodoId, horario.seccionId)}>
+                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.horarioAsigId, horario.tipEstudioId, horario.periodoId,)}>
                                                         Matricular
                                                     </button>
                                                 </td>

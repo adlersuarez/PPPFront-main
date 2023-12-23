@@ -189,8 +189,8 @@ const Acceso = () => {
                                             <span className="text-xs cursor-pointer text-upla-100 hover:underline"
                                                 onClick={onEventFormRegEstExterno}>Registro estudiante externo</span> */}
 
-                                            <br />
-                                            <span className="text-lg cursor-pointer text-upla-100">Disculpe la molestia estamos trabajando en las mejoras</span>
+                                            {/* <br />
+                                            <span className="text-lg cursor-pointer text-upla-100">Disculpe la molestia estamos trabajando en las mejoras</span> */}
 
                                         </form>
                                     </div>
