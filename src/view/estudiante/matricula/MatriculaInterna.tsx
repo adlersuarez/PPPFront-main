@@ -102,7 +102,12 @@ const MatriculaInterna = () => {
         const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
 
+            
+
             const pensiones = response.data.resultado as PensionPago[]
+
+            console.log(pensiones)
+            
             setPagoPensionLista(pensiones)
             setLoadPension(false)
             localStorage.setItem('codPen', pensiones[0].operacion);
