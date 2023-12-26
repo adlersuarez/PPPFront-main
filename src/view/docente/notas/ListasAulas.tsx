@@ -1,7 +1,9 @@
 import { LoaderSvg } from "@/component/Svg.component";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const ListaAulas = () => {
+
+    const navigate = useNavigate()
 
     const listaAula = [
         {
@@ -33,11 +35,21 @@ const ListaAulas = () => {
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
-                        
+
+                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Lista Asignada al Docente</h2>
+
+                        <div className="w-full rounded-lg border-2 border-gray-300 border-t-4 mb-6">
+                            <div
+                                className="border-b-2 border-gray-200 p-2 flex justify-between">
+                                <div className="font-semibold my-2">
+                                    Se muestras la siguiente listas de aulas asignadas  al docente:
+                                </div>
+                            </div>
+                            
+                        </div>
+
                         <div className="relative overflow-auto rounded-md my-6">
-                            <h2 className="mb-3 text-xl font-semibold">
-                                Aulas asignadas al docente:
-                            </h2>
+                            
                             <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
                                 <thead className="align-bottom">
                                     <tr>
