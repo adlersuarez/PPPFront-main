@@ -1,29 +1,29 @@
-import CustomModal from "../../../../component/Modal.component";
-import { useEffect, useRef, useState, ChangeEvent } from "react";
+import CustomModal from "../../../../component/Modal.component"
+import { useEffect, useRef, useState, ChangeEvent } from "react"
 
-import { useSelector } from "react-redux";
-import { RootState } from '../../../../store/configureStore.store';
+import { useSelector } from "react-redux"
+import { RootState } from '../../../../store/configureStore.store'
 
-import Response from "../../../../model/class/response.model.class";
-import RestError from "../../../../model/class/resterror.model.class";
-import { Types } from "../../../../model/enum/types.model.enum";
+import Response from "../../../../model/class/response.model.class"
+import RestError from "../../../../model/class/resterror.model.class"
+import { Types } from "../../../../model/enum/types.model.enum"
 
-import Idioma from "../../../../model/interfaces/idioma/idioma";
-import Sede from "../../../../model/interfaces/sede/sede";
-import Modalidad from "../../../../model/interfaces/modalidad/modalidad";
-import Periodo from "../../../../model/interfaces/periodo/periodo";
+import Idioma from "../../../../model/interfaces/idioma/idioma"
+import Sede from "../../../../model/interfaces/sede/sede"
+import Modalidad from "../../../../model/interfaces/modalidad/modalidad"
+import Periodo from "../../../../model/interfaces/periodo/periodo"
+import Aula from "@/model/interfaces/aula/aula"
 
-import Turno from "../../../../model/interfaces/turno/turno";
-import Programa from "../../../../model/interfaces/programa/programa";
-import TipoEstudio from "../../../../model/interfaces/tipo-estudio/tipoEstudio";
+import Turno from "../../../../model/interfaces/turno/turno"
+import Programa from "../../../../model/interfaces/programa/programa"
+import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio"
 
-import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo,ListarPrograma, ListarTipoEstudio, ListarTurno, InsertarActualizarHorario } from "../../../../network/rest/idiomas.network";
+import Listas from "../../../../model/interfaces/Listas.model.interface"
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarTipoEstudio, ListarAula, ListarSeccion } from "../../../../network/rest/idiomas.network"
 
-import RespValue from "../../../../model/interfaces/RespValue.model.interface";
+import RespValue from "../../../../model/interfaces/RespValue.model.interface"
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
-
-import { seccionSelect } from '../../../../helper/herramienta.helper'
+import Seccion from "@/model/interfaces/seccion/seccion"
 
 
 type Props = {
@@ -33,17 +33,22 @@ type Props = {
     idSede: string,
     idModalidad: number,
     idPeriodo: string,
+    idAula: number,
+
+    seccion: string,
+
     idTurno: number,
     idPrograma: number,
     idTipoEstudio: number,
 
-    seccion: string,
     estado: number,
 
     nombreIdioma: string,
     nombreSede: string
     nombreModalidad: string,
     nombrePeriodo: string,
+    nombreTipoEstudio: string,
+
     sweet: Sweet,
 
     abortControl: AbortController,
@@ -53,63 +58,68 @@ type Props = {
 
 const HorarioEditar = (props: Props) => {
 
-    //console.log(props)
-
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
     const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
+    const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
 
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
+    const [comboBoxSeccion, setcomboBoxSeccion] = useState<Seccion[]>([])
 
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>('0')
     const [idModalidad, setIdModalidad] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<string>('0')
+    const [idAula, setIdAula] = useState<number>(0)
 
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
+    const [seccion, setSeccion] = useState("")
 
-    const [seccion, setSeccion] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(false)
 
     const refIdioma = useRef<HTMLSelectElement>(null)
-    const refSede= useRef<HTMLSelectElement>(null)
+    const refSede = useRef<HTMLSelectElement>(null)
     const refModalidad = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
+    const refAula = useRef<HTMLSelectElement>(null)
+    const refSeccion = useRef<HTMLInputElement>(null)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
     const refTipoEstudio = useRef<HTMLSelectElement>(null)
-    const refSeccion = useRef<HTMLSelectElement>(null)
+
 
     const abortController = useRef(new AbortController());
 
-    const anioActual = new Date().getFullYear();
 
     useEffect(() => {
-        setIdIdioma(props.idIdioma || 0);
-        setIdSede(props.idSede || '0');
-        setIdModalidad(props.idModalidad || 0);
-        setIdPeriodo(props.idPeriodo || '0');
-        setIdTurno(props.idTurno || 0);
-        setIdPrograma(props.idPrograma || 0);
-        setIdTipoEstudio(props.idTipoEstudio || 0);
-        setSeccion(props.seccion || "");
+        setIdIdioma(props.idIdioma || 0)
+        setIdSede(props.idSede || '0')
+        setIdModalidad(props.idModalidad || 0)
+        setIdPeriodo(props.idPeriodo || '0')
+        setIdAula(props.idAula || 0)
+        setIdTurno(props.idTurno || 0)
+        setIdPrograma(props.idPrograma || 0)
+        setIdTipoEstudio(props.idTipoEstudio || 0)
         setEstado(!!props.estado || false)
+        setSeccion(props.seccion || '')
 
-    }, [props.idIdioma, props.idSede, props.idModalidad, props.idPeriodo, props.idTurno, props.idPrograma, props.idTipoEstudio, props.seccion]);
+    }, [props.idIdioma, props.idSede, props.idModalidad, props.idPeriodo, props.idAula, props.idTurno, props.idPrograma, props.idTipoEstudio]);
 
     useEffect(() => {
         LoadDataIdioma()
         LoadDataSede()
         LoadDataModalidad()
         LoadDataPeriodo()
+        LoadDataAula()
+        LoadDataSeccion()
 
         LoadDataTurno()
         LoadDataPrograma()
@@ -173,6 +183,34 @@ const HorarioEditar = (props: Props) => {
         }
     }
 
+    const LoadDataAula = async () => {
+
+        setComboBoxAula([])
+
+        const response = await ListarAula<Listas>(props.abortControl)
+        if (response instanceof Response) {
+            setComboBoxAula(response.data.resultado as Aula[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    const LoadDataSeccion = async () => {
+
+        setcomboBoxSeccion([])
+
+        const response = await ListarSeccion<Listas>(props.abortControl)
+        if (response instanceof Response) {
+            setcomboBoxSeccion(response.data.resultado as Seccion[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
     const LoadDataTurno = async () => {
 
         setComboBoxTurno([])
@@ -220,29 +258,33 @@ const HorarioEditar = (props: Props) => {
         setEstado(event.target.checked);
     };
 
+
+
     const onEditarHorario = () => {
 
         //event.preventDefault()
-        if(idIdioma == 0){
+        if (idIdioma == 0) {
             refIdioma.current?.focus()
             return
         }
 
-        if(idSede == '0'){
+        if (idSede == '0') {
             refSede.current?.focus()
             return
         }
 
-        if(idModalidad == 0){
+        if (idModalidad == 0) {
             refModalidad.current?.focus()
             return
         }
-
-        if(idPeriodo == '0'){
+        if (idPeriodo == '0') {
             refPeriodo.current?.focus()
             return
         }
-
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
+            return
+        }
         if (idTurno == 0) {
             refTurno.current?.focus()
             return
@@ -251,14 +293,12 @@ const HorarioEditar = (props: Props) => {
             refPrograma.current?.focus()
             return
         }
-        if (idTipoEstudio == 0) {
-            refTipoEstudio.current?.focus()
+        if (idAula == 0) {
+            refAula.current?.focus()
             return
         }
-        if (seccion == "0") {
-            refSeccion.current?.focus()
-            return
-        }
+
+
 
         const params = {
             "horarioId": props.idHorario,
@@ -268,12 +308,13 @@ const HorarioEditar = (props: Props) => {
             "sedeId": idSede,
             "modalidadId": idModalidad,
             "periodoId": idPeriodo,
+            "aulasId": idAula,
             "tipEstudioId": idTipoEstudio,
             "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
-            "usuarioModifica": "",
+            "usuarioModifica": codigo,
             "fechaModifica": new Date().toISOString(),
         }
 
@@ -311,8 +352,8 @@ const HorarioEditar = (props: Props) => {
             }
         })
 
-       
     }
+
 
     return (
         <>
@@ -322,7 +363,7 @@ const HorarioEditar = (props: Props) => {
 
                 }}
                 onHidden={() => {
-                   
+
                 }}
                 onClose={props.handleCloseModal}
             >
@@ -347,6 +388,7 @@ const HorarioEditar = (props: Props) => {
                                         <div className="text-sm">
                                             <p>Idioma: <span className="text-blue-700 font-bold">{props.nombreIdioma}</span></p>
                                             <p>Modalidad: <span className="text-blue-700 font-bold ">{props.nombreModalidad}</span></p>
+                                            <p>Tipo de Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                         </div>
                                         <div className="text-sm">
                                             <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
@@ -449,19 +491,44 @@ const HorarioEditar = (props: Props) => {
                                     <option value={0}>- Seleccione -</option>
                                     {
                                         comboBoxPeriodo.map((item, index) => {
-                                            if (item.anio === anioActual) {
-                                                return (
-                                                    <option key={index} value={item.periodoId}>
-                                                        {item.anio} - {item.mes}
-                                                    </option>
-                                                );
-                                            }
 
-                                            return null;
+                                            return (
+                                                <option key={index} value={item.periodoId}>
+                                                    {item.anio} - {item.mes}
+                                                </option>
+                                            );
+
                                         })
                                     }
                                 </select>
                             </div>
+
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                </label>
+                                <select
+                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                    ref={refTipoEstudio}
+                                    value={idTipoEstudio}
+                                    onChange={(event) => {
+                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
+                                    }}
+                                >
+                                    <option value={0}>- Seleccione -</option>
+                                    {
+                                        comboBoxTipoEstudio.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.tipEstudioId}>
+                                                    {item.tipoEstudio}
+                                                </option>
+                                            );
+
+                                        })
+                                    }
+                                </select>
+                            </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Turno <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -512,55 +579,45 @@ const HorarioEditar = (props: Props) => {
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Aula <i className="bi bi-asterisk text-xs text-red-500"></i>
                                 </label>
                                 <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                    ref={refTipoEstudio}
-                                    value={idTipoEstudio}
+                                    ref={refAula}
+                                    value={idAula}
                                     onChange={(event) => {
-                                        setIdTipoEstudio(parseInt(event.currentTarget.value));
+                                        setIdAula(parseInt(event.currentTarget.value));
                                     }}
                                 >
                                     <option value={0}>- Seleccione -</option>
                                     {
-                                        comboBoxTipoEstudio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.tipEstudioId}>
-                                                    {item.tipoEstudio}
+                                        comboBoxAula.filter(item => item.modalidadId === idModalidad)
+                                            .map((item, index) => (
+                                                <option key={index} value={item.aulasId}>
+                                                    {item.nombre}
                                                 </option>
-                                            );
+                                            ))
 
-                                        })
                                     }
+
                                 </select>
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Sección
                                 </label>
-                                <select
-                                    className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                <input
+                                    maxLength={3}
+                                    type="text"
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
                                     ref={refSeccion}
                                     value={seccion}
-                                    onChange={(event) => {
-                                        setSeccion(event.currentTarget.value);
-                                        console.log(event.currentTarget.value)
-                                    }}
-                                >
-                                    <option value={"0"}>- Seleccione -</option>
-                                    {
-                                        seccionSelect.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.nombreSeccion}>
-                                                    {item.nombreSeccion}
-                                                    {/* - {item.id} */}
-                                                </option>
-                                            );
-
-                                        })
+                                    onChange={(e) =>
+                                        setSeccion(e.target.value)
                                     }
-                                </select>
+                                />
+
+                                
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

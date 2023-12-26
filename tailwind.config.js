@@ -161,7 +161,7 @@ module.exports = {
         '96': '24rem',
       },
       backgroundImage: {
-        'portada': "url('/src/assets/images/portada.png')",
+        'portada': "url('/src/assets/images/portada-login.jpeg')",
       },
       animation: {
         'in': 'fade-in 500ms',

@@ -1,40 +1,40 @@
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../store/authSlice.store";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-type MessageNotif = {
-    id: string;
-    codigo: string;
-    titulo: string;
-    mensaje: string;
-};
+// type MessageNotif = {
+//     id: string;
+//     codigo: string;
+//     titulo: string;
+//     mensaje: string;
+// };
 
-let messageNotif: MessageNotif[] = [
-    {
-        id: "1",
-        codigo: "1111",
-        titulo: "Titulo 1",
-        mensaje: "Mensaje de Prueba 1",
-    },
-    {
-        id: "2",
-        codigo: "2222",
-        titulo: "Titulo 2",
-        mensaje: "Mensaje de Prueba 2",
-    },
-    {
-        id: "3",
-        codigo: "3333",
-        titulo: "Titulo 3",
-        mensaje: "Mensaje de Prueba 3",
-    },
-    {
-        id: "4",
-        codigo: "4444",
-        titulo: "Titulo 4",
-        mensaje: "Mensaje de Prueba 5",
-    },
-];
+// let messageNotif: MessageNotif[] = [
+//     {
+//         id: "1",
+//         codigo: "1111",
+//         titulo: "Titulo 1",
+//         mensaje: "Mensaje de Prueba 1",
+//     },
+//     {
+//         id: "2",
+//         codigo: "2222",
+//         titulo: "Titulo 2",
+//         mensaje: "Mensaje de Prueba 2",
+//     },
+//     {
+//         id: "3",
+//         codigo: "3333",
+//         titulo: "Titulo 3",
+//         mensaje: "Mensaje de Prueba 3",
+//     },
+//     {
+//         id: "4",
+//         codigo: "4444",
+//         titulo: "Titulo 4",
+//         mensaje: "Mensaje de Prueba 5",
+//     },
+// ];
 
 type Props = {
     refBlock: React.RefObject<HTMLInputElement>,
@@ -45,16 +45,16 @@ const Nav = (props: Props) => {
 
     const dispatch = useDispatch();
 
-    const [open, setOpen] = useState<boolean>(false);
-    const [notif, setNotif] = useState<MessageNotif[]>([]);
+    // const [open, setOpen] = useState<boolean>(false);
+    // const [notif, setNotif] = useState<MessageNotif[]>([]);
 
-    useEffect(() => {
-        setNotif(messageNotif);
-    }, []);
+    // useEffect(() => {
+    //     setNotif(messageNotif);
+    // }, []);
 
-    const removeNotif = (idEliminar: string) => {
-        setNotif(notif.filter((item) => item.id !== idEliminar));
-    };
+    // const removeNotif = (idEliminar: string) => {
+    //     setNotif(notif.filter((item) => item.id !== idEliminar));
+    // };
 
     return (
         <nav
@@ -70,12 +70,12 @@ const Nav = (props: Props) => {
             </button>
             <ul className="flex items-center flex-1 justify-end pr-3 h-full">
                 <li className="flex justify-center h-full relative">
-                    <button className="px-4 text-white hover:bg-white hover:text-upla-100 relative"
+                    {/* <button className="px-4 text-white hover:bg-white hover:text-upla-100 relative"
                         onClick={() => setOpen(!open)}>
                         <i className="bi bi-bell text-xl"></i>
                         <span className="absolute right-[5px] top-[2px] bg-yellow-300 text-yellow-800 text-xs font-medium px-1.5 py-0.5 rounded text-center">{notif.length}</span>
-                    </button>
-                    <ul className={`${open ? "block" : "hidden"}  absolute h-fit translate-x-[-270px] translate-y-[53px] inset-0  w-80 bg-white rounded-sm drop-shadow-md`}>
+                    </button> */}
+                    {/* <ul className={`${open ? "block" : "hidden"}  absolute h-fit translate-x-[-270px] translate-y-[53px] inset-0  w-80 bg-white rounded-sm drop-shadow-md`}>
                         <div className="max-h-[220px] overflow-y-auto">
                             {
 
@@ -119,13 +119,14 @@ const Nav = (props: Props) => {
                             </li>
                         </div>
 
-                    </ul>
+                    </ul> */}
                 </li>
                 <li className="flex justify-center h-full">
                     <button
+                    title="Cerrar Sesión"
                         onClick={() => dispatch(logout())}
                         className="px-4 text-white hover:bg-white hover:text-upla-100">
-                        <i className="bi bi-person-circle text-xl"></i>
+                        <i className="bi bi-box-arrow-left text-xl"></i>
                     </button>
                 </li>
             </ul>

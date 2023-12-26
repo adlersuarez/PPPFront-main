@@ -10,10 +10,10 @@ import Idioma from "../../../model/interfaces/idioma/idioma";
 import Sede from "../../../model/interfaces/sede/sede";
 import Modalidad from "../../../model/interfaces/modalidad/modalidad";
 import Periodo from "../../../model/interfaces/periodo/periodo";
-import Aula from "@/model/interfaces/aula/aula";
+import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag, ListarAula } from "../../../network/rest/idiomas.network";
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag, ListarTipoEstudio } from "../../../network/rest/idiomas.network";
 
 import useSweerAlert from "../../../component/hooks/useSweetAlert"
 
@@ -28,8 +28,6 @@ import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "./HorarioDetalle";
 
 
-
-
 const HorarioIdiomas = () => {
 
     const navigate = useNavigate()
@@ -40,7 +38,8 @@ const HorarioIdiomas = () => {
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
     const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
-    const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
+    const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
+    // const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
 
     const [idHorario, setIdHorario] = useState<number>(0)
 
@@ -48,13 +47,13 @@ const HorarioIdiomas = () => {
     const [idSede, setIdSede] = useState<string>("0")
     const [idModalidad, setIdModalidad] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<string>("0")
-    const [idAula, setIdAula] = useState<number>(0)
-
-    const [idTurno, setIdTurno] = useState<number>(0)
-    const [idPrograma, setIdPrograma] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
-    const [seccion, setSeccion] = useState<string>("0")
+    const [idAula, setIdAula] = useState<number>(0)
+    const [idTurno, setIdTurno] = useState<number>(0)
+    const [idPrograma, setIdPrograma] = useState<number>(0)
+    const [seccion, setSeccion] = useState<string>("")
+
     const [estado, setEstado] = useState<number>(0)
 
 
@@ -62,25 +61,26 @@ const HorarioIdiomas = () => {
     const [nombreSede, setNombreSede] = useState<string>("")
     const [nombreModalidad, setNombreModalidad] = useState<string>("")
     const [nombrePeriodo, setNombrePeriodo] = useState<string>("")
-    const [nombreAula, setNombreAula] = useState<string>("")
+    const [nombreTipoEstudio, setNombreTipoEstudio] = useState("")
+
 
     const refIdioma = useRef<HTMLSelectElement>(null)
     const refSede = useRef<HTMLSelectElement>(null)
     const refModalidad = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
-    const refAula = useRef<HTMLSelectElement>(null)
+    const refTipoEstudio = useRef<HTMLSelectElement>(null)
+
 
     const abortController = useRef(new AbortController());
     const abortControllerNuevo = useRef(new AbortController());
     const abortControllerEditar = useRef(new AbortController());
-
-    const anioActual = new Date().getFullYear();
 
     // Tabla
     const paginacion = useRef<number>(0);
     const restart = useRef<boolean>(false);
     const totalPaginacion = useRef<number>(0);
     const filasPorPagina = useRef<number>(10);
+
     const [horarioLista, setHorarioLista] = useState<HorarioPag[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -99,7 +99,8 @@ const HorarioIdiomas = () => {
         LoadDataSede()
         LoadDataModalidad()
         LoadDataPeriodo()
-        LoadDataAula()
+        LoadDataTipoEstudio()
+
 
         setMensajeCarga(true)
 
@@ -161,13 +162,16 @@ const HorarioIdiomas = () => {
         }
     }
 
-    const LoadDataAula = async () => {
 
-        setComboBoxAula([])
 
-        const response = await ListarAula<Listas>(abortController.current)
+
+    const LoadDataTipoEstudio = async () => {
+
+        setComboBoxTipoEstudio([])
+
+        const response = await ListarTipoEstudio<Listas>(abortController.current)
         if (response instanceof Response) {
-            setComboBoxAula(response.data.resultado as Aula[])
+            setComboBoxTipoEstudio(response.data.resultado as TipoEstudio[])
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -193,16 +197,19 @@ const HorarioIdiomas = () => {
             refPeriodo.current?.focus()
             return
         }
-        if (idAula == 0) {
-            refAula.current?.focus()
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
-
+        // if (idAula == 0) {
+        //     refAula.current?.focus()
+        //     return
+        // }
 
         handleOpenModal()
     }
 
-    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, seccion: string, estado: number) => {
+    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, tipEstudioId: number, estado: number, idAula: number, seccion: string) => {
         setIdHorario(horarioId)
 
         setIdIdioma(idiomaId)
@@ -211,9 +218,11 @@ const HorarioIdiomas = () => {
         setIdPeriodo(periodoId)
         setIdTurno(turnoId)
         setIdPrograma(programaId)
-
-        setSeccion(seccion)
+        setIdTipoEstudio(tipEstudioId)
         setEstado(estado)
+        setSeccion(seccion)
+
+        setIdAula(idAula)
 
         handleOpenModalEditar()
     }
@@ -238,10 +247,14 @@ const HorarioIdiomas = () => {
             refPeriodo.current?.focus()
             return
         }
-        if (idAula == 0) {
-            refAula.current?.focus()
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
+        // if (idAula == 0) {
+        //     refAula.current?.focus()
+        //     return
+        // }
 
         if (loading) return;
 
@@ -249,7 +262,7 @@ const HorarioIdiomas = () => {
 
         paginacion.current = 1;
         restart.current = true;
-        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idAula);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio);
     }
 
     const paginacionTable = (listid: number) => {
@@ -276,17 +289,21 @@ const HorarioIdiomas = () => {
             refPeriodo.current?.focus()
             return
         }
-        if (idAula == 0) {
-            refAula.current?.focus()
+        if (idTipoEstudio == 0) {
+            refTipoEstudio.current?.focus()
             return
         }
+        // if (idAula == 0) {
+        //     refAula.current?.focus()
+        //     return
+        // }
 
         if (loading) return;
 
-        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idAula);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio);
     }
 
-    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: string, idAula: number) => {
+    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: string, idTipoEstudio: number) => {
         setLoading(true)
 
         setHorarioLista([]);
@@ -294,7 +311,7 @@ const HorarioIdiomas = () => {
         const posPagina: number = ((paginacion.current - 1) * filasPorPagina.current)
         const filaPagina: number = filasPorPagina.current
 
-        const response = await ListarHorarioPag<ListasPag>(idIdioma, idSede, idModalidad, idPeriodo, idAula, posPagina, filaPagina);
+        const response = await ListarHorarioPag<ListasPag>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, posPagina, filaPagina);
         if (response instanceof Response) {
             totalPaginacion.current = Math.ceil(response.data.total / filasPorPagina.current);
             setHorarioLista(response.data.resultado as HorarioPag[])
@@ -318,7 +335,7 @@ const HorarioIdiomas = () => {
     }
 
 
-    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number, turnoInicio: string, turnoFin: string, item: HorarioPag) => {
+    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number, item: HorarioPag) => {
         setModuloDetalle(true)
 
         setNombreIdioma(idiomaNombre)
@@ -326,6 +343,7 @@ const HorarioIdiomas = () => {
         setNombreModalidad(modalidadNombre)
         setIdIdioma(idiomaId)
         setIdHorario(horarioId)
+        setIdTipoEstudio(item.tipEstudioId)
 
         setItemHorario(item)
     }
@@ -335,7 +353,7 @@ const HorarioIdiomas = () => {
     }
 
 
-    // Modal
+    // Nuevo
     const handleOpenModal = () => {
         setIsOpenModal(true);
     };
@@ -344,7 +362,7 @@ const HorarioIdiomas = () => {
         setIsOpenModal(false);
     };
 
-    //Editar
+    // Editar
     const handleOpenModalEditar = () => {
         setIsOpenModalEditar(true);
     };
@@ -352,7 +370,6 @@ const HorarioIdiomas = () => {
     const handleCloseModalEditar = () => {
         setIsOpenModalEditar(false);
     };
-
 
     return (
         <>
@@ -365,7 +382,7 @@ const HorarioIdiomas = () => {
                                 <ModuloHorarioDetalle
                                     idHorario={idHorario}
                                     idIdioma={idIdioma}
-
+                                    idTipoEstudio={idTipoEstudio}
                                     itemHorario={itemHorario}
 
                                     sweet={sweet}
@@ -381,12 +398,14 @@ const HorarioIdiomas = () => {
                                         idSede={idSede}
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
-                                        idAula={idAula}
+                                        idTipoEstudio={idTipoEstudio}
+
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
                                         nombrePeriodo={nombrePeriodo}
-                                        nombreAula={nombreAula}
+                                        nombreTipoEstudio={nombreTipoEstudio}
+
                                         sweet={sweet}
                                         abortControl={abortControllerNuevo.current}
                                         handleCloseModal={handleCloseModal} />
@@ -398,16 +417,21 @@ const HorarioIdiomas = () => {
                                         idSede={idSede}
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
-                                        idTurno={idTurno}
-                                        idPrograma={idPrograma}
                                         idTipoEstudio={idTipoEstudio}
                                         seccion={seccion}
+
+                                        idAula={idAula}
+                                        idTurno={idTurno}
+                                        idPrograma={idPrograma}
+
+
                                         estado={estado}
 
                                         nombreIdioma={nombreIdioma}
                                         nombreSede={nombreSede}
                                         nombreModalidad={nombreModalidad}
                                         nombrePeriodo={nombrePeriodo}
+                                        nombreTipoEstudio={nombreTipoEstudio}
 
                                         loadinit={loadInit}
 
@@ -573,31 +597,31 @@ const HorarioIdiomas = () => {
 
                                                 <div>
                                                     <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                                        Aula <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                                        Tipo Estudio <i className="bi bi-asterisk text-xs text-red-500"></i>
                                                     </label>
                                                     <select
                                                         className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                                        ref={refAula}
-                                                        value={idAula}
+                                                        ref={refTipoEstudio}
+                                                        value={idTipoEstudio}
                                                         onChange={(event) => {
-                                                            const selectedAulaId = event.currentTarget.value;
-                                                            setIdAula(parseInt(selectedAulaId));
+                                                            const selectedTipoEstudioId = event.currentTarget.value;
+                                                            setIdTipoEstudio(parseInt(selectedTipoEstudioId));
 
-                                                            const selectedAula = comboBoxAula.find(item => item.aulasId.toString() === selectedAulaId);
+                                                            const selectedTipoEstudio = comboBoxTipoEstudio.find(item => item.tipEstudioId.toString() === selectedTipoEstudioId);
 
-                                                            if (selectedAula) {
-                                                                setNombreAula(`${selectedAula.nombre}`);
+                                                            if (selectedTipoEstudio) {
+                                                                setNombreTipoEstudio(`${selectedTipoEstudio.tipoEstudio}`);
                                                             } else {
-                                                                setNombreAula("");
+                                                                setNombreTipoEstudio("");
                                                             }
                                                         }}
                                                     >
                                                         <option value={0}>- Seleccione -</option>
                                                         {
-                                                            comboBoxAula.map((item, index) => {
+                                                            comboBoxTipoEstudio.map((item, index) => {
                                                                 return (
-                                                                    <option key={index} value={item.aulasId}>
-                                                                        {item.nombre}
+                                                                    <option key={index} value={item.tipEstudioId}>
+                                                                        {item.tipoEstudio}
                                                                     </option>
                                                                 )
                                                             })
@@ -633,14 +657,12 @@ const HorarioIdiomas = () => {
                                                     <thead className="align-bottom">
                                                         <tr>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '10%' }}>Idioma</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidas</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Programa</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">F. Registro</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Seccion</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
+
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Opciones</th>
                                                         </tr>
                                                     </thead>
@@ -649,7 +671,7 @@ const HorarioIdiomas = () => {
 
                                                             loading ? (
                                                                 <tr className="text-center bg-white border-b">
-                                                                    <td colSpan={10} className="text-sm p-2 border-b border-solid">
+                                                                    <td colSpan={7} className="text-sm p-2 border-b border-solid">
                                                                         <div className="flex items-center justify-center">
                                                                             <LoaderSvg /> <span>Cargando datos...</span>
                                                                         </div>
@@ -659,7 +681,7 @@ const HorarioIdiomas = () => {
                                                                 horarioLista.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={10} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione Idioma, Sede, Modalidad para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={7} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :
@@ -667,21 +689,19 @@ const HorarioIdiomas = () => {
                                                                         horarioLista.map((item, index) => {
 
                                                                             return (
-                                                                                <tr key={index} className="bg-white border-b">
+                                                                                <tr key={index} className="bg-white border-b" title={formatDateTimeToFecha(item.fechaRegistra)}>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.idiomaNombre}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aulaNombre}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.programa}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{formatDateTimeToFecha(item.fechaRegistra)}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aula}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.seccion}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.estado}</td>
+
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                                                                         <button
                                                                                             title="Editar"
                                                                                             className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.seccion, item.estado)}
+                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.estado, item.aulasId, item.seccion)}
                                                                                         >
                                                                                             <i className="bi bi-pencil-fill text-sm"></i>
 
@@ -690,20 +710,19 @@ const HorarioIdiomas = () => {
                                                                                         <button
                                                                                             title="Detalle"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId, item.turnoInicio, item.turnoFin, item)}
+                                                                                            onClick={() => handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId, item)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 
                                                                                         </button>
                                                                                         {" "}
-                                                                                        <button
+                                                                                        {/* <button
                                                                                             title="Borrar"
                                                                                             className="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 rounded-md px-2 py-1"
-                                                                                        // onClick={() => onEventDetalle(item.codigo)}
+                                                                
                                                                                         >
                                                                                             <i className="bi bi-trash3-fill text-sm"></i>
-
-                                                                                        </button>
+                                                                                        </button> */}
 
                                                                                     </td>
 

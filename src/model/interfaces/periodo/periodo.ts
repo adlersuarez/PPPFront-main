@@ -1,5 +1,5 @@
 export default interface Periodo {
-    periodoId: string
+    periodoId: number
     anio: number
     mes: number
     estado: number

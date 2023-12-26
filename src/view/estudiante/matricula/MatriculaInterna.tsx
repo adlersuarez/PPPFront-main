@@ -1,18 +1,29 @@
 
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
-import { BiDollarCircle, BiCheck } from 'react-icons/bi';
+import { useEffect, useRef, useState } from 'react';
 
 import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
+import Card from "../../../component/pages/cards/Card"
 
-import { ValidarPagoMatriculaEstudiante, ValidarPagoPensionMesEstudiante } from "../../../network/rest/idiomas.network";
+import { PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
-import RespValue from "../../../model/interfaces/RespValue.model.interface";
-import { NavLink } from "react-router-dom";
-//import { useRafState } from "react-use";
+
+import { Types } from "../../../model/enum/types.model.enum";
+
+import MatriculaPago from "@/model/interfaces/pago/matriculaPago";
+import PensionPago from "@/model/interfaces/pago/pensionPago";
+
+import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../component/Iconos';
+
+import Listas from "@/model/interfaces/Listas.model.interface";
+
+import MatriculaProceso from "./MatriculaProceso"
+import RespValue from "@/model/interfaces/RespValue.model.interface";
+
+
 
 
 const MatriculaInterna = () => {
@@ -23,85 +34,99 @@ const MatriculaInterna = () => {
 
     const [pasoActual, setPasoActual] = useState<number>(1);
 
-    const [pagoAnio, setPagoAnio] = useState(false)
-    const [pagoMes, setPagoMes] = useState(false)
+    const [moduloMatriculaProceso, setModuloMatriculaProceso] = useState(false);
 
-    const fechaActual: Date = new Date();
+    const [pagoMatriculaLista, setPagoMatriculaLista] = useState<MatriculaPago[]>([]);
+    const [pagoPensionLista, setPagoPensionLista] = useState<PensionPago[]>([]);
 
-    const aniActual: number = fechaActual.getFullYear()
-    const mesActual: number = fechaActual.getMonth() + 1;
+    const [load, setLoad] = useState(true)
 
-    //const [loadPago, setLoadPago] = useState(true)
-    const [loadMes, setLoadMes] = useState(true)
-    const [loadAnio, setLoadAnio] = useState(true)
-    // 0 -> no pago
-    // 1 -> pago normal
-    // 2 -> pago intensivo
-    const [tipPago, setTipPago] = useState(0)
 
-    useEffect(() => {
-        validarPagMatriEst(codigo, aniActual)
-        validarPagPesionMesEst(codigo, aniActual, mesActual)
+    const [loadMatricula, setLoadMatricula] = useState(true)
+    const [loadPension, setLoadPension] = useState(true)
 
-        //handleLoadPago()
+    const [validezMesesMatri, setValidezMesesMatri] = useState("0")
 
-    }, [])
+    const abortController = useRef(new AbortController());
 
-    /*const handleLoadPago = () => {
-        setLoadPago(false)
-    };*/
 
     const cambiarPaso = (paso: number) => {
         setPasoActual(paso);
     };
 
+    const handleMatriculaProceso = () => {
+        setModuloMatriculaProceso(!moduloMatriculaProceso)
+    }
 
+    useEffect(() => {
 
-    const validarPagMatriEst = async (codigo: string, anio: number) => {
+        loadInitData()
 
-        const validar = await ValidarPagoMatriculaEstudiante<RespValue>(codigo, anio)
+    }, [])
 
-        if (validar instanceof Response) {
+    const loadInitData = async () => {
 
-            if (validar.data.value == "1") {
-                setPagoAnio(true)
-            } else {
-                setPagoAnio(false)
-            }
+        await LoadPagosMatriculaLista()
+            await LoadPagosPensionLista()
+            await LoadValidezMatriculaMeses()
+            setLoad(false)
 
-            setLoadAnio(false)
-        }
-        if (validar instanceof RestError) {
-            console.log(validar.getMessage())
-        }
     }
 
 
-    const validarPagPesionMesEst = async (codigo: string, anio: number, mes: number) => {
+    const LoadPagosMatriculaLista = async () => {
 
-        const validar = await ValidarPagoPensionMesEstudiante<RespValue>(codigo, anio, mes)
+        //setPagoMatriculaLista([])
 
-        if (validar instanceof Response) {
-            if (validar.data.value == "1") {
-                setPagoMes(true)
-                setTipPago(1)
+        const response = await PagadoMatriculaLista<Listas>(codigo, abortController.current)
+        if (response instanceof Response) {
 
-            }
-            else if (validar.data.value == "2") {
-                setPagoMes(true)
-                setTipPago(2)
+            const matriculas = response.data.resultado as MatriculaPago[]
 
-            }
-            else {
-                setPagoMes(false)
-                setTipPago(0)
-            }
+            setPagoMatriculaLista(matriculas)
+            setLoadMatricula(false)
+            localStorage.setItem('codMat', matriculas[0].operacion);
 
-            setLoadMes(false)
+
         }
-        if (validar instanceof RestError) {
-            console.log(validar.getMessage())
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
         }
+
+    }
+
+    const LoadPagosPensionLista = async () => {
+
+        //setPagoPensionLista([])
+
+        const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
+        if (response instanceof Response) {
+
+            const pensiones = response.data.resultado as PensionPago[]
+            setPagoPensionLista(pensiones)
+            setLoadPension(false)
+            localStorage.setItem('codPen', pensiones[0].operacion);
+
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
+
+    const LoadValidezMatriculaMeses = async () => {
+        const response = await ValidezMatriculaMeses<RespValue>(codigo)
+        if (response instanceof Response) {
+            setValidezMesesMatri(response.data.value)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+
     }
 
     return (
@@ -111,58 +136,106 @@ const MatriculaInterna = () => {
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
-                        <div className="p-1 bg-Solid">
-                            <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registrar Matricula</h2>
+                        {
+                            moduloMatriculaProceso == true ?
+                                (
+                                    <MatriculaProceso
+                                        handleMatriculaProceso={handleMatriculaProceso}
 
-                            <div className="w-full">
+                                    />
+                                ) :
+                                (
+                                    <div className="p-1 bg-Solid">
+                                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Matricula</h2>
+
+                                        <div className="w-full">
 
 
-                                <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
-                                    <div
-                                        className="border-b-2 border-gray-200 p-2">
-                                        <div className="text-sm font-bold">
-                                            TENER EN CUENTA
+                                            <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                                                <div
+                                                    className="border-b-2 border-gray-200 p-2 flex justify-between">
+                                                    <div className="text-sm font-bold">
+                                                        TENER EN CUENTA
+                                                    </div>
+                                                </div>
+                                                <div className="m-2">
+
+                                                    <div className="px-4">
+
+                                                        <ol className="w-full text-gray-500 list-decimal dark:text-gray-400 text-sm">
+                                                            <li className="pl-4">
+                                                                <span className="font-semibold text-gray-900 dark:text-white">Fechas límite y plazos: </span> Asegúrate de conocer las fechas límite para realizar los pagos de matrícula y pensiones. Cumplir con estos plazos es fundamental.
+                                                            </li>
+                                                            <li className="pl-4">
+                                                                <span className="font-semibold text-gray-900 dark:text-white">Formas de pago:</span> Verifica qué métodos de pago acepta la institución. Asegúrate de tener la información necesaria para cada método de pago.
+                                                            </li>
+                                                            <li className="pl-4">
+
+                                                                <span className="font-semibold text-gray-900 dark:text-white">Requisitos de matrícula:</span>  Conoce los requisitos específicos para matricularse en los cursos, ya sean restricciones de cupo, requisitos de nivel académico, prerrequisitos, entre otros.
+
+                                                            </li>
+                                                        </ol>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <br />
+
+                                            <div className="flex justify-center mb-4">
+                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
+                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
+                                            </div>
+
+                                            <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
+                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista}
+                                            />
+
+
+
+                                            <h2 className="text-lg font-semibold mt-4">
+                                                <span className="text-xl ">Información para tu matrícula:</span>
+                                            </h2>
+
+                                            <div className="flex flex-wrap justify-center mt-5">
+                                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<IconoCalendario />}
+                                                        titulo={'Cronograma de matrícula'}
+                                                        color={'green'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
+                                                        info={''}
+                                                    />
+                                                </div>
+                                                <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<MultipleCheck />}
+                                                        titulo={'Reglamento Académico'}
+                                                        color={'yellow'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/REGLAMENTO%20IDIOMAS%20UPLA%202024%20.pdf?_t=1703008912'}
+                                                        info={''}
+                                                    />
+                                                </div>
+                                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<MultipleCheck />}
+                                                        titulo={'Cronograma de matrícula'}
+                                                        color={'blue'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
+                                                        info={''}
+                                                    />
+                                                </div> */}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="m-2">
 
-                                        <div className="px-4">
+                                )
+                        }
 
-                                            <ol className="w-full text-gray-500 list-decimal dark:text-gray-400 text-sm">
-                                                <li className="pl-4">
-                                                    <span className="font-semibold text-gray-900 dark:text-white">Fechas límite y plazos: </span> Asegúrate de conocer las fechas límite para realizar los pagos de matrícula y pensiones. Cumplir con estos plazos es fundamental.
-                                                </li>
-                                                <li className="pl-4">
-                                                    <span className="font-semibold text-gray-900 dark:text-white">Formas de pago:</span> Verifica qué métodos de pago acepta la institución. Asegúrate de tener la información necesaria para cada método de pago.
-                                                </li>
-                                                <li className="pl-4">
-
-                                                    <span className="font-semibold text-gray-900 dark:text-white">Requisitos de matrícula:</span>  Conoce los requisitos específicos para matricularse en los cursos, ya sean restricciones de cupo, requisitos de nivel académico, prerrequisitos, entre otros.
-
-                                                </li>
-                                            </ol>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <br />
-
-                                <div className="flex justify-center mb-4">
-                                    {/* <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCalendar} tipoPago={tipPago}/> */}
-                                    <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiDollarCircle} tipoPago={tipPago} />
-                                    <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={BiCheck} tipoPago={tipPago} />
-                                </div>
-
-                                <Accordion pasoActual={pasoActual} cambiarPaso={cambiarPaso} tipoPago={tipPago} pagoAnio={pagoAnio} pagoMes={pagoMes} anioActual={aniActual} mesActual={mesActual}
-                                    loadPagos={loadAnio || loadMes}
-                                />
-
-                            </div>
-                        </div>
-
-                        <div className="flex justify-end">
+                        {/* <div className="flex justify-end">
                             <NavLink
                                 to={'/inicio/seleccion-idioma'}
                             >
@@ -173,12 +246,12 @@ const MatriculaInterna = () => {
                                     Seleccionar
                                 </button>
                             </NavLink>
-                        </div>
+                        </div> */}
+
 
                     </div>
                 </div>
             </div>
-
 
         </>
     )

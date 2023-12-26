@@ -22,3 +22,7 @@ th.dx-scheduler-header-panel-cell[title]::after {
 .dx-scheduler-header-panel-cell.dx-scheduler-header-panel-current-time-cell::before {
     display: none;
 }
+
+.dx-scheduler-appointment-recurrence .dx-scheduler-appointment-content {
+    padding: 5px 5px 5px 5px;
+}

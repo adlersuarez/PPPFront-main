@@ -16,7 +16,7 @@ import Login from "../../model/interfaces/login/login";
 import { AiFillWarning } from "react-icons/ai";
 import { Types } from "../../model/enum/types.model.enum";
 
-import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
+// import RegistroEstudianteExterno from "./RegistroEstudianteExterno";
 //import Checked from "./widget/Checked";
 
 const Acceso = () => {
@@ -34,8 +34,8 @@ const Acceso = () => {
     const [codigoMensaje, setCodigoMensaje] = useState<string>('');
     const [claveMensaje, setClaveMensaje] = useState<string>('');
 
-    const [formRegEstExterno, setFormRegEstExterno] = useState<boolean>(false);
-    
+    // const [formRegEstExterno, setFormRegEstExterno] = useState<boolean>(false);
+
     // if(false) setFormRegEstExterno(false)
 
     const refCodigo = useRef<HTMLInputElement>(null);
@@ -102,14 +102,16 @@ const Acceso = () => {
         return <Navigate to="/inicio" />
     }
 
-    const onEventFormRegEstExterno = () => {
-        setFormRegEstExterno(!formRegEstExterno)
-    }
+    // const onEventFormRegEstExterno = () => {
+    //     setFormRegEstExterno(!formRegEstExterno)
+    // }
 
     return (
         <>
             {
-                formRegEstExterno == false ?
+                // formRegEstExterno == false ?
+                true ?
+
                     (
                         <div className="flex flex-wrap w-screen h-screen">
                             <div className="bg-portada relative -z-20 bg-cover hidden md:flex md:w-1/2 xl:w-2/3">
@@ -131,9 +133,9 @@ const Acceso = () => {
                                         initial={{ x: -1000, opacity: 0 }}
                                         transition={{ duration: 0.8 }}
                                         animate={{ x: 0, opacity: 1 }}
-                                        exit={{ opacity: 0 }}> 
+                                        exit={{ opacity: 0 }}>
                                         {/* <span className="px-1"></span> */}
-                                         <AcedemicCapSvg size={"w-8 h-8"} /></motion.p>
+                                        <AcedemicCapSvg size={"w-8 h-8"} /></motion.p>
                                 </div>
                             </div>
                             <div className="px-6 md:px-12 sm:px-10 my-auto w-full md:w-1/2 xl:w-1/3">
@@ -183,9 +185,12 @@ const Acceso = () => {
 
                                             <Button proceso={proceso} />
 
-                                            <br />
+                                            {/* <br />
                                             <span className="text-xs cursor-pointer text-upla-100 hover:underline"
-                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span>
+                                                onClick={onEventFormRegEstExterno}>Registro estudiante externo</span> */}
+
+                                            {/* <br />
+                                            <span className="text-lg cursor-pointer text-upla-100">Disculpe la molestia estamos trabajando en las mejoras</span> */}
 
                                         </form>
                                     </div>
@@ -195,8 +200,8 @@ const Acceso = () => {
                     )
                     :
                     (
-                        <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
-                        // ''
+                        // <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
+                        ''
                     )
             }
 

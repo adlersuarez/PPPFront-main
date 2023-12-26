@@ -30,7 +30,7 @@ type MenuItem = {
 const menusAdmin: MenuItem[] = [
     {
         id: "1",
-        titulo: "Incicio",
+        titulo: "Inicio",
         url: "/inicio/centro-idiomas",
         icono: "bi-house-fill",
         moduPadre: true,
@@ -80,7 +80,7 @@ const menusAdmin: MenuItem[] = [
 const menusEst: MenuItem[] = [
     {
         id: "1",
-        titulo: "Incicio",
+        titulo: "Inicio",
         url: "/inicio/centro-idiomas",
         icono: "bi-house-fill",
         moduPadre: true,
@@ -105,24 +105,26 @@ const menusEst: MenuItem[] = [
                 modPosicion: 1,
                 subMenu: false,
             },
-            {
-                id: "2",
-                titulo: "Horario",
-                url: "/inicio/horario",
-                icono: "bi-calendar-week",
-                moduPadre: false,
-                modPosicion: 2,
-                subMenu: false,
-            },
-            {
-                id: "3",
-                titulo: "Nota",
-                url: "/inicio/seleccion-notas-estudiante",
-                icono: "bi-card-checklist",
-                moduPadre: false,
-                modPosicion: 3,
-                subMenu: false,
-            },
+
+            // {
+            //     id: "2",
+            //     titulo: "Horario",
+            //     url: "/inicio/horario",
+            //     icono: "bi-calendar-week",
+            //     moduPadre: false,
+            //     modPosicion: 2,
+            //     subMenu: false,
+            // },
+            // {
+            //     id: "3",
+            //     titulo: "Nota",
+            //     url: "/inicio/inicio-docente",
+            //     icono: "bi-card-checklist",
+            //     moduPadre: false,
+            //     modPosicion: 3,
+            //     subMenu: false,
+            // },
+
         ],
     },
 ]

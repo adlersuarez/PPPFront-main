@@ -6,7 +6,8 @@ export default interface Horario {
     sedeId: number
     modalidadId: number
     periodoId: number
-    AulasId: number
+    aulasId: number
+    tipEstudioId: number
     seccion: string
     estado: number
     usuarioRegistra: string

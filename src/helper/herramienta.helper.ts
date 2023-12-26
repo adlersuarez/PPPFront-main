@@ -65,6 +65,72 @@ export function GenerateRangeTurno(horaInicio: string, horaFin: string) {
     return turnoTardeSelect
 }
 
+export function FinalizarHorario(day: number, tipo: number, horaInicio: string) {
+    let horasASumar: number;
+
+    if (tipo === 1) {
+        horasASumar = 1.5;
+    } else if (tipo === 2) {
+        horasASumar = 3;
+    } else {
+        throw new Error('El tipo debe ser 1 o 2');
+    }
+
+    if (day === 6 || day === 7) {
+        horasASumar = 4;
+    }
+
+    // Convertir la hora inicial a minutos para facilitar la manipulación
+    const [horaStr, minutoStr] = horaInicio.split(':').map(Number);
+    const minutosTotales = horaStr * 60 + minutoStr;
+
+    // Sumar las horas
+    const nuevosMinutosTotales = minutosTotales + horasASumar * 60;
+
+    // Calcular la nueva hora y minutos
+    const nuevaHora = Math.floor(nuevosMinutosTotales / 60) % 24;
+    const nuevoMinuto = nuevosMinutosTotales % 60;
+
+    // Formatear la nueva hora y minutos
+    const nuevaHoraStr = nuevaHora.toString().padStart(2, '0');
+    const nuevoMinutoStr = nuevoMinuto.toString().padStart(2, '0');
+
+    return `${nuevaHoraStr}:${nuevoMinutoStr}`
+};
+
+export function FinalizarHorarioCheckBox(day: number[], tipo: number, horaInicio: string) {
+    let horasASumar: number;
+
+    if (tipo === 1) {
+        horasASumar = 1.5;
+    } else if (tipo === 2) {
+        horasASumar = 3;
+    } else {
+        throw new Error('El tipo debe ser 1 o 2');
+    }
+
+    if (day.includes(6) || day.includes(7)) {
+        horasASumar = 4;
+    }
+
+    // Convertir la hora inicial a minutos para facilitar la manipulación
+    const [horaStr, minutoStr] = horaInicio.split(':').map(Number);
+    const minutosTotales = horaStr * 60 + minutoStr;
+
+    // Sumar las horas
+    const nuevosMinutosTotales = minutosTotales + horasASumar * 60;
+
+    // Calcular la nueva hora y minutos
+    const nuevaHora = Math.floor(nuevosMinutosTotales / 60) % 24;
+    const nuevoMinuto = nuevosMinutosTotales % 60;
+
+    // Formatear la nueva hora y minutos
+    const nuevaHoraStr = nuevaHora.toString().padStart(2, '0');
+    const nuevoMinutoStr = nuevoMinuto.toString().padStart(2, '0');
+
+    return `${nuevaHoraStr}:${nuevoMinutoStr}`
+};
+
 
 export const diaSelect = [
     { "id": 1, "dia": 'Lunes' },
@@ -90,78 +156,6 @@ export const colorSelect = [
 ];
 
 
-export const turnoMananaSelect = [
-    { "id": 1, "hora": "7:45" },
-    { "id": 2, "hora": "8:00" },
-    { "id": 3, "hora": "8:15" },
-    { "id": 4, "hora": "8:30" },
-    { "id": 5, "hora": "8:45" },
-    { "id": 6, "hora": "9:00" },
-    { "id": 7, "hora": "9:15" },
-    { "id": 8, "hora": "9:30" },
-    { "id": 9, "hora": "9:45" },
-    { "id": 10, "hora": "10:00" },
-    { "id": 11, "hora": "10:15" },
-    { "id": 12, "hora": "10:30" },
-    { "id": 13, "hora": "10:45" },
-    { "id": 14, "hora": "11:00" },
-    { "id": 15, "hora": "11:15" },
-    { "id": 16, "hora": "11:30" },
-    { "id": 17, "hora": "11:45" },
-    { "id": 18, "hora": "12:00" },
-    { "id": 19, "hora": "12:15" },
-    { "id": 20, "hora": "12:30" },
-    { "id": 21, "hora": "12:45" },
-    { "id": 22, "hora": "13:00" }
-];
-
-export const turnoTardeSelect = [
-    { "id": 1, "hora": "13:00" },
-    { "id": 2, "hora": "13:15" },
-    { "id": 3, "hora": "13:30" },
-    { "id": 4, "hora": "13:45" },
-    { "id": 5, "hora": "14:00" },
-    { "id": 6, "hora": "14:15" },
-    { "id": 7, "hora": "14:30" },
-    { "id": 8, "hora": "14:45" },
-    { "id": 9, "hora": "15:00" },
-    { "id": 10, "hora": "15:15" },
-    { "id": 11, "hora": "15:30" },
-    { "id": 12, "hora": "15:45" },
-    { "id": 13, "hora": "16:00" },
-    { "id": 14, "hora": "16:15" },
-    { "id": 15, "hora": "16:30" },
-    { "id": 16, "hora": "16:45" },
-    { "id": 17, "hora": "17:00" },
-    { "id": 18, "hora": "17:15" },
-    { "id": 19, "hora": "17:30" },
-    { "id": 20, "hora": "17:45" },
-    { "id": 21, "hora": "18:00" }
-]
-
-export const turnoNocheSelect = [
-    { "id": 1, "hora": "18:00" },
-    { "id": 2, "hora": "18:15" },
-    { "id": 3, "hora": "18:30" },
-    { "id": 4, "hora": "18:45" },
-    { "id": 5, "hora": "19:00" },
-    { "id": 6, "hora": "19:15" },
-    { "id": 7, "hora": "19:30" },
-    { "id": 8, "hora": "19:45" },
-    { "id": 9, "hora": "20:00" },
-    { "id": 10, "hora": "20:15" },
-    { "id": 11, "hora": "20:30" },
-    { "id": 12, "hora": "20:45" },
-    { "id": 13, "hora": "21:00" },
-    { "id": 14, "hora": "21:15" },
-    { "id": 15, "hora": "21:30" },
-    { "id": 16, "hora": "21:45" },
-    { "id": 17, "hora": "22:00" },
-    { "id": 18, "hora": "22:15" },
-    { "id": 19, "hora": "22:30" },
-    { "id": 20, "hora": "22:45" },
-    { "id": 21, "hora": "23:00" }
-];
 
 export const seccionSelect = [
     { "id": 1, "nombreSeccion": "A" },
@@ -192,71 +186,5 @@ export const seccionSelect = [
     { "id": 26, "nombreSeccion": "Z" }
 ];
 
-export const horaSelect = [
-    { "id": 1, "hora": "6:00" },
-    { "id": 2, "hora": "6:15" },
-    { "id": 3, "hora": "6:30" },
-    { "id": 4, "hora": "6:45" },
-    { "id": 5, "hora": "7:00" },
-    { "id": 6, "hora": "7:15" },
-    { "id": 7, "hora": "7:30" },
-    { "id": 8, "hora": "7:45" },
-    { "id": 9, "hora": "8:00" },
-    { "id": 10, "hora": "8:15" },
-    { "id": 11, "hora": "8:30" },
-    { "id": 12, "hora": "8:45" },
-    { "id": 13, "hora": "9:00" },
-    { "id": 14, "hora": "9:15" },
-    { "id": 15, "hora": "9:30" },
-    { "id": 16, "hora": "9:45" },
-    { "id": 17, "hora": "10:00" },
-    { "id": 18, "hora": "10:15" },
-    { "id": 19, "hora": "10:30" },
-    { "id": 20, "hora": "10:45" },
-    { "id": 21, "hora": "11:00" },
-    { "id": 22, "hora": "11:15" },
-    { "id": 23, "hora": "11:30" },
-    { "id": 24, "hora": "11:45" },
-    { "id": 25, "hora": "12:00" },
-    { "id": 26, "hora": "12:15" },
-    { "id": 27, "hora": "12:30" },
-    { "id": 28, "hora": "12:45" },
-    { "id": 29, "hora": "13:00" },
-    { "id": 30, "hora": "13:15" },
-    { "id": 31, "hora": "13:30" },
-    { "id": 32, "hora": "13:45" },
-    { "id": 33, "hora": "14:00" },
-    { "id": 34, "hora": "14:15" },
-    { "id": 35, "hora": "14:30" },
-    { "id": 36, "hora": "14:45" },
-    { "id": 37, "hora": "15:00" },
-    { "id": 38, "hora": "15:15" },
-    { "id": 39, "hora": "15:30" },
-    { "id": 40, "hora": "15:45" },
-    { "id": 41, "hora": "16:00" },
-    { "id": 42, "hora": "16:15" },
-    { "id": 43, "hora": "16:30" },
-    { "id": 44, "hora": "16:45" },
-    { "id": 45, "hora": "17:00" },
-    { "id": 46, "hora": "17:15" },
-    { "id": 47, "hora": "17:30" },
-    { "id": 48, "hora": "17:45" },
-    { "id": 49, "hora": "18:00" },
-    { "id": 50, "hora": "18:15" },
-    { "id": 51, "hora": "18:30" },
-    { "id": 52, "hora": "18:45" },
-    { "id": 53, "hora": "19:00" },
-    { "id": 54, "hora": "19:15" },
-    { "id": 55, "hora": "19:30" },
-    { "id": 56, "hora": "19:45" },
-    { "id": 57, "hora": "20:00" },
-    { "id": 58, "hora": "20:15" },
-    { "id": 59, "hora": "20:30" },
-    { "id": 60, "hora": "20:45" },
-    { "id": 61, "hora": "21:00" },
-    { "id": 62, "hora": "21:15" },
-    { "id": 63, "hora": "21:30" },
-    { "id": 64, "hora": "21:45" },
-    { "id": 65, "hora": "22:00" }
-];
+
 
