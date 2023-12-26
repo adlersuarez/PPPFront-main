@@ -15,7 +15,7 @@ import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 
 import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
-// import ModalHorarioDetEditar from './modal/HorarioDetEditar';
+import ModalHorarioDetEditar from './modal/HorarioDetEditar';
 
 import '../horario/component/style/horario.css'
 import VistaPreviaDetalle from "./modal/VistaPreviaDetalle";
@@ -59,6 +59,7 @@ const HorarioDetalle = (props: Props) => {
         setListaHorarioDetalleId([])
 
         const response = await ListarHorarioDetalleId<Listas>(horarioId, props.abortControl)
+
         if (response instanceof Response) {
             setListaHorarioDetalleId(response.data.resultado as ListHorarioDetId[])
         }
@@ -106,6 +107,9 @@ const HorarioDetalle = (props: Props) => {
                         startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(startHour), parseInt(startMin)),
                         endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
                         recurrenceRule: 'FREQ=WEEKLY',
+                        estado: item.estado,
+                        observacion: item.observacion
+
                     };
 
                 })
@@ -115,15 +119,12 @@ const HorarioDetalle = (props: Props) => {
     }
 
     const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
-    // const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
-
+    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
-
 
     const renderCard = (item: any) => {
 
         const horario = item.appointmentData
-
 
         return (
             <div className="p-2 flex flex-col h-full justify-between gap-2">
@@ -134,14 +135,14 @@ const HorarioDetalle = (props: Props) => {
                     </div>
                     <div className="border-b border-dashed border-black my-1"></div>
                     <p className="text-xs font-normal text-gray-700 dark:text-gray-400 whitespace-normal break-words">
-                       Instructor: {horario.docente}
+                       Instructor: {horario.docente} 
                     </p>
                     <div className="font-semibold text-center text-sm text-gray-700 dark:text-gray-400">
                         Capacidad: {horario.capacidad}
                     </div>
                 </div>
                 <div className="text-center rounded bg-white p-1">
-                    <span className="font-bold text-gray-500">{horario.horaIni.slice(0, -3)} <span>{" - "}</span> {horario.horaFin.slice(0, -3)}</span>
+                    <span className="font-bold text-gray-500">{horario.horaIni?.slice(0, -3)} <span>{" - "}</span> {horario.horaFin?.slice(0, -3)}</span>
                 </div>
             </div>
         )
@@ -159,13 +160,13 @@ const HorarioDetalle = (props: Props) => {
     // Modal Editar
     const handleOpenModalHorarioDetProcesoEditar = () => {
         localStorage.setItem('horarioDetActual', JSON.stringify(horarioDetActual));
-        // setIsOpenModalEditar(true)
+        setIsOpenModalEditar(true)
     }
 
-    // const handleCloseModalHorarioDetProcesoEditar = () => {
-    //     localStorage.removeItem('horarioDetActual');
-    //     setIsOpenModalEditar(false)
-    // }
+    const handleCloseModalHorarioDetProcesoEditar = () => {
+         localStorage.removeItem('horarioDetActual');
+         setIsOpenModalEditar(false)
+    }
 
     const dayOfWeekNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
@@ -177,7 +178,6 @@ const HorarioDetalle = (props: Props) => {
             </div>
         );
     }
-
 
     const colorRender = [
         { id: '#EF9A9A', nombreColor: 'Rojo', color: '#EF9A9A' },
@@ -210,7 +210,7 @@ const HorarioDetalle = (props: Props) => {
                 loadInit={() => loadInit(props.idHorario)}
                 handleCloseModalHorarioAgregra={handleCloseModalHorarioAgregra} />
 
-            {/* <ModalHorarioDetEditar
+            <ModalHorarioDetEditar
                 isOpenModal={isOpenModalEditar}
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
@@ -221,7 +221,8 @@ const HorarioDetalle = (props: Props) => {
 
                 loadInit={() => loadInit(props.idHorario)}
                 handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
-            /> */}
+            /> 
+
             <VistaPreviaDetalle
                 isOpenModal={isOpenModalInfo}
                 horario={horarioDetActual}

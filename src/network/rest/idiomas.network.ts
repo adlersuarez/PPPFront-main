@@ -90,6 +90,10 @@ export async function InsertarHorarioAsignatura<RespValue>(params: object , abor
 export async function InsertarHorarioDetalle<RespValue>(params: object[] , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioDetalle/`, params, { signal: abortController?.signal }));
 }
+
+export async function ActualizarHorarioDetalle<RespValue>(params: object , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Horario/ActualizarHorarioDetalle/`, params, { signal: abortController?.signal }));
+}
 /////////////////////
 
 export async function ListarHorarioDisponibleEst<Listas>(EstudianteId: string, AsiId: string, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
