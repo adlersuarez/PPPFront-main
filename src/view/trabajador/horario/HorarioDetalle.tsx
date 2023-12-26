@@ -119,13 +119,11 @@ const HorarioDetalle = (props: Props) => {
 
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
 
-    console.log(dataHorario)
 
     const renderCard = (item: any) => {
 
         const horario = item.appointmentData
 
-        //console.log(horario)
 
         return (
             <div className="p-2 flex flex-col h-full justify-between gap-2">
@@ -136,7 +134,7 @@ const HorarioDetalle = (props: Props) => {
                     </div>
                     <div className="border-b border-dashed border-black my-1"></div>
                     <p className="text-xs font-normal text-gray-700 dark:text-gray-400 whitespace-normal break-words">
-                       Docente: {horario.docente}
+                       Instructor: {horario.docente}
                     </p>
                     <div className="font-semibold text-center text-sm text-gray-700 dark:text-gray-400">
                         Capacidad: {horario.capacidad}
@@ -180,7 +178,7 @@ const HorarioDetalle = (props: Props) => {
         );
     }
 
-    //console.log(listaHorarioDetalleId)
+
     const colorRender = [
         { id: '#EF9A9A', nombreColor: 'Rojo', color: '#EF9A9A' },
         { id: '#81C784', nombreColor: 'Verde', color: '#81C784' },
@@ -194,7 +192,6 @@ const HorarioDetalle = (props: Props) => {
         { id: '#8D6E63', nombreColor: 'Marrón', color: '#8D6E63' },
     ];
 
-    //console.log(dataHorario)
 
     return (
         <>

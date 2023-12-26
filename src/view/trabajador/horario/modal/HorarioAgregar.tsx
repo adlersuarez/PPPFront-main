@@ -12,12 +12,11 @@ import Turno from "../../../../model/interfaces/turno/turno";
 import Programa from "../../../../model/interfaces/programa/programa";
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarAula, ListarSeccion } from "../../../../network/rest/idiomas.network";
+import { ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarAula } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Aula from "@/model/interfaces/aula/aula";
-import Seccion from "@/model/interfaces/seccion/seccion";
 
 
 type Props = {
@@ -47,7 +46,7 @@ const HorarioAgregar = (props: Props) => {
     const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
-    const [comboBoxSeccion, setcomboBoxSeccion] = useState<Seccion[]>([])
+   
 
     const [idAula, setIdAula] = useState<number>(0)
     const [idTurno, setIdTurno] = useState<number>(0)
@@ -65,8 +64,6 @@ const HorarioAgregar = (props: Props) => {
         LoadDataTurno()
         LoadDataPrograma()
         LoadDataAula()
-        LoadDataSeccion()
-
     }, [])
 
     const LoadDataTurno = async () => {
@@ -112,19 +109,6 @@ const HorarioAgregar = (props: Props) => {
         }
     }
 
-    const LoadDataSeccion = async () => {
-
-        setcomboBoxSeccion([])
-
-        const response = await ListarSeccion<Listas>(props.abortControl)
-        if (response instanceof Response) {
-            setcomboBoxSeccion(response.data.resultado as Seccion[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
 
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
