@@ -1,10 +1,3 @@
-// import { ArrowRightOnCicleSvg } from "@/component/Svg.component";
-// import { NavLink } from "react-router-dom";
-import Card from "../../component/pages/cards/CardDash"
-
-// import { images } from "../../helper/index.helper";
-import { Vida, Matricula } from '../../component/Iconos';
-
 const HomeTrabajador = () => {
 
     return (

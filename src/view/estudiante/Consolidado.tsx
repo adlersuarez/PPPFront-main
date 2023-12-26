@@ -48,7 +48,7 @@ const Consolidado = () => {
         if (response instanceof Response) {
 
             const data = response.data.resultado
-            console.log(data)
+            // console.log(data)
 
             if (data.length == 0) {
 
@@ -70,7 +70,7 @@ const Consolidado = () => {
         <>
 
             <div className="p-1 bg-Solid">
-                <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Consolidado Matrícula</h2>
+                <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Consolidado de Matrícula</h2>
 
                 <div className="w-full">
 
@@ -84,7 +84,7 @@ const Consolidado = () => {
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold mb-2 text-white">Información</h2>
-                                    <h3 className="text-gray-200">Te mostramos el consolidado de matrícula</h3>
+                                    <h3 className="text-gray-200">Te mostramos el consolidado de las matrículas</h3>
                                     {/* <h3 className="text-gray-200">El ciclo pertence al perido académico 202401 y es la que fue eligida hasta la fecha 21/12/2023.</h3> */}
 
                                 </div>
