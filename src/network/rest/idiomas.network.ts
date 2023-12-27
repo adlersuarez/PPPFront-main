@@ -12,19 +12,19 @@ const instance = axios.create({
     }
 });
 
-// instance.interceptors.request.use((config) => {
-//     const storage = window.localStorage as Storage;
-//     const token = storage.getItem('token');
-//     if (token !== null) {
-//         config.headers.Authorization = 'Bearer ' + JSON.parse(token);
-//     }
-//     return config;
-// });
+instance.interceptors.request.use((config) => {
+    const storage = window.localStorage as Storage;
+    const token = storage.getItem('token');
+    if (token !== null) {
+        config.headers.Authorization = 'Bearer ' + JSON.parse(token);
+    }
+    return config;
+});
 
 
-// export async function ValidarTokenRest<Void>(signal = null): Promise<Response<Void> | RestError> {
-//     return await Resolve.create<Void>(instance.get<Void>("/Aplicacion/validarToken", { signal: signal! }));
-// }
+export async function ValidarTokenRest<Void>(signal = null): Promise<Response<Void> | RestError> {
+    return await Resolve.create<Void>(instance.get<Void>("/Aplicacion/validarToken", { signal: signal! }));
+}
 
 
 

@@ -133,7 +133,7 @@ const MatriculaInterna = () => {
 
             const data = response.data.resultado
 
-            // console.log(data)
+
 
             setRecienteMatricula(data)
         }
