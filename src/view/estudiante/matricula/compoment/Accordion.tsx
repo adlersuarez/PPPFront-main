@@ -30,9 +30,6 @@ type Props = {
 
 const Accordion = (props: Props) => {
 
-    console.log(props.recienteMatricula)
-
-
     const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
 
     const [isOpen, setIsOpen] = useState(false);
