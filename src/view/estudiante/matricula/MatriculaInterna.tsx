@@ -46,6 +46,8 @@ const MatriculaInterna = () => {
 
     const [validezMesesMatri, setValidezMesesMatri] = useState("0")
 
+    const [recienteMatricula, setRecienteMatricula] = useState<any[]>([])
+
     const abortController = useRef(new AbortController());
 
 
@@ -68,15 +70,13 @@ const MatriculaInterna = () => {
             await LoadPagosMatriculaLista()
             await LoadPagosPensionLista()
             await LoadValidezMatriculaMeses()
-            await ExistenteMatricula()
+            await LoadRecienteMatriculaExistente()
             setLoad(false)
 
     }
 
 
     const LoadPagosMatriculaLista = async () => {
-
-        //setPagoMatriculaLista([])
 
         const response = await PagadoMatriculaLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
@@ -97,8 +97,6 @@ const MatriculaInterna = () => {
     }
 
     const LoadPagosPensionLista = async () => {
-
-        //setPagoPensionLista([])
 
         const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
@@ -129,11 +127,15 @@ const MatriculaInterna = () => {
 
     }
 
-    const ExistenteMatricula = async () => {
+    const LoadRecienteMatriculaExistente = async () => {
         const response = await ExistenteMatriculaPeriodoTipoEstudio<Listas>(codigo)
         if (response instanceof Response) {
-            // setValidezMesesMatri(response.data.)
-            console.log(response)
+
+            const data = response.data.resultado
+
+            // console.log(data)
+
+            setRecienteMatricula(data)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -204,7 +206,7 @@ const MatriculaInterna = () => {
                                             </div>
 
                                             <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
-                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista}
+                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} recienteMatricula={recienteMatricula}
                                             />
 
 
