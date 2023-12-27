@@ -9,11 +9,13 @@ import { useSelector } from "react-redux";
 import { RootState } from '../../store/configureStore.store';
 import { Barras, Bandera } from '../../component/Iconos';
 import { BiCalendar } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 
 const Consolidado = () => {
     const [ciclosDisponibles, setCiclosDisponibles] = useState<CiclosInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    const navigate = useNavigate()
 
     const [asigMatriEst, setAsigMatriEst] = useState<any[]>([]);
 
@@ -48,7 +50,7 @@ const Consolidado = () => {
         if (response instanceof Response) {
 
             const data = response.data.resultado
-            // console.log(data)
+            //console.log(data)
 
             if (data.length == 0) {
 
@@ -70,7 +72,12 @@ const Consolidado = () => {
         <>
 
             <div className="p-1 bg-Solid">
-                <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Consolidado de Matrícula</h2>
+                <h2 className="text-2xl font-bold mb-6 flex gap-3">
+                    <span onClick={() => navigate(-1)} title="Atrás" role="button">
+                        <i className="bi bi-arrow-left-circle-fill text-upla-100 hover:text-gray-500" />
+                    </span>
+                    <p className="text-upla-100 uppercase"> Consolidado de Matrícula </p>
+                </h2>
 
                 <div className="w-full">
 

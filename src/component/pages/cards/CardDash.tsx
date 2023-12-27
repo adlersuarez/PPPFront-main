@@ -22,7 +22,7 @@ const ModalidadCard = (props: Props) => {
         </div>
         <NavLink
             to={props.to}
-            className={`bg-gray-800 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full text-sm`}
+            className={`bg-gray-800 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded-full text-sm`}
         >
             <span>Más Información</span>
         </NavLink>

@@ -67,11 +67,11 @@ const MatriculaInterna = () => {
 
     const loadInitData = async () => {
 
-            await LoadPagosMatriculaLista()
-            await LoadPagosPensionLista()
-            await LoadValidezMatriculaMeses()
-            await LoadRecienteMatriculaExistente()
-            setLoad(false)
+        await LoadPagosMatriculaLista()
+        await LoadPagosPensionLista()
+        await LoadValidezMatriculaMeses()
+        await LoadRecienteMatriculaExistente()
+        setLoad(false)
 
     }
 
@@ -161,7 +161,12 @@ const MatriculaInterna = () => {
                                 ) :
                                 (
                                     <div className="p-1 bg-Solid">
-                                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Matricula</h2>
+                                        <h2 className="text-2xl font-bold mb-6 flex gap-3">
+                                            <span onClick={() => navigate(-1)} title="Atrás" role="button">
+                                                <i className="bi bi-arrow-left-circle-fill text-upla-100 hover:text-gray-500" />
+                                            </span>
+                                            <p className="text-upla-100 uppercase"> Matrícula </p>
+                                        </h2>
 
                                         <div className="w-full">
 
@@ -198,11 +203,11 @@ const MatriculaInterna = () => {
 
                                             <br />
 
-                                            <div className="flex justify-center mb-4">
+                                            <div className="flex justify-center mb-4 gap-8">
                                                 <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
-                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="1.  Pago" />
                                                 <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
-                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="2.  MATRICULA" />
                                             </div>
 
                                             <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
@@ -211,8 +216,9 @@ const MatriculaInterna = () => {
 
 
 
-                                            <h2 className="text-lg font-semibold mt-4">
-                                                <span className="text-xl ">Información para tu matrícula:</span>
+                                            <h2 className="text-lg font-semibold mt-4 flex gap-2 text-upla-100">
+                                                <i className="bi bi-info-circle-fill" />
+                                                <span className="text-xl ">Información para tu matrícula</span>
                                             </h2>
 
                                             <div className="flex flex-wrap justify-center mt-5">
