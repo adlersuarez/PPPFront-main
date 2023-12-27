@@ -169,6 +169,10 @@ export async function AsignaturasMatriculadosEstudiante<Listas>(estudianteId: st
     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/AsignaturasMatriculadosEstudiante/${estudianteId}`, { signal: signal! }));
 }
 
+export async function ExistenteMatriculaPeriodoTipoEstudio<Listas>(estudianteId: string, signal = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/ExistenteMatriculaPeriodoTipoEstudio/${estudianteId}`, { signal: signal! }));
+}
+
 
 
 
