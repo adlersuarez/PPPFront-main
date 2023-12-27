@@ -65,9 +65,9 @@ const MatriculaInterna = () => {
 
     const loadInitData = async () => {
 
-        await LoadPagosMatriculaLista(),
-            await LoadPagosPensionLista(),
-            await LoadValidezMatriculaMeses(),
+        await LoadPagosMatriculaLista()
+            await LoadPagosPensionLista()
+            await LoadValidezMatriculaMeses()
             setLoad(false)
 
     }

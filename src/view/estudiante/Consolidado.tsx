@@ -9,10 +9,10 @@ import CiclosInfo from '../../model/interfaces/matricula/ciclosInfo';
 import { useSelector } from "react-redux";
 import { RootState } from '../../store/configureStore.store';
 import { Barras, Bandera, Matricula } from '../../component/Iconos';
-import ModalVistaHorario from '../../view/trabajador/horario/modal/VistaHorario.modal'
+// import ModalVistaHorario from '../../view/trabajador/horario/modal/VistaHorario.modal'
 import { BiCalendar } from "react-icons/bi";
-import Estudiante from "../../model/interfaces/login/estudiante.login";
-import Trabajador from "../../model/interfaces/login/trabajador.login";
+// import Estudiante from "../../model/interfaces/login/estudiante.login";
+// import Trabajador from "../../model/interfaces/login/trabajador.login";
 
 
 
@@ -20,10 +20,10 @@ import Trabajador from "../../model/interfaces/login/trabajador.login";
 const Consolidado = () => {
     const [ciclosDisponibles, setCiclosDisponibles] = useState<CiclosInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
-    const [show, setShow] = useState<boolean>(false);
+    // const [show, setShow] = useState<boolean>(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
 
     const abortController = useRef(new AbortController());
 
@@ -93,17 +93,19 @@ const Consolidado = () => {
                         ))}
 
 
-                        {ciclosDisponibles.map((ciclo, index) => (
-                            <div className="flex flex-wrap" key={index}>
-                                {/* Tarjeta 1 */}
-                                <div className="w-full  p-4">
-                                    <div className="rounded-md border justify-center text-center border-gray-300 p-4 flex items-center">
-                                        <div>
-                                            <h2 className="text-xl font-bold mb-2">{codigo}</h2>
-                                            <h3 className="">Código</h3>
-                                        </div>
-                                    </div>
-                                </div>
+                        {
+                        // ciclosDisponibles.map((ciclo, index) => (
+                        //     <div className="flex flex-wrap" key={index}>
+                        //         {/* Tarjeta 1 */}
+                        //         <div className="w-full  p-4">
+                        //             <div className="rounded-md border justify-center text-center border-gray-300 p-4 flex items-center">
+                        //                 <div>
+                        //                     <h2 className="text-xl font-bold mb-2">{codigo}</h2>
+                        //                     <h3 className="">Código</h3>
+                        //                 </div>
+                        //             </div>
+                        //         </div>
+                    }
 
                                 {/* Tarjeta 2 */}
                                 {/* <div className="w-full sm:w-1/2 p-4">
@@ -115,7 +117,7 @@ const Consolidado = () => {
                                     </div>
                                 </div> */}
                             </div>
-                        ))}
+                        
 
                         <div className="p-6">
                             <h2 className="text-xl mb-5">Horario - Sección matriculada</h2>
@@ -151,7 +153,7 @@ const Consolidado = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            
         </>
     );
 };

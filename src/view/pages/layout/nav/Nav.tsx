@@ -1,40 +1,40 @@
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../store/authSlice.store";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-type MessageNotif = {
-    id: string;
-    codigo: string;
-    titulo: string;
-    mensaje: string;
-};
+// type MessageNotif = {
+//     id: string;
+//     codigo: string;
+//     titulo: string;
+//     mensaje: string;
+// };
 
-let messageNotif: MessageNotif[] = [
-    {
-        id: "1",
-        codigo: "1111",
-        titulo: "Titulo 1",
-        mensaje: "Mensaje de Prueba 1",
-    },
-    {
-        id: "2",
-        codigo: "2222",
-        titulo: "Titulo 2",
-        mensaje: "Mensaje de Prueba 2",
-    },
-    {
-        id: "3",
-        codigo: "3333",
-        titulo: "Titulo 3",
-        mensaje: "Mensaje de Prueba 3",
-    },
-    {
-        id: "4",
-        codigo: "4444",
-        titulo: "Titulo 4",
-        mensaje: "Mensaje de Prueba 5",
-    },
-];
+// let messageNotif: MessageNotif[] = [
+//     {
+//         id: "1",
+//         codigo: "1111",
+//         titulo: "Titulo 1",
+//         mensaje: "Mensaje de Prueba 1",
+//     },
+//     {
+//         id: "2",
+//         codigo: "2222",
+//         titulo: "Titulo 2",
+//         mensaje: "Mensaje de Prueba 2",
+//     },
+//     {
+//         id: "3",
+//         codigo: "3333",
+//         titulo: "Titulo 3",
+//         mensaje: "Mensaje de Prueba 3",
+//     },
+//     {
+//         id: "4",
+//         codigo: "4444",
+//         titulo: "Titulo 4",
+//         mensaje: "Mensaje de Prueba 5",
+//     },
+// ];
 
 type Props = {
     refBlock: React.RefObject<HTMLInputElement>,
@@ -46,15 +46,15 @@ const Nav = (props: Props) => {
     const dispatch = useDispatch();
 
     // const [open, setOpen] = useState<boolean>(false);
-    const [notif, setNotif] = useState<MessageNotif[]>([]);
+    // const [notif, setNotif] = useState<MessageNotif[]>([]);
 
-    useEffect(() => {
-        setNotif(messageNotif);
-    }, []);
+    // useEffect(() => {
+    //     setNotif(messageNotif);
+    // }, []);
 
-    const removeNotif = (idEliminar: string) => {
-        setNotif(notif.filter((item) => item.id !== idEliminar));
-    };
+    // const removeNotif = (idEliminar: string) => {
+    //     setNotif(notif.filter((item) => item.id !== idEliminar));
+    // };
 
     return (
         <nav

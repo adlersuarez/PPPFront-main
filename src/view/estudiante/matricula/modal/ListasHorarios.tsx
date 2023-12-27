@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 import RespValue from "@/model/interfaces/RespValue.model.interface";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
 
@@ -25,6 +26,7 @@ const ListasHorario = (props: Props) => {
 
     // console.log(props.asigId)
     const sweet = useSweerAlert();
+    const navigate = useNavigate()
 
     const [expandirTD, setExpandirTD] = useState<number | null>(null);
 
@@ -162,10 +164,12 @@ const ListasHorario = (props: Props) => {
                 if (responseMatDet instanceof Response) {
 
                     if (responseMatDet.data.value == "insert") {
-                        sweet.openSuccess("Mensaje", responseMatDet.data.value as string, () => {
+                        sweet.openSuccess("Mensaje", "La matricula se ha realizado con éxito.", () => {
                             props.hide()
                         });
                         localStorage.removeItem("codPen")
+                        navigate(-1)
+                        
                     }
                 }
 

@@ -5,6 +5,13 @@ import { BiCalendar } from 'react-icons/bi';
 import Cargando from '@/component/Cargando';
 import MatriculaPago from '@/model/interfaces/pago/matriculaPago';
 import PensionPago from '@/model/interfaces/pago/pensionPago';
+import { MatriculaExistentePeriodo } from '@/network/rest/idiomas.network';
+import RespValue from '@/model/interfaces/RespValue.model.interface';
+
+import RestError from '@/model/class/resterror.model.class';
+import Response from '@/model/class/response.model.class';
+import { Types } from '@/model/enum/types.model.enum';
+
 
 type Props = {
     pasoActual: number
@@ -15,19 +22,51 @@ type Props = {
 
     dataMatricula: MatriculaPago[]
     dataPension: PensionPago[]
+
     handleMatriculaProceso: () => void;
 }
 
 const Accordion = (props: Props) => {
 
+
+    const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
+
     const [isOpen, setIsOpen] = useState(false);
 
-    // const operMatri = props.dataMatricula[0]?.operacion
-    // const operPens = props.dataPension[0]?.operacion
+    const [matriculaExistente, setMatriculaExistente] = useState(false)
 
-    const toggleAccordion = () => {
-        setIsOpen(!isOpen);
-    };
+
+    const toggleAccordion = async () => {
+
+        if(isOpen) return
+
+        await Promise.all([
+            await  matriculaExistentePeriodo(),
+        ])
+
+        setIsOpen(true);
+
+    };    
+
+    const matriculaExistentePeriodo = async () => {
+        
+        const response = await MatriculaExistentePeriodo<RespValue>(codigo)
+        if (response instanceof Response) {
+
+            const result = response.data as RespValue
+
+            if(result.value == "NOMATRICULADO"){
+                setMatriculaExistente(true)
+            }
+            
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+            
+        }
+
+    }
 
 
 
@@ -180,19 +219,30 @@ const Accordion = (props: Props) => {
 
                             <hr />
 
+                            {
+                                // load? (
+                                //     <Cargando/>
 
-                            {isOpen && (
-                                <>
-                                    <div className="p-3">
-                                        <AccordionItem
-                                            icono={BiCalendar}
-                                            titulo={`Matricúlate - elige tu horario`}
-                                            handleMatriculaModalidad={props.handleMatriculaProceso}
-                                        />
+                                // ):(
+                                    isOpen && (
+                                        <>
+                                            <div className="p-3">
+                                                <AccordionItem
+                                                    icono={BiCalendar}
+                                                    titulo={`Matricúlate - elige tu horario`}
+                                                    estadoBtn={matriculaExistente}
+                                                    handleMatriculaModalidad={ props.handleMatriculaProceso}
+                                                />
+        
+                                            </div>
+                                        </>
+                                    )
 
-                                    </div>
-                                </>
-                            )}
+                                // )
+                            }
+
+
+                            
                         </div>
                     </div>
                 )}

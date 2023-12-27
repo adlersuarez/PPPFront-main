@@ -11,6 +11,8 @@ import modalidad_convalidacion from '../assets/images/convalidacion.jpg';
 
 import portada_login from '../assets/images/portada-login.jpeg';
 
+import Idiomas_Logo from "../assets/images/IDIOMAS_LOGO.png"
+
 //
 import no_user from '../assets/images/no-user.png'
 
@@ -25,7 +27,10 @@ export default {
     portada,
     modalidad_efectiva,
     modalidad_convalidacion,
+    
     no_user,
-    portada_login
+
+    portada_login,
+    Idiomas_Logo
 
 }

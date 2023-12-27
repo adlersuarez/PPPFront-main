@@ -1,9 +1,10 @@
 import { IconType } from 'react-icons';
 
 
-type Props =  {
+type Props = {
     icono: IconType
     titulo: string
+    estadoBtn: boolean
     handleMatriculaModalidad: () => void;
 }
 
@@ -16,27 +17,41 @@ const IcoAprobado = () => {
 
 const AccordionItem = (props: Props) => {
 
-
-
     return (
         <>
-            <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between  hover:scale-105 transition-transform duration-300 mb-2">
+            <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between mb-2">
 
-                <div>
+                {
+                    props.estadoBtn ?
+                        (
+                            <>
+                                <div>
+                                    <h3 className="text-lg font-semibold "><IcoAprobado /> {props.titulo}</h3>
+                                </div>
+                                <div className="text-green-600">
+                                    <button
+                                        className="block mt-0 text-sm text-white bg-blue-500 border border-blue-500 rounded-4xl py-2 px-4 text-center hover:bg-blue-700"
+                                        onClick={
 
-                    <h3 className="text-lg font-semibold "><IcoAprobado /> {props.titulo}</h3>
+                                            () => props.handleMatriculaModalidad()}>
+                                        Matricularme
+                                    </button>
+                                </div>
+                            </>
 
-                </div>
-                <div className="text-green-600">
+                        )
+                        :
 
-                    <button 
-                    className="block mt-0 text-sm text-white bg-blue-600 border border-blue-600 rounded-4xl py-2 px-4 text-center hover:bg-blue-700"
-                    onClick={()=>props.handleMatriculaModalidad()}>
-                        Matricularme
-                    </button>
-                </div>
+                        (
+                            <div>
+                                <h3 className="text-lg font-semibold "><IcoAprobado /> Usted ya cuanta con una matricula para el periodo actual</h3>
+                            </div>
 
+                        )
+
+                }
             </div>
+
         </>
 
     );
