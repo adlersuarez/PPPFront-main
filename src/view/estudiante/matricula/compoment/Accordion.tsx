@@ -28,13 +28,11 @@ type Props = {
 
 const Accordion = (props: Props) => {
 
-
     const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
 
     const [isOpen, setIsOpen] = useState(false);
 
     const [matriculaExistente, setMatriculaExistente] = useState(false)
-
 
     const toggleAccordion = async () => {
 
@@ -67,8 +65,6 @@ const Accordion = (props: Props) => {
         }
 
     }
-
-
 
     return (
         <div className="border border-gray-300 p-4 rounded-b">
