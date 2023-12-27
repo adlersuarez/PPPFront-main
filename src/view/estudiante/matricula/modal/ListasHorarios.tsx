@@ -28,11 +28,13 @@ const ListasHorario = (props: Props) => {
     const sweet = useSweerAlert();
     const navigate = useNavigate()
 
-    const [expandirTD, setExpandirTD] = useState<number | null>(null);
+    /*const [expandirTD,
+        //setExpandirTD
+    ] = useState<number | null>(null);*/
 
-    const handleExpandirTD = (horarioId: number) => {
+    /*const handleExpandirTD = (horarioId: number) => {
         setExpandirTD((prev) => (prev === horarioId ? null : horarioId));
-    };
+    };*/
 
     const [listarHorarioDisponible, setListarHorarioDisponible] = useState<any[]>([]);
     const [tiempoRestante, setTiempoRestante] = useState<number>(60);
@@ -76,6 +78,7 @@ const ListasHorario = (props: Props) => {
         const response = await ListarHorarioDisponibleEst<Listas>(codigo, props.asigId)
 
         if (response instanceof Response) {
+            //console.log(response)
             setListarHorarioDisponible(response.data.resultado)
         }
         if (response instanceof RestError) {
@@ -84,25 +87,56 @@ const ListasHorario = (props: Props) => {
         }
     }
 
-    const listaHorarios: Omit<HorarioDisponible, 'dia'>[] = [];
-    const horarioIdsSet = new Set<number>();
+    const listaHorarios: (HorarioDisponible & { repeticiones: number })[] = [];
+    const horarioIdsCount: Record<number, number> = {};
 
     listarHorarioDisponible.forEach((elemento) => {
         const { horarioId, dia, ...restoElemento } = elemento;
 
-        if (!horarioIdsSet.has(horarioId)) {
-            horarioIdsSet.add(horarioId);
-            listaHorarios.push({ horarioId, ...restoElemento });
+        // Incrementa el contador para el horarioId actual
+        horarioIdsCount[horarioId] = (horarioIdsCount[horarioId] || 0) + 1;
+
+        // Agrega a listaHorariosUnicos solo si es el primer elemento encontrado
+        if (horarioIdsCount[horarioId] === 1) {
+            listaHorarios.push({
+                horarioId,
+                ...restoElemento,
+                repeticiones: horarioIdsCount[horarioId],
+            });
+        } else {
+            // Actualiza la repeticiones para los elementos adicionales
+            const indice = listaHorarios.findIndex((el) => el.horarioId === horarioId);
+            if (indice !== -1) {
+                listaHorarios[indice].repeticiones = horarioIdsCount[horarioId];
+            }
         }
     });
 
-    const FiltrarPorId = (listaElementos: HorarioDisponible[], horarioId: number | null): HorarioDisponible[] => {
+    //console.log(listaHorarios);
+    /*const listaHorarios: (HorarioDisponible & { repeticiones: number })[] = [];
+    const horarioIdsCount: Record<number, number> = {};
+
+    listarHorarioDisponible.forEach((elemento) => {
+        const { horarioId, dia, ...restoElemento } = elemento;
+
+        // Incrementa el contador para el horarioId actual
+        horarioIdsCount[horarioId] = (horarioIdsCount[horarioId] || 0) + 1;
+
+        // Agrega la información al array resultante
+        listaHorarios.push({
+            horarioId,
+            ...restoElemento,
+            repeticiones: horarioIdsCount[horarioId],
+        });
+    });*/
+
+    /*const FiltrarPorId = (listaElementos: HorarioDisponible[], horarioId: number | null): HorarioDisponible[] => {
         return listaElementos.filter(elemento => elemento.horarioId === horarioId);
-    };
+    };*/
 
-    const listaHorariosFiltrada = FiltrarPorId(listarHorarioDisponible, expandirTD);
+    //const listaHorariosFiltrada = FiltrarPorId(listarHorarioDisponible, expandirTD);
 
-    const diasNombres: { [key: string]: string } = {
+    /*const diasNombres: { [key: string]: string } = {
         '1': 'Lunes',
         '2': 'Martes',
         '3': 'Miércoles',
@@ -110,9 +144,9 @@ const ListasHorario = (props: Props) => {
         '5': 'Viernes',
         '6': 'Sábado',
         '7': 'Domingo',
-    };
+    };*/
 
-    const matriculaHorarioElegido = (idiomaId: number, sedeId: string,  horarioAsigId: number, tipoEstudioId: number, periodoId: number) => {
+    const matriculaHorarioElegido = (idiomaId: number, sedeId: string, horarioAsigId: number, tipoEstudioId: number, periodoId: number) => {
 
         const paramsMatricula = {
             "matriculaId": 0,
@@ -224,8 +258,6 @@ const ListasHorario = (props: Props) => {
         })
     }
 
-
-
     return (
         <CustomModal
             isOpen={props.show}
@@ -234,7 +266,6 @@ const ListasHorario = (props: Props) => {
             }}
             onHidden={() => {
                 setTiempoRestante(60)
-
             }}
             onClose={props.hide}
         >
@@ -266,7 +297,8 @@ const ListasHorario = (props: Props) => {
                                 <th className="py-2 px-6">Nivel</th>
                                 <th className="py-2 px-6">T. Estudio</th>
                                 <th className="py-2 px-6">Modalidad</th>
-                                <th className="py-2 px-6">Horarios</th>
+                                <th className="py-2 px-6">Turno</th>
+                                <th className="py-2 px-8">Horarios</th>
                                 <th className="py-2 px-6">Aula</th>
                                 <th className="py-2 px-6">Sección</th>
                                 <th className="py-2 px-6">Cant / Cap</th>
@@ -280,21 +312,21 @@ const ListasHorario = (props: Props) => {
                                         <tr className="text-center bg-white border-b">
                                             <td colSpan={8} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
                                         </tr>
-
-
                                     ) : (
                                         listaHorarios.map((horario) => (
-                                            <tr key={horario.horarioId} className="text-center text-sm">
-                                                <td className="border p-2">{horario.asignatura}</td>
-                                                <td className="border p-2">{horario.tipoEstudio}</td>
-                                                <td className="border p-2">{horario.modalidad}</td>
-                                                
-                                                <td className={`border p-2 gap-2 ${expandirTD === horario.horarioId ? 'flex-col flex' : ''}`}>
-                                                    <button className="bg-gray-200 px-2 p-1 rounded-lg" onClick={() => handleExpandirTD(horario.horarioId)}>
+                                            horario.capacidad !== horario.cantidad && (
+                                                <tr key={horario.horarioId} className="text-center text-sm">
+                                                    <td className="border p-2">{horario.asignatura}</td>
+                                                    <td className="border p-2">{horario.tipoEstudio}</td>
+                                                    <td className="border p-2">{horario.modalidad}</td>
+                                                    <td className="border p-2">{horario.turno}</td>
+
+                                                    <td className={`border p-2 gap-2`}>
+                                                        {/*<button className="bg-gray-200 px-2 p-1 rounded-lg" onClick={() => handleExpandirTD(horario.horarioId)}>
                                                         <i className={`bi ${expandirTD === horario.horarioId ? 'bi-dash' : 'bi-plus'}`} />
                                                         {expandirTD === horario.horarioId ? ' Ocultar' : ' Mostrar'}
-                                                    </button>
-                                                    {
+                                                    </button>*/}
+                                                        {/*
                                                         expandirTD === horario.horarioId && (
                                                             <div className="flex flex-col gap-2">
                                                                 <div className="text-xs flex flex-col gap-1">
@@ -311,25 +343,35 @@ const ListasHorario = (props: Props) => {
                                                                 </div>
                                                             </div>
                                                         )
-                                                    }
-                                                </td>
+                                                                */}
+                                                        <div className="text-xs">
+                                                            {
+                                                                horario.repeticiones == 2 ?
+                                                                    <p>Sábado - Domingo</p>
+                                                                    :
+                                                                    <p>Lunes a Viernes</p>
+                                                            }
+                                                        </div>
 
-                                                <td className="border p-2">{horario.aula}</td>
-                                                <td className="border p-2">{horario.seccion}</td>
-                                                <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
-                                                <td className="border p-2">
-                                                    <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
-                                                        disabled={horario.cantidad >= horario.capacidad}
-                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.horarioAsigId, horario.tipEstudioId, horario.periodoId,)}>
-                                                        Matricular
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                        <div className="text-sm font-semibold">
+                                                            {horario.horaIni.slice(0, -3) + " - " + horario.horaFin.slice(0, -3)}
+                                                        </div>
+                                                    </td>
+
+                                                    <td className="border p-2">{horario.aula}</td>
+                                                    <td className="border p-2">{horario.seccion}</td>
+                                                    <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
+                                                    <td className="border p-2">
+                                                        <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
+                                                            disabled={horario.cantidad >= horario.capacidad}
+                                                            onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.horarioAsigId, horario.tipEstudioId, horario.periodoId,)}>
+                                                            Matricular
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            )
                                         ))
-
                                     )
-
-
                             }
                         </tbody>
                     </table>

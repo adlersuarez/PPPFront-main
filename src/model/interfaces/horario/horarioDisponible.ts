@@ -27,4 +27,5 @@ export default interface HorarioDisponible {
     periodoId: number;
     anio: number;
     mes: number;
+    turno: string;
 }
