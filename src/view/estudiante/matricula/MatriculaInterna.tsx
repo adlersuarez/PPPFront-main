@@ -16,7 +16,7 @@ import { Types } from "../../../model/enum/types.model.enum";
 import MatriculaPago from "@/model/interfaces/pago/matriculaPago";
 import PensionPago from "@/model/interfaces/pago/pensionPago";
 
-import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../component/Iconos';
+import { IconoCalendario, MultipleCheck, Documento, Lista, Libro } from '../../../component/Iconos';
 
 import Listas from "@/model/interfaces/Listas.model.interface";
 
@@ -222,6 +222,16 @@ const MatriculaInterna = () => {
                                             </h2>
 
                                             <div className="flex flex-wrap justify-center mt-5">
+
+                                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<Libro />}
+                                                        titulo={'Manual de matrícula'}
+                                                        color={'blue'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
+                                                        info={''}
+                                                    />
+                                                </div> */}
                                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                                     <Card
                                                         imagen={<IconoCalendario />}
@@ -240,15 +250,6 @@ const MatriculaInterna = () => {
                                                         info={''}
                                                     />
                                                 </div>
-                                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
-                                                    <Card
-                                                        imagen={<MultipleCheck />}
-                                                        titulo={'Cronograma de matrícula'}
-                                                        color={'blue'}
-                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
-                                                        info={''}
-                                                    />
-                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
