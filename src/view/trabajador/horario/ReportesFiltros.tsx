@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ListarIdioma, ListarModalidad, ListarPeriodo, ListarSede, ListarTipoEstudio, ReporteMatricula } from '../../../network/rest/idiomas.network';
+import { ListarIdioma, ListarModalidad, ListarPeriodo, ListarSede, ListarTipoEstudio, ReporteHorarioAsignatura, ReporteMatricula } from '../../../network/rest/idiomas.network';
 import Listas from '../../../model/interfaces/Listas.model.interface';
 import RestError from "../../../model/class/resterror.model.class";
 import { Types } from "../../../model/enum/types.model.enum";
@@ -24,7 +24,7 @@ const Reporte = () => {
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>("0")
     const [idModalidad, setIdModalidad] = useState<number>(0)
-    const [idPeriodo, setIdPeriodo] = useState<string>("0")
+    const [idPeriodo, setIdPeriodo] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
     const [reportesDisponibles, setReporteDisponible] = useState<ReportesInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
@@ -50,10 +50,11 @@ const Reporte = () => {
 
         setReporteDisponible([])
 
-        const response = await ReporteMatricula<Listas>(abortController.current);
+        //const response = await ReporteHorarioAsignatura<Listas>(idIdioma,idSede,idModalidad,idPeriodo,idTipoEstudio,abortController.current);
+        const response = await ReporteHorarioAsignatura<Listas>(0,"0",0,0,0,abortController.current);
         if (response instanceof Response) {
-            //console.log(response.data);
-            setReporteDisponible(response.data.resultado as ReportesInfo[]);
+            console.log(response.data);
+            //setReporteDisponible(response.data.resultado as ReportesInfo[]);
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -287,7 +288,7 @@ const Reporte = () => {
                                     value={idPeriodo}
                                     onChange={(event) => {
                                         const selectedPeriodoId = event.currentTarget.value;
-                                        setIdPeriodo(selectedPeriodoId);
+                                        setIdPeriodo(parseInt(selectedPeriodoId));
 
                                         /*const selectedPeriodo = comboBoxPeriodo.find(item => item.periodoId.toString() === selectedPeriodoId);
 
@@ -298,7 +299,7 @@ const Reporte = () => {
                                         }*/
                                     }}
                                 >
-                                    <option value={"0"}>- Seleccione -</option>
+                                    <option value={0}>- Seleccione -</option>
                                     {
                                         comboBoxPeriodo.map((item, index) => {
 

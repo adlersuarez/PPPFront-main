@@ -28,11 +28,11 @@ export async function ValidarTokenRest<Void>(signal = null): Promise<Response<Vo
 
 
 
-export async function ListarIdioma<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarIdioma<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Idioma/ListarIdioma", { signal: abortController?.signal }));
 }
 
-export async function ListarSede<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarSede<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Sede/ListarSede", { signal: abortController?.signal }));
 }
 
@@ -40,27 +40,27 @@ export async function ListarModalidad<Listas>(abortController: AbortController |
     return await Resolve.create<Listas>(instance.get<Listas>("/Modalidad/ListarModalidad", { signal: abortController?.signal }));
 }
 
-export async function ListarPrograma<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarPrograma<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Programa/ListarPrograma", { signal: abortController?.signal }));
 }
 
-export async function ListarTurno<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarTurno<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Turno/ListarTurno", { signal: abortController?.signal }));
 }
 
-export async function ListarPeriodo<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarPeriodo<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Periodo/ListarPeriodo", { signal: abortController?.signal }));
 }
 
-export async function ListarTipoEstudio<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarTipoEstudio<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/TipoEstudio/ListarTipoEstudio", { signal: abortController?.signal }));
 }
 
-export async function ListarAula<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarAula<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Aula/ListarAula", { signal: abortController?.signal }));
 }
 
-export async function ListarSeccion<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarSeccion<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Seccion/ListarSeccion", { signal: abortController?.signal }));
 }
 
@@ -70,6 +70,10 @@ export async function ReporteMatricula<Listas>(abortController: AbortController 
     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/ReporteMatricula`, { signal: abortController?.signal }));
 }
 
+export async function ReporteHorarioAsignatura<Listas>(idiomaId: number, sedeId: string, modalidadId: number, periodoId: number, tipEstudioId: number, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/ReporteHorarioAsignatura/${idiomaId}/${sedeId}/${modalidadId}/${periodoId}/${tipEstudioId}`, { signal: abortController?.signal }));
+}
+
 // export async function ReporteMatricula<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: string, TipEstudioId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
 //     return await Resolve.create(instance.get<ListasPag>(`/Matricula/ReporteMatricula/${IdiomaId}/${SedeId}/${ModalidadId}/${PeriodoId}/${TipEstudioId}/${posPagina}/${filaPagina}`, { signal: abortController?.signal }));
 // }
@@ -77,7 +81,7 @@ export async function ReporteMatricula<Listas>(abortController: AbortController 
 
 //Horario
 
-export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: string, TipEstudioId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
+export async function ListarHorarioPag<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: string, TipEstudioId: number, posPagina: number, filaPagina: number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
     return await Resolve.create(instance.get<ListasPag>(`/Horario/ListarHorarioPag/${IdiomaId}/${SedeId}/${ModalidadId}/${PeriodoId}/${TipEstudioId}/${posPagina}/${filaPagina}`, { signal: abortController?.signal }));
 }
 
@@ -96,15 +100,15 @@ export async function InsertarActualizarHorarioDetalle<RespValue>(mode: string, 
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarActualizarHorarioDetalle/${mode} `, params, { signal: abortController?.signal }));
 }
 
-export async function InsertarHorarioAsignatura<RespValue>(params: object , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+export async function InsertarHorarioAsignatura<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioAsignatura`, params, { signal: abortController?.signal }));
 }
 
-export async function InsertarHorarioDetalle<RespValue>(params: object[] , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+export async function InsertarHorarioDetalle<RespValue>(params: object[], abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioDetalle/`, params, { signal: abortController?.signal }));
 }
 
-export async function ActualizarHorarioDetalle<RespValue>(params: object , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+export async function ActualizarHorarioDetalle<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/Horario/ActualizarHorarioDetalle/`, params, { signal: abortController?.signal }));
 }
 /////////////////////
@@ -116,7 +120,7 @@ export async function ListarHorarioDisponibleEst<Listas>(EstudianteId: string, A
 
 // Asignatura
 
-export async function ListarAsignatura<Listas>( abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarAsignatura<Listas>(abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>("/Asignatura/ListarAsignatura", { signal: abortController?.signal }));
 }
 
@@ -136,7 +140,7 @@ export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId
 }
 
 
-export async function EstudianteHorariosMatriculados<Listas>( HorarioAsigId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function EstudianteHorariosMatriculados<Listas>(HorarioAsigId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/Estudiante/EstudianteHorariosMatriculados/${HorarioAsigId}`, { signal: abortController?.signal }));
 }
 
@@ -144,7 +148,7 @@ export async function EstudianteHorariosMatriculados<Listas>( HorarioAsigId: num
 
 // Docente
 
-export async function ListarDocenteIdiomasBusqueda<Listas>( busqueda: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+export async function ListarDocenteIdiomasBusqueda<Listas>(busqueda: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/Docente/ListarDocenteIdiomasBusqueda/${busqueda}`, { signal: abortController?.signal }));
 }
 
@@ -173,11 +177,11 @@ export async function ValidezMatriculaMeses<RespValue>(EstudianteId: string, sig
 }
 
 export async function InsertarMatricula<RespValue>(TipEstId: number, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatricula/${TipEstId}`, params, { signal: abortController?.signal  }));
+    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatricula/${TipEstId}`, params, { signal: abortController?.signal }));
 }
 
 export async function InsertarMatriculaDetalle<RespValue>(estudianteId: string, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatriculaDetalle/${estudianteId}`, params, { signal: abortController?.signal  }));
+    return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarMatriculaDetalle/${estudianteId}`, params, { signal: abortController?.signal }));
 }
 
 export async function MatriculaExistentePeriodo<RespValue>(estudianteId: string, signal = null): Promise<Response<RespValue> | RestError> {
