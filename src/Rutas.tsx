@@ -24,6 +24,8 @@ import Consolidado from './view/estudiante/Consolidado';
 import Boleta from './view/estudiante/Boleta-notas';
 import Inasistencia from './view/estudiante/inasistencia';
 import ResultadoPostulante from './view/estudiante/resultados-postulante';
+import Reportes from  './view/trabajador/horario/Reportes';
+import ReportesModalidad from  './view/trabajador/horario/ReportesModalidad';
 
 
 
@@ -81,6 +83,17 @@ const router = createBrowserRouter([
         path:'horario',
         element: <MatriculaHorario/>
       },
+
+      
+      {
+        path:'reportes',
+        element: <Reportes/>
+      },
+      {
+        path:'reportesModalidad',
+        element: <ReportesModalidad/>
+      },
+    
       {
         path:'horario-idiomas',
         element: <HorarioIdiomas/>

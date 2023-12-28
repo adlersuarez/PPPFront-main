@@ -75,7 +75,17 @@ const menusAdmin: MenuItem[] = [
             //     modPosicion: 3,
             //     subMenu: false,
             // },
-        ],
+        ]
+    },
+    {
+        id: "1",
+        titulo: "Reportes",
+        url: "/inicio/Reportes",
+        icono: "bi-house-fill",
+        moduPadre: true,
+        modPosicion: 1,
+        subMenu: false,
+        subMenuItems: []
     },
 ]
 
