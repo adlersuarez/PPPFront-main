@@ -123,6 +123,12 @@ export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId
 }
 
 
+export async function EstudianteHorariosMatriculados<Listas>( HorarioAsigId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Estudiante/EstudianteHorariosMatriculados/${HorarioAsigId}`, { signal: abortController?.signal }));
+}
+
+
+
 // Docente
 
 export async function ListarDocenteIdiomasBusqueda<Listas>( busqueda: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {

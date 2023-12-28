@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AsignaturasMatriculadosEstudiante, CiclosMatriculablesIdiomas } from '../../network/rest/idiomas.network';
+import { AsignaturasMatriculadosEstudiante, CiclosMatriculablesIdiomas, EstudianteHorariosMatriculados } from '../../network/rest/idiomas.network';
 import Listas from '../../model/interfaces/Listas.model.interface';
 import RestError from "../../model/class/resterror.model.class";
 import { Types } from "../../model/enum/types.model.enum";
@@ -19,9 +19,10 @@ const Consolidado = () => {
 
     const [asigMatriEst, setAsigMatriEst] = useState<any[]>([]);
 
+    const [isOpen, setIsOpen] = useState(false);
+
     const abortController = useRef(new AbortController());
 
-    // const tipoUser = JSON.parse(window.localStorage.getItem("tipoUsuario") || "");
 
     useEffect(() => {
         LoadCiclosDisponibles()
@@ -50,10 +51,10 @@ const Consolidado = () => {
         if (response instanceof Response) {
 
             const data = response.data.resultado
-            //console.log(data)
+            // console.log(data)
 
             if (data.length == 0) {
-
+                return
             } else {
                 setAsigMatriEst(response.data.resultado);
             }
@@ -65,6 +66,38 @@ const Consolidado = () => {
             console.log(response.getMessage())
         }
     }
+
+    const ListaEstHorAsigId = async (HorarioAsigId: number) => {
+        const response = await EstudianteHorariosMatriculados<Listas>(HorarioAsigId, abortController.current)
+        if (response instanceof Response) {
+
+            const data = response.data.resultado
+            console.log(data)
+
+
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+
+    const toggleVer = async (HorarioAsigId: number) => {
+
+        setIsOpen(!isOpen)
+
+        if (!isOpen){
+            await Promise.all([
+                await ListaEstHorAsigId(HorarioAsigId),
+            ])
+            console.log("entro")
+        } else {
+            console.log("no entro")
+        }
+        
+
+    };
 
 
 
@@ -129,8 +162,11 @@ const Consolidado = () => {
                                         <th scope="col" className="px-2 py-2">Aula</th>
                                         <th scope="col" className="px-2 py-2">Sección</th>
                                         <th scope="col" className="px-2 py-2">Modalidad</th>
-                                        <th scope="col" className="px-2 py-2">Tipo Estudio</th>
-                                        <th scope="col" className="px-2 py-2">Fecha</th>
+                                        <th scope="col" className="px-2 py-2">T. Estudio</th>
+                                        <th scope="col" className="px-2 py-2">Turno</th>
+                                        <th scope="col" className="px-2 py-2">F. Registro</th>
+                                        <th scope="col" className="px-2 py-2">Horario</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -145,7 +181,30 @@ const Consolidado = () => {
                                             <td className="px-1 py-2">{item.seccion}</td>
                                             <td className="px-1 py-2">{item.modalidad}</td>
                                             <td className="px-1 py-2">{item.tipoEstudio}</td>
+                                            <td className="px-1 py-2">{item.turno}</td>
                                             <td className="px-1 py-2">{new Date(item.fechRegistro).toLocaleString()}</td>
+                                            <td className="px-1 py-2">
+                                                <button
+                                                    title="Ver horario"
+                                                    className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
+                                                    onClick={()=>toggleVer(item.HorarioAsigId)}
+                                                >
+                                                    <i className="bi bi-list text-sm"></i> Ver
+                                                </button>
+
+                                                {
+
+                                                    isOpen && (
+                                                        <>
+                                                            <div className="p-4">
+                                                                <p>Aca renderizar horario</p>
+                                                            </div>
+                                                        </>
+                                                    )
+
+                                     
+                                                }
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -160,3 +219,5 @@ const Consolidado = () => {
 };
 
 export default Consolidado;
+
+
