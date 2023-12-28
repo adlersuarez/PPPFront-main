@@ -10,6 +10,7 @@ import { RootState } from '../../store/configureStore.store';
 import { Barras, Bandera } from '../../component/Iconos';
 import { BiCalendar } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { diaSelect } from "@/helper/herramienta.helper";
 
 
 const Consolidado = () => {
@@ -18,6 +19,7 @@ const Consolidado = () => {
     const navigate = useNavigate()
 
     const [asigMatriEst, setAsigMatriEst] = useState<any[]>([]);
+    const [listaHorarioAsign, setListaHorarioAsign] = useState<any[]>([]);
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -72,8 +74,8 @@ const Consolidado = () => {
         if (response instanceof Response) {
 
             const data = response.data.resultado
-            console.log(data)
-
+            // console.log(data)
+            setListaHorarioAsign(data)
 
         }
         if (response instanceof RestError) {
@@ -87,19 +89,15 @@ const Consolidado = () => {
 
         setIsOpen(!isOpen)
 
-        if (!isOpen){
+        if (!isOpen) {
             await Promise.all([
                 await ListaEstHorAsigId(HorarioAsigId),
             ])
-            console.log("entro")
-        } else {
-            console.log("no entro")
         }
-        
 
     };
 
-
+    console.log(listaHorarioAsign)
 
     return (
         <>
@@ -163,9 +161,9 @@ const Consolidado = () => {
                                         <th scope="col" className="px-2 py-2">Sección</th>
                                         <th scope="col" className="px-2 py-2">Modalidad</th>
                                         <th scope="col" className="px-2 py-2">T. Estudio</th>
-                                        <th scope="col" className="px-2 py-2">Turno</th>
                                         <th scope="col" className="px-2 py-2">F. Registro</th>
-                                        <th scope="col" className="px-2 py-2">Horario</th>
+                                        <th scope="col" className="px-2 py-2">Turno</th>
+                                        <th scope="col" className="px-2 py-2 w-64">Horario</th>
 
                                     </tr>
                                 </thead>
@@ -181,28 +179,34 @@ const Consolidado = () => {
                                             <td className="px-1 py-2">{item.seccion}</td>
                                             <td className="px-1 py-2">{item.modalidad}</td>
                                             <td className="px-1 py-2">{item.tipoEstudio}</td>
-                                            <td className="px-1 py-2">{item.turno}</td>
                                             <td className="px-1 py-2">{new Date(item.fechRegistro).toLocaleString()}</td>
-                                            <td className="px-1 py-2">
+                                            <td className="px-1 py-2">{item.turno}</td>
+                                            <td className="px-1 py-2 flex flex-col w-64">
                                                 <button
                                                     title="Ver horario"
-                                                    className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                    onClick={()=>toggleVer(item.HorarioAsigId)}
+                                                    className="focus:outline-none flex gap-2 m-auto text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1" 
+                                                    onClick={() => toggleVer(item.horarioAsigId)}
                                                 >
-                                                    <i className="bi bi-list text-sm"></i> Ver
+                                                    <i className="bi bi-calendar3 text-sm" /> {!isOpen ? 'Mostrar horario':'Ocultar'}
                                                 </button>
 
                                                 {
-
                                                     isOpen && (
-                                                        <>
-                                                            <div className="p-4">
-                                                                <p>Aca renderizar horario</p>
-                                                            </div>
-                                                        </>
-                                                    )
 
-                                     
+                                                        <div className="p-3 flex flex-col gap-1 m-auto w-56">
+                                                            {listaHorarioAsign.map((horario, index) => {
+                                                                const diaSeleccionado = diaSelect.find(dia => dia.id === horario.dia);
+                                                                if (!diaSeleccionado) return null;
+
+                                                                return (
+                                                                    <div key={index} className="border p-1 rounded flex justify-between items-center">
+                                                                        <div className="font.semibold">{diaSeleccionado.dia}</div>
+                                                                        <div className="text-gray-600">{`${horario.horaIni.slice(0, -3)} - ${horario.horaFin.slice(0, -3)}`}</div>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )
                                                 }
                                             </td>
                                         </tr>
