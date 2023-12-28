@@ -314,7 +314,8 @@ const ListasHorario = (props: Props) => {
                                         </tr>
                                     ) : (
                                         listaHorarios.map((horario) => (
-                                            horario.capacidad !== horario.cantidad && (
+                                            //horario.capacidad !== horario.cantidad && (
+                                          
                                                 <tr key={horario.horarioId} className="text-center text-sm">
                                                     <td className="border p-2">{horario.asignatura}</td>
                                                     <td className="border p-2">{horario.tipoEstudio}</td>
@@ -362,14 +363,22 @@ const ListasHorario = (props: Props) => {
                                                     <td className="border p-2">{horario.seccion}</td>
                                                     <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
                                                     <td className="border p-2">
-                                                        <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
-                                                            disabled={horario.cantidad >= horario.capacidad}
-                                                            onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.horarioAsigId, horario.tipEstudioId, horario.periodoId,)}>
-                                                            Matricular
-                                                        </button>
+                                                        {
+                                                            horario.cantidad >= horario.capacidad ?
+                                                                <div className="bg-red-400 rounded-lg text-white p-1 px-1 text-xs">
+                                                                    Vacantes agotadas
+                                                                </div>
+                                                                :
+                                                                <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
+                                                                    //disabled={horario.cantidad >= horario.capacidad}
+                                                                    onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.horarioAsigId, horario.tipEstudioId, horario.periodoId,)}>
+                                                                    Matricular
+                                                                </button>
+                                                        }
+
                                                     </td>
                                                 </tr>
-                                            )
+                                            //)
                                         ))
                                     )
                             }
