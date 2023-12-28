@@ -52,7 +52,7 @@ const HorarioIdiomas = () => {
     const [idAula, setIdAula] = useState<number>(0)
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [idSeccion, setIdSeccion] = useState<number>(0)
+    const [seccion, setSeccion] = useState<string>("")
 
     const [estado, setEstado] = useState<number>(0)
 
@@ -209,7 +209,7 @@ const HorarioIdiomas = () => {
         handleOpenModal()
     }
 
-    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, tipEstudioId: number, estado: number, idAula: number, seccionId: number) => {
+    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, tipEstudioId: number, estado: number, idAula: number, seccion: string) => {
         setIdHorario(horarioId)
 
         setIdIdioma(idiomaId)
@@ -220,7 +220,7 @@ const HorarioIdiomas = () => {
         setIdPrograma(programaId)
         setIdTipoEstudio(tipEstudioId)
         setEstado(estado)
-        setIdSeccion(seccionId)
+        setSeccion(seccion)
 
         setIdAula(idAula)
 
@@ -418,7 +418,7 @@ const HorarioIdiomas = () => {
                                         idModalidad={idModalidad}
                                         idPeriodo={idPeriodo}
                                         idTipoEstudio={idTipoEstudio}
-                                        idSeccion={idSeccion}
+                                        seccion={seccion}
 
                                         idAula={idAula}
                                         idTurno={idTurno}
@@ -657,15 +657,11 @@ const HorarioIdiomas = () => {
                                                     <thead className="align-bottom">
                                                         <tr>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '10%' }}>Idioma</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidas</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Programa</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sección</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Programa</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Seccion</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
 
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Opciones</th>
                                                         </tr>
@@ -675,7 +671,7 @@ const HorarioIdiomas = () => {
 
                                                             loading ? (
                                                                 <tr className="text-center bg-white border-b">
-                                                                    <td colSpan={11} className="text-sm p-2 border-b border-solid">
+                                                                    <td colSpan={7} className="text-sm p-2 border-b border-solid">
                                                                         <div className="flex items-center justify-center">
                                                                             <LoaderSvg /> <span>Cargando datos...</span>
                                                                         </div>
@@ -685,7 +681,7 @@ const HorarioIdiomas = () => {
                                                                 horarioLista.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={11} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={7} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :
@@ -695,21 +691,17 @@ const HorarioIdiomas = () => {
                                                                             return (
                                                                                 <tr key={index} className="bg-white border-b" title={formatDateTimeToFecha(item.fechaRegistra)}>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.idiomaNombre}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.programa}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aulaNombre}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.nombreSeccion}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.programa}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aula}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.seccion}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.estado}</td>
 
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                                                                         <button
                                                                                             title="Editar"
                                                                                             className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.estado, item.aulasId, item.seccionId)}
+                                                                                            onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.estado, item.aulasId, item.seccion)}
                                                                                         >
                                                                                             <i className="bi bi-pencil-fill text-sm"></i>
 
@@ -724,14 +716,13 @@ const HorarioIdiomas = () => {
 
                                                                                         </button>
                                                                                         {" "}
-                                                                                        <button
+                                                                                        {/* <button
                                                                                             title="Borrar"
                                                                                             className="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 rounded-md px-2 py-1"
-                                                                                        // onClick={() => onEventDetalle(item.codigo)}
+                                                                
                                                                                         >
                                                                                             <i className="bi bi-trash3-fill text-sm"></i>
-
-                                                                                        </button>
+                                                                                        </button> */}
 
                                                                                     </td>
 

@@ -12,19 +12,19 @@ const instance = axios.create({
     }
 });
 
-// instance.interceptors.request.use((config) => {
-//     const storage = window.localStorage as Storage;
-//     const token = storage.getItem('token');
-//     if (token !== null) {
-//         config.headers.Authorization = 'Bearer ' + JSON.parse(token);
-//     }
-//     return config;
-// });
+instance.interceptors.request.use((config) => {
+    const storage = window.localStorage as Storage;
+    const token = storage.getItem('token');
+    if (token !== null) {
+        config.headers.Authorization = 'Bearer ' + JSON.parse(token);
+    }
+    return config;
+});
 
 
-// export async function ValidarTokenRest<Void>(signal = null): Promise<Response<Void> | RestError> {
-//     return await Resolve.create<Void>(instance.get<Void>("/Aplicacion/validarToken", { signal: signal! }));
-// }
+export async function ValidarTokenRest<Void>(signal = null): Promise<Response<Void> | RestError> {
+    return await Resolve.create<Void>(instance.get<Void>("/Aplicacion/validarToken", { signal: signal! }));
+}
 
 
 
@@ -96,9 +96,18 @@ export async function InsertarActualizarHorarioDetalle<RespValue>(mode: string, 
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarActualizarHorarioDetalle/${mode} `, params, { signal: abortController?.signal }));
 }
 
-export async function InsertarHorarioDetalle<RespValue>(params: object[] , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioDetalle`, params, { signal: abortController?.signal }));
+export async function InsertarHorarioAsignatura<RespValue>(params: object , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioAsignatura`, params, { signal: abortController?.signal }));
 }
+
+export async function InsertarHorarioDetalle<RespValue>(params: object[] , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioDetalle/`, params, { signal: abortController?.signal }));
+}
+
+export async function ActualizarHorarioDetalle<RespValue>(params: object , abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Horario/ActualizarHorarioDetalle/`, params, { signal: abortController?.signal }));
+}
+/////////////////////
 
 export async function ListarHorarioDisponibleEst<Listas>(EstudianteId: string, AsiId: string, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
     return await Resolve.create(instance.get<Listas>(`/Horario/ListarHorariosDisponiblesEst/${EstudianteId}/${AsiId}`, { signal: abortController?.signal }));
@@ -169,23 +178,14 @@ export async function MatriculaExistentePeriodo<RespValue>(estudianteId: string,
     return await Resolve.create<RespValue>(instance.get<RespValue>(`/Matricula/MatriculaExistentePeriodo/${estudianteId}`, { signal: signal! }));
 }
 
-// export async function InsertarActualizarMatricula<RespValue>(mode: string, TipEstId: number, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-//     return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarActualizarMatricula/${mode}/${TipEstId}`, params, { signal: abortController?.signal  }));
-// }
+export async function AsignaturasMatriculadosEstudiante<Listas>(estudianteId: string, signal = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/AsignaturasMatriculadosEstudiante/${estudianteId}`, { signal: signal! }));
+}
 
-// export async function InsertarActualizarMatriculaDetalle<RespValue>(mode: string, estudianteId: string,  params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-//     return await Resolve.create<RespValue>(instance.post<RespValue>(`/Matricula/InsertarActualizarMatriculaDetalle/${mode}/${estudianteId}`, params, { signal: abortController?.signal  }));
-// }
+export async function ExistenteMatriculaPeriodoTipoEstudio<Listas>(estudianteId: string, signal = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/ExistenteMatriculaPeriodoTipoEstudio/${estudianteId}`, { signal: signal! }));
+}
 
-
-
-// export async function PagoMatriculaUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
-//     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoMatriculaUsados/${EstudianteId}`, { signal: abortController?.signal }));
-// }
-
-// export async function PagoPensionUsados<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
-//     return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/PagoPensionUsados/${EstudianteId}`, { signal: abortController?.signal }));
-// }
 
 
 

@@ -6,7 +6,7 @@ import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
+import { ExistenteMatriculaPeriodoTipoEstudio, PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
@@ -46,6 +46,8 @@ const MatriculaInterna = () => {
 
     const [validezMesesMatri, setValidezMesesMatri] = useState("0")
 
+    const [recienteMatricula, setRecienteMatricula] = useState<any[]>([])
+
     const abortController = useRef(new AbortController());
 
 
@@ -65,17 +67,16 @@ const MatriculaInterna = () => {
 
     const loadInitData = async () => {
 
-        await LoadPagosMatriculaLista()
+            await LoadPagosMatriculaLista()
             await LoadPagosPensionLista()
             await LoadValidezMatriculaMeses()
+            await LoadRecienteMatriculaExistente()
             setLoad(false)
 
     }
 
 
     const LoadPagosMatriculaLista = async () => {
-
-        //setPagoMatriculaLista([])
 
         const response = await PagadoMatriculaLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
@@ -97,12 +98,11 @@ const MatriculaInterna = () => {
 
     const LoadPagosPensionLista = async () => {
 
-        //setPagoPensionLista([])
-
         const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
 
             const pensiones = response.data.resultado as PensionPago[]
+
             setPagoPensionLista(pensiones)
             setLoadPension(false)
             localStorage.setItem('codPen', pensiones[0].operacion);
@@ -125,6 +125,22 @@ const MatriculaInterna = () => {
             console.log(response.getMessage())
         }
 
+    }
+
+    const LoadRecienteMatriculaExistente = async () => {
+        const response = await ExistenteMatriculaPeriodoTipoEstudio<Listas>(codigo)
+        if (response instanceof Response) {
+
+            const data = response.data.resultado
+
+
+
+            setRecienteMatricula(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
 
     }
 
@@ -190,7 +206,7 @@ const MatriculaInterna = () => {
                                             </div>
 
                                             <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
-                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista}
+                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} recienteMatricula={recienteMatricula}
                                             />
 
 

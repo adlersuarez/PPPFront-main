@@ -7,7 +7,7 @@ import HorarioDisponible from "@/model/interfaces/horario/horarioDisponible";
 import CiclosInfo from "@/model/interfaces/matricula/ciclosInfo";
 import { InsertarMatricula, InsertarMatriculaDetalle, ListarHorarioDisponibleEst } from "@/network/rest/idiomas.network";
 import { RootState } from "@/store/configureStore.store";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 import RespValue from "@/model/interfaces/RespValue.model.interface";
@@ -35,9 +35,39 @@ const ListasHorario = (props: Props) => {
     };
 
     const [listarHorarioDisponible, setListarHorarioDisponible] = useState<any[]>([]);
+    const [tiempoRestante, setTiempoRestante] = useState<number>(60);
+    const showRef = useRef<boolean>(props.show);
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
+    useEffect(() => {
+        let temporizador: NodeJS.Timeout;
+
+        const cerrarModal = () => {
+            props.hide();
+            // Reiniciar el tiempo restante cuando se cierra el modal
+            setTiempoRestante(60);
+        };
+
+        if (props.show) {
+            showRef.current = true;
+            temporizador = setInterval(() => {
+                setTiempoRestante((prevTiempo) => {
+                    if (prevTiempo === 0) {
+                        clearInterval(temporizador);
+                        cerrarModal();
+                    }
+                    return prevTiempo > 0 ? prevTiempo - 1 : 0;
+                });
+            }, 1000);
+        } else {
+            showRef.current = false;
+        }
+
+        return () => {
+            clearInterval(temporizador);
+        };
+    }, [props.show, props.hide]);
 
     const loadInit = async () => {
 
@@ -82,7 +112,7 @@ const ListasHorario = (props: Props) => {
         '7': 'Domingo',
     };
 
-    const matriculaHorarioElegido = (idiomaId: number, sedeId: string, asiId: string, horarioId: number, tipoEstudioId: number, periodoId: string, seccionId: number) => {
+    const matriculaHorarioElegido = (idiomaId: number, sedeId: string,  horarioAsigId: number, tipoEstudioId: number, periodoId: number) => {
 
         const paramsMatricula = {
             "matriculaId": 0,
@@ -96,14 +126,13 @@ const ListasHorario = (props: Props) => {
             "usuarioUpdate": "",// codigo,
             "matriculaEstado": 1,
             "estadoOperacion": true,
-            "opeMat": localStorage.getItem("codMat"),
+            "opeMat": localStorage.getItem("codMat")
         }
 
         const paramsPension = {
             "detMatriculaId": 0,
             "matriculaId": 0,
-            "asiId": asiId,
-            "horarioId": horarioId,
+            "HorarioAsigId": horarioAsigId,
             "convalidacion": "",
             "promedio": 0,
             "asistencia": 0,
@@ -114,13 +143,12 @@ const ListasHorario = (props: Props) => {
             "opePen": localStorage.getItem("codPen"),
             "condicion": 'N',
             "tipEstudioId": tipoEstudioId,
-            "periodoId": periodoId,
-            "seccionId": seccionId,
+            "periodoId": periodoId
         }
+
 
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
-
 
 
                 sweet.openInformation("Mensaje", "Procesando información...")
@@ -169,7 +197,7 @@ const ListasHorario = (props: Props) => {
                         });
                         localStorage.removeItem("codPen")
                         navigate(-1)
-                        
+
                     }
                 }
 
@@ -196,6 +224,8 @@ const ListasHorario = (props: Props) => {
         })
     }
 
+
+
     return (
         <CustomModal
             isOpen={props.show}
@@ -203,6 +233,7 @@ const ListasHorario = (props: Props) => {
                 loadInit()
             }}
             onHidden={() => {
+                setTiempoRestante(60)
 
             }}
             onClose={props.hide}
@@ -210,7 +241,14 @@ const ListasHorario = (props: Props) => {
             <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
                 <div className="flex justify-between">
-                    <h6 className="py-1 font-bold text-lg"> Lista de Horarios</h6>
+
+                    <div className="flex justify-between w-11/12">
+                        <h6 className="py-1 font-bold text-lg"> Lista de Horarios</h6>
+                        <div className="flex gap-4 bg-red-400 text-white px-2 text-sm rounded-lg">
+                            <i className="m-auto bi bi-exclamation-circle text-lg" />
+                            <p className="m-auto ">Se cerrará automáticamente en: <strong>{tiempoRestante}</strong> segundos</p>
+                        </div>
+                    </div>
                     <button
                         className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                         onClick={props.hide}>
@@ -221,12 +259,12 @@ const ListasHorario = (props: Props) => {
                 {/* <div className="w-full px-4 pb-2 pt-4">
                 </div> */}
 
-                <div className="relative overflow-auto rounded-md my-6">
+                <div className="relative overflow-auto rounded-md my-6 overflow-y-auto h-96">
                     <table className="w-full text-gray-700 uppercase border table-auto">
                         <thead className="bg-upla-100 text-white">
                             <tr>
-                                <th className="py-2 px-6">NIVEL</th>
-                                <th className="py-2 px-6">Tipo</th>
+                                <th className="py-2 px-6">Nivel</th>
+                                <th className="py-2 px-6">T. Estudio</th>
                                 <th className="py-2 px-6">Modalidad</th>
                                 <th className="py-2 px-6">Horarios</th>
                                 <th className="py-2 px-6">Aula</th>
@@ -250,7 +288,8 @@ const ListasHorario = (props: Props) => {
                                                 <td className="border p-2">{horario.asignatura}</td>
                                                 <td className="border p-2">{horario.tipoEstudio}</td>
                                                 <td className="border p-2">{horario.modalidad}</td>
-                                                <td className={`border p-2 flex-col flex gap-2 ${expandirTD === horario.horarioId ? 'expandido' : ''}`}>
+                                                
+                                                <td className={`border p-2 gap-2 ${expandirTD === horario.horarioId ? 'flex-col flex' : ''}`}>
                                                     <button className="bg-gray-200 px-2 p-1 rounded-lg" onClick={() => handleExpandirTD(horario.horarioId)}>
                                                         <i className={`bi ${expandirTD === horario.horarioId ? 'bi-dash' : 'bi-plus'}`} />
                                                         {expandirTD === horario.horarioId ? ' Ocultar' : ' Mostrar'}
@@ -276,12 +315,12 @@ const ListasHorario = (props: Props) => {
                                                 </td>
 
                                                 <td className="border p-2">{horario.aula}</td>
-                                                <td className="border p-2">{horario.nombreSeccion}</td>
+                                                <td className="border p-2">{horario.seccion}</td>
                                                 <td className="border p-2">{horario.cantidad + '/' + horario.capacidad}</td>
                                                 <td className="border p-2">
                                                     <button className="bg-gray-400 hover:bg-blue-500 p-1 px-2 text-white rounded-lg"
                                                         disabled={horario.cantidad >= horario.capacidad}
-                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.asiId, horario.horarioId, horario.tipEstudioId, horario.periodoId, horario.seccionId)}>
+                                                        onClick={() => matriculaHorarioElegido(horario.idiomaId, horario.sedeId, horario.horarioAsigId, horario.tipEstudioId, horario.periodoId,)}>
                                                         Matricular
                                                     </button>
                                                 </td>

@@ -12,12 +12,11 @@ import Turno from "../../../../model/interfaces/turno/turno";
 import Programa from "../../../../model/interfaces/programa/programa";
 
 import Listas from "../../../../model/interfaces/Listas.model.interface";
-import { ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarAula, ListarSeccion } from "../../../../network/rest/idiomas.network";
+import { ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarAula } from "../../../../network/rest/idiomas.network";
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface";
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
 import Aula from "@/model/interfaces/aula/aula";
-import Seccion from "@/model/interfaces/seccion/seccion";
 
 
 type Props = {
@@ -47,26 +46,24 @@ const HorarioAgregar = (props: Props) => {
     const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
-    const [comboBoxSeccion, setcomboBoxSeccion] = useState<Seccion[]>([])
+   
 
     const [idAula, setIdAula] = useState<number>(0)
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [idSeccion, setIdSeccion] = useState(0)
+    const [seccion, setSeccion] = useState("")
 
     const [estado, setEstado] = useState<boolean>(true)
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
     const refAula = useRef<HTMLSelectElement>(null)
-    const refSeccion = useRef<HTMLSelectElement>(null)
+    const refSeccion = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         LoadDataTurno()
         LoadDataPrograma()
         LoadDataAula()
-        LoadDataSeccion()
-
     }, [])
 
     const LoadDataTurno = async () => {
@@ -112,19 +109,6 @@ const HorarioAgregar = (props: Props) => {
         }
     }
 
-    const LoadDataSeccion = async () => {
-
-        setcomboBoxSeccion([])
-
-        const response = await ListarSeccion<Listas>(props.abortControl)
-        if (response instanceof Response) {
-            setcomboBoxSeccion(response.data.resultado as Seccion[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
 
     const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked);
@@ -145,10 +129,7 @@ const HorarioAgregar = (props: Props) => {
             refAula.current?.focus()
             return
         }
-        if (idSeccion == 0) {
-            refSeccion.current?.focus()
-            return
-        }
+
 
         const params = {
             "horarioId": 0,
@@ -160,7 +141,7 @@ const HorarioAgregar = (props: Props) => {
             "periodoId": props.idPeriodo,
             "aulasId": idAula,
             "tipEstudioId": props.idTipoEstudio,
-            "seccionId": idSeccion,
+            "seccion": seccion,
             "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
@@ -216,7 +197,7 @@ const HorarioAgregar = (props: Props) => {
                     setIdPrograma(0)
                     setIdAula(0)
                     setEstado(true)
-                    setIdSeccion(0)
+                    setSeccion("")
                 }}
                 onClose={props.handleCloseModal}
             >
@@ -241,7 +222,7 @@ const HorarioAgregar = (props: Props) => {
                                         <div className="text-sm">
                                             <p>Idioma: <span className="text-blue-700 font-bold">{props.nombreIdioma}</span></p>
                                             <p>Modalidad: <span className="text-blue-700 font-bold ">{props.nombreModalidad}</span></p>
-                                            <p>Tipo Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
+                                            <p>Tipo de Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                         </div>
                                         <div className="text-sm">
                                             <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
@@ -317,20 +298,31 @@ const HorarioAgregar = (props: Props) => {
                                     <option value={0}>- Seleccione -</option>
                                     {
                                         comboBoxAula.filter(item => item.modalidadId === props.idModalidad)
-                                        .map((item, index) => (
-                                            <option key={index} value={item.aulasId}>
-                                                {item.nombre}
-                                            </option>
-                                        ))
-                                        
+                                            .map((item, index) => (
+                                                <option key={index} value={item.aulasId}>
+                                                    {item.nombre}
+                                                </option>
+                                            ))
+
                                     }
                                 </select>
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                    Seccion <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                    Sección
                                 </label>
-                                <select
+                                <input
+                                    maxLength={3}
+                                    type="text"
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                    ref={refSeccion}
+                                    value={seccion}
+                                    onChange={(e) =>
+                                        setSeccion(e.target.value)
+                                    }
+                                />
+
+                                {/* <select
                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
                                     ref={refSeccion}
                                     value={idSeccion}
@@ -350,7 +342,7 @@ const HorarioAgregar = (props: Props) => {
 
                                         })
                                     }
-                                </select>
+                                </select> */}
                             </div>
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">

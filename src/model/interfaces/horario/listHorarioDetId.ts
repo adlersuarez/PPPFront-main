@@ -1,33 +1,22 @@
 export default interface ListHorarioDetId {
     detHorarioId: number
     horarioId: number
-    turnoId: number
-    turno: string
-    programaId: number
-    programa: string
-    periodoId: number
-    anio: number
-    mes: number
-    tipEstudioId: number
-	tipoEstudio: string
-    seccionId: number
-    nombreSeccion: string
-    asiId: string
-    nivel: number
+    horarioAsigId: number
     capacidad: number
+    asignatura: string
+    docente: string
+  
     dia: number
     horaIni: string
     horaFin: string
-    horaAcademica: string
     color: string
     observacion: string
-    docenteId: number
     estado: number
     usuarioRegistra: string
     fechaRegistra: Date
     usuarioModifica: string
     fechaModifica: Date
-    asignatura: string
+    
     numDocTrabajador: string
-    docente: string
+    
 }

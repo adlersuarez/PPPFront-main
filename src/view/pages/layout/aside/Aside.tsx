@@ -32,7 +32,7 @@ type MenuItem = {
 const menusAdmin: MenuItem[] = [
     {
         id: "1",
-        titulo: "Incicio",
+        titulo: "Inicio",
         url: "/inicio/centro-idiomas",
         icono: "bi-house-fill",
         moduPadre: true,
@@ -48,15 +48,15 @@ const menusAdmin: MenuItem[] = [
         modPosicion: 1,
         subMenu: false,
         subMenuItems: [
-            {
-                id: "1",
-                titulo: "Matricula Admin",
-                url: "/inicio/matricula-interna",
-                icono: "bi-pencil-square",
-                moduPadre: false,
-                modPosicion: 1,
-                subMenu: false,
-            },
+            // {
+            //     id: "1",
+            //     titulo: "Matricula Admin",
+            //     url: "/inicio/matricula-interna",
+            //     icono: "bi-pencil-square",
+            //     moduPadre: false,
+            //     modPosicion: 1,
+            //     subMenu: false,
+            // },
             {
                 id: "2",
                 titulo: "Horario Admin",
@@ -66,15 +66,15 @@ const menusAdmin: MenuItem[] = [
                 modPosicion: 2,
                 subMenu: false,
             },
-            {
-                id: "3",
-                titulo: "Nota Admin",
-                url: "/inicio/inicio-docente",
-                icono: "bi-card-checklist",
-                moduPadre: false,
-                modPosicion: 3,
-                subMenu: false,
-            },
+            // {
+            //     id: "3",
+            //     titulo: "Nota Admin",
+            //     url: "/inicio/inicio-docente",
+            //     icono: "bi-card-checklist",
+            //     moduPadre: false,
+            //     modPosicion: 3,
+            //     subMenu: false,
+            // },
         ],
     },
 ]
@@ -82,7 +82,7 @@ const menusAdmin: MenuItem[] = [
 const menusEst: MenuItem[] = [
     {
         id: "1",
-        titulo: "Incicio",
+        titulo: "Inicio",
         url: "/inicio/centro-idiomas",
         icono: "bi-house-fill",
         moduPadre: true,

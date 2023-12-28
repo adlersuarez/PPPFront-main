@@ -21,6 +21,9 @@ import PensionUsados from './matricula/pensionUsados'
 import CicloInfo from "./matricula/ciclosInfo"
 import HorarioDisponible from "./horario/horarioDisponible"
 
+import ReportesInfo from "./trabajador/reportesInfo"
+
+
 export default interface Listas {
-    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] |  Seccion[] | ListHorarioDetId[] | MatriculaPago[] | PensionPago[] | CicloInfo[] | MatriculaUsados[] | PensionUsados[] | HorarioDisponible[]
+    resultado: Programa[] | Modalidad[] | Sede[] | Idioma[] | Turno[] | Periodo[] | TipoEstudio[] | Asignatura[] | DocenteInfo[] | Aula[] |  Seccion[] | ListHorarioDetId[] | MatriculaPago[] | PensionPago[] | CicloInfo[] | MatriculaUsados[] | PensionUsados[] | HorarioDisponible[] | ReportesInfo[]
 }

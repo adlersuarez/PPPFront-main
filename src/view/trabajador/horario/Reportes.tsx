@@ -1,28 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { ReporteMatricula } from '../../../network/rest/idiomas.network';
 import Listas from '../../../model/interfaces/Listas.model.interface';
-// import Sweet from '../../../model/interfaces/Sweet.mode.interface'
 import RestError from "../../../model/class/resterror.model.class";
 import { Types } from "../../../model/enum/types.model.enum";
 import Response from "../../../model/class/response.model.class";
-import CiclosInfo from '../../../model/interfaces/matricula/ciclosInfo';
+import ReportesInfo from '../../../model/interfaces/trabajador/reportesInfo'
 import { useSelector } from "react-redux";
 import { RootState } from '../../../store/configureStore.store';
 import { Barras, Bandera, Matricula } from '../../../component/Iconos';
-// import ModalVistaHorario from '../../view/trabajador/horario/modal/VistaHorario.modal'
 import { BiCalendar } from "react-icons/bi";
-// import Estudiante from "../../model/interfaces/login/estudiante.login";
-// import Trabajador from "../../model/interfaces/login/trabajador.login";
-
-
 
 
 const Consolidado = () => {
-    const [ciclosDisponibles, setCiclosDisponibles] = useState<CiclosInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
-    // const [show, setShow] = useState<boolean>(false);
-
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
+    const [reportesDisponibles, setReporteDisponible] = useState<ReportesInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
 
     const abortController = useRef(new AbortController());
 
@@ -36,12 +26,12 @@ const Consolidado = () => {
 
     const LoadCiclosDisponibles = async () => {
 
-        setCiclosDisponibles([])
+        setReporteDisponible([])
 
         const response = await ReporteMatricula<Listas>( abortController.current);
         if (response instanceof Response) {
             console.log(response.data);
-            setCiclosDisponibles(response.data.resultado as CiclosInfo[]);
+            setReporteDisponible(response.data.resultado as ReportesInfo[]);
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -55,7 +45,7 @@ const Consolidado = () => {
         <>
 
             <div className="p-1 bg-Solid">
-                <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Consolidado Matrícula</h2>
+                <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Reporte de Matriculados</h2>
 
                 <div className="w-full">
  
@@ -69,29 +59,19 @@ const Consolidado = () => {
                             </div>
                             <div>
                                 <h2 className="text-xl font-bold mb-2 text-white">Información</h2>
-                                <h3 className="text-gray-200">Te mostramos el consolidado de matrícula</h3>
-                                <h3 className="text-gray-200">El ciclo pertence al perido académico 202401 y es la que fue eligida hasta la fecha 21/12/2023.</h3>
+                                <h3 className="text-gray-200">Te mostramos el consolidado de matriculados</h3>
+                                <h3 className="text-gray-200">El reporte pertence al perido académico 202401 y es la que fue eligida hasta la fecha 28/12/2023.</h3>
 
                             </div>
                         </div>
                     </div>
 
-                        {ciclosDisponibles.map((ciclo, index) => (
-                            <div key={index} className="bg-white rounded-lg shadow-md border border-300 p-8 mt-4  mx-4 flex flex-col justify-center items-center">
-                                <h2 className="text-center text-2xl font-semibold mb-4 flex items-center">
-                                    <BiCalendar className="w-5 h-5 mr-2" />
-                                    Consolidado de matrícula:
-                                    <Barras className="w-3 h-3 mr-2 ml-5" />
-                                    Nº {ciclo.nivelAsign}
-                                </h2>
-                            </div>
-                        ))}
 
                             </div>
                         
 
                         <div className="p-6">
-                            <h2 className="text-xl mb-5">Horario - Sección matriculada</h2>
+                            <h2 className="text-xl mb-5">Reporte de matriculados</h2>
 
 
                             {/* Tabla de Datos */}
@@ -99,23 +79,23 @@ const Consolidado = () => {
                                 <table className="w-full text-sm text-center rtl:text-right">
                                     <thead className="text-xs text-white uppercase h-16 bg-teal-500 dark:text-white">
                                         <tr>
+                                            <th scope="col" className="px-6 py-3">#</th>
                                             <th scope="col" className="px-6 py-3">Código</th>
-                                            <th scope="col" className="px-6 py-3">Descripción</th>
-                                            <th scope="col" className="px-6 py-3">Sección</th>
-                                            <th scope="col" className="px-6 py-3">Aula</th>
+                                            <th scope="col" className="px-6 py-3">Nombres</th>
+                                            <th scope="col" className="px-6 py-3">Facultad</th>
+                                            <th scope="col" className="px-6 py-3">Carrera</th>
+                                            {/* <th scope="col" className="px-6 py-3">Aula</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {ciclosDisponibles.map((ciclo, index) => (
+                                        {reportesDisponibles.map((ciclo, index) => (
                                             <tr key={index} className="border-">
                                                 {/* Renderizar los datos en las celdas */}
-                                                <td className="px-6 py-4"><Matricula className="w-8 h-8 mr-2 ml-5" /></td>
-                                                <td className="px-6 py-4">{ciclo.nivelAsign}</td>
-                                                <td className="px-6 py-4">{ciclo.nombreAsign}</td>
-                                                <td className="px-6 py-4">
-
-
-                                                </td>
+                                                <td className="px-6 py-4">{ index +1}</td>
+                                                <td className="px-6 py-4">{ciclo.codigo}</td>
+                                                <td className="px-6 py-4">{ciclo.estPaterno +' '+ciclo.estMaterno + ' ' +ciclo.estNombres}</td>
+                                                <td className="px-6 py-4">{ciclo.facultad}</td>
+                                                <td className="px-6 py-4">{ciclo.carrera}</td>
                                             </tr>
                                         ))}
                                     </tbody>

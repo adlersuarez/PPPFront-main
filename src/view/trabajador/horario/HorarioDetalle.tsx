@@ -37,9 +37,6 @@ const HorarioDetalle = (props: Props) => {
     const [listaHorarioDetalleId, setListaHorarioDetalleId] = useState<ListHorarioDetId[]>([])
 
     const [dataHorario, setDataHorario] = useState<object[]>([]);
-    const [color, setColor] = useState<object[]>([]);
-
-    console.log(color)
 
     const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -62,6 +59,7 @@ const HorarioDetalle = (props: Props) => {
         setListaHorarioDetalleId([])
 
         const response = await ListarHorarioDetalleId<Listas>(horarioId, props.abortControl)
+
         if (response instanceof Response) {
             setListaHorarioDetalleId(response.data.resultado as ListHorarioDetId[])
         }
@@ -76,6 +74,8 @@ const HorarioDetalle = (props: Props) => {
     }, [listaHorarioDetalleId])
 
     const dataRenderHorario = () => {
+
+       
 
         if (listaHorarioDetalleId.length > 0) {
 
@@ -96,75 +96,30 @@ const HorarioDetalle = (props: Props) => {
                     return {
                         detHorarioId: item.detHorarioId,
                         horarioId: item.horarioId,
-                        turnoId: item.turnoId,
-                        turno: item.turno,
-                        programaId: item.programaId,
-                        programa: item.programa,
-                        periodoId: item.periodoId,
-                        anio: item.anio,
-                        mes: item.mes,
-                        tipEstudioId: item.tipEstudioId,
-                        tipoEstudio: item.tipoEstudio,
-                        seccionId: item.seccionId,
-                        seccion: item.nombreSeccion,
-                        asignaturaId: item.asiId,
-                        asignatura: item.asignatura,
-
-
-                        nivel: item.nivel,
+                        horarioAsigId: item.horarioAsigId,
                         capacidad: item.capacidad,
+                        asignatura: item.asignatura,
                         dia: item.dia,
-
                         horaIni: item.horaIni,
                         horaFin: item.horaFin,
-
-                        horaAcademica: item.horaAcademica,
                         color: item.color,
-                        observacion: item.observacion,
-
-                        docenteId: item.docenteId,
                         docente: item.docente,
-
-                        estado: item.estado,
-
                         startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(startHour), parseInt(startMin)),
                         endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
-
-
                         recurrenceRule: 'FREQ=WEEKLY',
-
-                        //modHora: item.fechaModifica,
-                        // disponible: item.disponible,
-                        // modalidad: item.modalidad,
-                        // ocupado: item.ocupado,
-                        // codCursal: item.codCursal,
-                        visible: item.estado,
-
-                        roomId: item.color,
-                        id: item.detHorarioId
+                        estado: item.estado,
+                        observacion: item.observacion
 
                     };
 
                 })
 
             );
-
-            setColor(
-                listaHorarioDetalleId.map((item) => {
-                    return {
-                        id: item.detHorarioId,
-                        color: item.color,
-                        // text: ""
-                    }
-                })
-
-            )
         }
     }
 
     const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
     const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
-
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
 
     const renderCard = (item: any) => {
@@ -176,18 +131,18 @@ const HorarioDetalle = (props: Props) => {
                 <div className="flex flex-col gap-1">
                     <div className="flex justify-between tracking-tight text-gray-900 dark:text-white">
                         <p className="font-bold">{horario.asignatura}</p>
-                        <p>Sección: <span className="font-bold">{horario.seccion}</span></p>
+                        {/*<p>Sección: <span className="font-bold">{horario.seccion}</span></p>*/}
                     </div>
                     <div className="border-b border-dashed border-black my-1"></div>
                     <p className="text-xs font-normal text-gray-700 dark:text-gray-400 whitespace-normal break-words">
-                        {horario.docente}
+                       Instructor: {horario.docente} 
                     </p>
                     <div className="font-semibold text-center text-sm text-gray-700 dark:text-gray-400">
-                        {horario.horaIni.slice(0, -3)} <span>{" - "}</span> {horario.horaFin.slice(0, -3)}
+                        Capacidad: {horario.capacidad}
                     </div>
                 </div>
                 <div className="text-center rounded bg-white p-1">
-                    <span className="font-bold text-gray-500">{horario.tipoEstudio}</span>
+                    <span className="font-bold text-gray-500">{horario.horaIni?.slice(0, -3)} <span>{" - "}</span> {horario.horaFin?.slice(0, -3)}</span>
                 </div>
             </div>
         )
@@ -209,8 +164,8 @@ const HorarioDetalle = (props: Props) => {
     }
 
     const handleCloseModalHorarioDetProcesoEditar = () => {
-        localStorage.removeItem('horarioDetActual');
-        setIsOpenModalEditar(false)
+         localStorage.removeItem('horarioDetActual');
+         setIsOpenModalEditar(false)
     }
 
     const dayOfWeekNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -224,7 +179,6 @@ const HorarioDetalle = (props: Props) => {
         );
     }
 
-    //console.log(listaHorarioDetalleId)
     const colorRender = [
         { id: '#EF9A9A', nombreColor: 'Rojo', color: '#EF9A9A' },
         { id: '#81C784', nombreColor: 'Verde', color: '#81C784' },
@@ -238,6 +192,7 @@ const HorarioDetalle = (props: Props) => {
         { id: '#8D6E63', nombreColor: 'Marrón', color: '#8D6E63' },
     ];
 
+
     return (
         <>
             <ModalHorarioDetAgregar
@@ -245,6 +200,7 @@ const HorarioDetalle = (props: Props) => {
                 idHorario={props.idHorario}
                 idIdioma={props.idIdioma}
                 idTipoEstudio={props.idTipoEstudio}
+                aula={itemHorario?.aulaNombre}
 
                 turnoInicio={itemHorario?.turnoInicio}
                 turnoFin={itemHorario?.turnoFin}
@@ -265,7 +221,8 @@ const HorarioDetalle = (props: Props) => {
 
                 loadInit={() => loadInit(props.idHorario)}
                 handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
-            />
+            /> 
+
             <VistaPreviaDetalle
                 isOpenModal={isOpenModalInfo}
                 horario={horarioDetActual}
@@ -282,22 +239,42 @@ const HorarioDetalle = (props: Props) => {
 
                         <div className="relative flex flex-wrap justify-between ">
                             <button
-                                className="ml-1 flex items-center rounded border-md p-2 text-xs border-green-500 bg-green-500 text-white hover:bg-green-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
+                                className="flex items-center rounded border-md p-2 text-xs border-green-500 bg-green-500 text-white hover:bg-green-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
                                 onClick={handleOpenModalHorarioAgregra}
                             >
                                 <i className="bi bi-plus-circle mr-1"></i> AGREGAR ASIGNATURA
                             </button>
 
                             <button
-                                className="ml-1 flex items-center rounded border-md p-2 text-xs border-blue-500 bg-blue-500 text-white hover:bg-blue-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
+                                className="flex items-center rounded border-md p-2 text-xs border-blue-500 bg-blue-500 text-white hover:bg-blue-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
                                 onClick={() => loadInit(props.idHorario)}
                             >
                                 <i className="bi bi-arrow-clockwise mr-1"></i> Recargar
                             </button>
 
                         </div>
-                        <div className="text-center ">
-                            <span className="text-lg font-semibold text-gray-500">{itemHorario?.idiomaNombre} - {itemHorario?.sede} - {itemHorario?.modalidad} - ({itemHorario?.anio} - {itemHorario?.mes}) - {itemHorario?.aulaNombre} - {itemHorario?.modalidad} - {itemHorario?.tipoEstudio}</span>
+                        <div className="bg-white border border-gray-300 py-2 px-4 rounded-lg shadow-md w-full mx-auto grid grid-cols-1 sm:grid-cols-2 my-2">
+                            <div className="flex flex-col gap-1">
+                                <div className="flex flex-row gap-4 ">
+                                    <h2 className="text-xl font-semibold text-gray-700">{itemHorario?.idiomaNombre}</h2>
+                                    <div className="text-gray-500 text-sm mt-1.5">{itemHorario?.anio} - {itemHorario?.mes}</div>
+                                </div>
+                                <p className="text-sm text-gray-500">
+                                    {itemHorario?.tipoEstudio} - {itemHorario?.modalidad} - {itemHorario?.sede}
+                                </p>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <p className="text-xl font-semibold text-gray-700">
+                                    {itemHorario?.aulaNombre}
+
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    <strong>Turno: </strong>
+                                    {itemHorario?.turno}
+                                </p>
+                            </div>
+
+
                         </div>
                     </div>
 

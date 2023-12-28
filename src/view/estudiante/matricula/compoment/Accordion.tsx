@@ -22,12 +22,13 @@ type Props = {
 
     dataMatricula: MatriculaPago[]
     dataPension: PensionPago[]
+    
+    recienteMatricula: any[]
 
     handleMatriculaProceso: () => void;
 }
 
 const Accordion = (props: Props) => {
-
 
     const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
 
@@ -162,8 +163,23 @@ const Accordion = (props: Props) => {
                                                                 {
                                                                     props.dataPension[0].operacion == "utilizado" ?
                                                                         (
-                                                                            <>
-                                                                                <span className="text-red-600"> No hay pago de pension registrado </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i>
+                                                                            <> 
+                                                                                {
+
+                                                                                    props.recienteMatricula.length == 0 ? 
+                                                                                    (
+                                                                                        <>
+                                                                                            <span className="text-red-600"> No hay pago de pension registrado </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i> 
+                                                                                        </>
+                                                                                    )
+                                                                                    :
+                                                                                    (
+                                                                                        <>
+                                                                                            <span className="text-green-600"> Tiene una matricula para el periodo {props.recienteMatricula[0].anio} {props.recienteMatricula[0].mes}</span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
+                                                                                        </>
+                                                                                    )
+                                                                                }
+                                                                                {/* <span className="text-red-600"> No hay pago de pension registrado </span> <i className="bi bi-x-circle-fill text-xl text-red-700"></i> */}
                                                                             </>
                                                                         ) :
 
@@ -179,7 +195,6 @@ const Accordion = (props: Props) => {
                                                                                 <>
                                                                                     <span className="text-green-600"> Pagado - {props.dataPension[0].operacion} </span> <i className="bi bi-check-square-fill text-xl text-green-700"></i>
                                                                                 </>
-
                                                                             )
                                                                 }
 

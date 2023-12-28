@@ -1,3 +1,4 @@
+import { diaSelect } from "@/helper/herramienta.helper";
 import CustomModal from "../../../../component/Modal.component";
 
 type Props = {
@@ -10,7 +11,8 @@ type Props = {
 
 const VistaPreviaDetalle = (props: Props) => {
 
-    //console.log(props.horario)
+    const diaSeleccionado = diaSelect.find(dia => dia.id === props.horario.dia);
+    const nombreDia = diaSeleccionado ? diaSeleccionado.dia : 'Día no válido';
 
     return (
         <>
@@ -25,10 +27,10 @@ const VistaPreviaDetalle = (props: Props) => {
                 onClose={props.handleCloseModalInfo}
             >
 
-                <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
+                <div className="relative flex flex-col min-w-0 w-80 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
                     <div className="flex justify-between">
-                        <h6 className="py-1 font-bold text-lg">Opciones de asignatura: {props.horario.asignatura}</h6>
+                        <h6 className="py-1 px-4 font-bold text-lg"> {props.horario.asignatura}</h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                             onClick={props.handleCloseModalInfo}>
@@ -41,23 +43,31 @@ const VistaPreviaDetalle = (props: Props) => {
 
                             <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                                 <div className="grid grid-cols-1 md:grid-cols-1 m-4">
-                                    <div className="text-sm flex flex-col">
-                                        <p>Instructor:
-                                            <span className="ml-2 text-blue-700 font-bold">{props.horario.docenteId} - {props.horario.docente}</span>
+                                    <div className="text-sm flex flex-col gap-1">
+                                        <p>
+                                            Instructor:
+                                            <span className="ml-2 text-blue-700 font-bold">
+                                                {props.horario.docente?.trim() ? (
+                                                    props.horario.docente
+                                                ) : (
+                                                    <span className="bg-yellow-300 text-white px-2 py-0.5 rounded-lg">Sin asignar</span>
+                                                )}
+                                            </span>
                                         </p>
-                                        <p>Sección:
-                                            <span className="ml-2 text-blue-700 font-bold">{props.horario.seccion}</span>
+
+                                        <p>Capacidad:
+                                            <span className="ml-2 text-blue-700 font-bold">{props.horario.capacidad}</span>
                                         </p>
-                                        <p>Turno:
-                                            <span className="ml-2 text-blue-700 font-bold">{props.horario.turno}</span>
+                                        <p>Día:
+                                            <span className="ml-2 text-blue-700 font-bold">{nombreDia}</span>
                                         </p>
                                         <p>
                                             Horario
                                             :
-                                            Desde
-                                            <span className="mx-2 text-blue-700 font-bold">{props.horario.horaIni}</span>
-                                            hasta
-                                            <span className="ml-2 text-blue-700 font-bold">{props.horario.horaFin}</span>
+                                            
+                                            <span className="mx-2 text-blue-700 font-bold">{props.horario.horaIni?.slice(0, -3)}</span>
+                                            -
+                                            <span className="ml-2 text-blue-700 font-bold">{props.horario.horaFin?.slice(0, -3)}</span>
                                         </p>
                                     </div>
                                 </div>
