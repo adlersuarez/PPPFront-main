@@ -43,18 +43,18 @@ const menusAdmin: MenuItem[] = [
         titulo: "Opciones",
         icono: "bi-gear-fill",
         moduPadre: true,
-        modPosicion: 1,
-        subMenu: false,
+        modPosicion: 2,
+        subMenu: true,
         subMenuItems: [
-            {
-                id: "1",
-                titulo: "Matricula Admin",
-                url: "/inicio/matricula-interna",
-                icono: "bi-pencil-square",
-                moduPadre: false,
-                modPosicion: 1,
-                subMenu: false,
-            },
+            // {
+            //     id: "1",
+            //     titulo: "Matricula Admin",
+            //     url: "/inicio/matricula-interna",
+            //     icono: "bi-pencil-square",
+            //     moduPadre: false,
+            //     modPosicion: 1,
+            //     subMenu: false,
+            // },
             {
                 id: "2",
                 titulo: "Horario Admin",
@@ -64,16 +64,46 @@ const menusAdmin: MenuItem[] = [
                 modPosicion: 2,
                 subMenu: false,
             },
+            // {
+            //     id: "3",
+            //     titulo: "Nota Admin",
+            //     url: "/inicio/inicio-docente",
+            //     icono: "bi-card-checklist",
+            //     moduPadre: false,
+            //     modPosicion: 3,
+            //     subMenu: false,
+            // },
+        ]
+    },
+    {
+        id: "1",
+        titulo: "Reportes",
+        icono: "bi-card-list",
+        moduPadre: true,
+        modPosicion: 3,
+        subMenu: true,
+        subMenuItems: [
             {
-                id: "3",
-                titulo: "Nota Admin",
-                url: "/inicio/lista-aulas",
-                icono: "bi-card-checklist",
+
+                id: "1",
+                titulo: "Reporte General",
+                url: "/inicio/Reportes",
+                icono: "bi-file-text-fill",
+
                 moduPadre: false,
-                modPosicion: 3,
+                modPosicion: 2,
                 subMenu: false,
             },
-        ],
+            {
+                id: "2",
+                titulo: "Reportes filtros",
+                url: "/inicio/Reportes-Filtros",
+                icono: "bi-file-text-fill",
+                moduPadre: false,
+                modPosicion: 2,
+                subMenu: false,
+            },
+        ]
     },
 ]
 

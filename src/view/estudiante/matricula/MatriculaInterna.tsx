@@ -6,7 +6,7 @@ import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
+import { ExistenteMatriculaPeriodoTipoEstudio, PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
@@ -16,7 +16,7 @@ import { Types } from "../../../model/enum/types.model.enum";
 import MatriculaPago from "@/model/interfaces/pago/matriculaPago";
 import PensionPago from "@/model/interfaces/pago/pensionPago";
 
-import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../component/Iconos';
+import { IconoCalendario, MultipleCheck, Documento, Lista, Libro } from '../../../component/Iconos';
 
 import Listas from "@/model/interfaces/Listas.model.interface";
 
@@ -47,6 +47,8 @@ const MatriculaInterna = () => {
 
     const [validezMesesMatri, setValidezMesesMatri] = useState("0")
 
+    const [recienteMatricula, setRecienteMatricula] = useState<any[]>([])
+
     const abortController = useRef(new AbortController());
 
 
@@ -67,16 +69,15 @@ const MatriculaInterna = () => {
     const loadInitData = async () => {
 
         await LoadPagosMatriculaLista()
-            await LoadPagosPensionLista()
-            await LoadValidezMatriculaMeses()
-            setLoad(false)
+        await LoadPagosPensionLista()
+        await LoadValidezMatriculaMeses()
+        await LoadRecienteMatriculaExistente()
+        setLoad(false)
 
     }
 
 
     const LoadPagosMatriculaLista = async () => {
-
-        //setPagoMatriculaLista([])
 
         const response = await PagadoMatriculaLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
@@ -98,12 +99,11 @@ const MatriculaInterna = () => {
 
     const LoadPagosPensionLista = async () => {
 
-        //setPagoPensionLista([])
-
         const response = await PagadoPensionLista<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
 
             const pensiones = response.data.resultado as PensionPago[]
+
             setPagoPensionLista(pensiones)
             setLoadPension(false)
             localStorage.setItem('codPen', pensiones[0].operacion);
@@ -126,6 +126,22 @@ const MatriculaInterna = () => {
             console.log(response.getMessage())
         }
 
+    }
+
+    const LoadRecienteMatriculaExistente = async () => {
+        const response = await ExistenteMatriculaPeriodoTipoEstudio<Listas>(codigo)
+        if (response instanceof Response) {
+
+            const data = response.data.resultado
+
+
+
+            setRecienteMatricula(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
 
     }
 
@@ -146,7 +162,12 @@ const MatriculaInterna = () => {
                                 ) :
                                 (
                                     <div className="p-1 bg-Solid">
-                                        <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Matricula</h2>
+                                        <h2 className="text-2xl font-bold mb-6 flex gap-3">
+                                            <span onClick={() => navigate(-1)} title="Atrás" role="button">
+                                                <i className="bi bi-arrow-left-circle-fill text-upla-100 hover:text-gray-500" />
+                                            </span>
+                                            <p className="text-upla-100 uppercase"> Matrícula </p>
+                                        </h2>
 
                                         <div className="w-full">
 
@@ -183,24 +204,35 @@ const MatriculaInterna = () => {
 
                                             <br />
 
-                                            <div className="flex justify-center mb-4">
+                                            <div className="flex justify-center mb-4 gap-8">
                                                 <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
-                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="1.  Pago" />
                                                 <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
-                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} />
+                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="2.  MATRICULA" />
                                             </div>
 
                                             <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
-                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista}
+                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} recienteMatricula={recienteMatricula}
                                             />
 
 
 
-                                            <h2 className="text-lg font-semibold mt-4">
-                                                <span className="text-xl ">Información para tu matrícula:</span>
+                                            <h2 className="text-lg font-semibold mt-4 flex gap-2 text-upla-100">
+                                                <i className="bi bi-info-circle-fill" />
+                                                <span className="text-xl ">Información para tu matrícula</span>
                                             </h2>
 
                                             <div className="flex flex-wrap justify-center mt-5">
+
+                                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
+                                                    <Card
+                                                        imagen={<Libro />}
+                                                        titulo={'Manual de matrícula'}
+                                                        color={'blue'}
+                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
+                                                        info={''}
+                                                    />
+                                                </div> */}
                                                 <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
                                                     <Card
                                                         imagen={<IconoCalendario />}
@@ -219,15 +251,6 @@ const MatriculaInterna = () => {
                                                         info={''}
                                                     />
                                                 </div>
-                                                {/* <div className="w-full lg:w-1/3 sm:w-1/2 px-2 mb-4">
-                                                    <Card
-                                                        imagen={<MultipleCheck />}
-                                                        titulo={'Cronograma de matrícula'}
-                                                        color={'blue'}
-                                                        to={'https://upla.edu.pe/nw/2023/NewFolder/CRONOGRAMA%20IDIOMAS.pdf?_t=1702403729'}
-                                                        info={''}
-                                                    />
-                                                </div> */}
                                             </div>
                                         </div>
                                     </div>

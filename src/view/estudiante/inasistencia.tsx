@@ -9,6 +9,7 @@ import CiclosInfo from '../../model/interfaces/matricula/ciclosInfo';
 import { useSelector } from "react-redux";
 import { RootState } from '../../store/configureStore.store';
 import { Bandera, Boleta } from '../../component/Iconos';
+import { useNavigate } from "react-router-dom";
 // import ModalVistaHorario from '../../view/trabajador/horario/modal/VistaHorario.modal'
 // import { BiCalendar } from "react-icons/bi";
 // import Estudiante from "../../model/interfaces/login/estudiante.login";
@@ -21,7 +22,7 @@ const Consolidado = () => {
     const [ciclosDisponibles, setCiclosDisponibles] = useState<CiclosInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     // const [show, setShow] = useState<boolean>(false);
-
+    const navigate = useNavigate()
     // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
 
@@ -58,25 +59,30 @@ const Consolidado = () => {
         <>
 
             <div className="p-1 bg-Solid">
-                <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Inasistencia por ciclo</h2>
+                <h2 className="text-2xl font-bold mb-6 flex gap-3">
+                    <span onClick={() => navigate(-1)} title="Atrás" role="button">
+                        <i className="bi bi-arrow-left-circle-fill text-upla-100 hover:text-gray-500" />
+                    </span>
+                    <p className="text-upla-100 uppercase"> Inasistencia por ciclo </p>
+                </h2>
 
                 <div className="w-full">
- 
+
                     <div className="flex flex-col shadow-md border-solid border-2 border-gray-300 ">
                         <div className="bg-teal-500 h-1 flex flex-col justify-center items-center"></div>
 
                         <div className="w-full  p-4">
-                        <div className="bg-teal-400 rounded-md p-4 flex items-center">
-                            <div className="bg-teal-500 rounded-full p-3 mr-4">
-                                <Bandera className="w-6 h-6 text-white" />
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold mb-2 text-white">Ciclos:</h2>
-                                <h3 className="text-gray-200">Te mostramos el consolidado de las inasistencias por ciclo</h3>
+                            <div className="bg-teal-400 rounded-md p-4 flex items-center">
+                                <div className="bg-teal-500 rounded-full p-3 mr-4">
+                                    <Bandera className="w-6 h-6 text-white" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-bold mb-2 text-white">Ciclos:</h2>
+                                    <h3 className="text-gray-200">Te mostramos el consolidado de las inasistencias por ciclo</h3>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                         {ciclosDisponibles.map((ciclo, index) => (
                             <div key={index} className="bg-white rounded-lg shadow-md border border-300 p-8 mt-4  mx-4 flex flex-col justify-center items-center">

@@ -19,11 +19,11 @@ import Programa from "../../../../model/interfaces/programa/programa"
 import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio"
 
 import Listas from "../../../../model/interfaces/Listas.model.interface"
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarTipoEstudio, ListarAula, ListarSeccion } from "../../../../network/rest/idiomas.network"
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarPrograma, ListarTurno, InsertarActualizarHorario, ListarTipoEstudio, ListarAula } from "../../../../network/rest/idiomas.network"
 
 import RespValue from "../../../../model/interfaces/RespValue.model.interface"
 import Sweet from '../../../../model/interfaces/Sweet.mode.interface'
-import Seccion from "@/model/interfaces/seccion/seccion"
+
 
 
 type Props = {
@@ -69,7 +69,6 @@ const HorarioEditar = (props: Props) => {
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
-    const [comboBoxSeccion, setcomboBoxSeccion] = useState<Seccion[]>([])
 
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>('0')
@@ -119,7 +118,6 @@ const HorarioEditar = (props: Props) => {
         LoadDataModalidad()
         LoadDataPeriodo()
         LoadDataAula()
-        LoadDataSeccion()
 
         LoadDataTurno()
         LoadDataPrograma()
@@ -190,20 +188,6 @@ const HorarioEditar = (props: Props) => {
         const response = await ListarAula<Listas>(props.abortControl)
         if (response instanceof Response) {
             setComboBoxAula(response.data.resultado as Aula[])
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
-
-    const LoadDataSeccion = async () => {
-
-        setcomboBoxSeccion([])
-
-        const response = await ListarSeccion<Listas>(props.abortControl)
-        if (response instanceof Response) {
-            setcomboBoxSeccion(response.data.resultado as Seccion[])
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;

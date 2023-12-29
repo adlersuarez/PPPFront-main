@@ -19,14 +19,16 @@ const AccordionItem = (props: Props) => {
 
     return (
         <>
-            <div className="border border-gray-300 rounded-lg shadow-md p-3 m-4 flex justify-between mb-2">
+            <div className="border border-gray-300 rounded-lg shadow-md p-3 flex justify-between px-4">
 
                 {
                     props.estadoBtn ?
                         (
                             <>
-                                <div>
-                                    <h3 className="text-lg font-semibold "><IcoAprobado /> {props.titulo}</h3>
+                                <div className='flex gap-4 my-auto'>
+                                    <h3 className="text-xl font-bold uppercase text-upla-100">
+                                        {props.titulo}
+                                    </h3>
                                 </div>
                                 <div className="text-green-600">
                                     <button
