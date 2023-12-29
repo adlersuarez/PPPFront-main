@@ -27,16 +27,12 @@ const Reporte = () => {
     const [idPeriodo, setIdPeriodo] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
-    const [reportesDisponibles, setReporteDisponible] = useState<ReportesInfo[]>([]); // Suponiendo que Listas sea el tipo correcto para los ciclos
+    const [reporteDisponibles, setReporteDisponible] = useState<any[]>([]);
 
     const abortController = useRef(new AbortController());
 
 
-    const tipoUser = JSON.parse(window.localStorage.getItem("tipoUsuario") || "");
-    console.log(tipoUser)
-
     useEffect(() => {
-        LoadCiclosDisponibles()
 
         LoadDataIdioma()
         LoadDataSede()
@@ -46,15 +42,14 @@ const Reporte = () => {
     }, [])
 
 
-    const LoadCiclosDisponibles = async () => {
+    const LoadRepHorarioAsignatura = async () => {
 
         setReporteDisponible([])
 
-        //const response = await ReporteHorarioAsignatura<Listas>(idIdioma,idSede,idModalidad,idPeriodo,idTipoEstudio,abortController.current);
-        const response = await ReporteHorarioAsignatura<Listas>(0,"0",0,0,0,abortController.current);
+        const response = await ReporteHorarioAsignatura<Listas>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, abortController.current);
         if (response instanceof Response) {
-            console.log(response.data);
-            //setReporteDisponible(response.data.resultado as ReportesInfo[]);
+            // console.log(response.data);
+            setReporteDisponible(response.data.resultado);
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -63,7 +58,6 @@ const Reporte = () => {
     }
 
     //carga de datos
-
     const LoadDataIdioma = async () => {
 
         setComboBoxIdioma([])
@@ -166,7 +160,7 @@ const Reporte = () => {
 
                     <div className="p-6">
                         <h2 className="text-xl mb-5">Reporte de matriculados</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-4">
                             <div>
                                 <label
                                     className="font-mont block mb-1 text-sm font-medium text-gray-900 "
@@ -348,10 +342,27 @@ const Reporte = () => {
                                     }
                                 </select>
                             </div>
+
+                            <div>
+                                <label
+                                    className="font-mont block mb-1 text-sm font-medium text-gray-900 "
+                                >
+                                    Opciones
+                                </label>
+                                <div className="relative flex flex-wrap">
+                                    <button
+                                        className="ml-1 flex items-center rounded border-md p-2 text-xs border-gray-500 bg-gray-500 text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
+                                        onClick={LoadRepHorarioAsignatura}
+                                    >
+                                        <i className="bi bi-search mr-1"></i> BUSCAR
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
 
                         {/* Tabla de Datos */}
-                        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        {/* <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table className="w-full text-sm text-center rtl:text-right">
                                 <thead className="text-xs text-white uppercase h-16 bg-teal-500 dark:text-white">
                                     <tr>
@@ -360,13 +371,13 @@ const Reporte = () => {
                                         <th scope="col" className="px-6 py-3">Nombres</th>
                                         <th scope="col" className="px-6 py-3">Facultad</th>
                                         <th scope="col" className="px-6 py-3">Carrera</th>
-                                        {/* <th scope="col" className="px-6 py-3">Aula</th> */}
+                  
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {reportesDisponibles.map((ciclo, index) => (
                                         <tr key={index} className="border-">
-                                            {/* Renderizar los datos en las celdas */}
+                    
                                             <td className="px-6 py-4">{index + 1}</td>
                                             <td className="px-6 py-4">{ciclo.codigo}</td>
                                             <td className="px-6 py-4">{ciclo.estPaterno + ' ' + ciclo.estMaterno + ' ' + ciclo.estNombres}</td>
@@ -376,7 +387,81 @@ const Reporte = () => {
                                     ))}
                                 </tbody>
                             </table>
+                        </div> */}
+
+                        <div className="relative overflow-auto rounded-md my-6">
+                            <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
+                                <thead className="align-bottom">
+                                    <tr>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Seccion</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Asignatura</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Cantidad</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Capacidad</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Dias</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">H. Inicio</th>
+                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">H. Fin</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {
+
+                                        // loading ? (
+                                        //     <tr className="text-center bg-white border-b">
+                                        //         <td colSpan={7} className="text-sm p-2 border-b border-solid">
+                                        //             <div className="flex items-center justify-center">
+                                        //                 <LoaderSvg /> <span>Cargando datos...</span>
+                                        //             </div>
+                                        //         </td>
+                                        //     </tr>
+                                        // ) : (
+                                            reporteDisponibles.length == 0 ?
+                                                (
+                                                    <tr className="text-center bg-white border-b">
+                                                        {/* <td colSpan={7} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td> */}
+                                                        <td colSpan={13} className="text-sm p-2  border-b border-solid">No ay datos disponibles</td>
+                                                    </tr>
+                                                )
+                                                :
+                                                (
+                                                    reporteDisponibles.map((item, index) => {
+
+                                                        return (
+                                                            <tr key={index} className="bg-white border-b">
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{++index}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aula}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.seccion}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.asignatura}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.cantidad}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.capacidad}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.dias}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio}</td>
+                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin}</td>
+
+
+
+                                                            </tr>
+                                                        );
+                                                    })
+                                                )
+                                        // )
+
+                                    }
+                                </tbody>
+
+                            </table>
                         </div>
+
                     </div>
                 </div>
             </div>

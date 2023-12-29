@@ -71,7 +71,7 @@ export async function ReporteMatricula<Listas>(abortController: AbortController 
 }
 
 export async function ReporteHorarioAsignatura<Listas>(idiomaId: number, sedeId: string, modalidadId: number, periodoId: number, tipEstudioId: number, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>(`/Matricula/ReporteHorarioAsignatura/${idiomaId}/${sedeId}/${modalidadId}/${periodoId}/${tipEstudioId}`, { signal: abortController?.signal }));
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Reporte/ReporteHorarioAsignatura/${idiomaId}/${sedeId}/${modalidadId}/${periodoId}/${tipEstudioId}`, { signal: abortController?.signal }));
 }
 
 // export async function ReporteMatricula<ListasPag>(IdiomaId: number, SedeId: string, ModalidadId: number, PeriodoId: string, TipEstudioId: number, posPagina:number, filaPagina:number, abortController: AbortController | null = null): Promise<Response<ListasPag> | RestError> {
