@@ -16,7 +16,7 @@ import { Types } from "../../../model/enum/types.model.enum";
 import MatriculaPago from "@/model/interfaces/pago/matriculaPago";
 import PensionPago from "@/model/interfaces/pago/pensionPago";
 
-import { IconoCalendario, MultipleCheck, Documento, Lista, Libro } from '../../../component/Iconos';
+import { IconoCalendario, MultipleCheck, Documento, Lista } from '../../../component/Iconos';
 
 import Listas from "@/model/interfaces/Listas.model.interface";
 
@@ -84,9 +84,12 @@ const MatriculaInterna = () => {
 
             const matriculas = response.data.resultado as MatriculaPago[]
 
-            setPagoMatriculaLista(matriculas)
+            const matriculasOrdenadas = matriculas.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+            // console.log(matriculasOrdenadas)
+
+            setPagoMatriculaLista(matriculasOrdenadas)
             setLoadMatricula(false)
-            localStorage.setItem('codMat', matriculas[0].operacion);
+            localStorage.setItem('codMat', matriculasOrdenadas[0].operacion);
 
 
         }
@@ -104,9 +107,14 @@ const MatriculaInterna = () => {
 
             const pensiones = response.data.resultado as PensionPago[]
 
-            setPagoPensionLista(pensiones)
+            const pensinesOrdenadas = pensiones.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+
+
+            //console.log(pensinesOrdenadas)
+
+            setPagoPensionLista(pensinesOrdenadas)
             setLoadPension(false)
-            localStorage.setItem('codPen', pensiones[0].operacion);
+            localStorage.setItem('codPen', pensinesOrdenadas[0].operacion);
 
         }
         if (response instanceof RestError) {
@@ -133,8 +141,6 @@ const MatriculaInterna = () => {
         if (response instanceof Response) {
 
             const data = response.data.resultado
-
-
 
             setRecienteMatricula(data)
         }

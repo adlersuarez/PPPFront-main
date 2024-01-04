@@ -46,7 +46,7 @@ const AccordionItem = (props: Props) => {
 
                         (
                             <div>
-                                <h3 className="text-lg font-semibold "><IcoAprobado /> Usted ya cuanta con una matricula para el periodo actual</h3>
+                                <h3 className="text-lg font-semibold "><IcoAprobado /> Usted ya cuenta con una matricula para el periodo actual</h3>
                             </div>
 
                         )

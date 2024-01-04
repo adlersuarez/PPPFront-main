@@ -27,6 +27,7 @@ type MenuItem = {
     subMenu: boolean,
     subMenuItems?: MenuItem[]
 }
+
 const menusAdmin: MenuItem[] = [
     {
         id: "1",

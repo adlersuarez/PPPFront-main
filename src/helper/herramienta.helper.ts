@@ -131,6 +131,54 @@ export function FinalizarHorarioCheckBox(day: number[], tipo: number, horaInicio
     return `${nuevaHoraStr}:${nuevoMinutoStr}`
 };
 
+export function getDateForma(value: string, format = "dd/mm/yyyy"): string {
+    const parts = value.split("-");
+    const today = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+
+    return format === "dd/mm/yyyy"
+        ? (today.getDate() > 9 ? today.getDate() : "0" + today.getDate()) +
+          "/" +
+          (today.getMonth() + 1 > 9 ? today.getMonth() + 1 : "0" + (today.getMonth() + 1)) +
+          "/" +
+          today.getFullYear()
+        : today.getFullYear() +
+          "-" +
+          (today.getMonth() + 1 > 9 ? today.getMonth() + 1 : "0" + (today.getMonth() + 1)) +
+          "-" +
+          (today.getDate() > 9 ? today.getDate() : "0" + today.getDate());
+}
+
+export function getCurrentDate(): string {
+    const today = new Date();
+    const formatted_date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1 > 9
+            ? today.getMonth() + 1
+            : "0" + (today.getMonth() + 1)) +
+        "-" +
+        (today.getDate() > 9 ? today.getDate() : "0" + today.getDate());
+    return formatted_date;
+}
+
+export function getCurrentDateFormatted() {
+    const currentDate = new Date();
+    const day = currentDate.getDate().toString().padStart(2, '0'); // Obtiene el día y ajusta al formato de 2 dígitos
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Obtiene el mes y ajusta al formato de 2 dígitos
+    const year = currentDate.getFullYear().toString(); // Obtiene el año
+  
+    return `${day}/${month}/${year}`; // Retorna la fecha en formato 'dd/mm/yyyy'
+  }
+
+export function getCurrentTime24hFormat() {
+    const currentDate = new Date();
+    const hours = currentDate.getHours().toString().padStart(2, '0'); // Obtiene las horas y las ajusta al formato de 2 dígitos
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0'); // Obtiene los minutos y los ajusta al formato de 2 dígitos
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0'); // Obtiene los segundos y los ajusta al formato de 2 dígitos
+  
+    return `${hours}:${minutes}:${seconds}`; // Retorna la hora en formato de 24 horas (HH:MM:SS)
+  }
+
 
 export const diaSelect = [
     { "id": 1, "dia": 'Lunes' },

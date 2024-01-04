@@ -22,7 +22,6 @@ const HorarioIdiomas = () => {
 
     const navigate = useNavigate()
 
-
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
@@ -140,7 +139,7 @@ const HorarioIdiomas = () => {
         DataPeriodo()
         DataTipoEstudio()
 
-        console.log(estado)
+        //console.log(estado)
     };
 
     const handleCloseModal = () => {
@@ -206,7 +205,7 @@ const HorarioIdiomas = () => {
     const handleEstadoActivoChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEstado(event.target.checked)
         // setEstado(!estado);
-        console.log(estado)
+        //console.log(estado)
     };
 
     // const registrarHorario  = () => {

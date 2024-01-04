@@ -20,16 +20,18 @@ import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
 import SubirNotas from './view/docente/SubirNotas';
 import VistaHorarioEstudiante from './view/estudiante/horarios/VistaHorariosEstudiante';
 import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
-import ComponenteNotas from './view/estudiante/Notas/ComponenteNotas';
+import ComponenteNotas from './view/estudiante/notas/ComponenteNotas';
 import VidaAcademica from './view/estudiante/VidaAcademica';
 import Consolidado from './view/estudiante/Consolidado';
 import Boleta from './view/estudiante/Boleta-notas';
 import Inasistencia from './view/estudiante/inasistencia';
 import ResultadoPostulante from './view/estudiante/resultados-postulante';
 import Reportes from  './view/trabajador/horario/Reportes';
-import ReportesFiltros from  './view/trabajador/horario/ReportesFiltros';
+import ReportesFiltros from  './view/trabajador/reporte/RepHorarioAsignatura';
 import ReportesModalidad from  './view/trabajador/horario/ReportesModalidad';
 
+//Notas Trabajador
+import NotaHorarioAsignatura from './view/trabajador/nota/NotaHorarioAsignaturas'
 
 
 const router = createBrowserRouter([
@@ -105,10 +107,7 @@ const router = createBrowserRouter([
         path:'horario-idiomas',
         element: <HorarioIdiomas/>
       },
-      // {
-      //   path:'inicio-docente',
-      //   element: <InicioDocente/>
-      // },
+
       {
         path:'clases-asignadas',
         element: <ListaClasesAsignados/>
@@ -132,6 +131,10 @@ const router = createBrowserRouter([
       {
         path:'lista-aulas',
         element: <ListaAulas/>
+      },
+      {
+        path:'horario-asignatura',
+        element: <NotaHorarioAsignatura/>
       },
     ]
   },

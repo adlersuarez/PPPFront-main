@@ -15,6 +15,7 @@ import Idiomas_Logo from "../assets/images/IDIOMAS_LOGO.png"
 
 //
 import no_user from '../assets/images/no-user.png'
+import logo_png from '../assets/images/logo.png'
 
 
 export default {
@@ -31,6 +32,7 @@ export default {
     no_user,
 
     portada_login,
-    Idiomas_Logo
+    Idiomas_Logo,
+    logo_png
 
 }
