@@ -133,7 +133,7 @@ const router = createBrowserRouter([
         element: <ListaAulas/>
       },
       {
-        path:'horario-asignatura',
+        path:'nota-horario-asignatura',
         element: <NotaHorarioAsignatura/>
       },
     ]

@@ -135,7 +135,7 @@ const HorarioDetalle = (props: Props) => {
                     </div>
                     <div className="border-b border-dashed border-black my-1"></div>
                     <p className="text-xs font-normal text-gray-700 dark:text-gray-400 whitespace-normal break-words">
-                       Instructor: {horario.docente} 
+                        Instructor: {horario.docente}
                     </p>
                     <div className="font-semibold text-center text-sm text-gray-700 dark:text-gray-400">
                         Capacidad: {horario.capacidad}
@@ -164,8 +164,8 @@ const HorarioDetalle = (props: Props) => {
     }
 
     const handleCloseModalHorarioDetProcesoEditar = () => {
-         localStorage.removeItem('horarioDetActual');
-         setIsOpenModalEditar(false)
+        localStorage.removeItem('horarioDetActual');
+        setIsOpenModalEditar(false)
     }
 
     const dayOfWeekNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -191,8 +191,6 @@ const HorarioDetalle = (props: Props) => {
         { id: '#B0BEC5', nombreColor: 'Gris', color: '#B0BEC5' },
         { id: '#8D6E63', nombreColor: 'Marrón', color: '#8D6E63' },
     ];
-
-
 
     return (
         <>
@@ -222,7 +220,7 @@ const HorarioDetalle = (props: Props) => {
 
                 loadInit={() => loadInit(props.idHorario)}
                 handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
-            /> 
+            />
 
             <VistaPreviaDetalle
                 isOpenModal={isOpenModalInfo}
@@ -256,21 +254,45 @@ const HorarioDetalle = (props: Props) => {
                         </div>
                         <div className="bg-white border border-gray-300 py-2 px-4 rounded-lg shadow-md w-full mx-auto grid grid-cols-1 sm:grid-cols-2 my-2">
                             <div className="flex flex-col gap-1">
-                                <div className="flex flex-row gap-4 ">
+
+                                <p className="text-sm font-semibold text-gray-700">
+                                    {itemHorario?.idiomaNombre}
+
+                                </p>
+                                <p className="text-sm font-semibold text-gray-700">
+                                    {itemHorario?.sede}
+
+                                </p>
+                                <p className="text-sm font-semibold text-gray-600">
+                                    {itemHorario?.anio} - {itemHorario?.mes}
+                                </p>
+                                <p className="text-sm font-semibold text-gray-600">
+                                    {itemHorario?.modalidad}
+                                </p>
+
+
+                                {/* <div className="flex flex-row gap-4 ">
                                     <h2 className="text-xl font-semibold text-gray-700">{itemHorario?.idiomaNombre}</h2>
                                     <div className="text-gray-500 text-sm mt-1.5">{itemHorario?.anio} - {itemHorario?.mes}</div>
                                 </div>
                                 <p className="text-sm text-gray-500">
                                     {itemHorario?.tipoEstudio} - {itemHorario?.modalidad} - {itemHorario?.sede}
-                                </p>
+                                </p> */}
+
                             </div>
                             <div className="flex flex-col gap-1">
-                                <p className="text-xl font-semibold text-gray-700">
+                                <p className="text-sm font-semibold text-gray-600">
+                                    {itemHorario?.tipoEstudio}
+                                </p>
+                                <p className="text-sm font-semibold text-gray-700">
                                     {itemHorario?.aulaNombre}
 
                                 </p>
-                                <p className="text-sm text-gray-600">
-                                    <strong>Turno: </strong>
+                                <p className="text-sm font-semibold text-gray-700">
+                                    {itemHorario?.seccion}
+
+                                </p>
+                                <p className="text-sm font-semibold text-gray-600">
                                     {itemHorario?.turno}
                                 </p>
                             </div>

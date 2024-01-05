@@ -24,7 +24,7 @@ import { LoaderSvg } from "../../../component/Svg.component";
 import ModalHorarioAgregar from "./modal/HorarioAgregar";
 import ModalHorarioEditar from "./modal/HorarioEditar";
 
-import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
+import { convertirFormatoFechaSql, convertirFormatoHoraSql } from '../../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "./HorarioDetalle";
 
 
@@ -438,7 +438,6 @@ const HorarioIdiomas = () => {
                                         abortControl={abortControllerEditar.current}
                                         handleCloseModal={handleCloseModalEditar} />
 
-                                    {/* Contenido */}
 
                                     {
                                         usuarioPermitido ? (
@@ -455,10 +454,7 @@ const HorarioIdiomas = () => {
                                                                 <div className="text-sm">
                                                                     <p>No tiene permisos para este modulo</p>
                                                                 </div>
-                                                                {/* <div className="text-sm">
-                    <p>Sede: <span className="text-blue-700 font-bold">{props.nombreSede}</span></p>
-                    <p>Periodo: <span className="text-blue-700 font-bold">{props.nombrePeriodo}</span></p>
-                </div> */}
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -685,6 +681,7 @@ const HorarioIdiomas = () => {
                                                             <thead className="align-bottom">
                                                                 <tr>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Fecha / Hora</th>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Programa</th>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
@@ -699,7 +696,7 @@ const HorarioIdiomas = () => {
 
                                                                     loading ? (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={7} className="text-sm p-2 border-b border-solid">
+                                                                            <td colSpan={8} className="text-sm p-2 border-b border-solid">
                                                                                 <div className="flex items-center justify-center">
                                                                                     <LoaderSvg /> <span>Cargando datos...</span>
                                                                                 </div>
@@ -709,7 +706,7 @@ const HorarioIdiomas = () => {
                                                                         horarioLista.length == 0 ?
                                                                             (
                                                                                 <tr className="text-center bg-white border-b">
-                                                                                    <td colSpan={7} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                                    <td colSpan={8} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                                 </tr>
                                                                             )
                                                                             :
@@ -717,8 +714,9 @@ const HorarioIdiomas = () => {
                                                                                 horarioLista.map((item, index) => {
 
                                                                                     return (
-                                                                                        <tr key={index} className="bg-white border-b" title={formatDateTimeToFecha(item.fechaRegistra)}>
+                                                                                        <tr key={index} className="bg-white border-b">
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
+                                                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.fechaRegistra)} {convertirFormatoHoraSql(item.fechaRegistra)}</td>
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.programa}</td>
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aula}</td>

@@ -87,13 +87,13 @@ const VistaPreviaDetalle = (props: Props) => {
                                 props.handleOpenModalDetEditar()
                             }}
                         >
-                            <i className="bi bi-pencil-fill mr-1"></i> Editar
+                            <i className="bi bi-pencil-fill mr-1"></i> Editar Horario
                         </button>
-                        <button
+                        {/* <button
                             className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
                         >
                             <i className="bi bi-people-fill mr-1"></i> Matriculados
-                        </button>
+                        </button> */}
                     </div>
 
                     {/* <div className="relative flex flex-wrap justify-center mt-4">

@@ -354,7 +354,9 @@ const HorarioEditar = (props: Props) => {
                 <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
                     <div className="flex justify-between">
-                        <h6 className="py-1 font-bold text-lg">Editar Horario - {props.idHorario}</h6>
+                        <h6 className="py-1 font-bold text-lg">Editar Horario 
+                        {/* - {props.idHorario} */}
+                        </h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                             onClick={props.handleCloseModal}>
@@ -593,7 +595,7 @@ const HorarioEditar = (props: Props) => {
                                 <input
                                     maxLength={3}
                                     type="text"
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-white"
                                     ref={refSeccion}
                                     value={seccion}
                                     onChange={(e) =>

@@ -14,20 +14,12 @@ import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 import Asignatura from "@/model/interfaces/asignatura/asignatura";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag, ListarTipoEstudio, ListarAsignatura } from "../../../network/rest/idiomas.network";
-
-// import useSweerAlert from "../../../component/hooks/useSweetAlert"
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag, ListarTipoEstudio, ListarAsignatura, MatriculadosHorariosAsignaturasPag } from "../../../network/rest/idiomas.network";
 
 import HorarioPag from "../../../model/interfaces/horario/horarioPag";
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
-
-// import ModalHorarioAgregar from "./modal/HorarioAgregar";
-// import ModalHorarioEditar from "./modal/HorarioEditar";
-
-// import { formatDateTimeToFecha } from '../../../helper/herramienta.helper'
-// import ModuloHorarioDetalle from "./HorarioDetalle";
 
 
 const NotaHorarioAsignaturas = () => {
@@ -43,22 +35,15 @@ const NotaHorarioAsignaturas = () => {
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
     const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
 
-    const [idHorario, setIdHorario] = useState<number>(0)
 
     const [idIdioma, setIdIdioma] = useState<number>(0)
     const [idSede, setIdSede] = useState<string>("0")
     const [idModalidad, setIdModalidad] = useState<number>(0)
-    const [idPeriodo, setIdPeriodo] = useState<string>("0")
+    const [idPeriodo, setIdPeriodo] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
     const [idAsignatura, setIdAsignatura] = useState("0")
 
-    const [idAula, setIdAula] = useState<number>(0)
-    const [idTurno, setIdTurno] = useState<number>(0)
-    const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [seccion, setSeccion] = useState<string>("")
-
-    const [estado, setEstado] = useState<number>(0)
 
 
     const [nombreIdioma, setNombreIdioma] = useState<string>("")
@@ -76,8 +61,6 @@ const NotaHorarioAsignaturas = () => {
 
 
     const abortController = useRef(new AbortController());
-    // const abortControllerNuevo = useRef(new AbortController());
-    // const abortControllerEditar = useRef(new AbortController());
 
     // Tabla
     const paginacion = useRef<number>(0);
@@ -85,7 +68,7 @@ const NotaHorarioAsignaturas = () => {
     const totalPaginacion = useRef<number>(0);
     const filasPorPagina = useRef<number>(10);
 
-    const [horarioLista, setHorarioLista] = useState<HorarioPag[]>([]);
+    const [listaMatriculasAsignatura, setListaMatriculasAsignatura] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
     const [mensajeCarga, setMensajeCarga] = useState<boolean>(true)
@@ -93,9 +76,7 @@ const NotaHorarioAsignaturas = () => {
     // const [isOpenModal, setIsOpenModal] = useState(false);
     // const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
 
-    const [moduloDetalle, setModuloDetalle] = useState(false);
 
-    const [itemHorario, setItemHorario] = useState<HorarioPag>()
 
     useEffect(() => {
 
@@ -111,8 +92,6 @@ const NotaHorarioAsignaturas = () => {
 
     const LoadDataIdioma = async () => {
 
-        //setComboBoxIdioma([])
-
         const response = await ListarIdioma<Listas>(abortController.current)
         if (response instanceof Response) {
             setComboBoxIdioma(response.data.resultado as Idioma[])
@@ -124,8 +103,6 @@ const NotaHorarioAsignaturas = () => {
     }
 
     const LoadDataSede = async () => {
-
-        //setComboBoxSede([])
 
         const response = await ListarSede<Listas>(abortController.current)
         if (response instanceof Response) {
@@ -139,8 +116,6 @@ const NotaHorarioAsignaturas = () => {
 
     const LoadDataModalidad = async () => {
 
-        //setComboBoxModalidad([])
-
         const response = await ListarModalidad<Listas>(abortController.current)
         if (response instanceof Response) {
             setComboBoxModalidad(response.data.resultado as Modalidad[])
@@ -153,8 +128,6 @@ const NotaHorarioAsignaturas = () => {
 
     const LoadDataPeriodo = async () => {
 
-        //setComboBoxPeriodo([])
-
         const response = await ListarPeriodo<Listas>(abortController.current)
         if (response instanceof Response) {
             setComboBoxPeriodo(response.data.resultado as Periodo[])
@@ -165,12 +138,7 @@ const NotaHorarioAsignaturas = () => {
         }
     }
 
-
-
-
     const LoadDataTipoEstudio = async () => {
-
-        //setComboBoxTipoEstudio([])
 
         const response = await ListarTipoEstudio<Listas>(abortController.current)
         if (response instanceof Response) {
@@ -184,7 +152,6 @@ const NotaHorarioAsignaturas = () => {
 
     const LoadDataAsignatura = async (idIdioma: number) => {
         
-        console.log(idIdioma)
 
         setComboBoxAsignatura([])
 
@@ -203,23 +170,6 @@ const NotaHorarioAsignaturas = () => {
     }
 
 
-    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: string, turnoId: number, programaId: number, tipEstudioId: number, estado: number, idAula: number, seccion: string) => {
-        setIdHorario(horarioId)
-
-        setIdIdioma(idiomaId)
-        setIdSede(sedeId)
-        setIdModalidad(modalidadId)
-        setIdPeriodo(periodoId)
-        setIdTurno(turnoId)
-        setIdPrograma(programaId)
-        setIdTipoEstudio(tipEstudioId)
-        setEstado(estado)
-        setSeccion(seccion)
-
-        setIdAula(idAula)
-
-    }
-
     // Tabla
     const loadInit = async () => {
 
@@ -236,7 +186,7 @@ const NotaHorarioAsignaturas = () => {
             refModalidad.current?.focus()
             return
         }
-        if (idPeriodo == "0") {
+        if (idPeriodo == 0) {
             refPeriodo.current?.focus()
             return
         }
@@ -251,7 +201,7 @@ const NotaHorarioAsignaturas = () => {
 
         paginacion.current = 1;
         restart.current = true;
-        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, idAsignatura);
     }
 
     const paginacionTable = (listid: number) => {
@@ -274,7 +224,7 @@ const NotaHorarioAsignaturas = () => {
             refModalidad.current?.focus()
             return
         }
-        if (idPeriodo == "0") {
+        if (idPeriodo == 0) {
             refPeriodo.current?.focus()
             return
         }
@@ -282,28 +232,25 @@ const NotaHorarioAsignaturas = () => {
             refTipoEstudio.current?.focus()
             return
         }
-        // if (idAula == 0) {
-        //     refAula.current?.focus()
-        //     return
-        // }
+
 
         if (loading) return;
 
-        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio);
+        fillTable(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, idAsignatura);
     }
 
-    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: string, idTipoEstudio: number) => {
+    const fillTable = async (idIdioma: number, idSede: string, idModalidad: number, idPeriodo: number, idTipoEstudio: number, idAsignatura: string) => {
         setLoading(true)
 
-        setHorarioLista([]);
+        setListaMatriculasAsignatura([]);
 
         const posPagina: number = ((paginacion.current - 1) * filasPorPagina.current)
         const filaPagina: number = filasPorPagina.current
 
-        const response = await ListarHorarioPag<ListasPag>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, posPagina, filaPagina);
+        const response = await MatriculadosHorariosAsignaturasPag<ListasPag>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, idAsignatura, posPagina, filaPagina);
         if (response instanceof Response) {
             totalPaginacion.current = Math.ceil(response.data.total / filasPorPagina.current);
-            setHorarioLista(response.data.resultado as HorarioPag[])
+            setListaMatriculasAsignatura(response.data.resultado as any[])
             setLoading(false);
         }
 
@@ -318,47 +265,11 @@ const NotaHorarioAsignaturas = () => {
                 return;
             }
 
-            setHorarioLista([]);
+            setListaMatriculasAsignatura([]);
             setLoading(false);
         }
     }
 
-
-    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number, item: HorarioPag) => {
-        setModuloDetalle(true)
-
-        setNombreIdioma(idiomaNombre)
-        setNombreSede(sedeNombre)
-        setNombreModalidad(modalidadNombre)
-        setIdIdioma(idiomaId)
-        setIdHorario(horarioId)
-        setIdTipoEstudio(item.tipEstudioId)
-
-        setItemHorario(item)
-    }
-
-    // const handleCloseModuloDetalle = () => {
-    //     setModuloDetalle(false)
-    // }
-
-
-    // Nuevo
-    // const handleOpenModal = () => {
-    //     setIsOpenModal(true);
-    // };
-
-    // const handleCloseModal = () => {
-    //     setIsOpenModal(false);
-    // };
-
-    // Editar
-    // const handleOpenModalEditar = () => {
-    //     setIsOpenModalEditar(true);
-    // };
-
-    // const handleCloseModalEditar = () => {
-    //     setIsOpenModalEditar(false);
-    // };
 
     return (
         <>
@@ -494,7 +405,7 @@ const NotaHorarioAsignaturas = () => {
                                             value={idPeriodo}
                                             onChange={(event) => {
                                                 const selectedPeriodoId = event.currentTarget.value;
-                                                setIdPeriodo(selectedPeriodoId);
+                                                setIdPeriodo(parseInt(selectedPeriodoId));
 
                                                 const selectedPeriodo = comboBoxPeriodo.find(item => item.periodoId.toString() === selectedPeriodoId);
 
@@ -505,7 +416,7 @@ const NotaHorarioAsignaturas = () => {
                                                 }
                                             }}
                                         >
-                                            <option value={"0"}>- Seleccione -</option>
+                                            <option value={0}>- Seleccione -</option>
                                             {
                                                 comboBoxPeriodo.map((item, index) => {
 
@@ -633,7 +544,7 @@ const NotaHorarioAsignaturas = () => {
                                                         </td>
                                                     </tr>
                                                 ) : (
-                                                    horarioLista.length == 0 ?
+                                                    listaMatriculasAsignatura.length == 0 ?
                                                         (
                                                             <tr className="text-center bg-white border-b">
                                                                 <td colSpan={7} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
@@ -641,50 +552,11 @@ const NotaHorarioAsignaturas = () => {
                                                         )
                                                         :
                                                         (
-                                                            horarioLista.map((item, index) => {
+                                                            listaMatriculasAsignatura.map((item, index) => {
 
                                                                 return (
                                                                     <tr key={index} className="bg-white border-b" title={item.fechaRegistra}>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.programa}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aula}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.seccion}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.estado}</td>
-
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                            <button
-                                                                                title="Editar"
-                                                                                className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.estado, item.aulasId, item.seccion)}
-                                                                            >
-                                                                                <i className="bi bi-pencil-fill text-sm"></i>
-
-                                                                            </button>
-
-                                                                            {" "}
-
-                                                                            <button
-                                                                                title="Detalle"
-                                                                                className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                onClick={() => handleOpenModuloDetalle(item.idiomaNombre, item.sede, item.modalidad, item.idiomaId, item.horarioId, item)}
-                                                                            >
-                                                                                <i className="bi bi-list text-sm"></i>
-
-                                                                            </button>
-
-                                                                            {" "}
-                                                                            {/* <button
-                                                                                        title="Borrar"
-                                                                                        className="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 rounded-md px-2 py-1"
-                                                            
-                                                                                    >
-                                                                                        <i className="bi bi-trash3-fill text-sm"></i>
-                                                                                    </button> */}
-
-                                                                        </td>
-
-
                                                                     </tr>
                                                                 );
                                                             })

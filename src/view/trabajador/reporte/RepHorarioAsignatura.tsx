@@ -168,6 +168,9 @@ const RepHorarioAsignatura = () => {
     }
 
     const handleOpenModal = (item: any, idHorarioAsig: number) => {
+
+        console.log(item)
+        
         setIsOpenModal(true);
 
         setItem(item)
@@ -203,6 +206,15 @@ const RepHorarioAsignatura = () => {
 
         doc.text(`Cantidad de Matriculados: ${data.capacidadTotal}`, 13, 29)
         doc.text(`Aulas no Visibles: ${data.aulasNoVisibles}`, pageWidth / 2, 29)
+
+        // Excluye la última columna
+        const rows = tbCopia.querySelectorAll('tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('th, td');
+            if (cells.length > 0) {
+                row.removeChild(cells[cells.length - 1]);
+            }
+        });
 
         const opciones: UserOptions = {
             margin: {
@@ -540,7 +552,7 @@ const RepHorarioAsignatura = () => {
                                                         className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
                                                         onClick={() => {
                                                             if (reporteDisponibles.length == 0) return;
-                                                            exportExcelToTableHtml('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, [], true)
+                                                            exportExcelToTableHtml('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, [13], true)
                                                         }}
                                                     >
                                                         <i className="bi bi-file-earmark-excel-fill mr-1"></i> Excel

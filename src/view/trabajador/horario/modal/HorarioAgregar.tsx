@@ -46,14 +46,14 @@ const HorarioAgregar = (props: Props) => {
     const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
     const [comboBoxTurno, setComboBoxTurno] = useState<Turno[]>([])
     const [comboBoxPrograma, setComboBoxPrograma] = useState<Programa[]>([])
-   
 
-    const [idAula, setIdAula] = useState<number>(0)
+
     const [idTurno, setIdTurno] = useState<number>(0)
     const [idPrograma, setIdPrograma] = useState<number>(0)
+    const [idAula, setIdAula] = useState<number>(0)
     const [seccion, setSeccion] = useState("")
-
     const [estado, setEstado] = useState<boolean>(true)
+
 
     const refTurno = useRef<HTMLSelectElement>(null)
     const refPrograma = useRef<HTMLSelectElement>(null)
@@ -68,8 +68,6 @@ const HorarioAgregar = (props: Props) => {
 
     const LoadDataTurno = async () => {
 
-        setComboBoxTurno([])
-
         const response = await ListarTurno<Listas>(props.abortControl)
         if (response instanceof Response) {
             setComboBoxTurno(response.data.resultado as Turno[])
@@ -82,8 +80,6 @@ const HorarioAgregar = (props: Props) => {
 
     const LoadDataPrograma = async () => {
 
-        setComboBoxPrograma([])
-
         const response = await ListarPrograma<Listas>(props.abortControl)
         if (response instanceof Response) {
             setComboBoxPrograma(response.data.resultado as Programa[])
@@ -95,8 +91,6 @@ const HorarioAgregar = (props: Props) => {
     }
 
     const LoadDataAula = async () => {
-
-        setComboBoxAula([])
 
         const response = await ListarAula<Listas>(props.abortControl)
         if (response instanceof Response) {
@@ -116,6 +110,7 @@ const HorarioAgregar = (props: Props) => {
 
 
     const onRegistrarHorario = () => {
+
 
         if (idTurno == 0) {
             refTurno.current?.focus()
@@ -146,7 +141,7 @@ const HorarioAgregar = (props: Props) => {
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
             "usuarioModifica": codigo,
-            "fechaModifica": new Date().toISOString(),
+            "fechaModifica": new Date().toISOString()
         }
 
         props.sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
@@ -235,6 +230,7 @@ const HorarioAgregar = (props: Props) => {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Turno <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -259,6 +255,7 @@ const HorarioAgregar = (props: Props) => {
                                     }
                                 </select>
                             </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Programa <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -283,6 +280,7 @@ const HorarioAgregar = (props: Props) => {
                                     }
                                 </select>
                             </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Aula <i className="bi bi-asterisk text-xs text-red-500"></i>
@@ -307,6 +305,7 @@ const HorarioAgregar = (props: Props) => {
                                     }
                                 </select>
                             </div>
+
                             <div>
                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                     Sección
@@ -314,7 +313,7 @@ const HorarioAgregar = (props: Props) => {
                                 <input
                                     maxLength={3}
                                     type="text"
-                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-gray-100"
+                                    className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center bg-white"
                                     ref={refSeccion}
                                     value={seccion}
                                     onChange={(e) =>

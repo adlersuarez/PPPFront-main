@@ -6,7 +6,7 @@ import Accordion from './compoment/Accordion';
 import StepButton from "./compoment/StepButton";
 import Card from "../../../component/pages/cards/Card"
 
-import { ExistenteMatriculaPeriodoTipoEstudio, PagadoMatriculaLista, PagadoPensionLista, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
+import { ExistenteMatriculaPeriodoTipoEstudio, PagadoMatriculaLista, PagadoPensionLista, RangoMatriculaCalendario, ValidezMatriculaMeses } from "../../../network/rest/idiomas.network";
 
 import Response from '../../../model/class/response.model.class';
 import RestError from "../../../model/class/resterror.model.class";
@@ -49,6 +49,8 @@ const MatriculaInterna = () => {
 
     const [recienteMatricula, setRecienteMatricula] = useState<any[]>([])
 
+    const [rangoFechaMatricula, setRangoFechaMatricula] = useState<any[]>([])
+
     const abortController = useRef(new AbortController());
 
 
@@ -67,6 +69,9 @@ const MatriculaInterna = () => {
     }, [])
 
     const loadInitData = async () => {
+
+
+        await LoadRangoMatriculaCalendario()
 
         await LoadPagosMatriculaLista()
         await LoadPagosPensionLista()
@@ -151,6 +156,20 @@ const MatriculaInterna = () => {
 
     }
 
+    const LoadRangoMatriculaCalendario = async () => {
+        const response = await RangoMatriculaCalendario<Listas>()
+        if (response instanceof Response) {
+
+            const data = response.data.resultado
+            setRangoFechaMatricula(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+
+    }
+
     return (
         <>
 
@@ -210,16 +229,29 @@ const MatriculaInterna = () => {
 
                                             <br />
 
-                                            <div className="flex justify-center mb-4 gap-8">
-                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
-                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="1.  Pago" />
-                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
-                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="2.  MATRICULA" />
-                                            </div>
+                                            {
+                                                rangoFechaMatricula.length == 0 ?
+                                                    (
+                                                        <>
+                                                        </>
 
-                                            <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
-                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} recienteMatricula={recienteMatricula}
-                                            />
+                                                    ) : (
+                                                        <>
+                                                            <div className="flex justify-center mb-4 gap-8">
+                                                                <StepButton paso={1} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Documento} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
+                                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="1.  Pago" />
+                                                                <StepButton paso={2} pasoActual={pasoActual} cambiarPaso={cambiarPaso} icono={Lista} load={load} loadMatricula={loadMatricula} loadPension={loadPension} validezMatricula={validezMesesMatri}
+                                                                    dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} texto="2.  MATRICULA" />
+                                                            </div>
+
+                                                            <Accordion pasoActual={pasoActual} handleMatriculaProceso={handleMatriculaProceso} load={load} loadMatricula={loadMatricula} loadPension={loadPension}
+                                                                dataMatricula={pagoMatriculaLista} dataPension={pagoPensionLista} recienteMatricula={recienteMatricula}
+                                                            />
+                                                        </>
+                                                    )
+                                            }
+
+
 
 
 

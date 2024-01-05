@@ -192,8 +192,6 @@ const HorarioDetEditar = (props: Props) => {
                     setDia(0)
                     setHoraInicio("")
                     setHoraFin("")
-                    //setColor("0")
-                    //setCapacidad(0)
                     setObservacion("")
 
                 }}
@@ -202,7 +200,7 @@ const HorarioDetEditar = (props: Props) => {
                 <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
                     <div className="flex justify-between">
-                        <h6 className="py-1 font-bold text-lg">Editar Asignatura </h6>
+                        <h6 className="py-1 font-bold text-lg">Editar Horario</h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                             onClick={props.handleCloseModalHorarioDetProcesoEditar}>

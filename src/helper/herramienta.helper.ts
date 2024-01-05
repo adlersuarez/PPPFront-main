@@ -137,15 +137,15 @@ export function getDateForma(value: string, format = "dd/mm/yyyy"): string {
 
     return format === "dd/mm/yyyy"
         ? (today.getDate() > 9 ? today.getDate() : "0" + today.getDate()) +
-          "/" +
-          (today.getMonth() + 1 > 9 ? today.getMonth() + 1 : "0" + (today.getMonth() + 1)) +
-          "/" +
-          today.getFullYear()
+        "/" +
+        (today.getMonth() + 1 > 9 ? today.getMonth() + 1 : "0" + (today.getMonth() + 1)) +
+        "/" +
+        today.getFullYear()
         : today.getFullYear() +
-          "-" +
-          (today.getMonth() + 1 > 9 ? today.getMonth() + 1 : "0" + (today.getMonth() + 1)) +
-          "-" +
-          (today.getDate() > 9 ? today.getDate() : "0" + today.getDate());
+        "-" +
+        (today.getMonth() + 1 > 9 ? today.getMonth() + 1 : "0" + (today.getMonth() + 1)) +
+        "-" +
+        (today.getDate() > 9 ? today.getDate() : "0" + today.getDate());
 }
 
 export function getCurrentDate(): string {
@@ -166,18 +166,39 @@ export function getCurrentDateFormatted() {
     const day = currentDate.getDate().toString().padStart(2, '0'); // Obtiene el día y ajusta al formato de 2 dígitos
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Obtiene el mes y ajusta al formato de 2 dígitos
     const year = currentDate.getFullYear().toString(); // Obtiene el año
-  
+
     return `${day}/${month}/${year}`; // Retorna la fecha en formato 'dd/mm/yyyy'
-  }
+}
 
 export function getCurrentTime24hFormat() {
     const currentDate = new Date();
     const hours = currentDate.getHours().toString().padStart(2, '0'); // Obtiene las horas y las ajusta al formato de 2 dígitos
     const minutes = currentDate.getMinutes().toString().padStart(2, '0'); // Obtiene los minutos y los ajusta al formato de 2 dígitos
     const seconds = currentDate.getSeconds().toString().padStart(2, '0'); // Obtiene los segundos y los ajusta al formato de 2 dígitos
-  
+
     return `${hours}:${minutes}:${seconds}`; // Retorna la hora en formato de 24 horas (HH:MM:SS)
-  }
+}
+
+export function convertirFormatoFechaSql(fechaHora: string): string {
+    const fecha = new Date(fechaHora);
+
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const anio = fecha.getFullYear();
+
+    return `${dia}/${mes}/${anio}`;
+}
+
+
+export function convertirFormatoHoraSql(fechaHora: string): string {
+    const fecha = new Date(fechaHora);
+
+    const horas = fecha.getHours().toString().padStart(2, '0');
+    const minutos = fecha.getMinutes().toString().padStart(2, '0');
+    const segundos = fecha.getSeconds().toString().padStart(2, '0');
+
+    return `${horas}:${minutos}:${segundos}`;
+}
 
 
 export const diaSelect = [
