@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 import RespValue from "@/model/interfaces/RespValue.model.interface";
 import { useNavigate } from "react-router-dom";
+import { convertirNumeroAMes } from "@/helper/herramienta.helper";
 
 type Props = {
 
@@ -287,13 +288,47 @@ const ListasHorario = (props: Props) => {
                     </button>
                 </div>
 
+                {/* <div className="w-full mt-4">
+                    <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                        <div
+                            className="border-b-2 border-gray-200 p-2 flex justify-between">
+                            <div className="text-sm font-bold">
+                                Información
+                            </div>
+                        </div>
+                        <div className="m-2">
+
+                            <div className="px-4">
+
+                                <ol className="w-full text-gray-500 list-decimal dark:text-gray-400 text-sm">
+                                    <li className="pl-4">
+                                        <span className="font-semibold text-gray-900 dark:text-white">Fechas límite y plazos: </span> Asegúrate de conocer las fechas límite para realizar los pagos de matrícula y pensiones. Cumplir con estos plazos es fundamental.
+                                    </li>
+                                    <li className="pl-4">
+                                        <span className="font-semibold text-gray-900 dark:text-white">Formas de pago:</span> Verifica qué métodos de pago acepta la institución. Asegúrate de tener la información necesaria para cada método de pago.
+                                    </li>
+                                    <li className="pl-4">
+
+                                        <span className="font-semibold text-gray-900 dark:text-white">Requisitos de matrícula:</span>  Conoce los requisitos específicos para matricularse en los cursos, ya sean restricciones de cupo, requisitos de nivel académico, prerrequisitos, entre otros.
+
+                                    </li>
+                                </ol>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div> */}
+
+
                 {/* <div className="w-full px-4 pb-2 pt-4">
                 </div> */}
 
-                <div className="relative overflow-auto rounded-md my-6 overflow-y-auto h-96">
+                <div className="relative overflow-auto rounded-md my-6 overflow-y-auto overflow-x-auto h-96">
                     <table className="w-full text-gray-700 uppercase border table-auto">
                         <thead className="bg-upla-100 text-white">
                             <tr>
+                                <th className="py-2 px-6">Periodo</th>
                                 <th className="py-2 px-6">Nivel</th>
                                 <th className="py-2 px-6">T. Estudio</th>
                                 <th className="py-2 px-6">Modalidad</th>
@@ -310,13 +345,15 @@ const ListasHorario = (props: Props) => {
                                 listaHorarios.length == 0 ?
                                     (
                                         <tr className="text-center bg-white border-b">
-                                            <td colSpan={8} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
+                                            <td colSpan={9} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
                                         </tr>
                                     ) : (
                                         listaHorarios.map((horario) => (
-                                            //horario.capacidad !== horario.cantidad && (
-                                          
+
+                                            horario.capacidad > horario.cantidad && (
+
                                                 <tr key={horario.horarioId} className="text-center text-sm">
+                                                    <td className="border p-2">{horario.anio}-{convertirNumeroAMes(horario.mes)}</td>
                                                     <td className="border p-2">{horario.asignatura}</td>
                                                     <td className="border p-2">{horario.tipoEstudio}</td>
                                                     <td className="border p-2">{horario.modalidad}</td>
@@ -378,7 +415,7 @@ const ListasHorario = (props: Props) => {
 
                                                     </td>
                                                 </tr>
-                                            //)
+                                            )
                                         ))
                                     )
                             }

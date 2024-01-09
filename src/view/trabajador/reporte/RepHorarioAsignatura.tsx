@@ -23,6 +23,7 @@ import ModalListasMatricualdos from './modal/ListaEstudiantesMatriculados'
 
 
 const RepHorarioAsignatura = () => {
+
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxSede, setComboBoxSede] = useState<Sede[]>([]);
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
@@ -43,7 +44,7 @@ const RepHorarioAsignatura = () => {
     const [totalMatriculados, setTotalMatriculados] = useState<number>(0)
 
     const [vacantesDisponibles, setVacantesDisponibles] = useState<number>(0)
-    const [aulasNoVisibles, setAulasNoVisibles] = useState<number>(0)
+    const [aulasLibres, setAulasLibres] = useState<number>(0)
 
     const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -84,7 +85,7 @@ const RepHorarioAsignatura = () => {
             const totalCantidadCero = data.reduce((total, item) => {
                 return item.cantidad === 0 ? total + 1 : total;
             }, 0);
-            setAulasNoVisibles(totalCantidadCero)
+            setAulasLibres(totalCantidadCero)
 
             setVacantesDisponibles(totCapacidades - totMatriculados)
 
@@ -168,8 +169,6 @@ const RepHorarioAsignatura = () => {
     }
 
     const handleOpenModal = (item: any, idHorarioAsig: number) => {
-
-        console.log(item)
         
         setIsOpenModal(true);
 
@@ -204,8 +203,8 @@ const RepHorarioAsignatura = () => {
         doc.text(`Capacidad Total: ${data.capacidadTotal}`, 13, 24)
         doc.text(`Vacantes Disponibles: ${data.vacantesDisponibles} `, pageWidth / 2, 24)
 
-        doc.text(`Cantidad de Matriculados: ${data.capacidadTotal}`, 13, 29)
-        doc.text(`Aulas no Visibles: ${data.aulasNoVisibles}`, pageWidth / 2, 29)
+        doc.text(`Cantidad de Matriculados: ${data.cantidadMatriculados}`, 13, 29)
+        doc.text(`Aulas Libres: ${data.aulasLibres}`, pageWidth / 2, 29)
 
         // Excluye la última columna
         const rows = tbCopia.querySelectorAll('tr');
@@ -419,43 +418,6 @@ const RepHorarioAsignatura = () => {
                                         </div>
 
                                         <div>
-                                            <label
-                                                className="font-mont block mb-1 text-sm font-medium text-gray-900 "
-                                            >
-                                                Modalidad
-                                            </label>
-                                            <select
-                                                className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                                //ref={refModalidad}
-                                                value={idModalidad}
-                                                onChange={(event) => {
-                                                    const selectedModalidadId = event.currentTarget.value;
-                                                    setIdModalidad(parseInt(selectedModalidadId));
-
-                                                    /*const selectedModalidad = comboBoxModalidad.find(item => item.modalidadId === parseInt(selectedModalidadId));
-            
-                                                    if (selectedModalidad) {
-                                                        setNombreModalidad(selectedModalidad.modalidad);
-                                                    } else {
-                                                        setNombreModalidad("");
-                                                    }*/
-                                                }}
-                                            >
-                                                <option value={0}>- Seleccione -</option>
-                                                {
-                                                    comboBoxModalidad.map((item, index) => {
-                                                        return (
-                                                            <option key={index} value={item.modalidadId}>
-                                                                {item.modalidad}
-                                                            </option>
-                                                        );
-                                                    })
-                                                }
-
-                                            </select>
-                                        </div>
-
-                                        <div>
                                             <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
                                                 Periodo
                                             </label>
@@ -489,6 +451,44 @@ const RepHorarioAsignatura = () => {
 
                                                     })
                                                 }
+                                            </select>
+                                        </div>
+
+
+                                        <div>
+                                            <label
+                                                className="font-mont block mb-1 text-sm font-medium text-gray-900 "
+                                            >
+                                                Modalidad
+                                            </label>
+                                            <select
+                                                className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                                //ref={refModalidad}
+                                                value={idModalidad}
+                                                onChange={(event) => {
+                                                    const selectedModalidadId = event.currentTarget.value;
+                                                    setIdModalidad(parseInt(selectedModalidadId));
+
+                                                    /*const selectedModalidad = comboBoxModalidad.find(item => item.modalidadId === parseInt(selectedModalidadId));
+            
+                                                    if (selectedModalidad) {
+                                                        setNombreModalidad(selectedModalidad.modalidad);
+                                                    } else {
+                                                        setNombreModalidad("");
+                                                    }*/
+                                                }}
+                                            >
+                                                <option value={0}>- Seleccione -</option>
+                                                {
+                                                    comboBoxModalidad.map((item, index) => {
+                                                        return (
+                                                            <option key={index} value={item.modalidadId}>
+                                                                {item.modalidad}
+                                                            </option>
+                                                        );
+                                                    })
+                                                }
+
                                             </select>
                                         </div>
 
@@ -566,9 +566,9 @@ const RepHorarioAsignatura = () => {
                                                             if (reporteDisponibles.length == 0) return;
                                                             const data = {
                                                                 capacidadTotal: capacidadTotal,
-                                                                cantidadMatriculados: capacidadTotal,
+                                                                cantidadMatriculados: totalMatriculados,
                                                                 vacantesDisponibles: vacantesDisponibles,
-                                                                aulasNoVisibles: aulasNoVisibles
+                                                                aulasLibres: aulasLibres
 
                                                             }
                                                             pdfHorariosAsignatura('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, data)
@@ -592,7 +592,7 @@ const RepHorarioAsignatura = () => {
                                                     </div>
                                                     <div className="text-sm">
                                                         <p>Cantidad de Matriculados: <span className="text-blue-700 font-bold">{totalMatriculados}</span></p>
-                                                        <p>Aulas no Visibles: <span className="text-blue-700 font-bold">{aulasNoVisibles}</span></p>
+                                                        <p>Aulas Libres: <span className="text-blue-700 font-bold">{aulasLibres}</span></p>
                                                     </div>
                                                 </div>
                                             </div>

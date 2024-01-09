@@ -31,7 +31,7 @@ import ReportesFiltros from  './view/trabajador/reporte/RepHorarioAsignatura';
 import ReportesModalidad from  './view/trabajador/horario/ReportesModalidad';
 
 //Notas Trabajador
-import NotaHorarioAsignatura from './view/trabajador/nota/NotaHorarioAsignaturas'
+import BuscarAulasAsignaturas from './view/trabajador/nota/BuscarAulasAsignaturas'
 
 
 const router = createBrowserRouter([
@@ -133,8 +133,8 @@ const router = createBrowserRouter([
         element: <ListaAulas/>
       },
       {
-        path:'nota-horario-asignatura',
-        element: <NotaHorarioAsignatura/>
+        path:'buscar-aulas-asignaturas',
+        element: <BuscarAulasAsignaturas/>
       },
     ]
   },

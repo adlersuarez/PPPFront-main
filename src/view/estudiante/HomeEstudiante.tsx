@@ -3,7 +3,7 @@
 import Card from "../../component/pages/cards/CardDash"
 
 // import CardLink from "../../../../../../../component/pages/cards/Card"
-import CardLink from "@/component/pages/cards/Card"
+//import CardLink from "@/component/pages/cards/Card"
 
 import { Vida, Matricula, Libro } from '../../component/Iconos';
 

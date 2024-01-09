@@ -31,17 +31,32 @@ export function keyNumberInteger(event: React.KeyboardEvent<HTMLInputElement>): 
     }
 }
 
-export function keyNumberFloat(event: React.KeyboardEvent<HTMLInputElement>): void {
-    const c: string = event.key;
-    const input: HTMLInputElement = event.target as HTMLInputElement;
+// export function keyNumberFloat(event: React.KeyboardEvent<HTMLInputElement>): void {
+//     const c: string = event.key;
+//     const input: HTMLInputElement = event.target as HTMLInputElement;
 
-    if ((c < "0" || c > "9") && c !== "\b" && c !== ".") {
-        event.preventDefault();
+//     if ((c < "0" || c > "9") && c !== "\b" && c !== ".") {
+//         event.preventDefault();
+//     }
+//     if (c === "." && input.value.includes(".")) {
+//         event.preventDefault();
+//     }
+// }
+
+export function keyNumberFloat(event: React.KeyboardEvent<HTMLInputElement>): void {
+    const key: string = event.key;
+    const isDigit: boolean = /\d/.test(key);
+    const isDot: boolean = key === '.';
+    const hasDot: boolean = (event.target as HTMLInputElement).value.includes('.');
+  
+    if (!(isDigit || isDot || key === 'Backspace' || key === 'Delete' || key === 'ArrowLeft' || key === 'ArrowRight' || key === 'Tab')) {
+      event.preventDefault();
     }
-    if (c === "." && input.value.includes(".")) {
-        event.preventDefault();
+  
+    if (isDot && hasDot) {
+      event.preventDefault();
     }
-}
+  }
 
 export function GenerateRangeTurno(horaInicio: string, horaFin: string) {
     // Convertir las horas de inicio y fin a objetos Date para cálculos
@@ -101,9 +116,9 @@ export function FinalizarHorario(day: number, tipo: number, horaInicio: string) 
 export function FinalizarHorarioCheckBox(day: number[], tipo: number, horaInicio: string) {
     let horasASumar: number;
 
-    if (tipo === 1) {
+    if (tipo === 1 || tipo === 4) {
         horasASumar = 1.5;
-    } else if (tipo === 2) {
+    } else if (tipo === 2 || tipo === 3) {
         horasASumar = 3;
     } else {
         throw new Error('El tipo debe ser 1 o 2');
@@ -198,6 +213,24 @@ export function convertirFormatoHoraSql(fechaHora: string): string {
     const segundos = fecha.getSeconds().toString().padStart(2, '0');
 
     return `${horas}:${minutos}:${segundos}`;
+}
+
+export function convertirNumeroAMes(numero: number): string | undefined {
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril',
+        'Mayo', 'Junio', 'Julio', 'Agosto',
+        'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    if (numero >= 1 && numero <= 12) {
+        return meses[numero - 1];
+    } else {
+        return undefined; // Si el número no está en el rango válido de meses
+    }
+}
+
+export function isNumeric(valor: any): boolean {
+    return !isNaN(valor) && !isNaN(parseFloat(valor));
 }
 
 

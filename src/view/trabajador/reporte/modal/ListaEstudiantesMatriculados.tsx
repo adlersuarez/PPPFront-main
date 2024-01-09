@@ -166,6 +166,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                 <th className="py-1 px-6">Estudiante</th>
                                 <th className="py-1 px-6">Carrera</th>
                                 <th className="py-1 px-6">Facultad</th>
+                                <th className="py-1 px-6">Sede</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,18 +177,19 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                 listaMatriculados.length == 0 ?
                                     (
                                         <tr className="text-center bg-white border-b">
-                                            <td colSpan={6} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
+                                            <td colSpan={7} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
                                         </tr>
                                     ) : (
                                         listaMatriculados.map((obj, index) => (
 
-                                            <tr key={index} className="text-center text-sm">
+                                            <tr key={index} className="text-sm">
                                                 <td className="border p-2">{++index}</td>
-                                                <td className="border p-2">{obj.fechRegistro}</td>
-                                                <td className="border p-2">{obj.estudianteId}</td>
+                                                <td className="text-center border p-2">{obj.fechRegistro}</td>
+                                                <td className="text-center border p-2">{obj.estudianteId}</td>
                                                 <td className="border p-2">{`${obj.estPaterno} ${obj.estMaterno} ${obj.estNombres}`}</td>
                                                 <td className="border p-2">{obj.carrera}</td>
                                                 <td className="border p-2">{obj.facultad}</td>
+                                                <td className="border p-2">{obj.sede}</td>
                                             </tr>
 
                                         ))

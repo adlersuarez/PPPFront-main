@@ -31,7 +31,7 @@ import ModuloHorarioDetalle from "./HorarioDetalle";
 const HorarioIdiomas = () => {
 
 
-    const listaReporte = ['75247846', '46615507']
+    const listaReporte = ['75247846', '41262007']
     const usuarioActual = JSON.parse(window.localStorage.getItem("codigo") || "");
     const usuarioPermitido = listaReporte.includes(usuarioActual);
 
