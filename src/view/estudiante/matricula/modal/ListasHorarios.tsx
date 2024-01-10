@@ -25,7 +25,8 @@ type Props = {
 
 const ListasHorario = (props: Props) => {
 
-    // console.log(props.asigId)
+    console.log(props.asigId)
+    console.log(props.cicloMatriculable)
     const sweet = useSweerAlert();
     const navigate = useNavigate()
 
@@ -79,7 +80,7 @@ const ListasHorario = (props: Props) => {
         const response = await ListarHorarioDisponibleEst<Listas>(codigo, props.asigId)
 
         if (response instanceof Response) {
-            //console.log(response)
+            console.log(response)
             setListarHorarioDisponible(response.data.resultado)
         }
         if (response instanceof RestError) {

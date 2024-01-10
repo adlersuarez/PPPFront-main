@@ -2,9 +2,13 @@ import { keyNumberFloat } from "@/helper/herramienta.helper";
 import { isNumeric } from "@/helper/herramienta.helper";
 import { useRef, useState } from "react"
 
-const NotaUno = () => {
+type Props = {
+    nota1: number
+}
 
-    const [nota1, setNota1] = useState<string>("0")
+const NotaUno = (props: Props) => {
+
+    const [nota1, setNota1] = useState<string>(props.nota1.toString())
 
     const [valid, setValid] = useState<boolean>(true)
 

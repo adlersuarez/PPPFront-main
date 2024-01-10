@@ -3,20 +3,20 @@ import { isNumeric } from "@/helper/herramienta.helper";
 import { useRef, useState } from "react"
 
 type Props = {
-    nota2: number
+    nota3: number
 }
 
-const NotaDos = (props: Props) => {
+const NotaTres = (props: Props) => {
 
-    const [nota2, setNota2] = useState<string>(props.nota2.toString())
+    const [nota3, setNota3] = useState<string>(props.nota3.toString())
 
     const [valid, setValid] = useState<boolean>(true)
 
-    const refNota2 = useRef<HTMLInputElement>(null)
+    const refNota3 = useRef<HTMLInputElement>(null)
 
     const selectAllText = () => {
-        if (refNota2.current) {
-            refNota2.current.select();
+        if (refNota3.current) {
+            refNota3.current.select();
         }
     };
 
@@ -27,7 +27,7 @@ const NotaDos = (props: Props) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
 
-        setNota2(inputValue)
+        setNota3(inputValue)
 
         if (inputValue.trim() == '') {
 
@@ -50,8 +50,8 @@ const NotaDos = (props: Props) => {
                 type="text"
                 maxLength={5}
                 className={`font-mont border ${valid ? "border-gray-300" : "bg-red-300"} text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
-                ref={refNota2}
-                value={nota2}
+                ref={refNota3}
+                value={nota3}
                 onChange={handleChange}
                 onClick={selectAllText}
                 onPaste={handlePaste}
@@ -63,4 +63,4 @@ const NotaDos = (props: Props) => {
 
 }
 
-export default NotaDos
+export default NotaTres

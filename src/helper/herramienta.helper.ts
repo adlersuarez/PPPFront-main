@@ -83,9 +83,9 @@ export function GenerateRangeTurno(horaInicio: string, horaFin: string) {
 export function FinalizarHorario(day: number, tipo: number, horaInicio: string) {
     let horasASumar: number;
 
-    if (tipo === 1) {
+    if (tipo === 1 || tipo === 4) {
         horasASumar = 1.5;
-    } else if (tipo === 2) {
+    } else if (tipo === 2 || tipo === 3) {
         horasASumar = 3;
     } else {
         throw new Error('El tipo debe ser 1 o 2');

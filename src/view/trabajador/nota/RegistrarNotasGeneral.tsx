@@ -34,7 +34,6 @@ const RegistrarNotasGeneral = (props: Props) => {
 
         const response = await ListarPreRegistroNotas<Listas>(props.item.horarioAsigId, abortController.current)
         if (response instanceof Response) {
-            //console.log(response.data.resultado)
 
             setMatriculadoSalon(response.data.resultado as any[])
         }
