@@ -1,10 +1,14 @@
 import { keyNumberFloat } from "@/helper/herramienta.helper";
-import { isNumeric } from "@/helper/herramienta.helper";
-import { useRef, useState } from "react"
+// import { isNumeric } from "@/helper/herramienta.helper";
+// import { useRef, useState } from "react"
 
 type Props = {
     detMatriculaId: number
+
     detalle: any []
+    nota: string
+    refNota1: React.RefObject<HTMLInputElement>;
+    validNota1: boolean
     handleChangeNota1:  (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -12,21 +16,19 @@ const NotaUno = (props: Props) => {
 
     const regNota1 = props.detalle.filter(
         (item) => item.tipCaliId === 1
-    );   
+    );
     
-    const nota = regNota1[0].nota
     const cond = regNota1[0].condNota
+    
+    //const nota = regNota1[0].nota
+    // const [nota1, setNota1] = useState<string>(nota)
 
-
-    const [nota1, setNota1] = useState<string>(nota)
-
-    const [valid1, setValid1] = useState<boolean>(true)
-
-    const refNota1 = useRef<HTMLInputElement>(null)
+    // const [valid1, setValid1] = useState<boolean>(true)
+    // const refNota1 = useRef<HTMLInputElement>(null)
 
     const selectAllText = () => {
-        if (refNota1.current) {
-            refNota1.current.select();
+        if (props.refNota1.current) {
+            props.refNota1.current.select();
         }
     };
 
@@ -61,9 +63,9 @@ const NotaUno = (props: Props) => {
                 <input
                     type="text"
                     maxLength={5}
-                    className={`font-mont border ${valid1 ? "border-gray-300" : "bg-red-300"} text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
-                    ref={refNota1}
-                    value={nota1}
+                    className={`font-mont border ${props.validNota1 ? "border-gray-300" : "bg-red-300"} text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
+                    ref={props.refNota1}
+                    value={props.nota}
                     onChange={(e) => props.handleChangeNota1(e)}
 
                     onClick={selectAllText}

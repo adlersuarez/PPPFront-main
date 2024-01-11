@@ -508,7 +508,7 @@ const BuscarAulasAsignaturas = () => {
 
                                                             loading ? (
                                                                 <tr className="text-center bg-white border-b">
-                                                                    <td colSpan={14} className="text-sm p-2 border-b border-solid">
+                                                                    <td colSpan={15} className="text-sm p-2 border-b border-solid">
                                                                         <div className="flex items-center justify-center">
                                                                             <LoaderSvg /> <span>Cargando datos...</span>
                                                                         </div>
@@ -518,7 +518,7 @@ const BuscarAulasAsignaturas = () => {
                                                                 listaMatriculasAsignatura.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={14} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={15} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :

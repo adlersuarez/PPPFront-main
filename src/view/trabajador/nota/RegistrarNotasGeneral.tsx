@@ -7,7 +7,7 @@ import { ListarPreRegistroNotas } from "@/network/rest/idiomas.network";
 
 import TablaRegistroNotas from "./component/TablaRegistroNotas";
 import NotaUno from "./component/NotaUno";
-import { isNumeric } from "@/helper/herramienta.helper";
+import { isNumeric, keyNumberFloat } from "@/helper/herramienta.helper";
 
 
 type Props = {
@@ -88,26 +88,17 @@ const RegistrarNotasGeneral = (props: Props) => {
         console.log(matriculadosAsig)
     }
 
-    //Nota1 Change
-    const handleChangeNota1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = event.target.value;
-
-        setNota1(inputValue)
-
-        if (inputValue.trim() == '') {
-
-            setValid1(false); // Si está vacío, se establece como inválido
-            return
-        }
-
-        if (isNumeric(inputValue)) {
-            if (parseFloat(inputValue) >= 0 && parseFloat(inputValue) <= 20) {
-                setValid1(true); // Si es numérico y está dentro del rango, se establece como válido
-            } else {
-                setValid1(false); // Si es numérico pero está fuera del rango, se establece como inválido
-            }
-        }
-    };
+    const handleInputDetalle = ( event: React.ChangeEvent<HTMLInputElement>, detMatriculaId: number, tipCaliId: number) => {
+        console.log(event.target.value)
+        console.log(detMatriculaId)
+        console.log(tipCaliId)
+        // const { value } = event.target;
+        // this.setState((prevState) => ({
+        //     detalle: prevState.detalle.map((item) =>
+        //         item.idProducto === idProducto ? { ...item, cantidad: value } : item,
+        //     ),
+        // }));
+    }
 
 
 
@@ -186,18 +177,43 @@ const RegistrarNotasGeneral = (props: Props) => {
                                                 <td colSpan={9} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
                                             </tr>
                                         ) : (
-                                            matriculadosAsig.map((obj, index) => (
-                                                <tr key={index} className="text-sm">
-                                                    <td className="border p-2">{++index}</td>
-                                                    <td className="border p-2">{obj.estudianteId}</td>
-                                                    <td className="border p-2">{`${obj.estPaterno} ${obj.estMaterno} ${obj.estNombres}`}</td>
-                                                    <td className="border p-2">
-                                                        <NotaUno detMatriculaId={obj.detMatriculaId} detalle={obj.detalle} handleChangeNota1={handleChangeNota1} />
-                                                    </td>
-                                                </tr>
+                                            matriculadosAsig.map((obj, index) => {
+
+                                                const regNota1 = obj.detalle.filter(
+                                                    (item: any) => item.tipCaliId === 1
+                                                );
+
+                                                //const cond = regNota1[0].condNota
+                                                //setNota1(regNota1[0].nota)
+                                                const nota = regNota1[0].nota1
+
+                                                return (
+                                                    <tr key={index} className="text-sm">
+                                                        <td className="border p-2">{++index}</td>
+                                                        <td className="border p-2">{obj.estudianteId}</td>
+                                                        <td className="border p-2">{`${obj.estPaterno} ${obj.estMaterno} ${obj.estNombres}`}</td>
+                                                        <td className="border p-2">
+                                                            <div className="relative">
+                                                                <input
+                                                                    type="text"
+                                                                    maxLength={5}
+                                                                    className={`font-mont border ${valid1 ? "border-gray-300" : "bg-red-300"} text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
+                                                                    ref={refNota1}
+                                                                    value={nota}
+                                                                    onChange={(e)=>handleInputDetalle(e, obj.detMatriculaId, 1)}
+                                                                    
+                                                                    onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberFloat(event)}
+                                                                // onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleNextInput(event)}
+                                                                />
+                                                                <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${ 'no' == 'no' ? 'text-white' : 'text-green-400'} `}></i>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                )
 
                                                 // <TablaRegistroNotas key={index} index={index} item={obj} />
-                                            ))
+                                            })
                                         )
 
                                 }
