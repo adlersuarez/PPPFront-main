@@ -7,6 +7,7 @@ type Props = {
     horario: any
     setHorarioDetActual: () => void
     handleOpenModalDetEditar: () => void
+    handleOpenModalGeneralEditar: () => void
 }
 
 const VistaPreviaDetalle = (props: Props) => {
@@ -27,19 +28,19 @@ const VistaPreviaDetalle = (props: Props) => {
                 onClose={props.handleCloseModalInfo}
             >
 
-                <div className="relative flex flex-col min-w-0 w-80 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
+                <div className="relative flex flex-col min-w-0 w-80 break-words bg-white border-0 rounded-2xl bg-clip-border p-3 gap-4 pb-6">
 
-                    <div className="flex justify-between">
-                        <h6 className="py-1 px-4 font-bold text-lg"> {props.horario.asignatura}</h6>
+                    <div className="flex justify-between py-1 mx-2">
+                        <h6 className=" font-bold text-lg"> {props.horario.asignatura}</h6>
                         <button
                             className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                             onClick={props.handleCloseModalInfo}>
                             <i className="bi bi-x-circle text-lg"></i>
                         </button>
                     </div>
-                    <div className="w-full px-4 pb-2 pt-4">
+                    <div className="w-full px-2">
 
-                        <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-3">
 
                             <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                                 <div className="grid grid-cols-1 md:grid-cols-1 m-4">
@@ -64,7 +65,7 @@ const VistaPreviaDetalle = (props: Props) => {
                                         <p>
                                             Horario
                                             :
-                                            
+
                                             <span className="mx-2 text-blue-700 font-bold">{props.horario.horaIni?.slice(0, -3)}</span>
                                             -
                                             <span className="ml-2 text-blue-700 font-bold">{props.horario.horaFin?.slice(0, -3)}</span>
@@ -78,22 +79,24 @@ const VistaPreviaDetalle = (props: Props) => {
 
                     </div>
 
-                    <div className="relative flex flex-wrap justify-center">
-                        <button
-                            className="ml-1 flex items-center rounded border-md border-yellow-500 bg-yellow-500 text-white p-2 hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-400 active:ring-yellow-400"
+                    <div className="relative flex flex-wrap justify-between px-2">
+                        <button className="flex items-center rounded border-md border-yellow-500 bg-yellow-500 text-white p-2 hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-400 active:ring-yellow-400 gap-2"
                             onClick={() => {
                                 props.handleCloseModalInfo();
                                 //props.handleOpenModalHorarioDetProcesoEditar()
                                 props.handleOpenModalDetEditar()
                             }}
                         >
-                            <i className="bi bi-pencil-fill mr-1"></i> Editar Horario
+                            <i className="bi bi-pencil-fill" /> Editar detalle
                         </button>
-                        {/* <button
-                            className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
+                        <button className="flex items-center rounded border-md border-blue-500 bg-blue-500 text-white p-2 hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 active:ring-green-400 gap-2"
+                            onClick={() => {
+                                props.handleCloseModalInfo();
+                                props.handleOpenModalGeneralEditar()
+                            }}
                         >
-                            <i className="bi bi-people-fill mr-1"></i> Matriculados
-                        </button> */}
+                            <i className="bi bi-calendar2-week" /> General
+                        </button>
                     </div>
 
                     {/* <div className="relative flex flex-wrap justify-center mt-4">

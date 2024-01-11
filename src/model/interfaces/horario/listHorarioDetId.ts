@@ -3,6 +3,8 @@ export default interface ListHorarioDetId {
     horarioId: number
     horarioAsigId: number
     capacidad: number
+    asiId: string
+    asiNivel: string
     asignatura: string
     docente: string
   
@@ -12,6 +14,7 @@ export default interface ListHorarioDetId {
     color: string
     observacion: string
     estado: number
+    visible: number
     usuarioRegistra: string
     fechaRegistra: Date
     usuarioModifica: string

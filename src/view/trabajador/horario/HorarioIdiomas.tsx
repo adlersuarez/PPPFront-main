@@ -24,18 +24,17 @@ import { LoaderSvg } from "../../../component/Svg.component";
 import ModalHorarioAgregar from "./modal/HorarioAgregar";
 import ModalHorarioEditar from "./modal/HorarioEditar";
 
+import ModalVerCalendario from "./modal/VerCalendario";
+
 import { convertirFormatoFechaSql, convertirFormatoHoraSql } from '../../../helper/herramienta.helper'
 import ModuloHorarioDetalle from "./HorarioDetalle";
 
 
 const HorarioIdiomas = () => {
 
-
     const listaReporte = ['75247846', '41262007']
     const usuarioActual = JSON.parse(window.localStorage.getItem("codigo") || "");
     const usuarioPermitido = listaReporte.includes(usuarioActual);
-
-
 
     const navigate = useNavigate()
 
@@ -95,6 +94,7 @@ const HorarioIdiomas = () => {
 
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
+    const [isOpenCalendario, setIsOpenCalendario] = useState(false);
 
     const [moduloDetalle, setModuloDetalle] = useState(false);
 
@@ -227,6 +227,10 @@ const HorarioIdiomas = () => {
         setIdAula(idAula)
 
         handleOpenModalEditar()
+    }
+
+    const VerCalendario = () => {
+        handleOpenModalCalendario()
     }
 
     // Tabla
@@ -370,6 +374,15 @@ const HorarioIdiomas = () => {
         setIsOpenModalEditar(false);
     };
 
+    //Calendario
+    const handleOpenModalCalendario = () => {
+        setIsOpenCalendario(true);
+    };
+
+    const handleCloseModalCalendario = () => {
+        setIsOpenCalendario(false);
+    };
+
     return (
         <>
             <div className="flex flex-wrap -mx-3">
@@ -437,6 +450,11 @@ const HorarioIdiomas = () => {
                                         sweet={sweet}
                                         abortControl={abortControllerEditar.current}
                                         handleCloseModal={handleCloseModalEditar} />
+
+                                    <ModalVerCalendario
+                                        isOpenModal={isOpenCalendario}
+                                        handleCloseModal={handleCloseModalCalendario}
+                                    />
 
 
                                     {
@@ -545,42 +563,7 @@ const HorarioIdiomas = () => {
                                                             </select>
                                                         </div>
 
-                                                        <div>
-                                                            <label
-                                                                className="font-mont block mb-1 text-sm font-medium text-gray-900 "
-                                                            >
-                                                                Modalidad <i className="bi bi-asterisk text-xs text-red-500"></i>
-                                                            </label>
-                                                            <select
-                                                                className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                                                ref={refModalidad}
-                                                                value={idModalidad}
-                                                                onChange={(event) => {
-                                                                    const selectedModalidadId = event.currentTarget.value;
-                                                                    setIdModalidad(parseInt(selectedModalidadId));
 
-                                                                    const selectedModalidad = comboBoxModalidad.find(item => item.modalidadId === parseInt(selectedModalidadId));
-
-                                                                    if (selectedModalidad) {
-                                                                        setNombreModalidad(selectedModalidad.modalidad);
-                                                                    } else {
-                                                                        setNombreModalidad("");
-                                                                    }
-                                                                }}
-                                                            >
-                                                                <option value={0}>- Seleccione -</option>
-                                                                {
-                                                                    comboBoxModalidad.map((item, index) => {
-                                                                        return (
-                                                                            <option key={index} value={item.modalidadId}>
-                                                                                {item.modalidad}
-                                                                            </option>
-                                                                        );
-                                                                    })
-                                                                }
-
-                                                            </select>
-                                                        </div>
 
                                                         <div>
                                                             <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
@@ -616,6 +599,43 @@ const HorarioIdiomas = () => {
 
                                                                     })
                                                                 }
+                                                            </select>
+                                                        </div>
+
+                                                        <div>
+                                                            <label
+                                                                className="font-mont block mb-1 text-sm font-medium text-gray-900 "
+                                                            >
+                                                                Modalidad <i className="bi bi-asterisk text-xs text-red-500"></i>
+                                                            </label>
+                                                            <select
+                                                                className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                                                ref={refModalidad}
+                                                                value={idModalidad}
+                                                                onChange={(event) => {
+                                                                    const selectedModalidadId = event.currentTarget.value;
+                                                                    setIdModalidad(parseInt(selectedModalidadId));
+
+                                                                    const selectedModalidad = comboBoxModalidad.find(item => item.modalidadId === parseInt(selectedModalidadId));
+
+                                                                    if (selectedModalidad) {
+                                                                        setNombreModalidad(selectedModalidad.modalidad);
+                                                                    } else {
+                                                                        setNombreModalidad("");
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <option value={0}>- Seleccione -</option>
+                                                                {
+                                                                    comboBoxModalidad.map((item, index) => {
+                                                                        return (
+                                                                            <option key={index} value={item.modalidadId}>
+                                                                                {item.modalidad}
+                                                                            </option>
+                                                                        );
+                                                                    })
+                                                                }
+
                                                             </select>
                                                         </div>
 
@@ -659,7 +679,7 @@ const HorarioIdiomas = () => {
                                                             >
                                                                 Opciones
                                                             </label>
-                                                            <div className="relative flex flex-wrap">
+                                                            <div className="relative flex flex-wrap justify-between">
                                                                 <button
                                                                     className="ml-1 flex items-center rounded border-md p-2 text-xs border-gray-500 bg-gray-500 text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
                                                                     onClick={loadInit}
@@ -671,6 +691,12 @@ const HorarioIdiomas = () => {
                                                                     onClick={NuevoHorario}
                                                                 >
                                                                     <i className="bi bi-plus-circle-fill mr-1"></i> NUEVO
+                                                                </button>
+                                                                <button
+                                                                    className="ml-1 flex items-center rounded border-md p-2 text-xs border-orange-500 bg-orange-500 text-white hover:bg-orange-700 focus:ring-2 focus:ring-orange-400 active:ring-orange-400"
+                                                                    onClick={VerCalendario}
+                                                                >
+                                                                    <i className="bi bi-calendar3-week mr-1"></i> Calendario
                                                                 </button>
                                                             </div>
                                                         </div>

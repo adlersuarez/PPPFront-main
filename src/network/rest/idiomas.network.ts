@@ -89,6 +89,12 @@ export async function InsertarHorarioAsignatura<RespValue>(params: object, abort
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioAsignatura`, params, { signal: abortController?.signal }));
 }
 
+////
+export async function ActualizarHorarioAsignatura<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Horario/ActualizarHorarioAsignatura`, params, { signal: abortController?.signal }));
+}
+
+
 export async function InsertarHorarioDetalle<RespValue>(params: object[], abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/Horario/InsertarHorarioDetalle/`, params, { signal: abortController?.signal }));
 }
@@ -197,7 +203,9 @@ export async function RangoMatriculaCalendario<Listas>(signal = null): Promise<R
     return await Resolve.create<Listas>(instance.get<Listas>(`/Calendario/RangoMatriculaCalendario`, { signal: signal! }));
 }
 
-
+export async function ListarCalendariosActivos<Listas>(signal = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Calendario/ListarCalendariosActivos`, { signal: signal! }));
+}
 
 
 // Reportes
