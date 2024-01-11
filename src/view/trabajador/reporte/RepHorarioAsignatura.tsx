@@ -552,7 +552,7 @@ const RepHorarioAsignatura = () => {
                                                         className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
                                                         onClick={() => {
                                                             if (reporteDisponibles.length == 0) return;
-                                                            exportExcelToTableHtml('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, [13], true)
+                                                            exportExcelToTableHtml('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, [14], true)
                                                         }}
                                                     >
                                                         <i className="bi bi-file-earmark-excel-fill mr-1"></i> Excel
@@ -604,6 +604,7 @@ const RepHorarioAsignatura = () => {
                                             <thead className="align-bottom">
                                                 <tr>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
@@ -636,7 +637,7 @@ const RepHorarioAsignatura = () => {
                                                         (
                                                             <tr className="text-center bg-white border-b">
                                                                 {/* <td colSpan={7} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td> */}
-                                                                <td colSpan={14} className="text-sm p-2  border-b border-solid">No hay datos disponibles</td>
+                                                                <td colSpan={15} className="text-sm p-2  border-b border-solid">No hay datos disponibles</td>
                                                             </tr>
                                                         )
                                                         :
@@ -646,6 +647,7 @@ const RepHorarioAsignatura = () => {
                                                                 return (
                                                                     <tr key={index} className="bg-white border-b">
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{++index}</td>
+                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>

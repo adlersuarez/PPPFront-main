@@ -486,6 +486,7 @@ const BuscarAulasAsignaturas = () => {
 
                                                         <tr>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
@@ -507,7 +508,7 @@ const BuscarAulasAsignaturas = () => {
 
                                                             loading ? (
                                                                 <tr className="text-center bg-white border-b">
-                                                                    <td colSpan={13} className="text-sm p-2 border-b border-solid">
+                                                                    <td colSpan={14} className="text-sm p-2 border-b border-solid">
                                                                         <div className="flex items-center justify-center">
                                                                             <LoaderSvg /> <span>Cargando datos...</span>
                                                                         </div>
@@ -527,6 +528,7 @@ const BuscarAulasAsignaturas = () => {
                                                                             return (
                                                                                 <tr key={index} className="bg-white border-b" title={` ${convertirFormatoFechaSql(item.fechaRegistra)} ${convertirFormatoHoraSql(item.fechaRegistra)} `}>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
