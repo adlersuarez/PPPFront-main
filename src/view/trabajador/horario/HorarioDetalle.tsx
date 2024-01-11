@@ -16,6 +16,7 @@ import { Scheduler, View, Resource } from 'devextreme-react/scheduler';
 
 import ModalHorarioDetAgregar from "./modal/HorarioDetAgregar";
 import ModalHorarioDetEditar from './modal/HorarioDetEditar';
+import ModalHorarioGeneralEditar from './modal/HorarioGeneralEditar';
 
 import '../horario/component/style/horario.css'
 import VistaPreviaDetalle from "./modal/VistaPreviaDetalle";
@@ -95,6 +96,8 @@ const HorarioDetalle = (props: Props) => {
 
                     return {
                         detHorarioId: item.detHorarioId,
+                        asiId: item.asiId,
+                        asiNivel: item.asiNivel,
                         horarioId: item.horarioId,
                         horarioAsigId: item.horarioAsigId,
                         capacidad: item.capacidad,
@@ -108,7 +111,8 @@ const HorarioDetalle = (props: Props) => {
                         endDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + item.dia - currentDate.getDay(), parseInt(endHour), parseInt(endMin)),
                         recurrenceRule: 'FREQ=WEEKLY',
                         estado: item.estado,
-                        observacion: item.observacion
+                        observacion: item.observacion,
+                        visible: item.visible
 
                     };
 
@@ -120,6 +124,9 @@ const HorarioDetalle = (props: Props) => {
 
     const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
     const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
+
+    const [isOpenModalGeneralEditar, setIsOpenModalGeneralEditar] = useState(false);
+
     const [horarioDetActual, setHorarioDetActual] = useState<any>({})
 
     const renderCard = (item: any) => {
@@ -157,6 +164,16 @@ const HorarioDetalle = (props: Props) => {
         setIsOpenModalInfo(false)
     }
 
+    //Modal DetAsign
+    const handleOpenModalGeneralEditar = () => {
+        setIsOpenModalGeneralEditar(true)
+        //setHorarioDetActual(e.appointmentData)
+    }
+
+    const handleCloseModalGeneralEditar = () => {
+        setIsOpenModalGeneralEditar(false)
+    }
+
     // Modal Editar
     const handleOpenModalHorarioDetProcesoEditar = () => {
         localStorage.setItem('horarioDetActual', JSON.stringify(horarioDetActual));
@@ -192,6 +209,8 @@ const HorarioDetalle = (props: Props) => {
         { id: '#8D6E63', nombreColor: 'Marrón', color: '#8D6E63' },
     ];
 
+    //console.log(horarioDetActual)
+
     return (
         <>
             <ModalHorarioDetAgregar
@@ -222,11 +241,23 @@ const HorarioDetalle = (props: Props) => {
                 handleCloseModalHorarioDetProcesoEditar={handleCloseModalHorarioDetProcesoEditar}
             />
 
+            <ModalHorarioGeneralEditar
+                isOpenModal={isOpenModalGeneralEditar}
+                idIdioma={props.idIdioma}
+                listaHorario={dataHorario}
+                horarioActual={horarioDetActual}
+
+                abortControl={props.abortControl}
+                loadInit={() => loadInit(props.idHorario)}
+                handleClose={handleCloseModalGeneralEditar}
+            />
+
             <VistaPreviaDetalle
                 isOpenModal={isOpenModalInfo}
                 horario={horarioDetActual}
                 setHorarioDetActual={() => setHorarioDetActual({})}
                 handleOpenModalDetEditar={() => handleOpenModalHorarioDetProcesoEditar()}
+                handleOpenModalGeneralEditar={()=>handleOpenModalGeneralEditar()}
                 handleCloseModalInfo={handleCloseModalInfo}
             />
 

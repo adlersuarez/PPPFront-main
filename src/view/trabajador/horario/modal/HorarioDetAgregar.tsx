@@ -172,7 +172,12 @@ const HorarioDetAgregar = (props: Props) => {
                     "asignaturaId": asiId,
                     "docenteId": docenteId,
                     "capacidad": capacidad,
-                    "color": color
+                    "color": color,
+                    "visible": estado ? 1 : 0,
+                    "usuarioRegistra": codigo,
+                    "fechaRegistra": new Date().toISOString(),
+                    "usuarioModifica": codigo,
+                    "fechaModifica": new Date().toISOString(),
                 }
 
                 const responseHorAsig = await InsertarHorarioAsignatura<RespValue>(paramsHorarioAsign, props.abortControl);
@@ -195,10 +200,10 @@ const HorarioDetAgregar = (props: Props) => {
                                 "horaFin": horaFin,
                                 "horaAcademica": 1,
                                 "observacion": observacion,
-                                "estado": estado ? 1 : 0,
+                                "estado": 1,
                                 "usuarioRegistra": codigo,
                                 "fechaRegistra": new Date().toISOString(),
-                                "usuarioModifica": "",
+                                "usuarioModifica": codigo,
                                 "fechaModifica": new Date().toISOString(),
                             }
 

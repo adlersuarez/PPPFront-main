@@ -1,5 +1,5 @@
 import CustomModal from "../../../../component/Modal.component";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Response from "../../../../model/class/response.model.class";
 import RestError from "../../../../model/class/resterror.model.class";
 import { Types } from "../../../../model/enum/types.model.enum";
@@ -64,6 +64,7 @@ const HorarioDetEditar = (props: Props) => {
     const [dia, setDia] = useState<number>(0)
     const [horaInicio, setHoraInicio] = useState<string>("")
     const [horaFin, setHoraFin] = useState<string>("")
+    const [estado, setEstado] = useState<boolean>(true)
 
     //const [nombreAsig, setNombreAsig] = useState<string>("")
     //const [capacidad, setCapacidad] = useState<number>(0)
@@ -74,7 +75,6 @@ const HorarioDetEditar = (props: Props) => {
     const refHoraFin = useRef<HTMLSelectElement>(null)
 
     //const refCapacidad = useRef<HTMLInputElement>(null)
-
 
     const abortController = useRef(new AbortController());
 
@@ -124,7 +124,7 @@ const HorarioDetEditar = (props: Props) => {
             "horaIni": horaInicio,
             "horaFin": horaFin,
             "observacion": observacion,
-            "estado": 0,
+            "estado": estado ? 1 : 0,
             "usuarioRegistra": codigo,
             "fechaRegistra": new Date().toISOString(),
             "usuarioModifica": codigo,
@@ -134,12 +134,11 @@ const HorarioDetEditar = (props: Props) => {
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
 
-                //console.log(params)
-
                 sweet.openInformation("Mensaje", "Procesando información...")
 
-
                 const response = await ActualizarHorarioDetalle<RespValue>(params, abortController.current);
+
+                console.log(response)
 
 
                 if (response instanceof Response) {
@@ -180,6 +179,10 @@ const HorarioDetEditar = (props: Props) => {
 
         }
     }, [storedHorarioDetActual?.dia]);
+
+    const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setEstado(event.target.checked);
+    };
 
     return (
         <>
@@ -324,6 +327,20 @@ const HorarioDetEditar = (props: Props) => {
                                     onChange={(e) => setObservacion(e.target.value)}
                                 >
                                 </textarea>
+                            </div>
+                            <div>
+                                <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                    Estado
+                                </label>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        className="sr-only peer"
+                                        checked={estado}
+                                        onChange={handleEstadoChange} />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                    <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{`${estado == true ? 'activo' : 'inactivo'}`}</span>
+                                </label>
                             </div>
 
                         </div>
