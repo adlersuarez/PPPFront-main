@@ -9,11 +9,11 @@ import CustomModal from "@/component/Modal.component"
 import { ReporteMatriculadosXHorarioAsigId } from "@/network/rest/idiomas.network";
 import Listas from "@/model/interfaces/Listas.model.interface";
 
-// import { jsPDF } from 'jspdf'
-// import autoTable, { UserOptions } from 'jspdf-autotable'
+import { jsPDF } from 'jspdf'
+import autoTable, { UserOptions } from 'jspdf-autotable'
 import * as XLSX from 'xlsx';
-import { getCurrentDateFormatted } from "@/helper/herramienta.helper";
-// import { images } from "@/helper/index.helper";
+import { getCurrentDateFormatted, getCurrentTime24hFormat } from "@/helper/herramienta.helper";
+import { images } from "@/helper/index.helper";
 
 
 type Props = {
@@ -42,6 +42,123 @@ const ListaEstudiantesMatriculados = (props: Props) => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
+    }
+
+    const pdfHorariosAsignatura = async (idElementTable: string, fileName: string, data: any) => {
+
+        const tabla = document.getElementById(idElementTable);
+        const tbCopia = tabla?.cloneNode(true) as HTMLElement;;
+
+        const doc = new jsPDF({
+            orientation: 'landscape', // Orientación vertical (por defecto)
+            unit: 'mm', // Unidad de medida en milímetros
+            format: 'a4' // Tamaño A4
+        })
+
+        // const prevFont = doc.getFontList()[0];
+        // console.log(prevFont)
+
+        const pageWidth = doc.internal.pageSize.width
+        //const pageHeight = doc.internal.pageSize.height
+
+        // Cuerpo
+        doc.setFontSize(9)
+        // doc.setFont("", "normal")
+        /*
+        periodo: props.item.anio - props.item.mes,
+        modalidad: props.item.modalidad,
+        tipoEstudio: props.item.tipoEstudio,
+        capacidad: props.item.capacidad,
+
+        aula: props.item.aula,
+        seccion: props.item.seccion,
+        asignatura: props.item.asignatura,
+        instructor: props.item.docenteDni ? '' : props.item.docenteDni / props.item.docente ? '' : props.item.docente,
+        cantidad: props.item.cantidad,
+        */
+        doc.text(`Periodo: ${data.periodo}`, 13, 23)
+        doc.text(`Modalidad: ${data.modalidad}`, 68, 23)
+        doc.text(`Tipo estudio: ${data.tipoEstudio}`, 123, 23)
+        doc.text(`Turno: ${data.turno}`, 178, 23)
+        // doc.text(`Capacidad: ${data.capacidad}`, 233, 23)
+
+        doc.text(`Aula: ${data.aula}`, 13, 27)
+        doc.text(`Sección: ${data.seccion} `, 68, 27)
+        doc.text(`Asignatura: ${data.asignatura} `, 123, 27)
+        doc.text(`Capacidad: ${data.capacidad} / ${data.cantidad} `, 178, 27)
+        
+        doc.text(`Instructor: ${data.instructor} `, 13, 31)
+        // doc.text(`Cantidad de Matriculados: ${data.cantidadMatriculados}`, 13, 31)
+        // doc.text(`Aulas Libres: ${data.aulasLibres}`, pageWidth / 2, 31)
+
+        // Excluye la última columna
+        const rows = tbCopia.querySelectorAll('tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('th, td');
+            if (cells.length > 0) {
+                row.removeChild(cells[cells.length - 1]);
+            }
+        });
+
+        const opciones: UserOptions = {
+            margin: {
+                top: 33,
+                bottom: 20
+            },
+            headStyles: {
+                fontSize: 8,
+                textColor: [255, 255, 255]
+            },
+            bodyStyles: {
+                fontSize: 7,
+                textColor: [0, 0, 0]
+            },
+            columnStyles: {
+                0: {
+                    halign: 'center',
+                    fillColor: [220, 220, 220]
+                },
+                // 5: {
+                //     textColor: [0, 57, 129]
+                // }
+            },
+            html: tbCopia as HTMLTableElement
+        };
+
+        // Genera el PDF a partir de la tabla
+        autoTable(doc, opciones);
+
+        // Pie y Encabezado de pagina
+        const pageCount = doc.getNumberOfPages() // Obtener el número total de páginas
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i)
+
+            doc.addImage(images.logo_png, "PNG", 13, 5, 13, 12)
+
+            doc.setFontSize(15)
+            doc.setTextColor(0, 0, 0)
+            //doc.setFont(prevFont, "bold")
+            doc.text("REPORTE DE LA LISTA DE MATRICULADOS POR HORARIOS", pageWidth / 4, 13)
+            // doc.setFontSize(12)
+            // doc.setTextColor(128, 128, 128)
+            // doc.text(`Filtrado por`, pageWidth / 3, 17)
+
+            doc.setFontSize(10)
+            //doc.setFont(prevFont, "normal")
+            doc.setTextColor(128, 128, 128)
+            doc.text(getCurrentDateFormatted(), pageWidth - 30, 8)
+            doc.text(getCurrentTime24hFormat(), pageWidth - 30, 14)
+
+            doc.setDrawColor(0, 124, 188)
+            doc.line(13, 19, pageWidth - 13, 19)
+
+            doc.setFontSize(10)
+            doc.setTextColor(128, 128, 128)
+            //doc.setFont(prevFont, "normal")
+            doc.text(`Pag ${i} de ${pageCount}`, pageWidth - 30, 200)
+        }
+
+        doc.save(fileName + ".pdf")
     }
 
     const exportExcelToTableHtml = (
@@ -93,7 +210,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                 <div className="flex justify-between">
 
                     <div className="flex justify-between w-11/12">
-                        <h6 className="py-1 font-bold text-lg"> Lista de Matriculados</h6>
+                        <h6 className="py-1 font-bold text-lg"> Lista de Matriculados por Horarios</h6>
                     </div>
                     <button
                         className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
@@ -119,14 +236,32 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                     <i className="bi bi-file-earmark-excel-fill mr-1"></i> Excel
                                 </button>
                             </div>
-                            {/* <div className="relative flex flex-wrap">
+                            <div className="relative flex flex-wrap">
                                 <button
                                     title="Pdf"
                                     className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
+                                    onClick={() => {
+                                        if (listaMatriculados.length == 0) return;
+                                        const data = {
+                                            periodo: props.item.anio - props.item.mes,
+                                            modalidad: props.item.modalidad,
+                                            tipoEstudio: props.item.tipoEstudio,
+                                            turno: props.item.turno,
+                                            capacidad: props.item.capacidad,
+
+                                            aula: props.item.aula,
+                                            seccion: props.item.seccion,
+                                            asignatura: props.item.asignatura,
+                                            instructor: props.item.docenteDni ? '' : props.item.docenteDni / props.item.docente ? '' : props.item.docente,
+                                            cantidad: props.item.cantidad,
+
+                                        }
+                                        pdfHorariosAsignatura('tabla-reporte', `Reporte-Lista-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, data)
+                                    }}
                                 >
                                     <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Pdf
                                 </button>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>

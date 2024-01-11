@@ -55,6 +55,11 @@ const RepHorarioAsignatura = () => {
 
     const abortController = useRef(new AbortController());
 
+    const [valueIdioma, SetValueIdioma] = useState<string>("-")
+    const [valueSede, SetValueSede] = useState<string>("-")
+    const [valuePeriodo, SetValuePeriodo] = useState<string>("-")
+    const [valueModalidad, SetValueModalidad] = useState<string>("-")
+    const [valueTipoEstudio, SetValueTipoEstudio] = useState<string>("-")
 
     useEffect(() => {
 
@@ -169,7 +174,7 @@ const RepHorarioAsignatura = () => {
     }
 
     const handleOpenModal = (item: any, idHorarioAsig: number) => {
-        
+
         setIsOpenModal(true);
 
         setItem(item)
@@ -180,7 +185,7 @@ const RepHorarioAsignatura = () => {
         setIsOpenModal(false);
     };
 
-    const pdfHorariosAsignatura = async (idElementTable: string, fileName: string, data: any) => {
+    const pdfHorariosAsignatura = async (idElementTable: string, fileName: string, data: any, idioma: string, sede: string, periodo: string, modalidad: string, tipoEstudio: string) => {
 
         const tabla = document.getElementById(idElementTable);
         const tbCopia = tabla?.cloneNode(true) as HTMLElement;;
@@ -199,12 +204,17 @@ const RepHorarioAsignatura = () => {
 
         // Cuerpo
         doc.setFontSize(9)
-        //doc.setFont("", "normal")
-        doc.text(`Capacidad Total: ${data.capacidadTotal}`, 13, 24)
-        doc.text(`Vacantes Disponibles: ${data.vacantesDisponibles} `, pageWidth / 2, 24)
+        // doc.setFont("", "normal")
+        doc.text(`Idioma: ${idioma}`, 13, 23)
+        doc.text(`Sede: ${sede}`, 68, 23)
+        doc.text(`Periodo: ${periodo}`, 123, 23)
+        doc.text(`Modalidad: ${modalidad}`, 178, 23)
+        doc.text(`Tipo estudio: ${tipoEstudio}`, 233, 23)
+        doc.text(`Capacidad Total: ${data.capacidadTotal}`, 13, 27)
+        doc.text(`Vacantes Disponibles: ${data.vacantesDisponibles} `, pageWidth / 2, 27)
 
-        doc.text(`Cantidad de Matriculados: ${data.cantidadMatriculados}`, 13, 29)
-        doc.text(`Aulas Libres: ${data.aulasLibres}`, pageWidth / 2, 29)
+        doc.text(`Cantidad de Matriculados: ${data.cantidadMatriculados}`, 13, 31)
+        doc.text(`Aulas Libres: ${data.aulasLibres}`, pageWidth / 2, 31)
 
         // Excluye la última columna
         const rows = tbCopia.querySelectorAll('tr');
@@ -217,7 +227,7 @@ const RepHorarioAsignatura = () => {
 
         const opciones: UserOptions = {
             margin: {
-                top: 32,
+                top: 33,
                 bottom: 20
             },
             headStyles: {
@@ -253,7 +263,10 @@ const RepHorarioAsignatura = () => {
             doc.setFontSize(15)
             doc.setTextColor(0, 0, 0)
             //doc.setFont(prevFont, "bold")
-            doc.text("REGISTRO DE MATRICULADOS HORARIO X ASIGNATURA", pageWidth / 4, 13)
+            doc.text("REPORTE DE MATRICULADOS POR HORARIOS", 123, 13)
+            // doc.setFontSize(12)
+            // doc.setTextColor(128, 128, 128)
+            // doc.text(`Filtrado por`, pageWidth / 3, 17)
 
             doc.setFontSize(10)
             //doc.setFont(prevFont, "normal")
@@ -277,12 +290,15 @@ const RepHorarioAsignatura = () => {
         idElementTable: string,
         fileName: string,
         columnsToRemove: number[] = [],
-        shouldRemoveColumns: boolean = false
+        shouldRemoveColumns: boolean = false,
     ): void => {
         const table = document.getElementById(idElementTable);
 
+        
         if (table) {
             const tbCopia = table.cloneNode(true) as HTMLTableElement;
+            
+            console.log(tbCopia)
 
             if (shouldRemoveColumns) {
                 const rows = tbCopia.rows;
@@ -316,7 +332,7 @@ const RepHorarioAsignatura = () => {
                         />
 
                         <div className="p-1 bg-Solid">
-                            <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Reporte de Matriculados con filtros</h2>
+                            <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Reporte de Matriculados por horarios con filtros</h2>
                             <div className="w-full">
 
                                 <div className="flex flex-col shadow-md border-solid border-2 border-gray-300 ">
@@ -357,13 +373,11 @@ const RepHorarioAsignatura = () => {
                                                     const selectedIdiomaId = event.currentTarget.value;
                                                     setIdIdioma(parseInt(selectedIdiomaId));
 
-                                                    /*const selectedIdioma = comboBoxIdioma.find(item => item.idiomaId.toString() === selectedIdiomaId);
-            
+                                                    const selectedIdioma = comboBoxIdioma.find(item => item.idiomaId.toString() === selectedIdiomaId);
+
                                                     if (selectedIdioma) {
-                                                        setNombreIdioma(selectedIdioma.idiomaNombre);
-                                                    } else {
-                                                        setNombreIdioma("");
-                                                    }*/
+                                                        SetValueIdioma(selectedIdioma.idiomaNombre);
+                                                    }
                                                 }}
                                             >
                                                 <option value={0}>- Seleccione -</option>
@@ -394,13 +408,11 @@ const RepHorarioAsignatura = () => {
                                                     const selectedSedeId = event.currentTarget.value;
                                                     setIdSede(selectedSedeId);
 
-                                                    /*const selectedSede = comboBoxSede.find(item => item.sedeId.toString() === selectedSedeId);
-            
+                                                    const selectedSede = comboBoxSede.find(item => item.sedeId.toString() === selectedSedeId);
+
                                                     if (selectedSede) {
-                                                        setNombreSede(selectedSede.sede);
-                                                    } else {
-                                                        setNombreSede("");
-                                                    }*/
+                                                        SetValueSede(selectedSede.sede);
+                                                    }
                                                 }}
                                             >
                                                 <option value="0">- Seleccione -</option>
@@ -429,13 +441,11 @@ const RepHorarioAsignatura = () => {
                                                     const selectedPeriodoId = event.currentTarget.value;
                                                     setIdPeriodo(parseInt(selectedPeriodoId));
 
-                                                    /*const selectedPeriodo = comboBoxPeriodo.find(item => item.periodoId.toString() === selectedPeriodoId);
-            
+                                                    const selectedPeriodo = comboBoxPeriodo.find(item => item.periodoId.toString() === selectedPeriodoId);
+
                                                     if (selectedPeriodo) {
-                                                        setNombrePeriodo(`${selectedPeriodo.anio} - ${selectedPeriodo.mes}`);
-                                                    } else {
-                                                        setNombrePeriodo("");
-                                                    }*/
+                                                        SetValuePeriodo(`${selectedPeriodo.anio} - ${selectedPeriodo.mes}`);
+                                                    }
                                                 }}
                                             >
                                                 <option value={0}>- Seleccione -</option>
@@ -469,13 +479,11 @@ const RepHorarioAsignatura = () => {
                                                     const selectedModalidadId = event.currentTarget.value;
                                                     setIdModalidad(parseInt(selectedModalidadId));
 
-                                                    /*const selectedModalidad = comboBoxModalidad.find(item => item.modalidadId === parseInt(selectedModalidadId));
-            
+                                                    const selectedModalidad = comboBoxModalidad.find(item => item.modalidadId === parseInt(selectedModalidadId));
+
                                                     if (selectedModalidad) {
-                                                        setNombreModalidad(selectedModalidad.modalidad);
-                                                    } else {
-                                                        setNombreModalidad("");
-                                                    }*/
+                                                        SetValueModalidad(selectedModalidad.modalidad);
+                                                    }
                                                 }}
                                             >
                                                 <option value={0}>- Seleccione -</option>
@@ -504,13 +512,11 @@ const RepHorarioAsignatura = () => {
                                                     const selectedTipoEstudioId = event.currentTarget.value;
                                                     setIdTipoEstudio(parseInt(selectedTipoEstudioId));
 
-                                                    /*const selectedTipoEstudio = comboBoxTipoEstudio.find(item => item.tipEstudioId.toString() === selectedTipoEstudioId);
-            
+                                                    const selectedTipoEstudio = comboBoxTipoEstudio.find(item => item.tipEstudioId.toString() === selectedTipoEstudioId);
+
                                                     if (selectedTipoEstudio) {
-                                                        setNombreTipoEstudio(`${selectedTipoEstudio.tipoEstudio}`);
-                                                    } else {
-                                                        setNombreTipoEstudio("");
-                                                    }*/
+                                                        SetValueTipoEstudio(`${selectedTipoEstudio.tipoEstudio}`);
+                                                    }
                                                 }}
                                             >
                                                 <option value={0}>- Seleccione -</option>
@@ -552,7 +558,7 @@ const RepHorarioAsignatura = () => {
                                                         className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
                                                         onClick={() => {
                                                             if (reporteDisponibles.length == 0) return;
-                                                            exportExcelToTableHtml('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, [14], true)
+                                                            exportExcelToTableHtml('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, [13], true )
                                                         }}
                                                     >
                                                         <i className="bi bi-file-earmark-excel-fill mr-1"></i> Excel
@@ -571,7 +577,7 @@ const RepHorarioAsignatura = () => {
                                                                 aulasLibres: aulasLibres
 
                                                             }
-                                                            pdfHorariosAsignatura('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, data)
+                                                            pdfHorariosAsignatura('tabla-reporte-matriculados-horario', `Reporte-Cantidad-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, data, valueIdioma, valueSede, valuePeriodo, valueModalidad, valueTipoEstudio)
                                                         }}
                                                     >
                                                         <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Pdf
@@ -604,7 +610,6 @@ const RepHorarioAsignatura = () => {
                                             <thead className="align-bottom">
                                                 <tr>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
-                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
@@ -637,7 +642,7 @@ const RepHorarioAsignatura = () => {
                                                         (
                                                             <tr className="text-center bg-white border-b">
                                                                 {/* <td colSpan={7} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td> */}
-                                                                <td colSpan={15} className="text-sm p-2  border-b border-solid">No hay datos disponibles</td>
+                                                                <td colSpan={14} className="text-sm p-2  border-b border-solid">No hay datos disponibles</td>
                                                             </tr>
                                                         )
                                                         :
@@ -647,7 +652,6 @@ const RepHorarioAsignatura = () => {
                                                                 return (
                                                                     <tr key={index} className="bg-white border-b">
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{++index}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
