@@ -23,19 +23,12 @@ const RegistrarNotasGeneral = (props: Props) => {
     //const sweet = useSweerAlert();
     const [matriculadosAsig, setMatriculadoAsig] = useState<any[]>([])
 
-    const [nota1, setNota1] = useState<string>('0')
-    const [valid1, setValid1] = useState<boolean>(true)
-    const refNota1 = useRef<HTMLInputElement>(null)
-
     useEffect(() => {
-
         EstudiantesMatriculados()
     }, [])
 
-
     const EstudiantesMatriculados = async () => {
         setMatriculadoAsig([])
-
 
         const response = await ListarPreRegistroNotas<Listas>(props.item.horarioAsigId, abortController.current)
         if (response instanceof Response) {
@@ -86,52 +79,55 @@ const RegistrarNotasGeneral = (props: Props) => {
         console.log(matriculadosAsig)
     }
 
-    const handleInputDetalle = ( event: React.ChangeEvent<HTMLInputElement>, detMatriculaId: number, tipCaliId: number) => {
+    const handleInputDetalle = (event: React.ChangeEvent<HTMLInputElement>, detMatriculaId: number, tipCaliId: number) => {
         console.log(event.target.value)
         console.log(detMatriculaId)
         console.log(tipCaliId)
 
-        const newMatriculadosAsig = matriculadosAsig.map((matricula)=>{
-            
-        });
+        // const newMatriculadosAsig = matriculadosAsig.map((matricula)=>{
 
-        // const { value } = event.target;
-        // this.setState((prevState) => ({
-        //     detalle: prevState.detalle.map((item) =>
-        //         item.idProducto === idProducto ? { ...item, cantidad: value } : item,
-        //     ),
-        // }));
+        // });
     }
 
-    const generarBody=()=>{
-        if(matriculadosAsig.length == 0){
+    const generarBody = () => {
+
+        const [nota1, setNota1] = useState(11)
+
+        if (matriculadosAsig.length == 0) {
             return (
                 <tr className="text-center bg-white border-b">
-                <td colSpan={9} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
-            </tr>
+                    <td colSpan={9} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
+                </tr>
             );
         }
 
-        return  matriculadosAsig.map((obj, index) => {
+        return matriculadosAsig.map((obj, index) => {
 
-            const regNota1 = obj.detalle.map((item: any)=>{
+            const dataFiltrado1 = obj.detalle.filter(
+                (filter: any) => filter.tipCaliId === 1
+            );
+
+            const regNota1 = dataFiltrado1.map((item: any) => {
+
+                setNota1(item.nota)
+
                 return (
                     <td className="border p-2">
-                            <div className="relative">
+                        <div className="relative">
                             <input
                                 type="text"
                                 maxLength={5}
-                                className={`font-mont border  "border-gray-300"  text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
+                                className={`font-mont border {}"border-gray-300"  text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
                                 // ref={refNota1}
-                                value={item.nota}
-                                onChange={(e)=>handleInputDetalle(e, obj.detMatriculaId, item.tipCaliId)}
-                                
+                                value={nota1}
+                                onChange={(e) => handleInputDetalle(e, obj.detMatriculaId, item.tipCaliId)}
+
                                 onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberFloat(event)}
                             // onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleNextInput(event)}
                             />
-                            <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${ 'no' == 'no' ? 'text-white' : 'text-green-400'} `}></i>
-                       
-                            </div>
+                            <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${item.condNota == 'no' ? 'text-gray-400' : 'text-green-400'} `}></i>
+
+                        </div>
                     </td>
                 );
             });
@@ -146,26 +142,8 @@ const RegistrarNotasGeneral = (props: Props) => {
                     <td className="border p-2">{obj.estudianteId}</td>
                     <td className="border p-2">{`${obj.estPaterno} ${obj.estMaterno} ${obj.estNombres}`}</td>
                     {regNota1}
-                    {/* <td className="border p-2">
-                        <div className="relative">
-                            <input
-                                type="text"
-                                maxLength={5}
-                                className={`font-mont border ${valid1 ? "border-gray-300" : "bg-red-300"} text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
-                                ref={refNota1}
-                                value={nota}
-                                onChange={(e)=>handleInputDetalle(e, obj.detMatriculaId, 1)}
-                                
-                                onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberFloat(event)}
-                            // onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleNextInput(event)}
-                            />
-                            <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${ 'no' == 'no' ? 'text-white' : 'text-green-400'} `}></i>
-                        </div>
-                    </td> */}
                 </tr>
             )
-
-            // <TablaRegistroNotas key={index} index={index} item={obj} />
         });
     }
 
@@ -235,7 +213,22 @@ const RegistrarNotasGeneral = (props: Props) => {
                                 </tr>
                             </thead>
                             <tbody id='registro-notas'>
-                                {generarBody()}
+                                {
+                                    matriculadosAsig.length == 0 ?
+                                        (
+                                            <tr className="text-center bg-white border-b">
+                                                <td colSpan={9} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
+                                            </tr>
+                                        ) : (
+                                            matriculadosAsig.map((item, index)=>{
+                                                return(
+                                                    <TablaRegistroNotas index={index} item={item} listaOriginal={matriculadosAsig}/>
+                                                )
+                                            })
+
+                                        )
+
+                                }
                             </tbody>
                         </table>
                     </div>
