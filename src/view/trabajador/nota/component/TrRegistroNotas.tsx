@@ -12,10 +12,10 @@ type Props = {
     item: any
 }
 
-const TablaRegistroNotas = (props: Props) => {
+const TrRegistroNotas = (props: Props) => {
 
-    const {item} = props
-    let {index} = props
+    const { item } = props
+    let { index } = props
 
     // const regNota1 = item.detalle.filter(
     //     (item) => .tipCaliId === 1
@@ -23,7 +23,7 @@ const TablaRegistroNotas = (props: Props) => {
 
     //const [nota1, setNota1] = useState<string>(regNota1[0].nota)
 
-    const [validNota1, setValidNota1 ] = useState<boolean>(true)
+    const [validNota1, setValidNota1] = useState<boolean>(true)
 
     // const handleChangeNota1 = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     const inputValue = event.target.value;
@@ -52,7 +52,20 @@ const TablaRegistroNotas = (props: Props) => {
                 <td className="border p-2">{item.estudianteId}</td>
                 <td className="border p-2">{`${item.estPaterno} ${item.estMaterno} ${item.estNombres}`}</td>
                 <td className="border p-2">
-                    <NotaUno detMatriculaId={item.detMatriculaId} detalle={item.detalle}/>
+                    {/* <div className="relative">
+                        <input
+                            type="text"
+                            maxLength={5}
+                            className={`font-mont border ${valid1 ? "border-gray-300" : "bg-red-300"} text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
+                            ref={refNota1}
+                            value={nota}
+                            onChange={(e) => handleInputDetalle(e, obj.detMatriculaId, 1)}
+
+                            onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberFloat(event)}
+                        // onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleNextInput(event)}
+                        />
+                        <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${'no' == 'no' ? 'text-white' : 'text-green-400'} `}></i>
+                    </div> */}
                 </td>
 
                 {/* <td className="border p-2">
@@ -75,4 +88,4 @@ const TablaRegistroNotas = (props: Props) => {
     )
 }
 
-export default TablaRegistroNotas
+export default TrRegistroNotas
