@@ -32,6 +32,7 @@ import ReportesModalidad from  './view/trabajador/horario/ReportesModalidad';
 
 //Notas Trabajador
 import BuscarAulasAsignaturas from './view/trabajador/nota/BuscarAulasAsignaturas'
+import BuscarAulasAsignaturasExcel from './view/trabajador/nota/BuscarAulasAsignaturasExcel';
 
 
 const router = createBrowserRouter([
@@ -135,6 +136,10 @@ const router = createBrowserRouter([
       {
         path:'buscar-aulas-asignaturas',
         element: <BuscarAulasAsignaturas/>
+      },
+      {
+        path:'buscar-aulas-asignaturas-excel',
+        element: <BuscarAulasAsignaturasExcel/>
       },
     ]
   },

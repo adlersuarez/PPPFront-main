@@ -263,7 +263,7 @@ const RepHorarioAsignatura = () => {
             doc.setFontSize(15)
             doc.setTextColor(0, 0, 0)
             //doc.setFont(prevFont, "bold")
-            doc.text("REPORTE DE MATRICULADOS POR HORARIOS", 123, 13)
+            doc.text("REPORTE DE MATRICULADOS POR HORARIOS", 100, 13)
             // doc.setFontSize(12)
             // doc.setTextColor(128, 128, 128)
             // doc.text(`Filtrado por`, pageWidth / 3, 17)
@@ -377,6 +377,8 @@ const RepHorarioAsignatura = () => {
 
                                                     if (selectedIdioma) {
                                                         SetValueIdioma(selectedIdioma.idiomaNombre);
+                                                    } else {
+                                                        SetValueIdioma("-");
                                                     }
                                                 }}
                                             >
@@ -412,6 +414,8 @@ const RepHorarioAsignatura = () => {
 
                                                     if (selectedSede) {
                                                         SetValueSede(selectedSede.sede);
+                                                    } else {
+                                                        SetValueSede("-");
                                                     }
                                                 }}
                                             >
@@ -445,6 +449,8 @@ const RepHorarioAsignatura = () => {
 
                                                     if (selectedPeriodo) {
                                                         SetValuePeriodo(`${selectedPeriodo.anio} - ${selectedPeriodo.mes}`);
+                                                    } else {
+                                                        SetValuePeriodo("-");
                                                     }
                                                 }}
                                             >
@@ -483,6 +489,8 @@ const RepHorarioAsignatura = () => {
 
                                                     if (selectedModalidad) {
                                                         SetValueModalidad(selectedModalidad.modalidad);
+                                                    } else {
+                                                        SetValueModalidad("-");
                                                     }
                                                 }}
                                             >
@@ -516,6 +524,8 @@ const RepHorarioAsignatura = () => {
 
                                                     if (selectedTipoEstudio) {
                                                         SetValueTipoEstudio(`${selectedTipoEstudio.tipoEstudio}`);
+                                                    } else {
+                                                        SetValueTipoEstudio("-");
                                                     }
                                                 }}
                                             >

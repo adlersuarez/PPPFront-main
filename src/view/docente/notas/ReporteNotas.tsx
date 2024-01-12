@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 
@@ -39,9 +39,9 @@ const ReporteNotas = () => {
 
     const datosNotas: any = []
 
-    if(excelData){
+    if (excelData) {
         const excelDatosNotas = excelData.slice(7)
-        excelDatosNotas.map((item: any)=>{
+        excelDatosNotas.map((item: any) => {
             let aux = {
                 codigo: item[0],
                 nombreEstudiante: item[1],
@@ -62,22 +62,22 @@ const ReporteNotas = () => {
 
     // const [datosNotas,setDatosNotas] = useState()
 
-    const resultadoPractica = ( notaA : number , notaB : number , notaC : number, notaD :number ) : number =>{
+    const resultadoPractica = (notaA: number, notaB: number, notaC: number, notaD: number): number => {
         return parseFloat(
             (
-              (notaA + notaB + notaC + notaD)/ 4 
+                (notaA + notaB + notaC + notaD) / 4
             ).toFixed(2)
-          );
+        );
     }
 
-    const resultadoFinal = ( notaA : number , notaB : number , notaC : number, notaD :number , notaEMC : number , notaEF : number) : number =>{
+    const resultadoFinal = (notaA: number, notaB: number, notaC: number, notaD: number, notaEMC: number, notaEF: number): number => {
         return parseFloat(
             (
-              (notaA + notaB + notaC + notaD) * 0.2 / 4 +
-              notaEMC * 0.4 +
-              notaEF * 0.4
+                (notaA + notaB + notaC + notaD) * 0.2 / 4 +
+                notaEMC * 0.4 +
+                notaEF * 0.4
             ).toFixed(1)
-          );
+        );
     }
 
     return (
@@ -106,7 +106,7 @@ const ReporteNotas = () => {
                                         <li className="pl-4">
                                             <span className="font-semibold text-gray-900 dark:text-white">No hay actulizacion de notas:</span> Toda actulización o corrección de notas sera mediente solicitud u oficio.
                                         </li>
-                                        
+
                                     </ol>
 
                                 </div>
@@ -153,8 +153,8 @@ const ReporteNotas = () => {
                                             ))
                                             /*/}
                                             {
-                                                datosNotas.map((item: any, key: any)=>{
-                                                    return(
+                                                datosNotas.map((item: any, key: any) => {
+                                                    return (
                                                         <tr key={key} className='whitespace-nowrap text-sm text-gray-700 text-center font-medium'>
                                                             <th className='px-6 py-4'>{item.codigo}</th>
                                                             <th className='px-6 py-4'>{item.nombreEstudiante}</th>
@@ -162,10 +162,10 @@ const ReporteNotas = () => {
                                                             <th className='px-6 py-4'>{item.notaB}</th>
                                                             <th className='px-6 py-4'>{item.notaC}</th>
                                                             <th className='px-6 py-4'>{item.notaD}</th>
-                                                            <th className='px-6 py-4'>{resultadoPractica(item.notaA,item.notaB,item.notaC,item.notaD)}</th>
+                                                            <th className='px-6 py-4'>{resultadoPractica(item.notaA, item.notaB, item.notaC, item.notaD)}</th>
                                                             <th className='px-6 py-4'>{item.notaEMC}</th>
                                                             <th className='px-6 py-4'>{item.notaEF}</th>
-                                                            <th className={`px-6 py-4 ${resultadoFinal(item.notaA,item.notaB,item.notaC,item.notaD,item.notaEMC,item.notaEF)>10.5?'bg-green-300':'bg-red-300'}`}>{resultadoFinal(item.notaA,item.notaB,item.notaC,item.notaD,item.notaEMC,item.notaEF)}</th>
+                                                            <th className={`px-6 py-4 ${resultadoFinal(item.notaA, item.notaB, item.notaC, item.notaD, item.notaEMC, item.notaEF) > 10.5 ? 'bg-green-300' : 'bg-red-300'}`}>{resultadoFinal(item.notaA, item.notaB, item.notaC, item.notaD, item.notaEMC, item.notaEF)}</th>
                                                         </tr>
                                                     )
                                                 })
