@@ -4,7 +4,8 @@ import { isNumeric, keyNumberFloat } from "@/helper/herramienta.helper";
 type Props = {
     index: number
     item: any
-    listaOriginal: any[]
+    listaOriginal: any[],
+    handleInputDetalle: (event: React.ChangeEvent<HTMLInputElement>, idDetalle: number,  tipo: number ) => void
 }
 
 const TrRegistroNotas = (props: Props) => {
@@ -74,9 +75,9 @@ const TrRegistroNotas = (props: Props) => {
                             className={`font-mont border ${validNota1 ? "border-gray-300" : "bg-red-300"} text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
                             ref={refNota1}
                             value={nota1}
-                            onChange={(e) => handleChangeNota1(e, item.detMatriculaId, 1)}
+                            onChange={(e) => props.handleInputDetalle(e, item.detMuatriculaId, 1)}
 
-                            onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberFloat(event)}
+                            onKeyDown={keyNumberFloat}
                         // onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleNextInput(event)}
                         />
                         <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${condNota1 == 'no' ? 'text-gray-400' : 'text-green-400'} `}></i>
