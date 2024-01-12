@@ -494,8 +494,7 @@ const BuscarAulasAsignaturas = () => {
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Seccion</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Asignatura</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Cantidad</th>
-                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Capacidad</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Cant/Cap</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Dias</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">H. Inicio</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">H. Fin</th>
@@ -518,7 +517,7 @@ const BuscarAulasAsignaturas = () => {
                                                                 listaMatriculasAsignatura.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={15} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={14} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :
@@ -536,8 +535,7 @@ const BuscarAulasAsignaturas = () => {
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.seccion}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.asignatura}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.cantidad}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.capacidad}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.cantidad}/{item.capacidad}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.dias}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin}</td>
