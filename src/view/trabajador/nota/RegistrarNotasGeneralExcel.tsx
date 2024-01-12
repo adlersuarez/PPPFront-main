@@ -113,6 +113,10 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
         itemData: any
     ): void => {
         const ws = XLSX.utils.json_to_sheet(data);
+
+        const columnWidths = [{ wch: 4 },{ wch: 10 },{ wch: 45 },{ wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 16 }, { wch: 16 }, { wch: 20 }];
+        ws['!cols'] = columnWidths;
+
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Hoja1");
         // XLSX.writeFile(wb, `${fileName}.xlsx`);
@@ -133,12 +137,12 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
             Id: ++key,
             Codigo: item.estudianteId,
             Nombre: item.estPaterno + " " + item.estMaterno + " " + item.estNombres,
-            N_Lectura: 0,
-            N_Escritura: 0,
-            N_Oral: 0,
-            N_Practica_Online: 0,
-            N_Medio_Ciclo: 0,
-            N_Examen_Final_Ciclo: 0,
+            N_Lectura: null,
+            N_Escritura: null,
+            N_Oral: null,
+            N_Practica_Online: null,
+            N_Medio_Ciclo: null,
+            N_Examen_Final_Ciclo: null,
         }))
     }
 
