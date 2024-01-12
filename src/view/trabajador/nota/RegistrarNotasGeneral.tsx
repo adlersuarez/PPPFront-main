@@ -102,7 +102,7 @@ const RegistrarNotasGeneral = (props: Props) => {
         }
 
 
-        // actualizar objeto
+        // Para actualizar objeto
         const newMatriculadosAsig = matriculadosAsig.map((item) => {
             return {
                 ...item,
