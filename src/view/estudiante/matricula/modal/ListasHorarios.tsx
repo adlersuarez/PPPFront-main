@@ -145,6 +145,10 @@ const ListasHorario = (props: Props) => {
         '7': 'Domingo',
     };*/
 
+    const nivel: string | undefined = props.cicloMatriculable[0]?.nivelAsign
+    const status: string = 'impedido'
+    console.log(nivel)
+
     const matriculaHorarioElegido = (idiomaId: number, sedeId: string, horarioAsigId: number, tipoEstudioId: number, periodoId: number) => {
 
         const paramsMatricula = {
@@ -155,8 +159,8 @@ const ListasHorario = (props: Props) => {
             "sedeId": sedeId,
             "matriculaRegistro": new Date().toISOString(),
             "usuarioRegistro": codigo,
-            "matriculaUpdate": new Date().toISOString(),//new Date().toISOString(),
-            "usuarioUpdate": "",// codigo,
+            "matriculaUpdate": new Date().toISOString(),
+            "usuarioUpdate": codigo,
             "matriculaEstado": 1,
             "estadoOperacion": true,
             "opeMat": localStorage.getItem("codMat")
@@ -179,14 +183,32 @@ const ListasHorario = (props: Props) => {
             "periodoId": periodoId
         }
 
-
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
-            if (value) {
 
+            if (value) {
 
                 sweet.openInformation("Mensaje", "Procesando información...")
 
+                // INSERTAR MATRICULA - INICIO DEL IF --- AÑADIR LAS OTRAS CONDICIONES
+                //REGULAR
+                //si es 1: matricula y pension
+                //si es 2,3,4 solo pension
+
+                //si es 5: matricula y pension
+                //si es 6,7,8 solo pension
+
+                //IMPEDIDO
+                //si es impedido paga pension si o si
+                //el codigo de utilizado solo es si?
+
+                /*if (nivel == '1' || nivel == '5' || status == 'impedido') {
+
+                }*/
+
+                    // verifica si existe un codigo de matricula        si es 1 o 5 nivel, ademas de estar como impedido, debe registrarse la matricula
+                //if ((localStorage.getItem("codMat") !== 'utilizado') && (nivel == '1' || nivel == '5' || status == 'impedido')) {
                 if (localStorage.getItem("codMat") !== 'utilizado') {
+
                     const response = await InsertarMatricula<RespValue>(tipoEstudioId, paramsMatricula);
 
                     if (response instanceof Response) {
@@ -196,12 +218,10 @@ const ListasHorario = (props: Props) => {
                                 props.hide()
                             });*/
                             localStorage.removeItem("codMat")
-
                         }
                     }
 
                     if (response instanceof RestError) {
-
 
                         if (response.getType() === Types.CANCELED) return;
 
@@ -235,7 +255,6 @@ const ListasHorario = (props: Props) => {
                 }
 
                 if (responseMatDet instanceof RestError) {
-
 
                     if (responseMatDet.getType() === Types.CANCELED) return;
 

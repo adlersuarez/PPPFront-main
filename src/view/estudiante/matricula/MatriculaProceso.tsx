@@ -52,6 +52,8 @@ const MatriculaProceso = (props: Props) => {
         }
     }
 
+    console.log(ciclosDisponibles)
+
     return (
         <>
 
