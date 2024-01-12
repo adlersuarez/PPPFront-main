@@ -20,7 +20,7 @@ import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
 import SubirNotas from './view/docente/SubirNotas';
 import VistaHorarioEstudiante from './view/estudiante/horarios/VistaHorariosEstudiante';
 import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
-import ComponenteNotas from './view/estudiante/Notas/ComponenteNotas';
+import ComponenteNotas from './view/estudiante/notas/ComponenteNotas';
 import VidaAcademica from './view/estudiante/VidaAcademica';
 import Consolidado from './view/estudiante/Consolidado';
 import Boleta from './view/estudiante/Boleta-notas';
