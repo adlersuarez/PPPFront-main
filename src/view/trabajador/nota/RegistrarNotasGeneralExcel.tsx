@@ -110,27 +110,17 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
 
     const exportExcel = (
         data: any,
-        itemData: any
     ): void => {
         const ws = XLSX.utils.json_to_sheet(data);
 
-        const columnWidths = [{ wch: 4 },{ wch: 10 },{ wch: 45 },{ wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 16 }, { wch: 16 }, { wch: 20 }];
+        const columnWidths = [{ wch: 4 }, { wch: 10 }, { wch: 45 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 16 }, { wch: 16 }, { wch: 20 }];
         ws['!cols'] = columnWidths;
 
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Hoja1");
         // XLSX.writeFile(wb, `${fileName}.xlsx`);
-        XLSX.writeFile(wb, `REGISTRO DE NOTAS DEL AULA ${itemData.aula} SECCION ${itemData.seccion} MODALIDAD ${itemData.modalidad} TIPO ESTUDIO ${itemData.tipoEstudio} TURNO ${itemData.turno} PERIDO ${itemData.anio} - ${itemData.mes} SEDE ${itemData.sede}.xlsx`);
+        XLSX.writeFile(wb, `REGISTRO DE NOTAS DEL AULA ${props.item.aula} SECCION ${props.item.seccion} MODALIDAD ${props.item.modalidad} TIPO ESTUDIO ${props.item.tipoEstudio} TURNO ${props.item.turno} PERIDO ${props.item.anio} - ${props.item.mes} SEDE ${props.item.sede}.xlsx`);
     }
-
-    // var listaTransformada: any = []
-
-    // if (matriculadosAsig.length != 0) {
-    //     listaTransformada = matriculadosAsig.map(({ item }) => ({
-    //         codigo: item.estudianteId,
-    //         nombre: item.estPaterno + item.estMaterno + item.estNombre,
-    //     }));
-    // }
 
     const transformLista = (data: any): any => {
         return data.map((item: any, key: any) => ({
@@ -151,7 +141,11 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
-        if (file) {
+        if (
+            file &&
+            file.name === `REGISTRO DE NOTAS DEL AULA ${props.item.aula} SECCION ${props.item.seccion} MODALIDAD ${props.item.modalidad} TIPO ESTUDIO ${props.item.tipoEstudio} TURNO ${props.item.turno} PERIDO ${props.item.anio} - ${props.item.mes} SEDE ${props.item.sede}.xlsx`
+        ) {
+
             const reader = new FileReader();
             reader.onload = (event) => {
                 const data = new Uint8Array(event.target?.result as ArrayBuffer);
@@ -168,6 +162,7 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
             };
 
             reader.readAsArrayBuffer(file);
+
         }
     };
 
@@ -190,9 +185,6 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
             datosNotas.push(aux)
         })
     }
-
-    console.log(excelData)
-    console.log(datosNotas)
 
     return (
         <>
@@ -247,7 +239,7 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
                                     className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
                                     onClick={() => {
                                         if (matriculadosAsig.length == 0) return;
-                                        exportExcel(transformLista(matriculadosAsig), props.item)
+                                        exportExcel(transformLista(matriculadosAsig))
                                     }}
                                 >
                                     <i className="bi bi-file-earmark-excel-fill mr-1"></i><i className="bi bi-arrow-down mr-1"></i> Descargar Excel
