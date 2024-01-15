@@ -76,48 +76,91 @@ const RegistrarNotasGeneral = (props: Props) => {
     }
 
     const generarJsonNotas = () => {
-        console.log(matriculadosAsig)
+        // console.log(matriculadosAsig)
+
+        let NotasListas: any [] =  []
+
+        matriculadosAsig.map((item) => {
+            item.detalle.map((obj: any)=>{
+                NotasListas.push(obj)
+            })
+        })
+
+        // Convertir a cadena JSON
+        const notasListasJSON = JSON.stringify(NotasListas);
+
+        console.log(notasListasJSON)
     }
 
-    const handleInputDetalle = (event: React.ChangeEvent<HTMLInputElement>, detMatriculaId: string, tipCaliId: string, index: any) => {
+    const handleInputDetalle = (event: React.ChangeEvent<HTMLInputElement>, detMatriculaId: string, tipCaliId: string) => {
 
         const inputValue = event.target.value;
-        const idInput = document.getElementById(`${tipCaliId}-${index}-${detMatriculaId}`)
+
+        let newMatriculadosAsig: any [] = []
 
         if (inputValue.trim() == '') {
-            
+
             // Si está vacío, se establece como inválido
-            idInput?.classList.add('bg-red-300'); 
-            
+            //idInput?.classList.add('bg-red-300');
+
+            newMatriculadosAsig = matriculadosAsig.map((item) => {
+                return {
+                    ...item,
+                    detalle: item.detalle.map((matricula: any) => {
+                        if (matricula.detMatriculaId === detMatriculaId && matricula.tipCaliId === tipCaliId) {
+                            return { ...matricula, nota: 0 };
+                        } else {
+                            return matricula;
+                        }
+                    })  
+                };
+            });
+
         } else {
             if (isNumeric(inputValue)) {
                 if (parseFloat(inputValue) >= 0 && parseFloat(inputValue) <= 20) {
                     // Si es numérico y está dentro del rango, se establece como válido
-                    idInput?.classList.remove('bg-red-300'); 
+                    //idInput?.classList.remove('bg-red-300');
+
+                    // Para actualizar objeto
+                    newMatriculadosAsig = matriculadosAsig.map((item) => {
+                        return {
+                            ...item,
+                            detalle: item.detalle.map((matricula: any) => {
+                                if (matricula.detMatriculaId === detMatriculaId && matricula.tipCaliId === tipCaliId) {
+                                    return { ...matricula, nota: inputValue };
+                                } else {
+                                    return matricula;
+                                }
+                            })  
+                        };
+                    });
+                
+                    //
+
                 } else {
-                    idInput?.classList.add('bg-red-300'); 
+                    //idInput?.classList.add('bg-red-300');
                     // Si es numérico pero está fuera del rango, se establece como inválido
+
+                    newMatriculadosAsig = matriculadosAsig.map((item) => {
+                        return {
+                            ...item,
+                            detalle: item.detalle.map((matricula: any) => {
+                                if (matricula.detMatriculaId === detMatriculaId && matricula.tipCaliId === tipCaliId) {
+                                    return { ...matricula, nota: 20 };
+                                } else {
+                                    return matricula;
+                                }
+                            })  
+                        };
+                    });
                 }
+
+                
             }
         }
 
-
-        // Para actualizar objeto
-        const newMatriculadosAsig = matriculadosAsig.map((item) => {
-            return {
-                ...item,
-                detalle: item.detalle.map((matricula: any) => {
-                    if (matricula.detMatriculaId === detMatriculaId && matricula.tipCaliId === tipCaliId) {
-                        return { ...matricula, nota: inputValue };
-                    } else {
-                        return matricula;
-                    }
-                })
-            };
-        });
         setMatriculadoAsig(newMatriculadosAsig);
-        //
-
 
     }
 
@@ -149,9 +192,10 @@ const RegistrarNotasGeneral = (props: Props) => {
                                         type="text"
                                         maxLength={5}
                                         value={matricula.nota}
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputDetalle(event, matricula.detMatriculaId, matricula.tipCaliId, index)}
+                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputDetalle(event, matricula.detMatriculaId, matricula.tipCaliId)}
 
                                         onPaste={handlePaste}
+                                        onClick={()=>selectAllText(`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`)}
                                         onKeyDown={keyNumberFloat}
                                     />
                                     <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${matricula.condNota == 'no' ? 'text-gray-400' : 'text-green-400'} `}></i>
@@ -164,54 +208,18 @@ const RegistrarNotasGeneral = (props: Props) => {
             );
         });
 
-        // return matriculadosAsig.map((obj, index) => {
-
-        //     const dataFiltrado1 = obj.detalle.filter(
-        //         (filter: any) => filter.tipCaliId === 1
-        //     );
-
-        //     const regNota1 = dataFiltrado1.map((item: any) => {
-
-        //         setNota1(item.nota)
-
-        //         return (
-        //             <td className="border p-2">
-        //                 <div className="relative">
-        //                     <input
-        //                         type="text"
-        //                         maxLength={5}
-        //                         className={`font-mont border {}"border-gray-300"  text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
-        //                         // ref={refNota1}
-        //                         value={nota1}
-        //                         onChange={(e) => handleInputDetalle(e, obj.detMatriculaId, item.tipCaliId)}
-
-        //                         onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => keyNumberFloat(event)}
-        //                     // onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleNextInput(event)}
-        //                     />
-        //                     <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${item.condNota == 'no' ? 'text-gray-400' : 'text-green-400'} `}></i>
-
-        //                 </div>
-        //             </td>
-        //         );
-        //     });
-
-        //     //const cond = regNota1[0].condNota
-        //     //setNota1(regNota1[0].nota)
-        //     // const nota = regNota1[0].nota1
-
-        //     return (
-        //         <tr key={index} className="text-sm">
-        //             <td className="border p-2">{++index}</td>
-        //             <td className="border p-2">{obj.estudianteId}</td>
-        //             <td className="border p-2">{`${obj.estPaterno} ${obj.estMaterno} ${obj.estNombres}`}</td>
-        //             {regNota1}
-        //         </tr>
-        //     )
-        // });
     }
 
     const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
         event.preventDefault(); // Evitar la acción de pegado
+    };
+
+    const selectAllText = (index: any) => {
+
+        const idInput = document.getElementById(index)
+        if (idInput && idInput instanceof HTMLInputElement) {
+            idInput.select();
+        }
     };
 
     return (
