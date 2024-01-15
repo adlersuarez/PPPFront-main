@@ -3,9 +3,12 @@ import RestError from "@/model/class/resterror.model.class";
 import Response from "@/model/class/response.model.class";
 import { Types } from "@/model/enum/types.model.enum";
 import Listas from "@/model/interfaces/Listas.model.interface";
-import { ListarPreRegistroNotas } from "@/network/rest/idiomas.network";
+import RespValue from "@/model/interfaces/RespValue.model.interface";
+
+import { InsertarNotasHorarioAsignatura, ListarPreRegistroNotas } from "@/network/rest/idiomas.network";
 
 import { isNumeric, keyNumberFloat } from "@/helper/herramienta.helper";
+import useSweerAlert from "@/component/hooks/useSweetAlert"
 
 
 type Props = {
@@ -18,10 +21,15 @@ type Props = {
 
 const RegistrarNotasGeneral = (props: Props) => {
 
+    const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
+
     const abortController = useRef(new AbortController());
 
-    //const sweet = useSweerAlert();
+    const sweet = useSweerAlert();
+
     const [matriculadosAsig, setMatriculadoAsig] = useState<any[]>([])
+
+    const [registrado, setRegistrado] = useState(0)
 
     useEffect(() => {
         EstudiantesMatriculados()
@@ -37,9 +45,15 @@ const RegistrarNotasGeneral = (props: Props) => {
 
             let nuevoLista: any[] = [];
 
+            let condicionRegistro = 0
+
             for (let j = 0; j < data.length; j++) {
 
                 const item = data[j];
+
+                if (item.condNota1 == 'si' || item.condNota2 == 'si' || item.condNota3 == 'si' || item.condNota4 == 'si' || item.condNota5 == 'si' || item.condNota6 == 'si') {
+                    condicionRegistro = 1
+                }
 
                 let objeto: any = {
 
@@ -67,7 +81,9 @@ const RegistrarNotasGeneral = (props: Props) => {
 
             }
 
+            setRegistrado(condicionRegistro)
             setMatriculadoAsig(nuevoLista)
+
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -75,28 +91,65 @@ const RegistrarNotasGeneral = (props: Props) => {
         }
     }
 
-    const generarJsonNotas = () => {
+    const registrarNotasMasivo = async () => {
         // console.log(matriculadosAsig)
 
-        let NotasListas: any [] =  []
+        sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+            if (value) {
 
-        matriculadosAsig.map((item) => {
-            item.detalle.map((obj: any)=>{
-                NotasListas.push(obj)
-            })
+                sweet.openInformation("Mensaje", "Procesando información...")
+
+                let NotasListas: any[] = []
+
+                matriculadosAsig.map((item) => {
+                    item.detalle.map((obj: any) => {
+
+                        const registro = {
+                            "detMatriculaId": obj.detMatriculaId,
+                            "tipCaliId": obj.tipCaliId,
+                            "nota": parseFloat(obj.nota),
+                        }
+                        NotasListas.push(registro)
+                    })
+                })
+
+                const response = await InsertarNotasHorarioAsignatura<RespValue>(codigo, NotasListas, abortController.current)
+                if (response instanceof Response) {
+
+                    const mensaje = response.data.value as string
+
+                    if (mensaje == 'procesado') {
+
+                        sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
+                            EstudiantesMatriculados()
+                        });
+                       
+
+                        //console.log('Se proceso')
+                    } else {
+                        sweet.openWarning("Mensaje", "Ocurrio un error al procesar la peticion", () => {
+                        });
+
+                        //console.log('No se proceso')
+                    }
+                }
+                if (response instanceof RestError) {
+                    if (response.getType() === Types.CANCELED) return;
+                    //console.log(response.getMessage())
+                    sweet.openWarning("Mensaje", response.getMessage(), () => {
+                    });
+                }
+
+            }
         })
 
-        // Convertir a cadena JSON
-        const notasListasJSON = JSON.stringify(NotasListas);
-
-        console.log(notasListasJSON)
     }
 
     const handleInputDetalle = (event: React.ChangeEvent<HTMLInputElement>, detMatriculaId: string, tipCaliId: string) => {
 
         const inputValue = event.target.value;
 
-        let newMatriculadosAsig: any [] = []
+        let newMatriculadosAsig: any[] = []
 
         if (inputValue.trim() == '') {
 
@@ -112,7 +165,7 @@ const RegistrarNotasGeneral = (props: Props) => {
                         } else {
                             return matricula;
                         }
-                    })  
+                    })
                 };
             });
 
@@ -122,7 +175,6 @@ const RegistrarNotasGeneral = (props: Props) => {
                     // Si es numérico y está dentro del rango, se establece como válido
                     //idInput?.classList.remove('bg-red-300');
 
-                    // Para actualizar objeto
                     newMatriculadosAsig = matriculadosAsig.map((item) => {
                         return {
                             ...item,
@@ -132,11 +184,10 @@ const RegistrarNotasGeneral = (props: Props) => {
                                 } else {
                                     return matricula;
                                 }
-                            })  
+                            })
                         };
                     });
-                
-                    //
+
 
                 } else {
                     //idInput?.classList.add('bg-red-300');
@@ -147,16 +198,16 @@ const RegistrarNotasGeneral = (props: Props) => {
                             ...item,
                             detalle: item.detalle.map((matricula: any) => {
                                 if (matricula.detMatriculaId === detMatriculaId && matricula.tipCaliId === tipCaliId) {
-                                    return { ...matricula, nota: 20 };
+                                    return { ...matricula, nota: 0 };
                                 } else {
                                     return matricula;
                                 }
-                            })  
+                            })
                         };
                     });
                 }
 
-                
+
             }
         }
 
@@ -187,15 +238,16 @@ const RegistrarNotasGeneral = (props: Props) => {
                             <td className="border p-2" key={index}>
                                 <div className="relative">
                                     <input
+                                        disabled={registrado == 0 ? false : true}
                                         id={`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`}
-                                        className={`font-mont border text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center`}
+                                        className={`font-mont border text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center ${registrado == 0? 'bg-white': 'bg-gray-200'}`}
                                         type="text"
                                         maxLength={5}
                                         value={matricula.nota}
                                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputDetalle(event, matricula.detMatriculaId, matricula.tipCaliId)}
 
                                         onPaste={handlePaste}
-                                        onClick={()=>selectAllText(`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`)}
+                                        onClick={() => selectAllText(`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`)}
                                         onKeyDown={keyNumberFloat}
                                     />
                                     <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${matricula.condNota == 'no' ? 'text-gray-400' : 'text-green-400'} `}></i>
@@ -262,12 +314,22 @@ const RegistrarNotasGeneral = (props: Props) => {
                                 Opciones
                             </label>
                             <div className="relative flex flex-wrap">
-                                <button
-                                    className="ml-1 flex items-center rounded border-md p-2 text-xs border-gray-500 bg-gray-500 text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 active:ring-gray-400"
-                                    onClick={generarJsonNotas}
-                                >
-                                    <i className="bi bi-search mr-1"></i> BUSCAR
-                                </button>
+                                {
+                                    registrado == 0 ?
+                                        (
+                                            <>
+                                                <button
+                                                    className="ml-1 flex items-center rounded border-md p-2 text-xs border-green-500 bg-green-500 text-white hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
+                                                    onClick={registrarNotasMasivo}
+                                                >
+                                                    <i className="bi bi-search mr-1"></i> Registrar Notas
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <></>
+                                        )
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -279,12 +341,12 @@ const RegistrarNotasGeneral = (props: Props) => {
                                     <th className="py-1 px-6">#</th>
                                     <th className="py-1 px-6">Codigo</th>
                                     <th className="py-1 px-6">Estudiante</th>
-                                    <th className="py-1 px-6">N. Reading</th>
-                                    <th className="py-1 px-6">N. Writing</th>
-                                    <th className="py-1 px-6">N. Speaking</th>
-                                    <th className="py-1 px-6">N. O-line practice</th>
-                                    <th className="py-1 px-6">N. ME</th>
-                                    <th className="py-1 px-6">N. FE</th>
+                                    <th className="py-1 px-6">N. Lectura</th>
+                                    <th className="py-1 px-6">N. Escritura</th>
+                                    <th className="py-1 px-6">N. Hablado</th>
+                                    <th className="py-1 px-6">N. Práctica en Linea</th>
+                                    <th className="py-1 px-6">N. Examen Intermedio</th>
+                                    <th className="py-1 px-6">N. Examen Final</th>
                                 </tr>
                             </thead>
                             <tbody>

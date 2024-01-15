@@ -197,6 +197,12 @@ export async function ListarPreRegistroNotas<Listas>(HorarioAsigId: number, abor
     return await Resolve.create<Listas>(instance.get<Listas>(`/Nota/ListarPreRegistroNotas/${HorarioAsigId}`, { signal: abortController?.signal }));
 }
 
+export async function InsertarNotasHorarioAsignatura<RespValue>(codigo: string, params: object[], abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Nota/InsertarNotasHorarioAsignatura/${codigo}`, params, { signal: abortController?.signal }));
+}
+
+
+
 
 // Calendario
 export async function RangoMatriculaCalendario<Listas>(signal = null): Promise<Response<Listas> | RestError> {
