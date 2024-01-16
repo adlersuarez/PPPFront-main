@@ -201,6 +201,10 @@ export async function InsertarNotasHorarioAsignatura<RespValue>(codigo: string, 
     return await Resolve.create(instance.post<RespValue>(`/Nota/InsertarNotasHorarioAsignatura/${codigo}`, params, { signal: abortController?.signal }));
 }
 
+export async function ActualizarNotaIndividual<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Nota/ActualizarNotaIndividual`, params, { signal: abortController?.signal }));
+}
+
 
 
 

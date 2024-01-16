@@ -5,8 +5,8 @@ import { Types } from "@/model/enum/types.model.enum";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import { ListarPreRegistroNotas } from "@/network/rest/idiomas.network";
 
-import TablaRegistroNotas from "./component/TrRegistroNotas";
-import NotaUno from "./component/NotaUno";
+// import TablaRegistroNotas from "./component/TrRegistroNotas";
+// import NotaUno from "./component/NotaUno";
 import { isNumeric, keyNumberFloat } from "@/helper/herramienta.helper";
 
 import * as XLSX from 'xlsx';
