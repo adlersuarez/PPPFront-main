@@ -20,6 +20,7 @@ import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
 import { convertirFormatoFechaSql, convertirFormatoHoraSql, convertirNumeroAMes, denominacionHorario } from "@/helper/herramienta.helper";
 import RegistrarNotasGeneral from "./RegistrarNotasGeneral";
+import RegistrarAsistenciaGeneral from "../asistencia/RegistrarAsistenciaGeneral";
 
 
 const BuscarAulasAsignaturas = () => {
@@ -67,6 +68,7 @@ const BuscarAulasAsignaturas = () => {
     const [mensajeCarga, setMensajeCarga] = useState<boolean>(true)
 
     const [moduloRegistroNotas, setModuloRegistroNotas] = useState<boolean>(false)
+    const [moduloRegistroAsistencia, setModuloRegistroAsistencia] = useState<boolean>(false)
 
     const [sigla, setSigla] = useState("")
 
@@ -264,6 +266,17 @@ const BuscarAulasAsignaturas = () => {
         setModuloRegistroNotas(false)
     }
 
+    const handleOpenModuloAsistencia = (item: any, idHorarioAsignatura: number) => {
+        setModuloRegistroAsistencia(true)
+
+        setItem(item)
+        setIdHorarioAsig(idHorarioAsignatura)
+    }
+
+    const handleCloseModuloAsistencia = () => {
+        setModuloRegistroAsistencia(false)
+    }
+
 
     return (
         <>
@@ -272,14 +285,21 @@ const BuscarAulasAsignaturas = () => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                         {
-                            moduloRegistroNotas ?
+                            (moduloRegistroNotas || moduloRegistroAsistencia) ?
                                 (
-                                    <RegistrarNotasGeneral
-                                        item={item}
-                                        idHorarioAsignatura={idHorarioAsig}
-                                        sigla={sigla}
-                                        handleCloseModuloDetalle={handleCloseModuloDetalle}
-                                    />
+                                    moduloRegistroNotas ?
+                                        <RegistrarNotasGeneral
+                                            item={item}
+                                            idHorarioAsignatura={idHorarioAsig}
+                                            sigla={sigla}
+                                            handleCloseModuloDetalle={handleCloseModuloDetalle}
+                                        />
+                                        :
+                                        <RegistrarAsistenciaGeneral
+                                            item={item}
+                                            idHorarioAsignatura={idHorarioAsig}
+                                            handleCloseModuloAsistencia={handleCloseModuloAsistencia}
+                                        />
                                 ) : (
                                     <div className="p-1 bg-Solid">
                                         <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Buscar Aulas Asignaturas</h2>
@@ -580,13 +600,22 @@ const BuscarAulasAsignaturas = () => {
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.dias}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio.slice(0, -3)}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin.slice(0, -3)}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                                                                    
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid flex justify-center gap-2">
                                                                                         <button
-                                                                                            title="Detalle"
+                                                                                            title="Notas"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId, formaSigla)}
+                                                                                            onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId,formaSigla)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
+
+                                                                                        </button>
+                                                                                        <button
+                                                                                            title="Asistencia"
+                                                                                            className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
+                                                                                            onClick={() => handleOpenModuloAsistencia(item, item.horarioAsigId)}
+                                                                                        >
+                                                                                            <i className="bi bi-list-check text-sm"></i>
 
                                                                                         </button>
                                                                                     </td>
