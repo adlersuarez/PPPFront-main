@@ -10,6 +10,8 @@ import { InsertarNotasHorarioAsignatura, ListarPreRegistroNotas } from "@/networ
 import { isNumeric, keyNumberFloat } from "@/helper/herramienta.helper";
 import useSweerAlert from "@/component/hooks/useSweetAlert"
 
+import ModalEditarNota from './modal/EditarNotaEstudiante'
+
 
 type Props = {
     handleCloseModuloDetalle: () => void;
@@ -28,8 +30,17 @@ const RegistrarNotasGeneral = (props: Props) => {
     const sweet = useSweerAlert();
 
     const [matriculadosAsig, setMatriculadoAsig] = useState<any[]>([])
-
     const [registrado, setRegistrado] = useState(0)
+
+    const [detMatriculaIdActual, setDetMatriculaIdActual] = useState(0)
+    const [tipCaliIdActual, setTipCaliIdActual] = useState(0)
+    const [notaActual, setNotaActual] = useState(0)
+    const [detNotaIdActual, setDetNotaIdActual ] = useState(0)
+    const [estudianteIdActual, setEstudianteIdActual] = useState("")
+    const [infoEstudianteActual, setInfoEstudianteActual] = useState("")
+
+
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     useEffect(() => {
         EstudiantesMatriculados()
@@ -58,10 +69,11 @@ const RegistrarNotasGeneral = (props: Props) => {
                 let objeto: any = {
 
                     detMatriculaId: item.detMatriculaId,
+                    estudianteId: item.estudianteId,
+                    estPaterno: item.estPaterno,
                     estMaterno: item.estMaterno,
                     estNombres: item.estNombres,
-                    estPaterno: item.estPaterno,
-                    estudianteId: item.estudianteId,
+                    sede: item.sede,
                     detalle: [] as any[]
 
                 };
@@ -69,11 +81,14 @@ const RegistrarNotasGeneral = (props: Props) => {
 
                 subObjeto.push(
                     ...Array.from({ length: 6 }, (_, i) => ({
+                        "detNotaId": item[`detNotaId${i + 1}`] == 0 ? i + 1 : item[`detNotaId${i + 1}`],
                         "detMatriculaId": item.detMatriculaId,
-                        "tipCaliId": i + 1,
+                        "tipCaliId": item[`tipCaliId${i + 1}`] == 0 ? i + 1 : item[`tipCaliId${i + 1}`],
                         "nota": item[`nota${i + 1}`] || 0,
-                        "condNota": item[`condNota${i + 1}`]
-                    }))
+                        "condNota": item[`condNota${i + 1}`],
+                        "estudianteId": item.estudianteId,
+                        "infoEstudiante": `${item.estPaterno} ${item.estMaterno} ${item.estNombres}`
+                    })) 
                 );
 
                 objeto.detalle = subObjeto
@@ -92,7 +107,7 @@ const RegistrarNotasGeneral = (props: Props) => {
     }
 
     const registrarNotasMasivo = async () => {
-        // console.log(matriculadosAsig)
+
 
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
@@ -123,19 +138,16 @@ const RegistrarNotasGeneral = (props: Props) => {
                         sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
                             EstudiantesMatriculados()
                         });
-                       
 
-                        //console.log('Se proceso')
                     } else {
                         sweet.openWarning("Mensaje", "Ocurrio un error al procesar la peticion", () => {
                         });
 
-                        //console.log('No se proceso')
                     }
                 }
                 if (response instanceof RestError) {
                     if (response.getType() === Types.CANCELED) return;
-                    //console.log(response.getMessage())
+
                     sweet.openWarning("Mensaje", response.getMessage(), () => {
                     });
                 }
@@ -233,24 +245,43 @@ const RegistrarNotasGeneral = (props: Props) => {
                     <td className="border p-2">{++index}</td>
                     <td className="border p-2">{item.estudianteId}</td>
                     <td className="border p-2">{`${item.estPaterno} ${item.estMaterno} ${item.estNombres}`}</td>
+                    <td className="border p-2">{item.sede}</td>
                     {
                         item.detalle.map((matricula: any, index: any) => (
                             <td className="border p-2" key={index}>
-                                <div className="relative">
-                                    <input
-                                        disabled={registrado == 0 ? false : true}
-                                        id={`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`}
-                                        className={`font-mont border text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center ${registrado == 0? 'bg-white': 'bg-gray-200'}`}
-                                        type="text"
-                                        maxLength={5}
-                                        value={matricula.nota}
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputDetalle(event, matricula.detMatriculaId, matricula.tipCaliId)}
+                                <div className="relative flex items-center">
+                                    <div className="relative ">
 
-                                        onPaste={handlePaste}
-                                        onClick={() => selectAllText(`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`)}
-                                        onKeyDown={keyNumberFloat}
-                                    />
-                                    <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${matricula.condNota == 'no' ? 'text-gray-400' : 'text-green-400'} `}></i>
+
+                                        <input
+                                            disabled={registrado == 0 ? false : true}
+                                            id={`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`}
+                                            className={`font-mont border text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-center ${registrado == 0 ? 'bg-white' : 'bg-gray-200'}`}
+                                            type="text"
+                                            maxLength={5}
+                                            value={matricula.nota}
+                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputDetalle(event, matricula.detMatriculaId, matricula.tipCaliId)}
+
+                                            onPaste={handlePaste}
+                                            onClick={() => selectAllText(`${matricula.tipCaliId}-${index}-${matricula.detMatriculaId}`)}
+                                            onKeyDown={keyNumberFloat}
+                                        />
+                                        <i className={`bi bi-circle-fill text-xs absolute top-1 right-2 ${matricula.condNota == 'no' ? 'text-gray-400' : 'text-green-400'} `}></i>
+                                    </div>
+                                    {
+                                        registrado == 0 ?
+                                            (
+                                                <></>
+                                            ) : (
+                                                <span
+                                                    title="Editar Nota" 
+                                                    className="ml-1 cursor-pointer"
+                                                    onClick={ () => handleShowModal(matricula.detNotaId, matricula.detMatriculaId, matricula.tipCaliId, matricula.nota, matricula.estudianteId, matricula.infoEstudiante)}
+                                                    >
+                                                    <i className="bi bi-pencil-fill text-yellow-400 text-xs"></i>
+                                                </span>
+                                            )
+                                    }
 
                                 </div>
                             </td>
@@ -274,6 +305,23 @@ const RegistrarNotasGeneral = (props: Props) => {
         }
     };
 
+
+    //Modal Editar Nota
+    const handleCloseModal = () =>{
+        setShowModal(false);
+    } 
+    const handleShowModal = (detNotaId: number, detMatriculaId: number, tipCaliId: number, nota: number, estudianteId: string, infoEstudiante: string) => {
+        setShowModal(true);
+
+        setDetNotaIdActual(detNotaId)
+        setDetMatriculaIdActual(detMatriculaId)
+        setTipCaliIdActual(tipCaliId)
+        setNotaActual(nota)
+        setEstudianteIdActual(estudianteId)
+        setInfoEstudianteActual(infoEstudiante)
+    }
+
+
     return (
         <>
             <div className="p-1 bg-Solid">
@@ -281,13 +329,27 @@ const RegistrarNotasGeneral = (props: Props) => {
 
                 <div className="w-full">
 
+                    <ModalEditarNota 
+                        codigo = {codigo}
+                        detNotaId={detNotaIdActual}
+                        detMatriculaId = {detMatriculaIdActual} 
+                        tipCaliId = {tipCaliIdActual}
+                        nota = {notaActual}
+                        estudianteId={estudianteIdActual}
+                        infoEstudiante={infoEstudianteActual}
+                        
+                        showModal = {showModal}
+                        handleCloseModal = {handleCloseModal}
+                        EstudiantesMatriculados = {EstudiantesMatriculados}
+                    />
+
                     <div className="grid grid-cols-1 md:grid-cols-1 gap-1 mb-2 mt-3">
                         <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                             <div className="m-2">
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                     <div className="text-sm">
-                                        <p>Periodo: <span className="text-blue-700 font-bold">{props.item.sede}</span></p>
+                                        <p>Sede: <span className="text-blue-700 font-bold">{props.item.sede}</span></p>
                                         <p>Periodo: <span className="text-blue-700 font-bold">{props.item.anio} - {props.item.mes}</span></p>
                                         <p>Modalidad: <span className="text-blue-700 font-bold ">{props.item.modalidad}</span></p>
                                         <p>Tipo Estudio: <span className="text-blue-700 font-bold ">{props.item.tipoEstudio}</span></p>
@@ -341,6 +403,7 @@ const RegistrarNotasGeneral = (props: Props) => {
                                     <th className="py-1 px-6">#</th>
                                     <th className="py-1 px-6">Codigo</th>
                                     <th className="py-1 px-6">Estudiante</th>
+                                    <th className="py-1 px-6">Sede</th>
                                     <th className="py-1 px-6">N. Lectura</th>
                                     <th className="py-1 px-6">N. Escritura</th>
                                     <th className="py-1 px-6">N. Hablado</th>

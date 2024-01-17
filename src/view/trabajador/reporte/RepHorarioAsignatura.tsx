@@ -627,7 +627,7 @@ const RepHorarioAsignatura = () => {
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Seccion</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Asignatura</th>
-                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Cantidad</th>
+                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Cant/Cap</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Capacidad</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Dias</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">H. Inicio</th>
@@ -655,6 +655,7 @@ const RepHorarioAsignatura = () => {
                                                                 <td colSpan={14} className="text-sm p-2  border-b border-solid">No hay datos disponibles</td>
                                                             </tr>
                                                         )
+
                                                         :
                                                         (
                                                             reporteDisponibles.map((item, index) => {
@@ -662,6 +663,7 @@ const RepHorarioAsignatura = () => {
                                                                 return (
                                                                     <tr key={index} className="bg-white border-b">
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{++index}</td>
+                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
@@ -669,8 +671,7 @@ const RepHorarioAsignatura = () => {
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.seccion}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.asignatura}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.cantidad}</td>
-                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.capacidad}</td>
+                                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.cantidad}/{item.capacidad}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.dias}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio}</td>
                                                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin}</td>
