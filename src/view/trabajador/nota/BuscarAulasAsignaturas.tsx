@@ -18,7 +18,7 @@ import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarTipoEst
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
-import { convertirFormatoFechaSql, convertirFormatoHoraSql } from "@/helper/herramienta.helper";
+import { convertirFormatoFechaSql, convertirFormatoHoraSql, convertirNumeroAMes, denominacionHorario } from "@/helper/herramienta.helper";
 import RegistrarNotasGeneral from "./RegistrarNotasGeneral";
 
 
@@ -67,6 +67,8 @@ const BuscarAulasAsignaturas = () => {
     const [mensajeCarga, setMensajeCarga] = useState<boolean>(true)
 
     const [moduloRegistroNotas, setModuloRegistroNotas] = useState<boolean>(false)
+
+    const [sigla, setSigla] = useState("")
 
 
     useEffect(() => {
@@ -248,12 +250,13 @@ const BuscarAulasAsignaturas = () => {
     }
 
 
-    const handleOpenModuloDetalle = (item: any, idHorarioAsignatura: number) => {
+    const handleOpenModuloDetalle = (item: any, idHorarioAsignatura: number, formaSigla: string) => {
 
         setModuloRegistroNotas(true)
 
         setItem(item)
         setIdHorarioAsig(idHorarioAsignatura)
+        setSigla(formaSigla)
 
     }
 
@@ -274,6 +277,7 @@ const BuscarAulasAsignaturas = () => {
                                     <RegistrarNotasGeneral
                                         item={item}
                                         idHorarioAsignatura={idHorarioAsig}
+                                        sigla={sigla}
                                         handleCloseModuloDetalle={handleCloseModuloDetalle}
                                     />
                                 ) : (
@@ -486,6 +490,7 @@ const BuscarAulasAsignaturas = () => {
 
                                                         <tr>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sigla</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
@@ -517,16 +522,52 @@ const BuscarAulasAsignaturas = () => {
                                                                 listaMatriculasAsignatura.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={14} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={15} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :
                                                                     (
                                                                         listaMatriculasAsignatura.map((item, index) => {
 
+                                                                            let cantDias = item.cantDias
+                                                                            let tipoEst = item.tipEstudioId
+                                                                            let denominacionH: string | undefined
+
+                                                                            if (tipoEst == 1 || tipoEst == 4) {
+                                                                                if (cantDias == 5) {
+                                                                                    denominacionH = denominacionHorario.intensivoLV.find((obj: any) => item.horaInicio.slice(0, -3) == obj.horaInicio)?.denominacion
+                                                                                }
+                                                                                if (cantDias == 2) {
+                                                                                    denominacionH = denominacionHorario.intensivoSD.find((obj: any) => item.horaInicio.slice(0, -3) == obj.horaInicio)?.denominacion
+
+                                                                                }
+                                                                            }
+                                                                            if (tipoEst == 2 || tipoEst == 3) {
+                                                                                denominacionH = denominacionHorario.superintensivoLV.find((obj: any) => item.horaInicio.slice(0, -3) == obj.horaInicio)?.denominacion
+
+                                                                            }
+
+                                                                            const codAsig = item.asiId.substring(0, 3)
+                                                                            const codNivel = parseInt(item.asiNivel)
+                                                                            const codModalidad = item.modalidad.charAt(0);
+                                                                            const codTipoEst = tipoEst == 1 ? 'I'
+                                                                                : tipoEst == 2 ? 'SI'
+                                                                                    : tipoEst == 4 ? 'IQ'
+                                                                                        : tipoEst == 3 ? 'SIQ' : '0'
+
+                                                                            const codDias = cantDias == 5 ? 'LV'
+                                                                                : cantDias == 2 ? 'SD' : '0'
+
+                                                                            const codPer = convertirNumeroAMes(item.mes)?.substring(0, 3);
+                                                                            const codAnio = item.anio.toString().slice(-2);
+
+                                                                            const formaSigla = `${codAsig}${codNivel}-${codModalidad}${codTipoEst}-${codDias}-${item.aula}-${denominacionH}-${codAnio}${codPer}`
+
+
                                                                             return (
                                                                                 <tr key={index} className="bg-white border-b" title={` ${convertirFormatoFechaSql(item.fechaRegistra)} ${convertirFormatoHoraSql(item.fechaRegistra)} `}>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{formaSigla}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
@@ -537,13 +578,13 @@ const BuscarAulasAsignaturas = () => {
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.asignatura}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.cantidad}/{item.capacidad}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.dias}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio.slice(0, -3)}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin.slice(0, -3)}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                                                                         <button
                                                                                             title="Detalle"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId)}
+                                                                                            onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId, formaSigla)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 

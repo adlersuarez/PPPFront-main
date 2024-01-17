@@ -17,6 +17,7 @@ type Props = {
     handleCloseModuloDetalle: () => void;
     item: any
     idHorarioAsignatura: number
+    sigla: string
 };
 
 
@@ -321,11 +322,10 @@ const RegistrarNotasGeneral = (props: Props) => {
         setInfoEstudianteActual(infoEstudiante)
     }
 
-
     return (
         <>
             <div className="p-1 bg-Solid">
-                <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Regristro de Notas</h2>
+                <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloDetalle} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Regristro de Notas: {props.sigla}</h2>
 
                 <div className="w-full">
 

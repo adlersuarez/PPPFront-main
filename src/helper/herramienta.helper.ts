@@ -237,9 +237,9 @@ export function convertirFormatoHoraSql(fechaHora: string): string {
 
 export function convertirNumeroAMes(numero: number): string | undefined {
     const meses = [
-        'Enero', 'Febrero', 'Marzo', 'Abril',
-        'Mayo', 'Junio', 'Julio', 'Agosto',
-        'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        'ENERO', 'FEBRERO', 'MARZO', 'ABRIL',
+        'MAYO', 'JUNIO', 'JULIO', 'AGOSTO',
+        'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
     ];
 
     if (numero >= 1 && numero <= 12) {
