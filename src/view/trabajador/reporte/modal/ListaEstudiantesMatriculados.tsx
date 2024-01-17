@@ -21,6 +21,7 @@ type Props = {
     hide: () => void;
     item: any
     idHorarioAsignatura: number
+    sigla: string
 };
 
 const ListaEstudiantesMatriculados = (props: Props) => {
@@ -44,7 +45,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
         }
     }
 
-    const pdfHorariosAsignatura = async (idElementTable: string, fileName: string, data: any) => {
+    const pdfListaMatriculadosHorarioAsignaturaId = async (idElementTable: string, fileName: string, data: any) => {
 
         const tabla = document.getElementById(idElementTable);
         const tbCopia = tabla?.cloneNode(true) as HTMLElement;;
@@ -55,27 +56,13 @@ const ListaEstudiantesMatriculados = (props: Props) => {
             format: 'a4' // Tamaño A4
         })
 
-        // const prevFont = doc.getFontList()[0];
-        // console.log(prevFont)
-
         const pageWidth = doc.internal.pageSize.width
         //const pageHeight = doc.internal.pageSize.height
 
         // Cuerpo
         doc.setFontSize(9)
         // doc.setFont("", "normal")
-        /*
-        periodo: props.item.anio - props.item.mes,
-        modalidad: props.item.modalidad,
-        tipoEstudio: props.item.tipoEstudio,
-        capacidad: props.item.capacidad,
 
-        aula: props.item.aula,
-        seccion: props.item.seccion,
-        asignatura: props.item.asignatura,
-        instructor: props.item.docenteDni ? '' : props.item.docenteDni / props.item.docente ? '' : props.item.docente,
-        cantidad: props.item.cantidad,
-        */
         doc.text(`Periodo: ${data.periodo}`, 13, 23)
         doc.text(`Modalidad: ${data.modalidad}`, 68, 23)
         doc.text(`Tipo estudio: ${data.tipoEstudio}`, 123, 23)
@@ -86,10 +73,8 @@ const ListaEstudiantesMatriculados = (props: Props) => {
         doc.text(`Sección: ${data.seccion} `, 68, 27)
         doc.text(`Asignatura: ${data.asignatura} `, 123, 27)
         doc.text(`Capacidad: ${data.capacidad} / ${data.cantidad} `, 178, 27)
-        
+
         doc.text(`Instructor: ${data.instructor} `, 13, 31)
-        // doc.text(`Cantidad de Matriculados: ${data.cantidadMatriculados}`, 13, 31)
-        // doc.text(`Aulas Libres: ${data.aulasLibres}`, pageWidth / 2, 31)
 
         // Excluye la última columna
         const rows = tbCopia.querySelectorAll('tr');
@@ -141,7 +126,6 @@ const ListaEstudiantesMatriculados = (props: Props) => {
             doc.text("REPORTE DE LA LISTA DE MATRICULADOS POR HORARIOS", pageWidth / 4, 13)
             // doc.setFontSize(12)
             // doc.setTextColor(128, 128, 128)
-            // doc.text(`Filtrado por`, pageWidth / 3, 17)
 
             doc.setFontSize(10)
             //doc.setFont(prevFont, "normal")
@@ -189,6 +173,222 @@ const ListaEstudiantesMatriculados = (props: Props) => {
         }
     };
 
+    // Registro Auxiliares
+    const pdfRegistroAuxiliarNotas = async (fileName: string, data: any) => {
+
+
+        const nuevaLista = listaMatriculados.map((item, index) => {
+            return [
+                ++index,
+                `${item.estudianteId}`,
+                `${item.estPaterno} ${item.estMaterno} ${item.estNombres}`,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+            ];
+        });
+
+
+        const doc = new jsPDF({
+            orientation: 'landscape', // Orientación vertical (por defecto)
+            unit: 'mm', // Unidad de medida en milímetros
+            format: 'a4' // Tamaño A4
+        })
+
+        const pageWidth = doc.internal.pageSize.width
+        //const pageHeight = doc.internal.pageSize.height
+
+        // Cuerpo
+        doc.setFontSize(9)
+        // doc.setFont("", "normal")
+
+        doc.text(`Periodo: ${data.periodo}`, 13, 23)
+        doc.text(`Modalidad: ${data.modalidad}`, 68, 23)
+        doc.text(`Tipo estudio: ${data.tipoEstudio}`, 123, 23)
+        doc.text(`Turno: ${data.turno}`, 178, 23)
+        // doc.text(`Capacidad: ${data.capacidad}`, 233, 23)
+
+        doc.text(`Aula: ${data.aula}`, 13, 27)
+        doc.text(`Sección: ${data.seccion} `, 68, 27)
+        doc.text(`Asignatura: ${data.asignatura} `, 123, 27)
+        doc.text(`Capacidad: ${data.capacidad} / ${data.cantidad} `, 178, 27)
+
+        doc.text(`Instructor: ${data.instructor} `, 13, 31)
+
+        const datosEncabezado = [
+            ['#', 'Codigo', 'Estudiante', 'N. LECTURA', 'N. ESCRITURA', 'N. HABLADO', 'N. PRÁCTICA EN LINEA', 'N. EXAMEN INTERMEDIO', 'N. EXAMEN FINAL'],
+        ];
+
+
+        const opciones: UserOptions = {
+            margin: {
+                top: 33,
+                bottom: 20
+            },
+            headStyles: {
+                fontSize: 8,
+                textColor: [255, 255, 255]
+            },
+            bodyStyles: {
+                fontSize: 7,
+                textColor: [0, 0, 0],
+                halign: 'center'
+            },
+            columnStyles: {
+                0: {
+                    halign: 'center',
+                    fillColor: [220, 220, 220]
+                },
+                // 5: {
+                //     textColor: [0, 57, 129]
+                // }
+            },
+            head: datosEncabezado,
+            body: nuevaLista
+        };
+
+        // Genera el PDF a partir de la tabla
+        autoTable(doc, opciones);
+
+        // Pie y Encabezado de pagina
+        const pageCount = doc.getNumberOfPages() // Obtener el número total de páginas
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i)
+
+            doc.addImage(images.logo_png, "PNG", 13, 5, 13, 12)
+
+            doc.setFontSize(15)
+            doc.setTextColor(0, 0, 0)
+            //doc.setFont(prevFont, "bold")
+            doc.text(`REGISTRO AUXILIR DE NOTAS ${props.sigla}`, pageWidth/6, 13)
+            // doc.setFontSize(12)
+            // doc.setTextColor(128, 128, 128)
+
+            doc.setFontSize(10)
+            //doc.setFont(prevFont, "normal")
+            doc.setTextColor(128, 128, 128)
+            doc.text(getCurrentDateFormatted(), pageWidth - 30, 8)
+            doc.text(getCurrentTime24hFormat(), pageWidth - 30, 14)
+
+            doc.setDrawColor(0, 124, 188)
+            doc.line(13, 19, pageWidth - 13, 19)
+
+            doc.setFontSize(10)
+            doc.setTextColor(128, 128, 128)
+            //doc.setFont(prevFont, "normal")
+            doc.text(`Pag ${i} de ${pageCount}`, pageWidth - 30, 200)
+        }
+
+        doc.save(fileName + ".pdf")
+    }
+
+    const pdfRegistroAuxiliarAsistencia = async (fileName: string, data: any) => {
+
+
+        const nuevaLista = listaMatriculados.map((item, index) => {
+            return [
+                ++index,
+                `${item.estudianteId}`,
+                `${item.estPaterno} ${item.estMaterno} ${item.estNombres}`,
+            ];
+        });
+
+
+        const doc = new jsPDF({
+            orientation: 'landscape', // Orientación vertical (por defecto)
+            unit: 'mm', // Unidad de medida en milímetros
+            format: 'a4' // Tamaño A4
+        })
+
+        const pageWidth = doc.internal.pageSize.width
+        //const pageHeight = doc.internal.pageSize.height
+
+        // Cuerpo
+        doc.setFontSize(9)
+        // doc.setFont("", "normal")
+
+        doc.text(`Periodo: ${data.periodo}`, 13, 23)
+        doc.text(`Modalidad: ${data.modalidad}`, 68, 23)
+        doc.text(`Tipo estudio: ${data.tipoEstudio}`, 123, 23)
+        doc.text(`Turno: ${data.turno}`, 178, 23)
+        // doc.text(`Capacidad: ${data.capacidad}`, 233, 23)
+
+        doc.text(`Aula: ${data.aula}`, 13, 27)
+        doc.text(`Sección: ${data.seccion} `, 68, 27)
+        doc.text(`Asignatura: ${data.asignatura} `, 123, 27)
+        doc.text(`Capacidad: ${data.capacidad} / ${data.cantidad} `, 178, 27)
+
+        doc.text(`Instructor: ${data.instructor} `, 13, 31)
+
+        const datosEncabezado = [
+            ['#', 'Codigo', 'Estudiante', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+        ];
+
+        const opciones: UserOptions = {
+            margin: {
+                top: 33,
+                bottom: 20
+            },
+            headStyles: {
+                fontSize: 8,
+                textColor: [255, 255, 255]
+            },
+            bodyStyles: {
+                fontSize: 7,
+                textColor: [0, 0, 0],
+                halign: 'center'
+            },
+            columnStyles: {
+                0: {
+                    halign: 'center',
+                    fillColor: [220, 220, 220]
+                },
+                // 5: {
+                //     textColor: [0, 57, 129]
+                // }
+            },
+            head: datosEncabezado,
+            body: nuevaLista
+        };
+
+        // Genera el PDF a partir de la tabla
+        autoTable(doc, opciones);
+
+        // Pie y Encabezado de pagina
+        const pageCount = doc.getNumberOfPages() // Obtener el número total de páginas
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i)
+
+            doc.addImage(images.logo_png, "PNG", 13, 5, 13, 12)
+
+            doc.setFontSize(15)
+            doc.setTextColor(0, 0, 0)
+            //doc.setFont(prevFont, "bold")
+            doc.text(`REGISTRO AUXILIR DE ASISTENCIA ${props.sigla}`, pageWidth/6, 13)
+            // doc.setFontSize(12)
+            // doc.setTextColor(128, 128, 128)
+
+            doc.setFontSize(10)
+            //doc.setFont(prevFont, "normal")
+            doc.setTextColor(128, 128, 128)
+            doc.text(getCurrentDateFormatted(), pageWidth - 30, 8)
+            doc.text(getCurrentTime24hFormat(), pageWidth - 30, 14)
+
+            doc.setDrawColor(0, 124, 188)
+            doc.line(13, 19, pageWidth - 13, 19)
+
+            doc.setFontSize(10)
+            doc.setTextColor(128, 128, 128)
+            //doc.setFont(prevFont, "normal")
+            doc.text(`Pag ${i} de ${pageCount}`, pageWidth - 30, 200)
+        }
+
+        doc.save(fileName + ".pdf")
+    }
+
     return (
 
         <CustomModal
@@ -210,7 +410,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                 <div className="flex justify-between">
 
                     <div className="flex justify-between w-11/12">
-                        <h6 className="py-1 font-bold text-lg"> Lista de Matriculados por Horarios</h6>
+                        <h6 className="py-1 font-bold text-lg"> Lista de Matriculados: {props.sigla}</h6>
                     </div>
                     <button
                         className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
@@ -223,7 +423,8 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-6 mb-2 mt-3">
                     <div>
                         <div className="flex">
-                            <div className="relative flex flex-wrap">
+
+                            {/* <div className="relative flex flex-wrap">
                                 <button
                                     title="Excel"
                                     className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
@@ -235,8 +436,9 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                 >
                                     <i className="bi bi-file-earmark-excel-fill mr-1"></i> Excel
                                 </button>
-                            </div>
-                            <div className="relative flex flex-wrap">
+                            </div> */}
+
+                            {/* <div className="relative flex flex-wrap">
                                 <button
                                     title="Pdf"
                                     className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
@@ -256,12 +458,69 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                             cantidad: props.item.cantidad,
 
                                         }
-                                        pdfHorariosAsignatura('tabla-reporte', `Reporte-Lista-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, data)
+                                        pdfListaMatriculadosHorarioAsignaturaId('tabla-reporte', `Reporte-Lista-Matriculados-Horario-X-Asignatura ${getCurrentDateFormatted()}`, data)
                                     }}
                                 >
                                     <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Pdf
                                 </button>
+                            </div> */}
+
+                            <div className="relative flex flex-wrap">
+                                <button
+                                    title="Registro Auxiliar de Notas"
+                                    className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
+                                    onClick={() => {
+                                        if (listaMatriculados.length == 0) return;
+                                        const data = {
+                                            periodo: props.item.anio - props.item.mes,
+                                            modalidad: props.item.modalidad,
+                                            tipoEstudio: props.item.tipoEstudio,
+                                            turno: props.item.turno,
+                                            capacidad: props.item.capacidad,
+
+                                            aula: props.item.aula,
+                                            seccion: props.item.seccion,
+                                            asignatura: props.item.asignatura,
+                                            instructor: props.item.docenteDni ? '' : props.item.docenteDni / props.item.docente ? '' : props.item.docente,
+                                            cantidad: props.item.cantidad,
+                                            sigla: props.sigla
+                                        }
+                                        pdfRegistroAuxiliarNotas(`Registro-Auxiliar-Notas ${props.sigla} ${getCurrentDateFormatted()}`, data)
+                                    }}
+                                >
+                                    <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Notas
+                                </button>
                             </div>
+
+                            <div className="relative flex flex-wrap">
+                                <button
+                                    title="Registro Auxiliar de Notas"
+                                    className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
+                                    onClick={() => {
+                                        if (listaMatriculados.length == 0) return;
+                                        const data = {
+                                            periodo: props.item.anio - props.item.mes,
+                                            modalidad: props.item.modalidad,
+                                            tipoEstudio: props.item.tipoEstudio,
+                                            turno: props.item.turno,
+                                            capacidad: props.item.capacidad,
+
+                                            aula: props.item.aula,
+                                            seccion: props.item.seccion,
+                                            asignatura: props.item.asignatura,
+                                            instructor: props.item.docenteDni ? '' : props.item.docenteDni / props.item.docente ? '' : props.item.docente,
+                                            cantidad: props.item.cantidad,
+                                            sigla: props.sigla
+
+                                        }
+                                        pdfRegistroAuxiliarAsistencia(`Registro-Auxiliar-Notas ${props.sigla} ${getCurrentDateFormatted()}`, data)
+                                    }}
+                                >
+                                    <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Asistencia
+                                </button>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -296,11 +555,9 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                         <thead className="bg-upla-100 text-white">
                             <tr>
                                 <th className="py-1 px-6">#</th>
-                                <th className="py-1 px-6">F. Registro</th>
                                 <th className="py-1 px-6">Codigo</th>
                                 <th className="py-1 px-6">Estudiante</th>
-                                <th className="py-1 px-6">Carrera</th>
-                                <th className="py-1 px-6">Facultad</th>
+                                {/* <th className="py-1 px-6">Fac / Carr</th>  */}
                                 <th className="py-1 px-6">Sede</th>
                             </tr>
                         </thead>
@@ -312,18 +569,16 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                 listaMatriculados.length == 0 ?
                                     (
                                         <tr className="text-center bg-white border-b">
-                                            <td colSpan={7} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
+                                            <td colSpan={6} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
                                         </tr>
                                     ) : (
                                         listaMatriculados.map((obj, index) => (
 
                                             <tr key={index} className="text-sm">
                                                 <td className="border p-2">{++index}</td>
-                                                <td className="text-center border p-2">{obj.fechRegistro}</td>
                                                 <td className="text-center border p-2">{obj.estudianteId}</td>
                                                 <td className="border p-2">{`${obj.estPaterno} ${obj.estMaterno} ${obj.estNombres}`}</td>
-                                                <td className="border p-2">{obj.carrera}</td>
-                                                <td className="border p-2">{obj.facultad}</td>
+                                                {/* <td className="border p-2">{obj.facultad} / {obj.carrera} </td> */}
                                                 <td className="border p-2">{obj.sede}</td>
                                             </tr>
 

@@ -72,7 +72,7 @@ const HorarioDetAgregar = (props: Props) => {
 
     useEffect(() => {
         LoadDataAsignatura()
-        LoadDataRangeTurno()
+        //LoadDataRangeTurno()
 
         if (horaInicio !== '' && selectedDays.length > 0 && props.idTipoEstudio) {
             setHoraFin(FinalizarHorarioCheckBox(selectedDays, props.idTipoEstudio, horaInicio));
@@ -96,19 +96,19 @@ const HorarioDetAgregar = (props: Props) => {
         }
     }
 
-    const LoadDataRangeTurno = async () => {
+    // const LoadDataRangeTurno = async () => {
 
-        setcomboBoxRangeTurno([])
+    //     setcomboBoxRangeTurno([])
 
-        if (props.turnoInicio === undefined || props.turnoFin === undefined) {
-            console.log('El rango de horas para el turno no se pudo crear');
-            // Aquí podrías hacer cualquier otra lógica o manejo de error que desees
-        } else {
-            const rangoTurno = GenerateRangeTurno(props.turnoInicio, props.turnoFin)
-            setcomboBoxRangeTurno(rangoTurno)
+    //     if (props.turnoInicio === undefined || props.turnoFin === undefined) {
+    //         console.log('El rango de horas para el turno no se pudo crear');
+    //         // Aquí podrías hacer cualquier otra lógica o manejo de error que desees
+    //     } else {
+    //         const rangoTurno = GenerateRangeTurno(props.turnoInicio, props.turnoFin, props.idTipoEstudio, selectedDays.length)
+    //         setcomboBoxRangeTurno(rangoTurno)
 
-        }
-    }
+    //     }
+    // }
 
     const LoadDataDocente = async (buscar: string) => {
 
@@ -280,6 +280,7 @@ const HorarioDetAgregar = (props: Props) => {
     const [selectedDays, setSelectedDays] = useState<number[]>([]);
 
     const handleDayCheckboxChange = (id: number) => {
+
         const isWeekend = id === 6 || id === 7;
         const selectedWeekdays = selectedDays.filter(day => day < 6);
 
@@ -306,13 +307,31 @@ const HorarioDetAgregar = (props: Props) => {
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value;
 
+        setcomboBoxRangeTurno([])
         if (value === 'weekday') {
             setSelectedDays([1, 2, 3, 4, 5]);
+            if (props.turnoInicio === undefined || props.turnoFin === undefined) {
+                console.log('El rango de horas para el turno no se pudo crear');
+                // Aquí podrías hacer cualquier otra lógica o manejo de error que desees
+            } else {
+                const rangoTurno = GenerateRangeTurno(props.turnoInicio, props.turnoFin, props.idTipoEstudio, 5)
+                setcomboBoxRangeTurno(rangoTurno)
+    
+            }
         } else if (value === 'weekend') {
             setSelectedDays([6, 7]);
+            if (props.turnoInicio === undefined || props.turnoFin === undefined) {
+                console.log('El rango de horas para el turno no se pudo crear');
+                // Aquí podrías hacer cualquier otra lógica o manejo de error que desees
+            } else {
+                const rangoTurno = GenerateRangeTurno(props.turnoInicio, props.turnoFin, props.idTipoEstudio, 2)
+                setcomboBoxRangeTurno(rangoTurno)
+    
+            }
         } else {
             setSelectedDays([]); // Limpiar los días seleccionados si se elige la opción sin valor
         }
+
     };
 
     const renderDayCheckboxes = () => {

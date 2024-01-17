@@ -48,17 +48,36 @@ export function keyNumberFloat(event: React.KeyboardEvent<HTMLInputElement>): vo
     const isDigit: boolean = /\d/.test(key);
     const isDot: boolean = key === '.';
     const hasDot: boolean = (event.target as HTMLInputElement).value.includes('.');
-  
-    if (!(isDigit || isDot || key === 'Backspace' || key === 'Delete' || key === 'ArrowLeft' || key === 'ArrowRight' || key === 'Tab')) {
-      event.preventDefault();
-    }
-  
-    if (isDot && hasDot) {
-      event.preventDefault();
-    }
-  }
 
-export function GenerateRangeTurno(horaInicio: string, horaFin: string) {
+    if (!(isDigit || isDot || key === 'Backspace' || key === 'Delete' || key === 'ArrowLeft' || key === 'ArrowRight' || key === 'Tab')) {
+        event.preventDefault();
+    }
+
+    if (isDot && hasDot) {
+        event.preventDefault();
+    }
+}
+
+export function GenerateRangeTurno(horaInicio: string, horaFin: string, tipoEstudio: number, tipoSemana: number) {
+
+    let estudio = 0
+    if (tipoEstudio == 1 || tipoEstudio == 4) {
+        if (tipoSemana == 5) {
+            estudio = 90
+        }
+        if (tipoSemana == 2) {
+            estudio = 240
+        }
+
+    }
+    if (tipoEstudio == 2 || tipoEstudio == 3) {
+        estudio = 180
+    }
+
+    if (estudio == 0) {
+        return [];
+    }
+
     // Convertir las horas de inicio y fin a objetos Date para cálculos
     const fechaInicio = new Date(`2000-01-01T${horaInicio}`);
     const fechaFin = new Date(`2000-01-01T${horaFin}`);
@@ -73,8 +92,9 @@ export function GenerateRangeTurno(horaInicio: string, horaFin: string) {
     while (horaActual <= fechaFin) {
         const hora = horaActual.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         turnoTardeSelect.push({ id, hora });
-        horaActual.setMinutes(horaActual.getMinutes() + 15);
+        horaActual.setMinutes(horaActual.getMinutes() + estudio);
         id++;
+
     }
 
     return turnoTardeSelect
@@ -231,6 +251,109 @@ export function convertirNumeroAMes(numero: number): string | undefined {
 
 export function isNumeric(valor: any): boolean {
     return !isNaN(valor) && !isNaN(parseFloat(valor));
+}
+
+export const denominacionHorario = {
+    intensivoLV: [
+        {
+            id: 1,
+            horaInicio: '08:00',
+            horaFin: '09:30',
+            denominacion: 'H1'
+        },
+        {
+            id: 2,
+            horaInicio: '09:30',
+            horaFin: '11:00',
+            denominacion: 'H2'
+        },
+        {
+            id: 3,
+            horaInicio: '11:00',
+            horaFin: '12:30',
+            denominacion: 'H3'
+        },
+        {
+            id: 4,
+            horaInicio: '12:30',
+            horaFin: '14:00',
+            denominacion: 'H4'
+        }
+        ,
+        {
+            id: 5,
+            horaInicio: '14:00',
+            horaFin: '15:30',
+            denominacion: 'H5'
+        },
+        {
+            id: 6,
+            horaInicio: '15:30',
+            horaFin: '17:00',
+            denominacion: 'H6'
+        },
+        {
+            id: 7,
+            horaInicio: '17:00',
+            horaFin: '18:30',
+            denominacion: 'H7'
+        }
+        ,
+        {
+            id: 8,
+            horaInicio: '18:30',
+            horaFin: '20:00',
+            denominacion: 'H8'
+        },
+        {
+            id: 9,
+            horaInicio: '20:00',
+            horaFin: '21:30',
+            denominacion: 'H9'
+        }
+    ],
+
+    superintensivoLV: [
+        {
+            id: 1,
+            horaInicio: '08:00',
+            horaFin: '11:00',
+            denominacion: 'H1'
+        },
+        {
+            id: 2,
+            horaInicio: '11:00',
+            horaFin: '14:00',
+            denominacion: 'H2'
+        },
+        {
+            id: 3,
+            horaInicio: '15:30',
+            horaFin: '18:30',
+            denominacion: 'H3'
+        },
+        {
+            id: 4,
+            horaInicio: '18:30',
+            horaFin: '21:30',
+            denominacion: 'H4'
+        }
+    ],
+
+    intensivoSD: [
+        {
+            id: 1,
+            horaInicio: '08:00',
+            horaFin: '12:00',
+            denominacion: 'H1'
+        },
+        {
+            id: 2,
+            horaInicio: '15:00',
+            horaFin: '19:00',
+            denominacion: 'H2'
+        }
+    ]
 }
 
 
