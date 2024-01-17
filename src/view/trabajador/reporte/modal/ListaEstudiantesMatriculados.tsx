@@ -472,7 +472,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                     onClick={() => {
                                         if (listaMatriculados.length == 0) return;
                                         const data = {
-                                            periodo: props.item.anio - props.item.mes,
+                                            periodo: `${props.item.anio} - ${props.item.mes}`,
                                             modalidad: props.item.modalidad,
                                             tipoEstudio: props.item.tipoEstudio,
                                             turno: props.item.turno,
@@ -499,7 +499,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                     onClick={() => {
                                         if (listaMatriculados.length == 0) return;
                                         const data = {
-                                            periodo: props.item.anio - props.item.mes,
+                                            periodo: `${props.item.anio} - ${props.item.mes}`,
                                             modalidad: props.item.modalidad,
                                             tipoEstudio: props.item.tipoEstudio,
                                             turno: props.item.turno,

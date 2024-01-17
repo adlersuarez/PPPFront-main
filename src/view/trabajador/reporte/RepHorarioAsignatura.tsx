@@ -608,7 +608,7 @@ const RepHorarioAsignatura = () => {
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                                     <div className="text-sm">
                                                         <p>Capacidad Total: <span className="text-blue-700 font-bold">{capacidadTotal}</span></p>
-                                                        <p>Vacantes Disponibles: <span className="text-blue-700 font-bold ">{vacantesDisponibles}</span></p>
+                                                        <p>Vacantes Disponibles: <span className="text-blue-700 font-bold ">{vacantesDisponibles < 0 ? 0: vacantesDisponibles}</span></p>
                                                         {/* <p>Tipo de Estudio: <span className="text-blue-700 font-bold "></span></p> */}
                                                     </div>
                                                     <div className="text-sm">
