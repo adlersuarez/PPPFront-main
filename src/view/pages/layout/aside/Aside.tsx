@@ -104,6 +104,15 @@ const menusAdmin: MenuItem[] = [
                 modPosicion: 2,
                 subMenu: false,
             },
+            {
+                id: "3",
+                titulo: "Buscar Aula Excel",
+                url: "/inicio/buscar-aulas-asignaturas-excel",
+                icono: "bi-file-text-fill",
+                moduPadre: false,
+                modPosicion: 2,
+                subMenu: false,
+            },
         ]
     },
 ]
