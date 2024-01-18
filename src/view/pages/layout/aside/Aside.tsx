@@ -47,33 +47,25 @@ const menusAdmin: MenuItem[] = [
         modPosicion: 2,
         subMenu: true,
         subMenuItems: [
-            // {
-            //     id: "1",
-            //     titulo: "Matricula Admin",
-            //     url: "/inicio/matricula-interna",
-            //     icono: "bi-pencil-square",
-            //     moduPadre: false,
-            //     modPosicion: 1,
-            //     subMenu: false,
-            // },
             {
-                id: "2",
-                titulo: "Horario Admin",
+                id: "1",
+                titulo: "Registro de Horarios",
                 url: "/inicio/horario-idiomas",
                 icono: "bi-calendar-week",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            },
+            
+            {
+                id: "2",
+                titulo: "Registro de Notas",
+                url: "/inicio/buscar-aulas-asignaturas",
+                icono: "bi-card-checklist",
                 moduPadre: false,
                 modPosicion: 2,
                 subMenu: false,
             },
-            // {
-            //     id: "3",
-            //     titulo: "Nota Admin",
-            //     url: "/inicio/inicio-docente",
-            //     icono: "bi-card-checklist",
-            //     moduPadre: false,
-            //     modPosicion: 3,
-            //     subMenu: false,
-            // },
         ]
     },
     {
