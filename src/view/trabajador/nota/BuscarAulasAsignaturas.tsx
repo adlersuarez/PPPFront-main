@@ -603,21 +603,20 @@ const BuscarAulasAsignaturas = () => {
                                                                                     
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid flex justify-center gap-2">
                                                                                         <button
-                                                                                            title="Notas"
+                                                                                            title="Listas de Estudiantes"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
                                                                                             onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId,formaSigla)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 
                                                                                         </button>
-                                                                                        <button
+                                                                                        {/* <button
                                                                                             title="Asistencia"
                                                                                             className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
                                                                                             onClick={() => handleOpenModuloAsistencia(item, item.horarioAsigId)}
                                                                                         >
                                                                                             <i className="bi bi-list-check text-sm"></i>
-
-                                                                                        </button>
+                                                                                        </button> */}
                                                                                     </td>
                                                                                 </tr>
                                                                             );
