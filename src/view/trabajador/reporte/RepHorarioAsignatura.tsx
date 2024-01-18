@@ -61,7 +61,7 @@ const RepHorarioAsignatura = () => {
     const [valueModalidad, SetValueModalidad] = useState<string>("-")
     const [valueTipoEstudio, SetValueTipoEstudio] = useState<string>("-")
 
-    const[sigla, setSigla] = useState("") 
+    const [sigla, setSigla] = useState("")
 
     useEffect(() => {
 
@@ -94,7 +94,12 @@ const RepHorarioAsignatura = () => {
             }, 0);
             setAulasLibres(totalCantidadCero)
 
-            setVacantesDisponibles(totCapacidades - totMatriculados)
+            if (totMatriculados > totCapacidades) {
+                setVacantesDisponibles(0)
+            } else {
+                setVacantesDisponibles(totCapacidades - totMatriculados)
+            }
+
 
             setReporteDisponible(response.data.resultado);
 
@@ -608,7 +613,7 @@ const RepHorarioAsignatura = () => {
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                                     <div className="text-sm">
                                                         <p>Capacidad Total: <span className="text-blue-700 font-bold">{capacidadTotal}</span></p>
-                                                        <p>Vacantes Disponibles: <span className="text-blue-700 font-bold ">{vacantesDisponibles < 0 ? 0: vacantesDisponibles}</span></p>
+                                                        <p>Vacantes Disponibles: <span className="text-blue-700 font-bold ">{vacantesDisponibles}</span></p>
                                                         {/* <p>Tipo de Estudio: <span className="text-blue-700 font-bold "></span></p> */}
                                                     </div>
                                                     <div className="text-sm">
@@ -696,7 +701,7 @@ const RepHorarioAsignatura = () => {
                                                                     : cantDias == 2 ? 'SD' : '0'
 
                                                                 const codPer = convertirNumeroAMes(item.mes)?.substring(0, 3);
-                                                                const codAnio =  item.anio.toString().slice(-2);
+                                                                const codAnio = item.anio.toString().slice(-2);
 
                                                                 const formaSigla = `${codAsig}${codNivel}-${codModalidad}${codTipoEst}-${codDias}-${item.aula}-${denominacionH}-${codAnio}${codPer}`
 
