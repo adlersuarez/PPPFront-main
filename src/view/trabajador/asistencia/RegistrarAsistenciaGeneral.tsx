@@ -1,15 +1,15 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import RestError from "@/model/class/resterror.model.class";
 import Response from "@/model/class/response.model.class";
 import { Types } from "@/model/enum/types.model.enum";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import RespValue from "@/model/interfaces/RespValue.model.interface";
 
-import { ListarPreRegistroAsistencia } from "@/network/rest/idiomas.network";
+import { InsertarAsistenciaHorarioAsignaturaFecha, ListarPreRegistroAsistencia } from "@/network/rest/idiomas.network";
 
 import useSweerAlert from "@/component/hooks/useSweetAlert"
 import { diaSelect } from "@/helper/herramienta.helper";
-import { space } from "postcss/lib/list";
+import toast from "react-hot-toast";
 
 
 type Props = {
@@ -29,8 +29,15 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
     const [matriculadosAsig, setMatriculadoAsig] = useState<any[]>([])
 
-    const [registrado, setRegistrado] = useState(0)
+    const [, setRegistrado] = useState(0)
     const [seleccionarTodos, setSeleccionarTodos] = useState<boolean>(false);
+
+    //Mostra contenidos diferentes
+    const [activeContent, setActiveContent] = useState<number | null>(1);
+
+    const handleButtonClick = (contentNumber: number) => {
+        setActiveContent(contentNumber);
+    };
 
     useEffect(() => {
         EstudiantesMatriculados()
@@ -40,8 +47,6 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
         setMatriculadoAsig([])
 
         const response = await ListarPreRegistroAsistencia<Listas>(props.item.horarioAsigId, abortController.current)
-
-        console.log(response)
 
         if (response instanceof Response) {
 
@@ -82,6 +87,10 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
     const registrarAsistenciaMasivo = async () => {
         // console.log(matriculadosAsig)
+        if(activeContent == 3){
+            toast.error("Tiene que seleccionar una fecha")
+            return
+        }
 
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
@@ -95,15 +104,15 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                     const registro = {
                         "detMatriculaId": item.detMatriculaId,
                         "fechaAsitencia": new Date().toISOString(),
-                        "estadoAsistencia": item.seleccionado,
+                        "estado": item.seleccionado,
                     }
 
                     asistenciaRegistro.push(registro)
                 })
 
-                console.log(asistenciaRegistro)
+                //console.log(asistenciaRegistro)
 
-                /*const response = await InsertarNotasHorarioAsignatura<RespValue>(codigo, NotasListas, abortController.current)
+                const response = await InsertarAsistenciaHorarioAsignaturaFecha<RespValue>(codigo, asistenciaRegistro, abortController.current)
                 if (response instanceof Response) {
 
                     const mensaje = response.data.value as string
@@ -113,7 +122,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                         sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
                             EstudiantesMatriculados()
                         });
-                       
+
 
                         //console.log('Se proceso')
                     } else {
@@ -129,7 +138,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                     sweet.openWarning("Mensaje", response.getMessage(), () => {
                     });
                 }
-*/
+
             }
         })
 
@@ -172,30 +181,43 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                     <td className="border p-2 px-4 text-center">{item.estudianteId}</td>
                     <td className="border p-2 px-4">{`${item.estPaterno} ${item.estMaterno} ${item.estNombres}`}</td>
                     <td className="border p-2 px-4 text-center">{item.sede}</td>
-                    <td className={`border p-2 text-center  ${valorDiasEstado && 'bg-gray-100'}`}>
-                        {
-                            valorDiasEstado ?
-                                <span className="text-gray-400">-</span>
-                                :
-                                <input
-                                    disabled={valorDiasEstado}
-                                    type="checkbox"
-                                    checked={item.seleccionado || false}
-                                    onChange={() => handleCheckboxChange(index - 1)}
-                                />
-                        }
+                    {
+                        activeContent != 1 &&
+                        <td className={`border p-2 text-center  ${valorDiasEstado && 'bg-gray-100'}`}>
+                            {
+                                valorDiasEstado ?
+                                    <span className="text-gray-400">-</span>
+                                    :
+                                    <input
+                                        disabled={valorDiasEstado}
+                                        type="checkbox"
+                                        checked={item.seleccionado || false}
+                                        onChange={() => handleCheckboxChange(index - 1)}
+                                    />
+                            }
 
-                    </td>
-                    <td className="border p-2 px-4">
+                        </td>
+                    }
+                    {/*<td className="border p-2 px-4">
                         <span className="bg-green-200 rounded-md px-2 font-medium text-green-700">
                             50%
                         </span>
-                    </td>
-                    <td></td>
+                    </td>*/}
+                    {/*<td></td>*/}
                     {
+                        activeContent == 1 &&
                         diasAsistencia.map((dia) => (
                             <td className="border p-2 text-center">
-                                <input type="checkbox"/>
+                                {
+                                    dia.estado ?
+                                        <div className="bg-green-400 w-5 h-5 rounded-sm text-white font-semibold m-auto">
+                                            P
+                                        </div>
+                                        :
+                                        <div className="bg-red-400 w-5 h-5 rounded-sm text-white font-semibold m-auto">
+                                            F
+                                        </div>
+                                }
                             </td>
                         ))
                     }
@@ -219,26 +241,119 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
     const diasAsistencia = [
         {
-            id: 1
+            id: 1,
+            estado: true
         },
         {
-            id: 2
+            id: 2,
+            estado: true
         },
         {
-            id: 3
+            id: 3,
+            estado: true
         },
         {
-            id: 4
+            id: 4,
+            estado: true
         },
         {
-            id: 5
+            id: 5,
+            estado: false
+        },
+        {
+            id: 6,
+            estado: true
+        },
+        {
+            id: 7,
+            estado: true
+        },
+        {
+            id: 8,
+            estado: false
+        },
+        {
+            id: 9,
+            estado: false
+        },
+        {
+            id: 10,
+            estado: true
+        },
+        {
+            id: 11,
+            estado: false
+        },
+        {
+            id: 12,
+            estado: false
+        },
+        {
+            id: 13,
+            estado: true
+        },
+        {
+            id: 14,
+            estado: false
+        },
+        {
+            id: 15,
+            estado: true
+        },
+        {
+            id: 16,
+            estado: false
+        },
+        {
+            id: 17,
+            estado: true
+        },
+        {
+            id: 18,
+            estado: true
+        },
+        {
+            id: 19,
+            estado: true
+        },
+        {
+            id: 20,
+            estado: true
         },
     ]
 
     return (
         <>
             <div className="p-1 bg-Solid">
-                <h2 className="text-2xl font-bold mb-6"><span onClick={props.handleCloseModuloAsistencia} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Registro de Asistencia</h2>
+                <div className="flex justify-between mb-4">
+                    <h2 className="text-2xl font-bold ">
+                        <span onClick={props.handleCloseModuloAsistencia} title="Atrás" role="button">
+                            <i className="bi bi-arrow-left-circle-fill text-blue-500"></i>
+                        </span> Registro de Asistencia
+                    </h2>
+                    <div className="flex gap-4">
+                        <button
+                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 3 ? 'bg-blue-600' : 'bg-gray-400'}`}
+                            onClick={() => handleButtonClick(1)}
+                        >
+                            <i className="bi bi-list-check mr-2" /> Registro general
+                        </button>
+                        <button
+                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 1 ? 'bg-blue-600' : 'bg-gray-400'}`}
+                            onClick={() => handleButtonClick(2)}
+                        >
+                            <i className="bi bi-list-check mr-2" />  Asistencia diaria
+                        </button>
+                        <button
+                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 2 ? 'bg-blue-600' : 'bg-gray-400'}`}
+                            onClick={() => handleButtonClick(3)}
+                        >
+                            <i className="bi bi-list-check mr-2" /> Asistencia especifica
+                        </button>
+
+                    </div>
+                </div>
+
 
                 <div className="w-full">
 
@@ -268,80 +383,88 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-1 gap-1 mb-2 mt-3">
-                        <div>
-                            <label
-                                className="font-mont block mb-1 text-sm font-medium text-gray-900 "
-                            >
-                                Opciones
-                            </label>
-                            <div className="relative flex flex-wrap">
-                                {
-                                    registrado == 0 ?
-                                        (
-                                            <div className="flex gap-4">
-                                                <button
-                                                    disabled={valorDiasEstado}
-                                                    className={`flex items-center rounded border-md p-2 text-xs text-white 
-                                                ${valorDiasEstado ?
-                                                            'bg-gray-500 border-gray-500'
-                                                            :
-                                                            'bg-green-500 border-green-500 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400'} `}
-                                                    onClick={registrarAsistenciaMasivo}
-                                                >
-                                                    <i className="bi bi-floppy2 mr-2"></i> Registrar Asistencia
-                                                </button>
+                    <div>
+                        {(activeContent != 1) &&
+                            <div className="grid grid-cols-1 md:grid-cols-1 gap-1 mb-2 mt-3">
+                                <div className="relative flex flex-wrap">
+                                    <div className="flex gap-16">
+                                        {
+                                            activeContent == 3 &&
+                                            <div className="flex gap-2">
+                                                <label className="my-auto text-base font-semibold text-gray-500">Fecha</label>
                                                 <input type="date"
-
                                                 />
                                             </div>
-                                        ) : (
-                                            <></>
-                                        )
-                                }
+                                        }
+
+                                        <button
+                                            disabled={valorDiasEstado}
+                                            className={`flex items-center rounded border-md p-2 px-4 text-sm text-white font-semibold 
+                                                            ${valorDiasEstado ?
+                                                    'bg-gray-500 border-gray-500'
+                                                    :
+                                                    'bg-green-500 border-green-500 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400'} `}
+                                            onClick={registrarAsistenciaMasivo}
+                                        >
+                                            <i className="bi bi-floppy2 mr-2"></i> Registrar Asistencia
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        }
 
-                    <div className="relative overflow-auto rounded-md my-3 overflow-y-auto">
-                        <table className=" text-gray-700 border table-auto" id="tabla-reporte">
-                            <thead className="bg-upla-100 text-white">
-                                <tr>
-                                    <th className="py-1 px-2 uppercase">#</th>
-                                    <th className="py-1 px-2 uppercase">Codigo</th>
-                                    <th className="py-1 px-2 uppercase">Estudiante</th>
-                                    <th className="py-1 px-6 uppercase">Sede</th>
-                                    <th className="py-2 px-6 flex flex-col gap-2">
-                                        <div className="uppercase mx-auto">
-                                            {nombreDia} - {fechaLetras}
-                                        </div>
-                                        <div className={`gap-2 mx-auto ${valorDiasEstado ? 'hidden' : 'flex'}`}>
-                                            <span className="font-semibold text-sm">Seleccionar Todo</span>
-                                            <input
-                                                className="my-auto"
-                                                type="checkbox"
-                                                checked={seleccionarTodos}
-                                                onChange={handleSeleccionarTodos}
-                                            />
-                                        </div>
-                                    </th>
-                                    <th className="py-1 px-2">%</th>
-                                    <th className="bg-white border border-white w-10">
-
-                                    </th>
-                                    {
-                                        diasAsistencia.map((dia) => (
-                                            <th className="py-1 px-5 text-xs">
-                                                17/01/2024
+                        <div className="relative overflow-auto rounded-md my-3 overflow-y-auto">
+                            <table className=" text-gray-700 border table-auto" id="tabla-reporte">
+                                <thead className="bg-upla-100 text-white">
+                                    <tr>
+                                        <th className="py-1 px-2 uppercase">#</th>
+                                        <th className="py-1 px-2 uppercase">Codigo</th>
+                                        <th className="py-1 px-2 uppercase">Estudiante</th>
+                                        <th className="py-1 px-6 uppercase">Sede</th>
+                                        {
+                                            activeContent != 1 &&
+                                            <th className="py-2 px-6 flex flex-col gap-2">
+                                                {
+                                                    activeContent == 2 &&
+                                                    <div className="uppercase mx-auto">
+                                                        {nombreDia} - {fechaLetras}
+                                                    </div>
+                                                }
+                                                <div className={`gap-2 mx-auto ${valorDiasEstado ? 'hidden' : 'flex'}`}>
+                                                    <span className="font-semibold text-sm">Seleccionar Todo</span>
+                                                    <input
+                                                        className="my-auto"
+                                                        type="checkbox"
+                                                        checked={seleccionarTodos}
+                                                        onChange={handleSeleccionarTodos}
+                                                    />
+                                                </div>
                                             </th>
-                                        ))
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {generarBody()}
-                            </tbody>
-                        </table>
+                                        }
+                                        {/*<th className="py-1 px-2">%</th>*/}
+                                        {/*<th className="bg-white border border-white w-10">
+
+                                    </th>*/}
+                                        {//FALTA DINAMIZARLO
+                                            activeContent == 1 &&
+                                            diasAsistencia.map((dia, index) => (
+                                                <th key={dia.id} className="py-1 px-4 text-xs">
+                                                    <div
+                                                        title="Fecha"
+                                                        className="flex flex-col">
+                                                        <span>{index + 1}</span>
+                                                        <span>Ene</span>
+                                                    </div>
+                                                </th>
+                                            ))
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {generarBody()}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>

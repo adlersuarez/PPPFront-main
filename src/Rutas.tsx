@@ -20,7 +20,7 @@ import VistaHorarioDocente from './view/docente/VistaHorarioDocente';
 import SubirNotas from './view/docente/SubirNotas';
 import VistaHorarioEstudiante from './view/estudiante/horarios/VistaHorariosEstudiante';
 import SeleccionDeIdiomas from './view/estudiante/horarios/SeleccionDeIdiomas';
-import ComponenteNotas from './view/estudiante/notas/ComponenteNotas';
+import ComponenteNotas from './view/estudiante/Notas/ComponenteNotas';
 import VidaAcademica from './view/estudiante/VidaAcademica';
 import Consolidado from './view/estudiante/Consolidado';
 import Boleta from './view/estudiante/Boleta-notas';
@@ -33,6 +33,7 @@ import ReportesModalidad from  './view/trabajador/horario/ReportesModalidad';
 //Notas Trabajador
 import BuscarAulasAsignaturas from './view/trabajador/nota/BuscarAulasAsignaturas'
 import BuscarAulasAsignaturasExcel from './view/trabajador/nota/BuscarAulasAsignaturasExcel';
+import CalendarioIdiomas from './view/trabajador/calendario/CalendarioIdiomas';
 
 
 const router = createBrowserRouter([
@@ -140,6 +141,10 @@ const router = createBrowserRouter([
       {
         path:'buscar-aulas-asignaturas-excel',
         element: <BuscarAulasAsignaturasExcel/>
+      },
+      {
+        path:'calendario',
+        element: <CalendarioIdiomas/>
       },
     ]
   },
