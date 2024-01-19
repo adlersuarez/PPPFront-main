@@ -30,7 +30,7 @@ const Consolidado = () => {
 
 
     const tipoUser = JSON.parse(window.localStorage.getItem("tipoUsuario") || "");
-    console.log(tipoUser)
+
 
     useEffect(() => {
         LoadCiclosDisponibles()
@@ -42,8 +42,7 @@ const Consolidado = () => {
 
         const response = await CiclosMatriculablesIdiomas<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
-            // setComboBoxAsignatura(response.data.resultado as Asignatura[])
-            console.log(response.data.resultado)
+            //console.log(response.data.resultado)
             setCiclosDisponibles(response.data.resultado as CiclosInfo[]);
 
         }
