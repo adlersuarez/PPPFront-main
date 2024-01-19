@@ -130,12 +130,13 @@ export async function InsertarDatosEstudiantePrimerLogin<RespValue>(EstudianteId
     return await Resolve.create<RespValue>(instance.post<RespValue>(`/Estudiante/InsertarDatosEstudiantePrimerLogin/${EstudianteId}/${IdiomaId}/${ProgramaId}/${ModalidadId}`, { signal: signal! }));
 }
 
-
 export async function EstudianteHorariosMatriculados<Listas>(HorarioAsigId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/Estudiante/EstudianteHorariosMatriculados/${HorarioAsigId}`, { signal: abortController?.signal }));
 }
 
-
+export async function RegistroMatriculasEstudianteId<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Estudiante/RegistroMatriculasEstudianteId/${EstudianteId}`, { signal: abortController?.signal }));
+}
 
 // Docente
 
