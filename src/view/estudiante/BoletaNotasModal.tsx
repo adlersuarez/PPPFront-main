@@ -5,30 +5,57 @@ import Response from "@/model/class/response.model.class";
 import { Types } from "@/model/enum/types.model.enum";
 
 import CustomModal from "@/component/Modal.component"
-import { ReporteMatriculadosXHorarioAsigId } from "@/network/rest/idiomas.network";
+import { NotaFinalEstudianteDetMatriculaId, NotasEstudianteDetMatriculaId, } from "@/network/rest/idiomas.network";
 import Listas from "@/model/interfaces/Listas.model.interface";
-
-import { jsPDF } from 'jspdf'
-import autoTable, { UserOptions } from 'jspdf-autotable'
-import * as XLSX from 'xlsx';
-//import XlsxTemplate from 'xlsx-template';
-import { getCurrentDateFormatted, getCurrentTime24hFormat } from "@/helper/herramienta.helper";
-import { images } from "@/helper/index.helper";
+import RespValue from "@/model/interfaces/RespValue.model.interface";
 
 
 type Props = {
     show: boolean;
+    item: any
+    detMatriculaId: number
     hide: () => void;
-    // item: any
-    // idHorarioAsignatura: number
-    // sigla: string
+
 };
+
 
 const BoletasNotasModal = (props: Props) => {
 
-    const [listaMatriculados, setListaMatriculados] = useState<any[]>([])
+
+    const [notasPromedio, setNotasPromedio] = useState<any[]>([])
+
+    const [notaFinal, setNotaFinal] = useState(0) 
 
     const abortController = useRef(new AbortController());
+
+
+    const registroNotas = async () => {
+        setNotasPromedio([])
+
+        const response = await NotasEstudianteDetMatriculaId<Listas>(props.detMatriculaId, abortController.current)
+        if (response instanceof Response) {
+            setNotasPromedio(response.data.resultado)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+        
+    }
+
+    const promedioFinal = async () =>{
+        setNotasPromedio([])
+
+        const response = await NotaFinalEstudianteDetMatriculaId<RespValue>(props.detMatriculaId, abortController.current)
+
+        if (response instanceof Response) {
+            setNotaFinal(parseFloat(response.data.value))
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
 
     return (
 
@@ -37,6 +64,8 @@ const BoletasNotasModal = (props: Props) => {
                 props.show
             }
             onOpen={() => {
+                registroNotas()
+                promedioFinal()
             }}
             onHidden={() => {
 
@@ -60,79 +89,32 @@ const BoletasNotasModal = (props: Props) => {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-6 mb-2 mt-3">
-                    <div>
-                        <div className="flex">
+                <br/>
 
-                            <div className="relative flex flex-wrap">
-                                <button
-                                    title="Registro Auxiliar"
-                                    className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
-                                >
-                                    <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Registro Auxiliar
-                                </button>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-6 mb-2 mt-3">
-                    <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
-                        <div className="m-2">
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-                                {/* <div className="text-sm">
-                                    <p>Periodo: <span className="text-blue-700 font-bold">{props.item.anio} - {props.item.mes}</span></p>
-                                    <p>Modalidad: <span className="text-blue-700 font-bold ">{props.item.modalidad}</span></p>
-                                    <p>Tipo Estudio: <span className="text-blue-700 font-bold ">{props.item.tipoEstudio}</span></p>
-                                    <p>Turno: <span className="text-blue-700 font-bold">{props.item.turno}</span></p>
-                                    <p>Capacidad: <span className="text-blue-700 font-bold">{props.item.capacidad}</span></p>
-                                </div> */}
-                                {/* <div className="text-sm">
-                                    <p>Aula: <span className="text-blue-700 font-bold">{props.item.aula}</span></p>
-                                    <p>Sección: <span className="text-blue-700 font-bold">{props.item.seccion}</span></p>
-                                    <p>Asignatura: <span className="text-blue-700 font-bold">{props.item.asignatura}</span></p>
-                                    <p>Instructor: <span className="text-blue-700 font-bold">{props.item.docenteDni ? '' : props.item.docenteDni} / {props.item.docente ? '' : props.item.docente}</span></p>
-                                    <p>Cantidad: <span className="text-blue-700 font-bold">{props.item.cantidad}</span></p>
-                                </div> */}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="relative overflow-auto rounded-md my-3 overflow-y-auto h-80">
+                <div className="relative overflow-auto rounded-md my-3 overflow-y-auto">
                     <table className="w-full text-gray-700 uppercase border table-auto" id="tabla-reporte">
                         <thead className="bg-upla-100 text-white">
                             <tr>
                                 <th className="py-1 px-6">#</th>
-                                <th className="py-1 px-6">Codigo</th>
-                                <th className="py-1 px-6">Estudiante</th>
-                                {/* <th className="py-1 px-6">Fac / Carr</th>  */}
-                                <th className="py-1 px-6">Sede</th>
+                                <th className="py-1 px-6">Descripción</th>
+                                <th className="py-1 px-6">Nota</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
 
-
-
-                                listaMatriculados.length == 0 ?
+                                notasPromedio.length == 0 ?
                                     (
                                         <tr className="text-center bg-white border-b">
                                             <td colSpan={6} className="text-sm p-2  border-b border-solid">No se encontraron registros</td>
                                         </tr>
                                     ) : (
-                                        listaMatriculados.map((obj, index) => (
+                                        notasPromedio.map((obj, index) => (
 
                                             <tr key={index} className="text-sm">
                                                 <td className="border p-2">{++index}</td>
-                                                <td className="text-center border p-2">{obj.estudianteId}</td>
-                                                <td className="border p-2">{`${obj.estPaterno} ${obj.estMaterno} ${obj.estNombres}`}</td>
-                                                {/* <td className="border p-2">{obj.facultad} / {obj.carrera} </td> */}
-                                                <td className="border p-2">{obj.sede}</td>
+                                                <td className="text-center border p-2">{obj.calificacionDesc}</td>
+                                                <td className="border p-2">{obj.nota}</td>
                                             </tr>
 
                                         ))
@@ -141,6 +123,23 @@ const BoletasNotasModal = (props: Props) => {
                             }
                         </tbody>
                     </table>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-6 mb-2 mt-0">
+                    <div className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                        <div className="m-2">
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+                                <div className="text-sm">
+                                    <p>Condición: <span className="text-blue-700 font-bold">{notaFinal > 10.5? 'APROVADO': 'DESAPROVADO'}</span></p>
+                                    <p>Promedio Final: <span className="text-blue-700 font-bold">{notaFinal}</span></p>
+                                </div>
+                                {/* <div className="text-sm">
+                                    <p>Condición: <span className="text-blue-700 font-bold">{0}</span></p>
+                                </div> */}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>

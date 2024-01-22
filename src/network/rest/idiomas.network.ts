@@ -206,6 +206,15 @@ export async function ActualizarNotaIndividual<RespValue>(params: object, abortC
     return await Resolve.create(instance.post<RespValue>(`/Nota/ActualizarNotaIndividual`, params, { signal: abortController?.signal }));
 }
 
+export async function NotasEstudianteDetMatriculaId<Listas>(DetMatriculaId: number, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Nota/NotasEstudianteDetMatriculaId/${DetMatriculaId}`, { signal: abortController?.signal }));
+}
+
+export async function NotaFinalEstudianteDetMatriculaId<RespValue>(DetMatriculaId: number, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.get<RespValue>(`/Nota/NotaFinalEstudianteDetMatriculaId/${DetMatriculaId}`, { signal: abortController?.signal }));
+}
+
+
 //Asistencia
 export async function ListarPreRegistroAsistencia<Listas>(HorarioAsigId: number, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/Asistencia/ListarPreRegistroAsistencia/${HorarioAsigId}`, { signal: abortController?.signal }));

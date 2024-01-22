@@ -20,6 +20,7 @@ const Consolidado = () => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [item, setItem] = useState()
+    const [detMatriculaId, setDetMatriculaId] = useState(0)
 
     const navigate = useNavigate()
 
@@ -33,7 +34,7 @@ const Consolidado = () => {
 
 
     useEffect(() => {
-        LoadCiclosDisponibles()
+        //LoadCiclosDisponibles()
         LoadMisMatriculas()
     }, [])
 
@@ -43,7 +44,6 @@ const Consolidado = () => {
 
         const response = await CiclosMatriculablesIdiomas<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
-            //console.log(response.data.resultado)
             setCiclosDisponibles(response.data.resultado as CiclosInfo[]);
 
         }
@@ -60,8 +60,6 @@ const Consolidado = () => {
         const response = await RegistroMatriculasEstudianteId<Listas>(codigo, abortController.current)
         if (response instanceof Response) {
 
-            console.log(response.data.resultado)
-
             setMatriculas(response.data.resultado as any[]);
 
         }
@@ -71,7 +69,9 @@ const Consolidado = () => {
         }
     }
 
-    const openModalNota = () => {
+    const openModalNota = (item: any, detMatriculaId: number) => {
+        setItem(item)
+        setDetMatriculaId(detMatriculaId)
         setShowModal(true)
     }
 
@@ -87,12 +87,14 @@ const Consolidado = () => {
 
                         <ModalNotas
                             show={showModal}
+                            item={item}
+                            detMatriculaId={detMatriculaId}
                             hide={closeModalNota}
 
                         />
 
                         <div className="p-1 bg-Solid">
-                            <h2 className="text-2xl font-bold mb-6"><span title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Boleta de Notas</h2>
+                            <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)}  title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Boleta de Notas</h2>
                             <div className="w-full">
 
                                 <div className="w-full">
@@ -129,7 +131,6 @@ const Consolidado = () => {
                                     <div className="p-6">
                                         <h2 className="text-xl mb-5">Mis Matriculas: </h2>
 
-
                                         {/* Tabla de Datos */}
                                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                                             <table className="w-full text-sm text-left rtl:text-right">
@@ -155,7 +156,7 @@ const Consolidado = () => {
                                                                 <button
                                                                     title="Ver Notas"
                                                                     className="flex items-center rounded border-md border-blue-500 bg-blue-500 text-white p-2 hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 active:ring-blue-400"
-                                                                    onClick={openModalNota}
+                                                                    onClick={() => openModalNota(item, item.detMatriculaId)}
                                                                 >
                                                                     <i className="bi bi-eye-fill"></i>
                                                                 </button>
