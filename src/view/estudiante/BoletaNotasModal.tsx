@@ -131,8 +131,20 @@ const BoletasNotasModal = (props: Props) => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                 <div className="text-sm">
-                                    <p>Condición: <span className="text-blue-700 font-bold">{notaFinal > 10.5? 'APROVADO': 'DESAPROVADO'}</span></p>
-                                    <p>Promedio Final: <span className="text-blue-700 font-bold">{notaFinal}</span></p>
+                                    <p>Condición: 
+                                        <span className="text-blue-700 font-bold">
+                                        { 
+                                            notasPromedio.length == 0 ? '-' : 
+                                            notaFinal > 10.5? 'APROBADO': 'DESAPROBADO'
+                                        }
+                                        </span>
+                                    </p>
+                                    <p>Promedio Final: <span className="text-blue-700 font-bold">
+                                        {
+                                            notasPromedio.length == 0 ? '-' : 
+                                            notaFinal
+                                        }
+                                    </span></p>
                                 </div>
                                 {/* <div className="text-sm">
                                     <p>Condición: <span className="text-blue-700 font-bold">{0}</span></p>
