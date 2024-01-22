@@ -23,7 +23,8 @@ const Acceso = () => {
 
     const dispatch = useDispatch();
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
-
+    const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
+    
     const [codigo, setCodigo] = useState<string>('');
     const [clave, setClave] = useState<string>('');
     const [mensaje, setMensaje] = useState<string>('');
@@ -40,6 +41,7 @@ const Acceso = () => {
 
     const refCodigo = useRef<HTMLInputElement>(null);
     const refClave = useRef<HTMLInputElement>(null);
+
 
     const onEventAcceso = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -79,7 +81,6 @@ const Acceso = () => {
         if (response instanceof Response) {
 
             const tipUsuario = response.data.docNumId.length == 7 ? "est" : "admin"
-
             dispatch(login({ codigo: response.data.docNumId, token: response.data.token, tipoUsuario: tipUsuario }));
             return;
         }
@@ -98,7 +99,15 @@ const Acceso = () => {
         refClave.current?.focus();
     }
 
-    if (autenticado) {
+    // console.log(autenticado)
+    // console.log(tipoUsuario? true : false)
+    if (autenticado && tipoUsuario) {
+        // if(tipoUsuario == "est"){
+        //     return <Navigate to="/estudiante" />
+        // }
+        // if(tipoUsuario == "admin"){
+        //     return <Navigate to="/admin" />
+        // }
         return <Navigate to="/inicio" />
     }
 
@@ -110,7 +119,7 @@ const Acceso = () => {
         <>
             {
                 // formRegEstExterno == false ?
-                true ?
+                true &&
 
                     (
                         <div className="flex flex-wrap w-screen h-screen">
@@ -198,11 +207,7 @@ const Acceso = () => {
                             </div>
                         </div>
                     )
-                    :
-                    (
-                        // <RegistroEstudianteExterno onEventFormRegEstExterno={onEventFormRegEstExterno}/>
-                        ''
-                    )
+
             }
 
         </>

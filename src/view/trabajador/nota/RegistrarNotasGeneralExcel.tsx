@@ -11,7 +11,6 @@ import { isNumeric, keyNumberFloat } from "@/helper/herramienta.helper";
 
 import * as XLSX from 'xlsx';
 
-
 type Props = {
     handleCloseModuloDetalle: () => void;
     item: any
@@ -21,7 +20,6 @@ type Props = {
 interface ExcelDataItem {
     [key: string]: any;
 }
-
 type ExcelData = ExcelDataItem[];
 
 const RegistrarNotasGeneralExcel = (props: Props) => {
@@ -40,10 +38,8 @@ const RegistrarNotasGeneralExcel = (props: Props) => {
         EstudiantesMatriculados()
     }, [])
 
-
     const EstudiantesMatriculados = async () => {
         setMatriculadoAsig([])
-
 
         const response = await ListarPreRegistroNotas<Listas>(props.item.horarioAsigId, abortController.current)
         if (response instanceof Response) {

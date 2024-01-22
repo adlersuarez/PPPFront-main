@@ -26,120 +26,238 @@ import Consolidado from './view/estudiante/Consolidado';
 import Boleta from './view/estudiante/Boleta-notas';
 import Inasistencia from './view/estudiante/inasistencia';
 import ResultadoPostulante from './view/estudiante/resultados-postulante';
-import Reportes from  './view/trabajador/horario/Reportes';
-import ReportesFiltros from  './view/trabajador/reporte/RepHorarioAsignatura';
-import ReportesModalidad from  './view/trabajador/horario/ReportesModalidad';
+import Reportes from './view/trabajador/horario/Reportes';
+import ReportesFiltros from './view/trabajador/reporte/RepHorarioAsignatura';
+import ReportesModalidad from './view/trabajador/horario/ReportesModalidad';
 
 //Notas Trabajador
 import BuscarAulasAsignaturas from './view/trabajador/nota/BuscarAulasAsignaturas'
 import BuscarAulasAsignaturasExcel from './view/trabajador/nota/BuscarAulasAsignaturasExcel';
+import InicioAdmin from './view/inicio/InicioAdmin';
+import InicioEst from './view/inicio/InicioEst';
+
+// Función para seleccionar las rutas según el tipo de usuario
+// Obtener el tipo de usuario del localStorage
+// const tipoUsuario = localStorage.getItem('tipoUsuario');
+const tipoUsuario = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
 
 
+
+const seleccionarRutas = (tipoUsuario: any) => {
+  if (tipoUsuario === 'admin') {
+    return rutasAdmin;
+  } else if (tipoUsuario === 'est') {
+    return rutasEstudiante;
+  } else {
+    // Si el tipo de usuario no es válido, podrías redirigir a una página de acceso denegado o hacer algo más
+    return [];
+  }
+};
+
+
+// Definir las rutas según el tipo de usuario
+const rutasAdmin = [
+  {
+    path: '/inicio/*',
+    element: <Inicio />,
+    children: [
+      {
+        path: 'centro-idiomas',
+        element: <HomeEstudiante />
+      },
+      {
+        path: 'horario-idiomas',
+        element: <HorarioIdiomas />
+      },
+      {
+        path: 'reportes',
+        element: <Reportes />
+      },
+      {
+        path: 'reportes-filtros',
+        element: <ReportesFiltros />
+      },
+      {
+        path: 'buscar-aulas-asignaturas',
+        element: <BuscarAulasAsignaturas />
+      },
+      {
+        path: 'buscar-aulas-asignaturas-excel',
+        element: <BuscarAulasAsignaturasExcel />
+      },
+      {
+        path: '*',
+        element: <NotFound />
+      },
+    ]
+  }
+];
+
+const rutasEstudiante = [
+  {
+    path: '/inicio/*',
+    element: <Inicio />,
+    children: [
+      {
+        path: 'centro-idiomas',
+        element: <HomeEstudiante />
+      },
+      {
+        path: 'matricula-interna',
+        element: <MatriculaInterna />
+      },
+      {
+        path: '*',
+        element: <Navigate to="centro-idiomas" replace />
+      },
+    ]
+  },
+];
+
+// Crear las rutas según el tipo de usuario
+const rutas = seleccionarRutas(tipoUsuario);
+// Crear el navegador de rutas
+const router = createBrowserRouter([
+  // Otras rutas que siempre están disponibles
+  {
+    path: '/inicio',
+    element: <Navigate to="centro-idiomas" replace />
+  },
+  {
+    path: '/',
+    element: <Navigate to="centro-idiomas" replace />,
+  },
+  // ... otras rutas generales
+
+  // Rutas dinámicas según el tipo de usuario
+  ...rutas,
+
+  // Rutas que siempre están disponibles
+  {
+    path: 'acceso',
+    element: <Acceso />,
+  },
+  // {
+  //   path: '*',
+  //   element: <NotFound />,
+  // },
+  {
+    path: 'notas',
+    element: <ComponenteNotas />,
+  },
+  {
+    path: '/',
+    element: <Navigate to="acceso" replace />,
+  },
+]);
+
+export default router;
+/*
 const router = createBrowserRouter([
   {
     path: '/inicio',
-    element: <Navigate to="centro-idiomas" replace/>
+    element: <Navigate to="centro-idiomas" replace />
   },
   {
     path: '/inicio/*',
-    element: <Inicio/>,
+    element: <Inicio />,
     children: [
       {
-        path:'centro-idiomas',
-        element: <HomeEstudiante/>
+        path: 'centro-idiomas',
+        element: <HomeEstudiante />
       },
       {
-        path:'vista-horario-estudiante',
-        element: <VistaHorarioEstudiante/>
+        path: 'vista-horario-estudiante',
+        element: <VistaHorarioEstudiante />
       },
       {
-        path:'seleccion-idioma',
-        element: <SeleccionDeIdiomas/>
+        path: 'seleccion-idioma',
+        element: <SeleccionDeIdiomas />
       },
       {
-        path:'matricula-interna',
-        element: <MatriculaInterna/>
+        path: 'matricula-interna',
+        element: <MatriculaInterna />
       },
       {
-        path:'vida-academica',
-        element: <VidaAcademica/>
+        path: 'vida-academica',
+        element: <VidaAcademica />
       },
       {
-        path:'matricula-externa',
-        element: <MatriculaExterna/>
+        path: 'matricula-externa',
+        element: <MatriculaExterna />
       },
       {
-        path:'consolidado',
-        element: <Consolidado/>
+        path: 'consolidado',
+        element: <Consolidado />
       },
       {
-        path:'boleta-notas',
-        element: <Boleta/>
+        path: 'boleta-notas',
+        element: <Boleta />
       },
       {
-        path:'inasistencia',
-        element: <Inasistencia/>
+        path: 'inasistencia',
+        element: <Inasistencia />
       },
       {
-        path:'resultados-postulante',
-        element: <ResultadoPostulante/>
-      },
-
-      {
-        path:'horario',
-        element: <MatriculaHorario/>
-      },
-
-      
-      {
-        path:'reportes',
-        element: <Reportes/>
-      },
-      {
-        path:'reportes-filtros',
-        element: <ReportesFiltros/>
-      },
-      {
-        path:'reportesModalidad',
-        element: <ReportesModalidad/>
-      },
-    
-      {
-        path:'horario-idiomas',
-        element: <HorarioIdiomas/>
+        path: 'resultados-postulante',
+        element: <ResultadoPostulante />
       },
 
       {
-        path:'clases-asignadas',
-        element: <ListaClasesAsignados/>
+        path: 'horario',
+        element: <MatriculaHorario />
+      },
+
+
+      {
+        path: 'reportes',
+        element: <Reportes />
       },
       {
-        path:'notas-reporte-subir',
-        element: <ReporteNotas/>
+        path: 'reportes-filtros',
+        element: <ReportesFiltros />
       },
       {
-        path:'reporte-notas',
-        element: <ReporteDeNotas/>
+        path: 'reportesModalidad',
+        element: <ReportesModalidad />
+      },
+
+      {
+        path: 'horario-idiomas',
+        element: <HorarioIdiomas />
+      },
+
+      {
+        path: 'clases-asignadas',
+        element: <ListaClasesAsignados />
       },
       {
-        path:'vista-horario',
-        element: <VistaHorarioDocente/>
+        path: 'notas-reporte-subir',
+        element: <ReporteNotas />
       },
       {
-        path:'subir-notas',
-        element: <SubirNotas/>
+        path: 'reporte-notas',
+        element: <ReporteDeNotas />
       },
       {
-        path:'lista-aulas',
-        element: <ListaAulas/>
+        path: 'vista-horario',
+        element: <VistaHorarioDocente />
       },
       {
-        path:'buscar-aulas-asignaturas',
-        element: <BuscarAulasAsignaturas/>
+        path: 'subir-notas',
+        element: <SubirNotas />
       },
       {
-        path:'buscar-aulas-asignaturas-excel',
-        element: <BuscarAulasAsignaturasExcel/>
+        path: 'lista-aulas',
+        element: <ListaAulas />
+      },
+      {
+        path: 'buscar-aulas-asignaturas',
+        element: <BuscarAulasAsignaturas />
+      },
+      {
+        path: 'buscar-aulas-asignaturas-excel',
+        element: <BuscarAulasAsignaturasExcel />
       },
     ]
   },
@@ -161,3 +279,116 @@ const router = createBrowserRouter([
   },
 ])
 export default router;
+*/
+
+/*
+import React from 'react';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+
+// Obtener el tipo de usuario del localStorage
+const tipoUsuario = localStorage.getItem('tipoUsuario');
+const tipoUser = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
+
+// Definir las rutas según el tipo de usuario
+const rutasAdmin = [
+  {
+    path: '/inicio',
+    element: <Navigate to="centro-idiomas" replace />
+  },
+  {
+    path: '/inicio/*',
+    element: <Inicio />,
+    children: [
+      {
+        path: 'centro-idiomas',
+        element: <HomeEstudiante />
+      },
+      {
+        path: 'horario-idiomas',
+        element: <HorarioIdiomas />
+      },
+      {
+        path: 'reportes',
+        element: <Reportes />
+      },
+      {
+        path: 'reportes-filtros',
+        element: <ReportesFiltros />
+      },
+      {
+        path: 'buscar-aulas-asignaturas',
+        element: <BuscarAulasAsignaturas />
+      },
+      {
+        path: 'buscar-aulas-asignaturas-excel',
+        element: <BuscarAulasAsignaturasExcel />
+      },
+    ]
+  }
+];
+
+const rutasEstudiante = [
+  {
+    path: '/inicio',
+    element: <Navigate to="centro-idiomas" replace />
+  },
+  {
+    path: '/inicio/*',
+    element: <Inicio />,
+    children: [
+      {
+        path: 'matricula-interna',
+        element: <MatriculaInterna />
+      },
+    ]
+  }
+];
+
+// Función para seleccionar las rutas según el tipo de usuario
+const seleccionarRutas = (tipoUsuario) => {
+  if (tipoUsuario === 'administrador') {
+    return rutasAdmin;
+  } else if (tipoUsuario === 'estudiante') {
+    return rutasEstudiante;
+  } else {
+    // Si el tipo de usuario no es válido, podrías redirigir a una página de acceso denegado o hacer algo más
+    return [];
+  }
+};
+
+// Crear las rutas según el tipo de usuario
+const rutas = seleccionarRutas(tipoUsuario);
+
+// Crear el navegador de rutas
+const router = createBrowserRouter([
+  // Otras rutas que siempre están disponibles
+  {
+    path: '/inicio',
+    element: <Navigate to="centro-idiomas" replace />,
+  },
+  // ... otras rutas generales
+
+  // Rutas dinámicas según el tipo de usuario
+  ...rutas,
+
+  // Rutas que siempre están disponibles
+  {
+    path: 'acceso',
+    element: <Acceso />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+  {
+    path: 'notas',
+    element: <ComponenteNotas />,
+  },
+  {
+    path: '/',
+    element: <Navigate to="acceso" replace />,
+  },
+]);
+
+export default router;
+*/
