@@ -5,7 +5,7 @@ import { Types } from "@/model/enum/types.model.enum";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import HorarioDisponible from "@/model/interfaces/horario/horarioDisponible";
 import CiclosInfo from "@/model/interfaces/matricula/ciclosInfo";
-import { InsertarMatricula, InsertarMatriculaDetalle, ListarHorarioDisponibleEst } from "@/network/rest/idiomas.network";
+import { InsertarMatricula, InsertarMatriculaDetalle, InsertarMatriculaSegundoCuarto, ListarHorarioDisponibleEst } from "@/network/rest/idiomas.network";
 import { RootState } from "@/store/configureStore.store";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -206,8 +206,8 @@ const ListasHorario = (props: Props) => {
                 }*/
 
                     // verifica si existe un codigo de matricula        si es 1 o 5 nivel, ademas de estar como impedido, debe registrarse la matricula
-                //if ((localStorage.getItem("codMat") !== 'utilizado') && (nivel == '1' || nivel == '5' || status == 'impedido')) {
-                if (localStorage.getItem("codMat") !== 'utilizado') {
+                if ((localStorage.getItem("codMat") !== 'utilizado') && (nivel == '1' || nivel == '5' || status == 'impedido')) {
+                //if (localStorage.getItem("codMat") !== 'utilizado') {
 
                     const response = await InsertarMatricula<RespValue>(tipoEstudioId, paramsMatricula);
 
@@ -240,7 +240,7 @@ const ListasHorario = (props: Props) => {
                     }
                 }
 
-                const responseMatDet = await InsertarMatriculaDetalle<RespValue>(codigo, paramsPension);
+                const responseMatDet = await InsertarMatriculaSegundoCuarto<RespValue>(codigo, paramsPension);
 
                 if (responseMatDet instanceof Response) {
 

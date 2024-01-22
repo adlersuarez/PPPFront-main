@@ -1,5 +1,7 @@
 export default interface CalendarioPag {
     id: number
+    idiomaId: number
+    idiomaNombre: string
     calendarioId: number
     f_cal_ini: string
     f_cal_fin: string

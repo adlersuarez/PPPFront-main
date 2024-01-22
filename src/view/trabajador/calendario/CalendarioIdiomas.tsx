@@ -7,26 +7,33 @@ import RestError from "../../../model/class/resterror.model.class";
 import { Types } from "../../../model/enum/types.model.enum";
 
 import Idioma from "../../../model/interfaces/idioma/idioma";
-import Sede from "../../../model/interfaces/sede/sede";
-import Modalidad from "../../../model/interfaces/modalidad/modalidad";
 import Periodo from "../../../model/interfaces/periodo/periodo";
 import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarHorarioPag, ListarTipoEstudio, ListarCalendarioFiltrosPag } from "../../../network/rest/idiomas.network";
+import { ListarIdioma, ListarPeriodo, ListarTipoEstudio, ListarCalendarioFiltrosPag } from "../../../network/rest/idiomas.network";
 
-import useSweerAlert from "../../../component/hooks/useSweetAlert"
-
-import HorarioPag from "../../../model/interfaces/horario/horarioPag";
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
 
-import { convertirFormatoFechaSql, convertirFormatoHoraSql, convertirNumeroAMes } from '../../../helper/herramienta.helper'
+import { convertirFormatoFechaSql, convertirNumeroAMes } from '../../../helper/herramienta.helper'
 import CalendarioPag from "@/model/interfaces/calendario/calendarioPag";
 import InsertarCalendario from "./modal/InsertarCalendario";
+import EditarCalendario from "./modal/EditarCalendario";
+import toast from "react-hot-toast";
 
-
+type FechasCalendario = {
+    f_cal_ini: string
+    f_cal_fin: string
+    f_mat_ini: string
+    f_mat_fin: string
+    f_asigHora_ini: string
+    f_asigHora_fin: string
+    f_clases_ini: string
+    f_clases_fin: string
+    f_nota_ini: string
+}
 
 const CalendarioIdiomas = () => {
 
@@ -36,47 +43,25 @@ const CalendarioIdiomas = () => {
 
     const navigate = useNavigate()
 
-    const sweet = useSweerAlert();
-
     const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
     // const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
 
-    const [idHorario, setIdHorario] = useState<number>(0)
+    const [idIdioma, setIdIdioma] = useState<number>(1)
 
-    const [idIdioma, setIdIdioma] = useState<number>(0)
-    const [idSede, setIdSede] = useState<string>("0")
-    const [idModalidad, setIdModalidad] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
     const [valuePeriodo, SetValuePeriodo] = useState<string>("-")
 
-    const [idAula, setIdAula] = useState<number>(0)
-    const [idTurno, setIdTurno] = useState<number>(0)
-    const [idPrograma, setIdPrograma] = useState<number>(0)
-    const [seccion, setSeccion] = useState<string>("")
-
-    const [estado, setEstado] = useState<number>(0)
-
-
     const [nombreIdioma, setNombreIdioma] = useState<string>("")
-    const [nombreSede, setNombreSede] = useState<string>("")
-    const [nombreModalidad, setNombreModalidad] = useState<string>("")
-    const [nombrePeriodo, setNombrePeriodo] = useState<string>("")
     const [nombreTipoEstudio, setNombreTipoEstudio] = useState("")
 
-
     const refIdioma = useRef<HTMLSelectElement>(null)
-    const refSede = useRef<HTMLSelectElement>(null)
-    const refModalidad = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
     const refTipoEstudio = useRef<HTMLSelectElement>(null)
 
-
     const abortController = useRef(new AbortController());
-    const abortControllerNuevo = useRef(new AbortController());
-    const abortControllerEditar = useRef(new AbortController());
 
     // Tabla
     const paginacion = useRef<number>(0);
@@ -90,13 +75,9 @@ const CalendarioIdiomas = () => {
 
     const [mensajeCarga, setMensajeCarga] = useState<boolean>(true)
 
-    const [isOpenModal, setIsOpenModal] = useState(false);
-    const [isOpenModalEditar, setIsOpenModalEditar] = useState(false);
-    const [isOpenCalendario, setIsOpenCalendario] = useState(false);
-
-    const [moduloDetalle, setModuloDetalle] = useState(false);
-
-    const [itemHorario, setItemHorario] = useState<HorarioPag>()
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const [isOpenModalEditar, setIsOpenModalEditar] = useState<boolean>(false);
+    const [datosEditar, setDatosEditar] = useState<FechasCalendario | null>(null)
 
     useEffect(() => {
         LoadDataIdioma()
@@ -164,26 +145,27 @@ const CalendarioIdiomas = () => {
         handleOpenModal()
     }
 
-    const EditarHorario = (horarioId: number, idiomaId: number, sedeId: string, modalidadId: number, periodoId: number, turnoId: number, programaId: number, tipEstudioId: number, estado: number, idAula: number, seccion: string) => {
-        setIdHorario(horarioId)
-
-        setIdIdioma(idiomaId)
-        setIdSede(sedeId)
-        setIdModalidad(modalidadId)
-        setIdPeriodo(periodoId)
-        setIdTurno(turnoId)
-        setIdPrograma(programaId)
-        setIdTipoEstudio(tipEstudioId)
-        setEstado(estado)
-        setSeccion(seccion)
-
-        setIdAula(idAula)
-        handleOpenModalEditar()
-    }
-
 
     // Tabla
     const loadInit = async () => {
+
+        if (idIdioma == 0) {
+            toast.error("Tiene que seleccionar todos los campos")
+            refIdioma.current?.focus();
+            return
+        }
+
+        if (idPeriodo == 0) {
+            toast.error("Tiene que seleccionar todos los campos")
+            refPeriodo.current?.focus();
+            return
+        }
+
+        if (idTipoEstudio == 0) {
+            toast.error("Tiene que seleccionar todos los campos")
+            refTipoEstudio.current?.focus();
+            return
+        }
 
         if (loading) return;
 
@@ -209,6 +191,7 @@ const CalendarioIdiomas = () => {
 
 
     const fillTable = async (idIdioma: number, idPeriodo: number, idTipoEstudio: number) => {
+        
         setLoading(true)
 
         setCalendarioLista([]);
@@ -241,23 +224,12 @@ const CalendarioIdiomas = () => {
     }
 
 
-    const handleOpenModuloDetalle = (idiomaNombre: string, sedeNombre: string, modalidadNombre: string, idiomaId: number, horarioId: number, item: HorarioPag) => {
-        setModuloDetalle(true)
-
+    /*const handleOpenModuloDetalle = (idiomaNombre: string, idiomaId: number, horarioId: number, item: HorarioPag) => {
         setNombreIdioma(idiomaNombre)
-        setNombreSede(sedeNombre)
-        setNombreModalidad(modalidadNombre)
         setIdIdioma(idiomaId)
         setIdHorario(horarioId)
         setIdTipoEstudio(item.tipEstudioId)
-
-        setItemHorario(item)
-    }
-
-    const handleCloseModuloDetalle = () => {
-        setModuloDetalle(false)
-    }
-
+    }*/
 
     // Nuevo
     const handleOpenModal = () => {
@@ -269,21 +241,16 @@ const CalendarioIdiomas = () => {
     };
 
     // Editar
-    const handleOpenModalEditar = () => {
-        setIsOpenModalEditar(true);
-    };
+    const handleOpenModalEditar = (idiomaId: number, tipEstudioId: number, periodoId: number, fechas: FechasCalendario) => {
+        setIdPeriodo(periodoId)
+        setIdIdioma(idiomaId)
+        setIdTipoEstudio(tipEstudioId)
+        setDatosEditar(fechas)
+        setIsOpenModalEditar(true)
+    }
 
     const handleCloseModalEditar = () => {
         setIsOpenModalEditar(false);
-    };
-
-    //Calendario
-    const handleOpenModalCalendario = () => {
-        setIsOpenCalendario(true);
-    };
-
-    const handleCloseModalCalendario = () => {
-        setIsOpenCalendario(false);
     };
 
     return (
@@ -292,8 +259,26 @@ const CalendarioIdiomas = () => {
                 <div className="w-full max-w-full px-3 flex-0">
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
                         <InsertarCalendario
+                            idiomaId={idIdioma}
+                            periodoId={idPeriodo}
+                            tipoEstudioId={idTipoEstudio}
+                            valuePeriodo={valuePeriodo}
+                            nombreIdioma={nombreIdioma}
+                            nombreTipoEstudio={nombreTipoEstudio}
                             show={isOpenModal}
                             hide={handleCloseModal}
+                        />
+
+                        <EditarCalendario
+                            idiomaId={idIdioma}
+                            periodoId={idPeriodo}
+                            tipoEstudioId={idTipoEstudio}
+                            valuePeriodo={valuePeriodo}
+                            nombreIdioma={nombreIdioma}
+                            nombreTipoEstudio={nombreTipoEstudio}
+                            fechas={datosEditar}
+                            show={isOpenModalEditar}
+                            hide={handleCloseModalEditar}
                         />
                         {
                             usuarioPermitido ? (
@@ -316,7 +301,7 @@ const CalendarioIdiomas = () => {
                                     <div className="w-full">
 
                                         <div className="grid grid-cols-1 md:grid-cols-6 gap-3 mb-4">
-                                            <div>
+                                            {/*<div>
                                                 <label
                                                     className="font-mont block mb-1 text-sm font-medium text-gray-900 "
                                                 >
@@ -351,15 +336,15 @@ const CalendarioIdiomas = () => {
                                                     }
 
                                                 </select>
-                                            </div>
+                                            </div>*/}
 
                                             <div>
                                                 <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
-                                                    Periodo
+                                                    Periodo <i className="bi bi-asterisk text-xs text-red-500"></i>
                                                 </label>
                                                 <select
                                                     className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                                    //ref={refPeriodo}
+                                                    ref={refPeriodo}
                                                     value={idPeriodo}
                                                     onChange={(event) => {
                                                         const selectedPeriodoId = event.currentTarget.value;
@@ -512,7 +497,19 @@ const CalendarioIdiomas = () => {
                                                                                     <button
                                                                                         title="Editar"
                                                                                         className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                    //onClick={() => EditarHorario(item.horarioId, item.idiomaId, item.sedeId, item.modalidadId, item.periodoId, item.turnoId, item.programaId, item.tipEstudioId, item.estado, item.aulasId, item.seccion)}
+                                                                                        onClick={() => handleOpenModalEditar(item.idiomaId, item.tipEstudioId, item.periodoId,
+                                                                                            {
+                                                                                                f_cal_ini: item.f_cal_ini,
+                                                                                                f_cal_fin: item.f_cal_fin,
+                                                                                                f_mat_ini: item.f_mat_ini,
+                                                                                                f_mat_fin: item.f_mat_fin,
+                                                                                                f_asigHora_ini: item.f_asigHora_ini,
+                                                                                                f_asigHora_fin: item.f_asigHora_fin,
+                                                                                                f_clases_ini: item.f_clases_ini,
+                                                                                                f_clases_fin: item.f_clases_fin,
+                                                                                                f_nota_ini: item.f_nota_ini,
+                                                                                            }
+                                                                                        )}
                                                                                     >
                                                                                         <i className="bi bi-pencil-fill text-sm"></i>
 

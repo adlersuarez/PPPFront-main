@@ -8,6 +8,18 @@ import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model.enum";
 import Response from "@/model/class/response.model.class";
 
+type FechasCalendario = {
+    f_cal_ini: string
+    f_cal_fin: string
+    f_mat_ini: string
+    f_mat_fin: string
+    f_asigHora_ini: string
+    f_asigHora_fin: string
+    f_clases_ini: string
+    f_clases_fin: string
+    f_nota_ini: string
+}
+
 type Props = {
     show: boolean
     idiomaId: number
@@ -16,24 +28,27 @@ type Props = {
     valuePeriodo: string
     nombreIdioma: string
     nombreTipoEstudio: string
+    fechas: FechasCalendario | null
     hide: () => void
 }
 
-const InsertarCalendario = (props: Props) => {
+const EditarCalendario = (props: Props) => {
+
+   /// console.log(props.idiomaId)
 
     const sweet = useSweerAlert();
     const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
     const abortController = useRef(new AbortController());
 
-    const [procesoInicio, setProcesoInicio] = useState<string | null>(null);
-    const [procesoFin, setProcesoFin] = useState<string | null>(null);
-    const [matriculaInicio, setMatriculaInicio] = useState<string | null>(null);
-    const [matriculaFin, setMatriculaFin] = useState<string | null>(null);
-    const [asigHoraInicio, setAsigHoraInicio] = useState<string | null>(null);
-    const [asigHoraFin, setAsigHoraFin] = useState<string | null>(null);
-    const [clasesInicio, setClasesInicio] = useState<string | null>(null);
-    const [clasesFin, setClasesFin] = useState<string | null>(null);
-    const [notasInicio, setNotasInicio] = useState<string | null>(null);
+    const [procesoInicio, setProcesoInicio] = useState<string>('');
+    const [procesoFin, setProcesoFin] = useState<string>('');
+    const [matriculaInicio, setMatriculaInicio] = useState<string>('');
+    const [matriculaFin, setMatriculaFin] = useState<string>('');
+    const [asigHoraInicio, setAsigHoraInicio] = useState<string>('');
+    const [asigHoraFin, setAsigHoraFin] = useState<string>('');
+    const [clasesInicio, setClasesInicio] = useState<string>('');
+    const [clasesFin, setClasesFin] = useState<string>('');
+    const [notasInicio, setNotasInicio] = useState<string>('');
     //const [notasFin, setNotasFin] = useState<string | null>(null);
 
     const refProcesoInicio = useRef<HTMLInputElement>(null)
@@ -48,10 +63,18 @@ const InsertarCalendario = (props: Props) => {
     //const refNotasFin = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
+        setProcesoInicio(props.fechas?.f_cal_ini.slice(0, -9) || '')
+        setProcesoFin(props.fechas?.f_cal_fin.slice(0, -9) || '')
+        setMatriculaInicio(props.fechas?.f_mat_ini.slice(0, -9) || '')
+        setMatriculaFin(props.fechas?.f_mat_fin.slice(0, -9) || '')
+        setAsigHoraInicio(props.fechas?.f_asigHora_ini.slice(0, -9) || '')
+        setAsigHoraFin(props.fechas?.f_asigHora_fin.slice(0, -9) || '')
+        setClasesInicio(props.fechas?.f_clases_ini.slice(0, -9) || '')
+        setClasesFin(props.fechas?.f_clases_fin.slice(0, -9) || '')
+        setNotasInicio(props.fechas?.f_nota_ini.slice(0, -9) || '')
+    }, [props.fechas?.f_cal_ini]);
 
-    }, []);
-
-    const registrarCalendario = async () => {
+    const editarCalendario = async () => {
 
         if (procesoInicio == null) {
             toast.error("Tiene que llenar todos los campos")
@@ -113,56 +136,57 @@ const InsertarCalendario = (props: Props) => {
             return
         }*/
         const registro = {
-            f_cal_ini: procesoInicio,
-            f_cal_fin: procesoFin,
-            f_mat_ini: matriculaInicio,
-            f_mat_fin: matriculaFin,
-            f_asigHora_ini: asigHoraInicio,
-            f_asigHora_fin: asigHoraFin,
-            f_clases_ini: clasesInicio,
-            f_clases_fin: clasesFin,
-            f_nota_ini: notasInicio,
+            f_cal_ini: new Date(procesoInicio).toISOString(),
+            f_cal_fin: new Date(procesoFin).toISOString(),
+            f_mat_ini: new Date(matriculaInicio).toISOString(),
+            f_mat_fin: new Date(matriculaFin).toISOString(),
+            f_asigHora_ini: new Date(asigHoraInicio).toISOString(),
+            f_asigHora_fin: new Date(asigHoraFin).toISOString(),
+            f_clases_ini: new Date(clasesInicio).toISOString(),
+            f_clases_fin: new Date(clasesFin).toISOString(),
+            f_nota_ini: new Date(notasInicio).toISOString(),
             idiomaId: props.idiomaId,
             periodoId: props.periodoId,
             tipEstudioId: props.tipoEstudioId
         }
 
-        sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
-            if (value) {
-
-                sweet.openInformation("Mensaje", "Procesando información...")
-
-                const response = await InsertarCalendarioPeriodo<RespValue>(codigo, registro, abortController.current)
-
-                if (response instanceof Response) {
-
-                    const mensaje = response.data.value as string
-
-                    if (mensaje == 'procesado') {
-
-                        sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
-                            props.hide()
-                        });
-
-                        //console.log('Se proceso')
-                    } else {
-                        sweet.openWarning("Mensaje", "Ocurrio un error al procesar la peticion", () => {
-                            props.hide()
-                        });
-
-                        //console.log('No se proceso')
-                    }
-                }
-                if (response instanceof RestError) {
-                    if (response.getType() === Types.CANCELED) return;
-                    //console.log(response.getMessage())
-                    sweet.openWarning("Mensaje", response.getMessage(), () => {
-                        props.hide()
-                    });
-                }
-
-            }
-        })
+        //console.log(registro)
+        /* sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+             if (value) {
+ 
+                 sweet.openInformation("Mensaje", "Procesando información...")
+ 
+                 const response = await InsertarCalendarioPeriodo<RespValue>(codigo, registro, abortController.current)
+ 
+                 if (response instanceof Response) {
+ 
+                     const mensaje = response.data.value as string
+ 
+                     if (mensaje == 'procesado') {
+ 
+                         sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
+                             props.hide()
+                         });
+ 
+                         //console.log('Se proceso')
+                     } else {
+                         sweet.openWarning("Mensaje", "Ocurrio un error al procesar la peticion", () => {
+                             props.hide()
+                         });
+ 
+                         //console.log('No se proceso')
+                     }
+                 }
+                 if (response instanceof RestError) {
+                     if (response.getType() === Types.CANCELED) return;
+                     //console.log(response.getMessage())
+                     sweet.openWarning("Mensaje", response.getMessage(), () => {
+                         props.hide()
+                     });
+                 }
+ 
+             }
+         })*/
 
     }
 
@@ -227,16 +251,18 @@ const InsertarCalendario = (props: Props) => {
                                     <input
                                         type="date"
                                         ref={refProcesoInicio}
+                                        value={procesoInicio}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setProcesoInicio(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setProcesoInicio(e.target.value)}
                                     />
                                 </td>
                                 <td className="border border-gray-300 p-2 font-mont px-4 w-1/3">
                                     <input
                                         type="date"
                                         ref={refProcesoFin}
+                                        value={procesoFin}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setProcesoFin(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setProcesoFin(e.target.value)}
                                     />
                                 </td>
                             </tr>
@@ -246,16 +272,18 @@ const InsertarCalendario = (props: Props) => {
                                     <input
                                         type="date"
                                         ref={refMatriculaInicio}
+                                        value={matriculaInicio}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setMatriculaInicio(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setMatriculaInicio(e.target.value)}
                                     />
                                 </td>
                                 <td className="border border-gray-300 p-2 font-mont px-4 w-1/3">
                                     <input
                                         type="date"
                                         ref={refMatriculaFin}
+                                        value={matriculaFin}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setMatriculaFin(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setMatriculaFin(e.target.value)}
                                     />
                                 </td>
                             </tr>
@@ -265,16 +293,18 @@ const InsertarCalendario = (props: Props) => {
                                     <input
                                         type="date"
                                         ref={refAsigHoraInicio}
+                                        value={asigHoraInicio}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setAsigHoraInicio(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setAsigHoraInicio(e.target.value)}
                                     />
                                 </td>
                                 <td className="border border-gray-300 p-2 font-mont px-4 w-1/3">
                                     <input
                                         type="date"
                                         ref={refAsigHoraFin}
+                                        value={asigHoraFin}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setAsigHoraFin(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setAsigHoraFin(e.target.value)}
                                     />
                                 </td>
                             </tr>
@@ -284,16 +314,18 @@ const InsertarCalendario = (props: Props) => {
                                     <input
                                         type="date"
                                         ref={refClasesInicio}
+                                        value={clasesInicio}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setClasesInicio(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setClasesInicio(e.target.value)}
                                     />
                                 </td>
                                 <td className="border border-gray-300 p-2 font-mont px-4 w-1/3">
                                     <input
                                         type="date"
                                         ref={refClasesFin}
+                                        value={clasesFin}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setClasesFin(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setClasesFin(e.target.value)}
                                     />
                                 </td>
                             </tr>
@@ -303,16 +335,18 @@ const InsertarCalendario = (props: Props) => {
                                     <input
                                         type="date"
                                         ref={refNotasInicio}
+                                        value={notasInicio}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setNotasInicio(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setNotasInicio(e.target.value)}
                                     />
                                 </td>
                                 <td className="border border-gray-300 p-2 font-mont px-4 w-1/3">
                                     {/*<input
                                         type="date"
                                         ref={refNotasFin}
+                                        value={notasFin}
                                         className="font-mont border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block p-1 text-center mx-auto"
-                                        onChange={(e) => setNotasFin(e.target.value ? new Date(e.target.value).toISOString() : null)}
+                                        onChange={(e) => setNotasFin(e.target.value)}
                                     />*/}
                                 </td>
 
@@ -324,7 +358,7 @@ const InsertarCalendario = (props: Props) => {
                     <div className="relative flex flex-wrap justify-center">
                         <button
                             className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
-                            onClick={registrarCalendario}
+                            onClick={editarCalendario}
                         >
                             <i className="bi bi-floppy mr-1"></i> Guardar
                         </button>
@@ -349,4 +383,4 @@ const InsertarCalendario = (props: Props) => {
         </CustomModal>
     )
 }
-export default InsertarCalendario
+export default EditarCalendario
