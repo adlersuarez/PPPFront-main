@@ -252,7 +252,7 @@ const BuscarAulasAsignaturas = () => {
     }
 
 
-    const handleOpenModuloDetalle = (item: any, idHorarioAsignatura: number, formaSigla: string) => {
+    const handleOpenModuloRegistroNotas = (item: any, idHorarioAsignatura: number, formaSigla: string) => {
 
         setModuloRegistroNotas(true)
 
@@ -276,6 +276,8 @@ const BuscarAulasAsignaturas = () => {
     const handleCloseModuloAsistencia = () => {
         setModuloRegistroAsistencia(false)
     }
+
+    
 
 
     return (
@@ -605,7 +607,11 @@ const BuscarAulasAsignaturas = () => {
                                                                                         <button
                                                                                             title="Listas de Estudiantes"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId,formaSigla)}
+                                                                                            onClick={() => {
+                                                                                                console.log(item)
+                                                                                                return 
+                                                                                                handleOpenModuloRegistroNotas(item, item.horarioAsigId,formaSigla)
+                                                                                            }}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 
