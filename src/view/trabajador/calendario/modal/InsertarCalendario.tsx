@@ -1,5 +1,5 @@
 import CustomModal from "@/component/Modal.component"
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import useSweerAlert from "@/component/hooks/useSweetAlert"
 import { InsertarCalendarioPeriodo } from "@/network/rest/idiomas.network";
@@ -14,9 +14,10 @@ type Props = {
     periodoId: number
     tipoEstudioId: number
     valuePeriodo: string
-    nombreIdioma: string
+    //nombreIdioma: string
     nombreTipoEstudio: string
     hide: () => void
+    init: () => void
 }
 
 const InsertarCalendario = (props: Props) => {
@@ -35,6 +36,7 @@ const InsertarCalendario = (props: Props) => {
     const [clasesFin, setClasesFin] = useState<string | null>(null);
     const [notasInicio, setNotasInicio] = useState<string | null>(null);
     //const [notasFin, setNotasFin] = useState<string | null>(null);
+    const [estado, setEstado] = useState<boolean>(true)
 
     const refProcesoInicio = useRef<HTMLInputElement>(null)
     const refProcesoFin = useRef<HTMLInputElement>(null)
@@ -46,10 +48,6 @@ const InsertarCalendario = (props: Props) => {
     const refClasesFin = useRef<HTMLInputElement>(null)
     const refNotasInicio = useRef<HTMLInputElement>(null)
     //const refNotasFin = useRef<HTMLInputElement>(null)
-
-    useEffect(() => {
-
-    }, []);
 
     const registrarCalendario = async () => {
 
@@ -124,7 +122,8 @@ const InsertarCalendario = (props: Props) => {
             f_nota_ini: notasInicio,
             idiomaId: props.idiomaId,
             periodoId: props.periodoId,
-            tipEstudioId: props.tipoEstudioId
+            tipEstudioId: props.tipoEstudioId,
+            cal_activo: estado ? 1 : 0,
         }
 
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
@@ -142,6 +141,7 @@ const InsertarCalendario = (props: Props) => {
 
                         sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
                             props.hide()
+                            props.init()
                         });
 
                         //console.log('Se proceso')
@@ -166,6 +166,9 @@ const InsertarCalendario = (props: Props) => {
 
     }
 
+    const handleEstadoChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setEstado(event.target.checked);
+    };
 
     return (
         <CustomModal
@@ -200,7 +203,7 @@ const InsertarCalendario = (props: Props) => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                     <div className="text-sm">
-                                        <p>Idioma: <span className="text-blue-700 font-bold">{props.nombreIdioma}</span></p>
+                                        <p>Idioma: <span className="text-blue-700 font-bold">INGLÉS{/*props.nombreIdioma*/}</span></p>
                                         <p>Tipo de Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                     </div>
                                     <div className="text-sm">
@@ -212,7 +215,7 @@ const InsertarCalendario = (props: Props) => {
 
                     </div>
 
-                    <table className="w-full text-gray-700 uppercase bg-upla-100 table-auto mb-6" id="miTabla">
+                    <table className="w-full text-gray-700 uppercase bg-upla-100 table-auto mb-4" id="miTabla">
                         <thead>
                             <tr>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">DETALLE</th>
@@ -320,6 +323,21 @@ const InsertarCalendario = (props: Props) => {
 
                         </tbody>
                     </table>
+
+                    <div className="mb-4">
+                        <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                            Estado
+                        </label>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                className="sr-only peer"
+                                checked={estado}
+                                onChange={handleEstadoChange} />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{`${estado == true ? 'activo' : 'inactivo'}`}</span>
+                        </label>
+                    </div>
 
                     <div className="relative flex flex-wrap justify-center">
                         <button

@@ -6,12 +6,12 @@ import Response from "../../../model/class/response.model.class";
 import RestError from "../../../model/class/resterror.model.class";
 import { Types } from "../../../model/enum/types.model.enum";
 
-import Idioma from "../../../model/interfaces/idioma/idioma";
+//import Idioma from "../../../model/interfaces/idioma/idioma";
 import Periodo from "../../../model/interfaces/periodo/periodo";
 import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarPeriodo, ListarTipoEstudio, ListarCalendarioFiltrosPag } from "../../../network/rest/idiomas.network";
+import { ListarPeriodo, ListarTipoEstudio, ListarCalendarioFiltrosPag } from "../../../network/rest/idiomas.network";
 
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
@@ -33,6 +33,7 @@ type FechasCalendario = {
     f_clases_ini: string
     f_clases_fin: string
     f_nota_ini: string
+    cal_activo: number
 }
 
 const CalendarioIdiomas = () => {
@@ -43,19 +44,24 @@ const CalendarioIdiomas = () => {
 
     const navigate = useNavigate()
 
-    const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
+    //const [comboBoxIdioma, setComboBoxIdioma] = useState<Idioma[]>([])
     const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
     // const [comboBoxAula, setComboBoxAula] = useState<Aula[]>([])
 
     const [idIdioma, setIdIdioma] = useState<number>(1)
-
+    const [idCalendario, setIdCalendario] = useState<number>(0)
     const [idPeriodo, setIdPeriodo] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
     const [valuePeriodo, SetValuePeriodo] = useState<string>("-")
 
-    const [nombreIdioma, setNombreIdioma] = useState<string>("")
+    //const [nombreIdioma, setNombreIdioma] = useState<string>("")
     const [nombreTipoEstudio, setNombreTipoEstudio] = useState("")
+
+    const [editarIdPeriodo, setEditarIdPeriodo] = useState<number>(0)
+    const [editarIdTipoEstudio, setEditarIdTipoEstudio] = useState<number>(0)
+    const [editarNombrePeriodo, setEditarNombrePeriodo] = useState("")
+    const [editarNombreTipoEstudio, setEditarNombreTipoEstudio] = useState("")
 
     const refIdioma = useRef<HTMLSelectElement>(null)
     const refPeriodo = useRef<HTMLSelectElement>(null)
@@ -80,13 +86,13 @@ const CalendarioIdiomas = () => {
     const [datosEditar, setDatosEditar] = useState<FechasCalendario | null>(null)
 
     useEffect(() => {
-        LoadDataIdioma()
+        //LoadDataIdioma()
         LoadDataPeriodo()
         LoadDataTipoEstudio()
         setMensajeCarga(true)
     }, [])
 
-    const LoadDataIdioma = async () => {
+    /*const LoadDataIdioma = async () => {
 
         setComboBoxIdioma([])
 
@@ -98,7 +104,7 @@ const CalendarioIdiomas = () => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-    }
+    }*/
 
     const LoadDataPeriodo = async () => {
 
@@ -131,14 +137,17 @@ const CalendarioIdiomas = () => {
 
     const NuevoHorario = () => {
         if (idIdioma == 0) {
+            toast.error("Tiene que seleccionar todos los campos")
             refIdioma.current?.focus();
             return
         }
         if (idPeriodo == 0) {
+            toast.error("Tiene que seleccionar todos los campos")
             refPeriodo.current?.focus()
             return
         }
         if (idTipoEstudio == 0) {
+            toast.error("Tiene que seleccionar todos los campos")
             refTipoEstudio.current?.focus()
             return
         }
@@ -149,7 +158,7 @@ const CalendarioIdiomas = () => {
     // Tabla
     const loadInit = async () => {
 
-        if (idIdioma == 0) {
+        /*if (idIdioma == 0) {
             toast.error("Tiene que seleccionar todos los campos")
             refIdioma.current?.focus();
             return
@@ -165,7 +174,7 @@ const CalendarioIdiomas = () => {
             toast.error("Tiene que seleccionar todos los campos")
             refTipoEstudio.current?.focus();
             return
-        }
+        }*/
 
         if (loading) return;
 
@@ -191,7 +200,7 @@ const CalendarioIdiomas = () => {
 
 
     const fillTable = async (idIdioma: number, idPeriodo: number, idTipoEstudio: number) => {
-        
+
         setLoading(true)
 
         setCalendarioLista([]);
@@ -241,11 +250,15 @@ const CalendarioIdiomas = () => {
     };
 
     // Editar
-    const handleOpenModalEditar = (idiomaId: number, tipEstudioId: number, periodoId: number, fechas: FechasCalendario) => {
-        setIdPeriodo(periodoId)
+    const handleOpenModalEditar = (idiomaId: number, idCalendario: number, tipEstudioId: number, periodoId: number, nombrePeriodo: string, nombreTipoEstudio: string, fechas: FechasCalendario) => {
+        setEditarIdPeriodo(periodoId)
+        setIdCalendario(idCalendario)
         setIdIdioma(idiomaId)
-        setIdTipoEstudio(tipEstudioId)
+        setEditarIdTipoEstudio(tipEstudioId)
         setDatosEditar(fechas)
+        setEditarNombrePeriodo(nombrePeriodo)
+        setEditarNombreTipoEstudio(nombreTipoEstudio)
+    
         setIsOpenModalEditar(true)
     }
 
@@ -263,22 +276,25 @@ const CalendarioIdiomas = () => {
                             periodoId={idPeriodo}
                             tipoEstudioId={idTipoEstudio}
                             valuePeriodo={valuePeriodo}
-                            nombreIdioma={nombreIdioma}
+                            //nombreIdioma={nombreIdioma}
                             nombreTipoEstudio={nombreTipoEstudio}
                             show={isOpenModal}
                             hide={handleCloseModal}
+                            init={loadInit}
                         />
 
                         <EditarCalendario
+                            calendarioId={idCalendario}
                             idiomaId={idIdioma}
-                            periodoId={idPeriodo}
-                            tipoEstudioId={idTipoEstudio}
-                            valuePeriodo={valuePeriodo}
-                            nombreIdioma={nombreIdioma}
-                            nombreTipoEstudio={nombreTipoEstudio}
+                            periodoId={editarIdPeriodo}
+                            tipoEstudioId={editarIdTipoEstudio}
+                            valuePeriodo={editarNombrePeriodo}
+                            //nombreIdioma={nombreIdioma}
+                            nombreTipoEstudio={editarNombreTipoEstudio}
                             fechas={datosEditar}
                             show={isOpenModalEditar}
                             hide={handleCloseModalEditar}
+                            init={loadInit}
                         />
                         {
                             usuarioPermitido ? (
@@ -436,26 +452,37 @@ const CalendarioIdiomas = () => {
                                             <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
                                                 <thead className="align-bottom">
                                                     <tr>
-                                                        <th rowSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
-                                                        <th rowSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Año</th>
-                                                        <th rowSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
-                                                        <th colSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Proceso</th>
-                                                        <th colSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Matrícula</th>
-                                                        <th colSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Clases</th>
-                                                        <th colSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Notas</th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Año</th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">
+                                                            <div className="flex flex-col gap-2">
+                                                                <span>Proceso</span>
+                                                                <span>Inicio - Fin</span>
+                                                            </div>
+                                                        </th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">
+                                                            <div className="flex flex-col gap-2">
+                                                                <span>Matrícula</span>
+                                                                <span>Inicio - Fin</span>
+                                                            </div>
+                                                        </th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">
+                                                            <div className="flex flex-col gap-2">
+                                                                <span>Clases</span>
+                                                                <span>Inicio - Fin</span>
+                                                            </div>
+                                                        </th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">
+                                                            <div className="flex flex-col gap-2">
+                                                                <span>Notas</span>
+                                                                <span>Inicio - Fin</span>
+                                                            </div>
+                                                        </th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
+                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Opciones</th>
+                                                    </tr>
 
-                                                        <th rowSpan={2} className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Opciones</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Inicio</th>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Fin</th>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Inicio</th>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Fin</th>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Inicio</th>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Fin</th>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Inicio</th>
-                                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Fin</th>
-                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
@@ -472,7 +499,7 @@ const CalendarioIdiomas = () => {
                                                             calendarioLista.length == 0 ?
                                                                 (
                                                                     <tr className="text-center bg-white border-b">
-                                                                        <td colSpan={13} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                        <td colSpan={9} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                     </tr>
                                                                 )
                                                                 :
@@ -484,20 +511,27 @@ const CalendarioIdiomas = () => {
                                                                                 <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
                                                                                 <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio + ' - ' + convertirNumeroAMes(item.mes)}</td>
                                                                                 <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_cal_ini)}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_cal_fin)}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_mat_ini)}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_mat_fin)}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_clases_ini)}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_clases_fin)}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_nota_ini)}</td>
-                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">-{/*convertirFormatoFechaSql(item.f_nota_ini)*/}</td>
+                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_cal_ini)} - {convertirFormatoFechaSql(item.f_cal_fin)}</td>
+                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_mat_ini)} - {convertirFormatoFechaSql(item.f_mat_fin)}</td>
+                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_clases_ini)} - {convertirFormatoFechaSql(item.f_clases_fin)}</td>
+                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.f_nota_ini)} - {/*convertirFormatoFechaSql(item.f_nota_ini)*/}</td>
+                                                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                                                                    {
+                                                                                        item.cal_activo ?
+                                                                                            <span className="text-xs font-semibold p-1 px-2 bg-green-500 text-white rounded">
+                                                                                                Activo
+                                                                                            </span> :
+                                                                                            <span className="text-xs font-semibold p-1 px-2 bg-red-500 text-white rounded">
+                                                                                                INACTIVO
+                                                                                            </span>
+                                                                                    }
+                                                                                </td>
 
                                                                                 <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                                                                     <button
                                                                                         title="Editar"
                                                                                         className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
-                                                                                        onClick={() => handleOpenModalEditar(item.idiomaId, item.tipEstudioId, item.periodoId,
+                                                                                        onClick={() => handleOpenModalEditar(item.idiomaId, item.calendarioId, item.tipEstudioId, item.periodoId, item.anio + ' - ' + item.mes, item.tipoEstudio,
                                                                                             {
                                                                                                 f_cal_ini: item.f_cal_ini,
                                                                                                 f_cal_fin: item.f_cal_fin,
@@ -508,6 +542,7 @@ const CalendarioIdiomas = () => {
                                                                                                 f_clases_ini: item.f_clases_ini,
                                                                                                 f_clases_fin: item.f_clases_fin,
                                                                                                 f_nota_ini: item.f_nota_ini,
+                                                                                                cal_activo: item.cal_activo
                                                                                             }
                                                                                         )}
                                                                                     >

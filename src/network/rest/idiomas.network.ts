@@ -245,6 +245,11 @@ export async function InsertarCalendarioPeriodo<RespValue>(codigo: string, param
     return await Resolve.create(instance.post<RespValue>(`/Calendario/InsertarCalendarioPeriodo/${codigo}`, params, { signal: abortController?.signal }));
 }
 
+export async function ActualizarCalendarioPeriodo<RespValue>(codigo: string, calendarioId: number, params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Calendario/ActualizarCalendarioPeriodo/${codigo}/${calendarioId}`, params, { signal: abortController?.signal }));
+}
+
+
 
 // Reportes
 export async function ReporteMatricula<Listas>(abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {
