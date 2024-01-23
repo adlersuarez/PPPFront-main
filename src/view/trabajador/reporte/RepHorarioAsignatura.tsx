@@ -87,7 +87,7 @@ const RepHorarioAsignatura = () => {
 
         setReporteDisponible([])
 
-        const response = await ReporteHorarioAsignatura<Listas>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio,idAsignatura,  abortController.current);
+        const response = await ReporteHorarioAsignatura<Listas>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, idAsignatura, abortController.current);
         if (response instanceof Response) {
 
             const data = response.data.resultado as any[]

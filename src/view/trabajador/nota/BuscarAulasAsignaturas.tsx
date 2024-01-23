@@ -13,7 +13,7 @@ import TipoEstudio from "@/model/interfaces/tipo-estudio/tipoEstudio";
 import Asignatura from "@/model/interfaces/asignatura/asignatura";
 
 import Listas from "../../../model/interfaces/Listas.model.interface";
-import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarTipoEstudio, ListarAsignatura, MatriculadosHorariosAsignaturasPag } from "../../../network/rest/idiomas.network";
+import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarTipoEstudio, ListarAsignatura, MatriculadosHorariosAsignaturasPag, VerificarFechaIngresoNotas } from "../../../network/rest/idiomas.network";
 
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
@@ -21,6 +21,9 @@ import { LoaderSvg } from "../../../component/Svg.component";
 import { convertirFormatoFechaSql, convertirFormatoHoraSql, convertirNumeroAMes, denominacionHorario } from "@/helper/herramienta.helper";
 import RegistrarNotasGeneral from "./RegistrarNotasGeneral";
 import RegistrarAsistenciaGeneral from "../asistencia/RegistrarAsistenciaGeneral";
+import RespValue from "@/model/interfaces/RespValue.model.interface";
+
+import toast from "react-hot-toast";
 
 
 const BuscarAulasAsignaturas = () => {
@@ -71,7 +74,6 @@ const BuscarAulasAsignaturas = () => {
     const [moduloRegistroAsistencia, setModuloRegistroAsistencia] = useState<boolean>(false)
 
     const [sigla, setSigla] = useState("")
-
 
     useEffect(() => {
 
@@ -277,6 +279,40 @@ const BuscarAulasAsignaturas = () => {
         setModuloRegistroAsistencia(false)
     }
 
+
+    const fechaIngresoNota = async (periodoId: number, tipEstudioId: number, item: any, idHorarioAsignatura: number, formaSigla: string) => {
+        const response = await VerificarFechaIngresoNotas<RespValue>(periodoId, tipEstudioId);
+        if (response instanceof Response) {
+
+            const result  = response.data.value as string
+
+            if(result == 'permitido'){
+                handleOpenModuloRegistroNotas(item, idHorarioAsignatura, formaSigla)
+                return
+            }
+            if(result == 'outcalendar'){
+                toast.error("La fecha de registro de notas esta fuera de calendario")
+                return
+            }
+
+            toast.error("Se produjo un error al consultar la fecha de ingreso de notas")
+            return
+
+        }
+
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+
+            if (response.getStatus() == 401) {
+                return;
+            }
+
+            if (response.getStatus() == 403) {
+                return;
+            }
+
+        }
+    }
     
 
 
@@ -608,9 +644,7 @@ const BuscarAulasAsignaturas = () => {
                                                                                             title="Listas de Estudiantes"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
                                                                                             onClick={() => {
-                                                                                                console.log(item)
-                                                                                                return 
-                                                                                                handleOpenModuloRegistroNotas(item, item.horarioAsigId,formaSigla)
+                                                                                                fechaIngresoNota(item.periodoId, item.tipEstudioId, item, item.horarioAsigId, formaSigla)
                                                                                             }}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>

@@ -214,6 +214,10 @@ export async function NotaFinalEstudianteDetMatriculaId<RespValue>(DetMatriculaI
     return await Resolve.create(instance.get<RespValue>(`/Nota/NotaFinalEstudianteDetMatriculaId/${DetMatriculaId}`, { signal: abortController?.signal }));
 }
 
+export async function VerificarFechaIngresoNotas<RespValue>(PeriodoId : number, TipEstudioId: Number, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.get<RespValue>(`/Nota/VerificarFechaIngresoNotas/${PeriodoId}/${TipEstudioId}`, { signal: abortController?.signal }));
+}
+
 
 //Asistencia
 export async function ListarPreRegistroAsistencia<Listas>(HorarioAsigId: number, abortController: AbortController | null = null): Promise<Response<Listas> | RestError> {

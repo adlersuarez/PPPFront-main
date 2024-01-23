@@ -707,7 +707,8 @@ const HorarioIdiomas = () => {
                                                             <thead className="align-bottom">
                                                                 <tr>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
-                                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Fecha / Hora</th>
+                                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
+                                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Programa</th>
                                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Aula</th>
@@ -722,7 +723,7 @@ const HorarioIdiomas = () => {
 
                                                                     loading ? (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={8} className="text-sm p-2 border-b border-solid">
+                                                                            <td colSpan={9} className="text-sm p-2 border-b border-solid">
                                                                                 <div className="flex items-center justify-center">
                                                                                     <LoaderSvg /> <span>Cargando datos...</span>
                                                                                 </div>
@@ -732,7 +733,7 @@ const HorarioIdiomas = () => {
                                                                         horarioLista.length == 0 ?
                                                                             (
                                                                                 <tr className="text-center bg-white border-b">
-                                                                                    <td colSpan={8} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                                    <td colSpan={9} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                                 </tr>
                                                                             )
                                                                             :
@@ -740,9 +741,10 @@ const HorarioIdiomas = () => {
                                                                                 horarioLista.map((item, index) => {
 
                                                                                     return (
-                                                                                        <tr key={index} className="bg-white border-b">
+                                                                                        <tr key={index} className="bg-white border-b" title={ `${convertirFormatoFechaSql(item.fechaRegistra)} ${convertirFormatoHoraSql(item.fechaRegistra)}`}>
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
-                                                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">{convertirFormatoFechaSql(item.fechaRegistra)} {convertirFormatoHoraSql(item.fechaRegistra)}</td>
+                                                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
+                                                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.tipoEstudio}</td>
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.turno}</td>
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.programa}</td>
                                                                                             <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.aula}</td>
