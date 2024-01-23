@@ -203,7 +203,8 @@ const InsertarCalendario = (props: Props) => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                     <div className="text-sm">
-                                        <p>Idioma: <span className="text-blue-700 font-bold">INGLÉS{/*props.nombreIdioma*/}</span></p>
+                                        {//<p>Idioma: <span className="text-blue-700 font-bold">INGLÉS{/*props.nombreIdioma*/}</span></p>
+                                        }
                                         <p>Tipo de Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                     </div>
                                     <div className="text-sm">

@@ -21,6 +21,8 @@ type Props = {
 
 const RegistrarAsistenciaGeneral = (props: Props) => {
 
+    console.log(props.item)
+
     const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
 
     const abortController = useRef(new AbortController());
@@ -87,7 +89,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
     const registrarAsistenciaMasivo = async () => {
         // console.log(matriculadosAsig)
-        if(activeContent == 3){
+        if (activeContent == 3) {
             toast.error("Tiene que seleccionar una fecha")
             return
         }
@@ -173,10 +175,9 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
         return matriculadosAsig.map((item, index) => {
 
-            //console.log(item)
-
+            //
             return (
-                <tr key={index} className="text-sm">
+                <tr key={index} className={`text-sm ${index % 2 == 0 ? 'bg-gray-100' : 'bg-white'}`}>
                     <td className="border p-2 px-4 text-center">{++index}</td>
                     <td className="border p-2 px-4 text-center">{item.estudianteId}</td>
                     <td className="border p-2 px-4">{`${item.estPaterno} ${item.estMaterno} ${item.estNombres}`}</td>
@@ -198,15 +199,9 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
                         </td>
                     }
-                    {/*<td className="border p-2 px-4">
-                        <span className="bg-green-200 rounded-md px-2 font-medium text-green-700">
-                            50%
-                        </span>
-                    </td>*/}
-                    {/*<td></td>*/}
                     {
                         activeContent == 1 &&
-                        diasAsistencia.map((dia) => (
+                        obtenerFechas(props.item.f_clases_ini, props.item.f_clases_fin, props.item.dias).map((dia) => (
                             <td className="border p-2 text-center">
                                 {
                                     dia.estado ?
@@ -221,6 +216,11 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                             </td>
                         ))
                     }
+                    <td className="border p-2 px-4">
+                        <span className="bg-green-200 rounded-md px-2 font-medium text-green-700">
+                            50%
+                        </span>
+                    </td>
                 </tr>
             );
         });
@@ -239,88 +239,46 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
     if (props.item.dias == 'Lunes a Viernes' && isDiasHabil) { valorDiasEstado = false }
     if (props.item.dias == 'Sabados y Domingos' && isFinDeSemana) { valorDiasEstado = false }
 
-    const diasAsistencia = [
-        {
-            id: 1,
-            estado: true
-        },
-        {
-            id: 2,
-            estado: true
-        },
-        {
-            id: 3,
-            estado: true
-        },
-        {
-            id: 4,
-            estado: true
-        },
-        {
-            id: 5,
-            estado: false
-        },
-        {
-            id: 6,
-            estado: true
-        },
-        {
-            id: 7,
-            estado: true
-        },
-        {
-            id: 8,
-            estado: false
-        },
-        {
-            id: 9,
-            estado: false
-        },
-        {
-            id: 10,
-            estado: true
-        },
-        {
-            id: 11,
-            estado: false
-        },
-        {
-            id: 12,
-            estado: false
-        },
-        {
-            id: 13,
-            estado: true
-        },
-        {
-            id: 14,
-            estado: false
-        },
-        {
-            id: 15,
-            estado: true
-        },
-        {
-            id: 16,
-            estado: false
-        },
-        {
-            id: 17,
-            estado: true
-        },
-        {
-            id: 18,
-            estado: true
-        },
-        {
-            id: 19,
-            estado: true
-        },
-        {
-            id: 20,
-            estado: true
-        },
-    ]
+    const obtenerFechas = (inicio: Date, fin: Date, diasSemana: string) => {
+        const nombreDia = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+
+        let arrayDias: number[] = []
+
+        if (diasSemana === 'Lunes a Viernes') {
+            arrayDias = [1, 2, 3, 4, 5]
+        }
+        if (diasSemana === 'Sabados y Domingos') {
+            arrayDias = [0, 6]
+        }
+
+        //console.log(arrayDias)
+
+        const fechas = [];
+        const current = new Date(inicio);
+        const finFecha = new Date(fin)
+
+        while (current <= finFecha) {
+            if (arrayDias.includes(current.getDay())) {
+                const fechaConInfo = {
+                    fecha: new Date(current),
+                    numeroDia: current.getDate(),
+                    numeroSemana: current.getDay(),
+                    nombreDia: nombreDia[current.getDay()],
+                    mes: meses[current.getMonth()], // Meses en JavaScript se cuentan desde 0
+                    estado: true
+                };
+
+                fechas.push(fechaConInfo);
+            }
+            current.setDate(current.getDate() + 1);
+        }
+
+        return fechas;
+    };
+
+    //console.log(props.item.f_clases_ini, props.item.f_clases_fin, props.item)
+    //console.log(obtenerFechas(props.item.f_clases_ini, props.item.f_clases_fin, props.item.dias))
 
     return (
         <>
@@ -441,23 +399,27 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                                                 </div>
                                             </th>
                                         }
-                                        {/*<th className="py-1 px-2">%</th>*/}
+
                                         {/*<th className="bg-white border border-white w-10">
 
                                     </th>*/}
                                         {//FALTA DINAMIZARLO
                                             activeContent == 1 &&
-                                            diasAsistencia.map((dia, index) => (
-                                                <th key={dia.id} className="py-1 px-4 text-xs">
-                                                    <div
-                                                        title="Fecha"
-                                                        className="flex flex-col">
-                                                        <span>{index + 1}</span>
-                                                        <span>Ene</span>
-                                                    </div>
-                                                </th>
-                                            ))
+                                            obtenerFechas(props.item.f_clases_ini, props.item.f_clases_fin, props.item.dias).map((fecha, index) => {
+
+                                                console.log(fecha)
+
+                                                return (
+                                                    <th key={index} className="py-1 px-4 text-xs">
+                                                        <div title={fecha.nombreDia} className="flex flex-col">
+                                                            <span>{fecha.numeroDia}</span>
+                                                            <span>{fecha.mes}</span>
+                                                        </div>
+                                                    </th>
+                                                );
+                                            })
                                         }
+                                        <th className="bg-gray-500 py-1 px-2">%</th>
                                     </tr>
                                 </thead>
                                 <tbody>

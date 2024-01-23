@@ -227,7 +227,7 @@ const EditarCalendario = (props: Props) => {
             <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border p-3">
 
                 <div className="flex justify-between">
-                    <h6 className="py-1 pl-4 font-bold text-lg">Registrar Calendario</h6>
+                    <h6 className="py-1 pl-4 font-bold text-lg">Editar Calendario</h6>
                     <button
                         className="focus:outline-none text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300  rounded-md px-2"
                         onClick={props.hide}>
@@ -246,7 +246,8 @@ const EditarCalendario = (props: Props) => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                                     <div className="text-sm">
-                                        <p>Idioma: <span className="text-blue-700 font-bold">INGLÉS{/*props.nombreIdioma*/}</span></p>
+                                        {//<p>Idioma: <span className="text-blue-700 font-bold">INGLÉS{/*props.nombreIdioma*/}</span></p>
+                                        }
                                         <p>Tipo de Estudio: <span className="text-blue-700 font-bold ">{props.nombreTipoEstudio}</span></p>
                                     </div>
                                     <div className="text-sm">
