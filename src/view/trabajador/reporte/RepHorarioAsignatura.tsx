@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ListarIdioma, ListarModalidad, ListarPeriodo, ListarSede, ListarTipoEstudio, ReporteHorarioAsignatura } from '../../../network/rest/idiomas.network';
+import { ListarAsignatura, ListarIdioma, ListarModalidad, ListarPeriodo, ListarSede, ListarTipoEstudio, ReporteHorarioAsignatura } from '../../../network/rest/idiomas.network';
 import Listas from '../../../model/interfaces/Listas.model.interface';
 import RestError from "../../../model/class/resterror.model.class";
 import { Types } from "../../../model/enum/types.model.enum";
@@ -20,6 +20,7 @@ import * as XLSX from 'xlsx';
 import { images } from "@/helper/index.helper";
 
 import ModalListasMatricualdos from './modal/ListaEstudiantesMatriculados'
+import Asignatura from "@/model/interfaces/asignatura/asignatura";
 
 
 const RepHorarioAsignatura = () => {
@@ -29,6 +30,7 @@ const RepHorarioAsignatura = () => {
     const [comboBoxModalidad, setComboBoxModalidad] = useState<Modalidad[]>([]);
     const [comboBoxPeriodo, setComboBoxPeriodo] = useState<Periodo[]>([])
     const [comboBoxTipoEstudio, setComboBoxTipoEstudio] = useState<TipoEstudio[]>([])
+    const [comboBoxAsignatura, setComboBoxAsignatura] = useState<Asignatura[]>([])
 
 
     const [idIdioma, setIdIdioma] = useState<number>(0)
@@ -37,6 +39,7 @@ const RepHorarioAsignatura = () => {
     const [idPeriodo, setIdPeriodo] = useState<number>(0)
     const [idTipoEstudio, setIdTipoEstudio] = useState<number>(0)
 
+    const [idAsignatura, setIdAsignatura] = useState<string>("0")
 
     const [reporteDisponibles, setReporteDisponible] = useState<any[]>([]);
 
@@ -61,7 +64,9 @@ const RepHorarioAsignatura = () => {
     const [valueModalidad, SetValueModalidad] = useState<string>("-")
     const [valueTipoEstudio, SetValueTipoEstudio] = useState<string>("-")
 
-    const[sigla, setSigla] = useState("") 
+    const [sigla, setSigla] = useState("")
+
+    const refIdioma = useRef<HTMLSelectElement>(null)
 
     useEffect(() => {
 
@@ -70,15 +75,19 @@ const RepHorarioAsignatura = () => {
         LoadDataModalidad()
         LoadDataPeriodo()
         LoadDataTipoEstudio()
-
     }, [])
 
 
     const LoadRepHorarioAsignatura = async () => {
 
+        if(idIdioma == 0){
+            refIdioma.current?.focus()
+            return
+        }
+
         setReporteDisponible([])
 
-        const response = await ReporteHorarioAsignatura<Listas>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio, abortController.current);
+        const response = await ReporteHorarioAsignatura<Listas>(idIdioma, idSede, idModalidad, idPeriodo, idTipoEstudio,idAsignatura,  abortController.current);
         if (response instanceof Response) {
 
             const data = response.data.resultado as any[]
@@ -94,7 +103,12 @@ const RepHorarioAsignatura = () => {
             }, 0);
             setAulasLibres(totalCantidadCero)
 
-            setVacantesDisponibles(totCapacidades - totMatriculados)
+            if (totMatriculados > totCapacidades) {
+                setVacantesDisponibles(0)
+            } else {
+                setVacantesDisponibles(totCapacidades - totMatriculados)
+            }
+
 
             setReporteDisponible(response.data.resultado);
 
@@ -169,6 +183,25 @@ const RepHorarioAsignatura = () => {
         const response = await ListarTipoEstudio<Listas>(abortController.current)
         if (response instanceof Response) {
             setComboBoxTipoEstudio(response.data.resultado as TipoEstudio[])
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    const LoadDataAsignatura = async (idIdioma: number) => {
+
+
+        setComboBoxAsignatura([])
+
+        const response = await ListarAsignatura<Listas>(abortController.current)
+        if (response instanceof Response) {
+
+            const data = response.data.resultado as Asignatura[]
+            const filteredData = data.filter(asignatura => asignatura.idiomaId == idIdioma);
+
+            setComboBoxAsignatura(filteredData)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return;
@@ -361,16 +394,16 @@ const RepHorarioAsignatura = () => {
 
                                 <div className="p-6">
                                     {/* <h2 className="text-xl mb-5">Reporte de matriculados</h2> */}
-                                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-4">
                                         <div>
                                             <label
                                                 className="font-mont block mb-1 text-sm font-medium text-gray-900 "
                                             >
-                                                Idioma
+                                                Idioma <i className="bi bi-asterisk text-xs text-red-500"></i>
                                             </label>
                                             <select
                                                 className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
-                                                //ref={refIdioma}
+                                                ref={refIdioma}
                                                 value={idIdioma}
                                                 onChange={(event) => {
                                                     const selectedIdiomaId = event.currentTarget.value;
@@ -380,9 +413,13 @@ const RepHorarioAsignatura = () => {
 
                                                     if (selectedIdioma) {
                                                         SetValueIdioma(selectedIdioma.idiomaNombre);
+                                                        LoadDataAsignatura(parseInt(selectedIdiomaId))
                                                     } else {
                                                         SetValueIdioma("-");
+                                                        setIdAsignatura("0")
                                                     }
+
+                                                    
                                                 }}
                                             >
                                                 <option value={0}>- Seleccione -</option>
@@ -547,6 +584,31 @@ const RepHorarioAsignatura = () => {
                                             </select>
                                         </div>
 
+                                        <div>
+                                            <label className="font-mont block mb-1 text-sm font-medium text-gray-900">
+                                                Asignatura
+                                            </label>
+                                            <select
+                                                className="block bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full p-1"
+                                                value={idAsignatura}
+                                                onChange={(event) => {
+                                                    setIdAsignatura(event.currentTarget.value)
+                                                }}
+                                            >
+                                                <option value={"0"}>- Seleccione -</option>
+                                                {
+                                                    comboBoxAsignatura.map((item, index) => {
+
+                                                        return (
+                                                            <option key={index} value={item.asiId}>
+                                                                {item.asignatura} - {item.asiNivel}
+                                                            </option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+
 
 
                                     </div>
@@ -626,6 +688,7 @@ const RepHorarioAsignatura = () => {
                                                 <tr>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Siglas</th>
+                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">T. Estudio</th>
@@ -634,7 +697,6 @@ const RepHorarioAsignatura = () => {
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Turno</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Asignatura</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Cant/Cap</th>
-                                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Capacidad</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Dias</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">H. Inicio</th>
                                                     <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">H. Fin</th>
@@ -696,7 +758,7 @@ const RepHorarioAsignatura = () => {
                                                                     : cantDias == 2 ? 'SD' : '0'
 
                                                                 const codPer = convertirNumeroAMes(item.mes)?.substring(0, 3);
-                                                                const codAnio =  item.anio.toString().slice(-2);
+                                                                const codAnio = item.anio.toString().slice(-2);
 
                                                                 const formaSigla = `${codAsig}${codNivel}-${codModalidad}${codTipoEst}-${codDias}-${item.aula}-${denominacionH}-${codAnio}${codPer}`
 

@@ -12,6 +12,7 @@ import Listas from "@/model/interfaces/Listas.model.interface";
 import { jsPDF } from 'jspdf'
 import autoTable, { UserOptions } from 'jspdf-autotable'
 import * as XLSX from 'xlsx';
+//import XlsxTemplate from 'xlsx-template';
 import { getCurrentDateFormatted, getCurrentTime24hFormat } from "@/helper/herramienta.helper";
 import { images } from "@/helper/index.helper";
 
@@ -222,7 +223,6 @@ const ListaEstudiantesMatriculados = (props: Props) => {
             ['#', 'Codigo', 'Estudiante', 'N. LECTURA', 'N. ESCRITURA', 'N. HABLADO', 'N. PRÁCTICA EN LINEA', 'N. EXAMEN INTERMEDIO', 'N. EXAMEN FINAL'],
         ];
 
-
         const opciones: UserOptions = {
             margin: {
                 top: 33,
@@ -263,7 +263,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
             doc.setFontSize(15)
             doc.setTextColor(0, 0, 0)
             //doc.setFont(prevFont, "bold")
-            doc.text(`REGISTRO AUXILIR DE NOTAS ${props.sigla}`, pageWidth/6, 13)
+            doc.text(`REGISTRO AUXILIR DE NOTAS ${props.sigla}`, pageWidth / 6, 13)
             // doc.setFontSize(12)
             // doc.setTextColor(128, 128, 128)
 
@@ -323,21 +323,127 @@ const ListaEstudiantesMatriculados = (props: Props) => {
 
         doc.text(`Instructor: ${data.instructor} `, 13, 31)
 
-        const datosEncabezado = [
-            ['#', 'Codigo', 'Estudiante', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-        ];
+        const datosEncabezado =
+            [
+                [
+                    {
+                        content: "",
+                        colSpan: 1,
+                    },
+                    {
+                        content: "",
+                        colSpan: 1,
+                    },
+                    {
+                        content: "",
+                        colSpan: 1,
+                    },
+                    {
+                        content: "Asistencia",
+                        colSpan: 20,
+                    },
+                    {
+                        content: "Lectura",
+                        colSpan: 4,
+                    },
+                    {
+                        content: "Escritura",
+                        colSpan: 4,
+                    },
+                    {
+                        content: "Practica En-Linea",
+                        colSpan: 4,
+                    },
+                    {
+                        content: "Hablado",
+                        colSpan: 4,
+                    },
+                    {
+                        content: "",
+                        colSpan: 1,
+                    },
+                    {
+                        content: "",
+                        colSpan: 1,
+                    },
+                    {
+                        content: "",
+                        colSpan: 1,
+                    },
+                ],
+                [
+                    { content: "#", },
+                    { content: "Codigo", },
+                    { content: "Estudiante", },
+                    { content: "1", },
+                    { content: "2", },
+                    { content: "3", },
+                    { content: "4", },
+                    { content: "5", },
+                    { content: "6", },
+                    { content: "7", },
+                    { content: "8", },
+                    { content: "9", },
+                    { content: "10", },
+                    { content: "11", },
+                    { content: "12", },
+                    { content: "13", },
+                    { content: "14", },
+                    { content: "15", },
+                    { content: "16", },
+                    { content: "17", },
+                    { content: "18", },
+                    { content: "19", },
+                    { content: "20", },
+                    { content: "R1", },
+                    { content: "R2", },
+                    { content: "R3", },
+                    { content: "AVG1", },
+                    { content: "W1", },
+                    { content: "W2", },
+                    { content: "W3", },
+                    { content: "AVG2", },
+                    { content: "P1", },
+                    { content: "P2", },
+                    { content: "P3", },
+                    { content: "AVG3", },
+                    { content: "S1", },
+                    { content: "S2", },
+                    { content: "S3", },
+                    { content: "AVG4", },
+                    { content: "ME", },
+                    { content: "FE", },
+                    { content: "FINAL", },
+
+                ],
+            ]
+        // [
+        //     '',
+        //     '',
+        //     '',
+        //     { content: 'Asistencia', colSpan: 20, styles: { halign: 'center' } }
+        // ],
+        // [
+        //     '#', 'Codigo', 'Estudiante', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'
+        // ]
+
+        // ['', '', '', '', '', '', '', '', '', '', '', '', 'Asistencia', '', '', '', '', '', '', '', '', '', ''],
+        // ['#', 'Codigo', 'Estudiante', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+
+
 
         const opciones: UserOptions = {
+            theme: 'grid',
             margin: {
                 top: 33,
                 bottom: 20
             },
             headStyles: {
-                fontSize: 8,
+                fontSize: 4,
                 textColor: [255, 255, 255]
             },
             bodyStyles: {
-                fontSize: 7,
+                fontSize: 4,
                 textColor: [0, 0, 0],
                 halign: 'center'
             },
@@ -345,6 +451,9 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                 0: {
                     halign: 'center',
                     fillColor: [220, 220, 220]
+                },
+                2: {
+                    halign: 'left',
                 },
                 // 5: {
                 //     textColor: [0, 57, 129]
@@ -367,7 +476,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
             doc.setFontSize(15)
             doc.setTextColor(0, 0, 0)
             //doc.setFont(prevFont, "bold")
-            doc.text(`REGISTRO AUXILIR DE ASISTENCIA ${props.sigla}`, pageWidth/6, 13)
+            doc.text(`REGISTRO AUXILIAR ${props.sigla}`, pageWidth / 3, 13)
             // doc.setFontSize(12)
             // doc.setTextColor(128, 128, 128)
 
@@ -387,6 +496,11 @@ const ListaEstudiantesMatriculados = (props: Props) => {
         }
 
         doc.save(fileName + ".pdf")
+    }
+
+    // Template
+    const excelTemplate = () => {
+        console.log()
     }
 
     return (
@@ -431,7 +545,8 @@ const ListaEstudiantesMatriculados = (props: Props) => {
 
                                     onClick={() => {
                                         if (listaMatriculados.length == 0) return;
-                                        exportExcelToTableHtml('tabla-reporte', `Reporte-Matriculados-${props.item.modalidad}-${props.item.tipoEstudio}-${props.item.turno}-${props.item.aula}-${props.item.seccion}-${props.item.asignatura}-${props.item.anio}${props.item.mes}  ${getCurrentDateFormatted()}`, [], true)
+                                        excelTemplate()
+                                        // exportExcelToTableHtml('tabla-reporte', `Reporte-Matriculados-${props.item.modalidad}-${props.item.tipoEstudio}-${props.item.turno}-${props.item.aula}-${props.item.seccion}-${props.item.asignatura}-${props.item.anio}${props.item.mes}  ${getCurrentDateFormatted()}`, [], true)
                                     }}
                                 >
                                     <i className="bi bi-file-earmark-excel-fill mr-1"></i> Excel
@@ -465,14 +580,14 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                 </button>
                             </div> */}
 
-                            <div className="relative flex flex-wrap">
+                            {/* <div className="relative flex flex-wrap">
                                 <button
                                     title="Registro Auxiliar de Notas"
                                     className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
                                     onClick={() => {
                                         if (listaMatriculados.length == 0) return;
                                         const data = {
-                                            periodo: props.item.anio - props.item.mes,
+                                            periodo: `${props.item.anio} - ${props.item.mes}`,
                                             modalidad: props.item.modalidad,
                                             tipoEstudio: props.item.tipoEstudio,
                                             turno: props.item.turno,
@@ -490,16 +605,16 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                 >
                                     <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Notas
                                 </button>
-                            </div>
+                            </div> */}
 
                             <div className="relative flex flex-wrap">
                                 <button
-                                    title="Registro Auxiliar de Notas"
+                                    title="Registro Auxiliar"
                                     className="ml-1 flex items-center rounded border-md border-red-500 bg-red-500 text-white p-2 hover:bg-red-700 focus:ring-2 focus:ring-red-400 active:ring-red-400"
                                     onClick={() => {
                                         if (listaMatriculados.length == 0) return;
                                         const data = {
-                                            periodo: props.item.anio - props.item.mes,
+                                            periodo: `${props.item.anio} - ${props.item.mes}`,
                                             modalidad: props.item.modalidad,
                                             tipoEstudio: props.item.tipoEstudio,
                                             turno: props.item.turno,
@@ -513,10 +628,10 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                             sigla: props.sigla
 
                                         }
-                                        pdfRegistroAuxiliarAsistencia(`Registro-Auxiliar-Notas ${props.sigla} ${getCurrentDateFormatted()}`, data)
+                                        pdfRegistroAuxiliarAsistencia(`Registro-Auxiliar- ${props.sigla} ${getCurrentDateFormatted()}`, data)
                                     }}
                                 >
-                                    <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Asistencia
+                                    <i className="bi bi-file-earmark-pdf-fill mr-1"></i> Registro Auxiliar
                                 </button>
                             </div>
 

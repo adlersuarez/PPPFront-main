@@ -33,13 +33,9 @@ import ReportesModalidad from './view/trabajador/horario/ReportesModalidad';
 //Notas Trabajador
 import BuscarAulasAsignaturas from './view/trabajador/nota/BuscarAulasAsignaturas'
 import BuscarAulasAsignaturasExcel from './view/trabajador/nota/BuscarAulasAsignaturasExcel';
-import InicioAdmin from './view/inicio/InicioAdmin';
-import InicioEst from './view/inicio/InicioEst';
 
-// Función para seleccionar las rutas según el tipo de usuario
-// Obtener el tipo de usuario del localStorage
-// const tipoUsuario = localStorage.getItem('tipoUsuario');
-const tipoUsuario = window.localStorage.getItem("tipoUsuario")?.replace(/"/g, '');
+import CalendarioIdiomas from './view/trabajador/calendario/CalendarioIdiomas';
+
 
 
 
@@ -258,6 +254,10 @@ const router = createBrowserRouter([
       {
         path: 'buscar-aulas-asignaturas-excel',
         element: <BuscarAulasAsignaturasExcel />
+      },
+      {
+        path:'calendario',
+        element: <CalendarioIdiomas/>
       },
     ]
   },

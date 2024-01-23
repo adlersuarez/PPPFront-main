@@ -39,7 +39,7 @@ const HomeEstudiante = () => {
                     info={''}
                 />
             </div>
-            <div className="w-full sm:w-1/2 p-4">
+            {/* <div className="w-full sm:w-1/2 p-4">
                 <Card
                     imagen={<Horario />}
                     titulo={'Inasistencia por ciclo'}
@@ -48,7 +48,7 @@ const HomeEstudiante = () => {
                     to={'/inicio/inasistencia'}
                     info={''}
                 />
-            </div>
+            </div> */}
             <div className="w-full sm:w-1/2 p-4">
                 <Card
                     imagen={<Identificacion />}

@@ -74,6 +74,8 @@ const Accordion = (props: Props) => {
 
     }
 
+    console.log(matriculaExistente)
+
     return (
         <div className="border border-gray-300 p-4 rounded-b">
             {/* ...otros pasos... */}

@@ -209,7 +209,7 @@ const Consolidado = () => {
                                                     )
                                                 }
                                             </td>
-                                            <td className="px-1 py-2">{new Date(item.fechRegistro).toLocaleString().slice(0,-10)}</td>
+                                            <td className="px-1 py-2">{new Date(item.fechRegistro).toLocaleString().slice(0,-9)}</td>
                                         </tr>
                                     ))}
                                 </tbody>

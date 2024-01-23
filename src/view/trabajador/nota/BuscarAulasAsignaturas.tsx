@@ -18,8 +18,9 @@ import { ListarIdioma, ListarModalidad, ListarSede, ListarPeriodo, ListarTipoEst
 import ListasPag from "../../../model/interfaces/ListasPag.model.interface";
 import Paginacion from "../../../component/Paginacion.component";
 import { LoaderSvg } from "../../../component/Svg.component";
-import { convertirFormatoFechaSql, convertirFormatoHoraSql } from "@/helper/herramienta.helper";
+import { convertirFormatoFechaSql, convertirFormatoHoraSql, convertirNumeroAMes, denominacionHorario } from "@/helper/herramienta.helper";
 import RegistrarNotasGeneral from "./RegistrarNotasGeneral";
+import RegistrarAsistenciaGeneral from "../asistencia/RegistrarAsistenciaGeneral";
 
 
 const BuscarAulasAsignaturas = () => {
@@ -67,6 +68,9 @@ const BuscarAulasAsignaturas = () => {
     const [mensajeCarga, setMensajeCarga] = useState<boolean>(true)
 
     const [moduloRegistroNotas, setModuloRegistroNotas] = useState<boolean>(false)
+    const [moduloRegistroAsistencia, setModuloRegistroAsistencia] = useState<boolean>(false)
+
+    const [sigla, setSigla] = useState("")
 
 
     useEffect(() => {
@@ -248,17 +252,29 @@ const BuscarAulasAsignaturas = () => {
     }
 
 
-    const handleOpenModuloDetalle = (item: any, idHorarioAsignatura: number) => {
+    const handleOpenModuloDetalle = (item: any, idHorarioAsignatura: number, formaSigla: string) => {
 
         setModuloRegistroNotas(true)
 
         setItem(item)
         setIdHorarioAsig(idHorarioAsignatura)
+        setSigla(formaSigla)
 
     }
 
     const handleCloseModuloDetalle = () => {
         setModuloRegistroNotas(false)
+    }
+
+    const handleOpenModuloAsistencia = (item: any, idHorarioAsignatura: number) => {
+        setModuloRegistroAsistencia(true)
+
+        setItem(item)
+        setIdHorarioAsig(idHorarioAsignatura)
+    }
+
+    const handleCloseModuloAsistencia = () => {
+        setModuloRegistroAsistencia(false)
     }
 
 
@@ -269,13 +285,21 @@ const BuscarAulasAsignaturas = () => {
                     <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border">
 
                         {
-                            moduloRegistroNotas ?
+                            (moduloRegistroNotas || moduloRegistroAsistencia) ?
                                 (
-                                    <RegistrarNotasGeneral
-                                        item={item}
-                                        idHorarioAsignatura={idHorarioAsig}
-                                        handleCloseModuloDetalle={handleCloseModuloDetalle}
-                                    />
+                                    moduloRegistroNotas ?
+                                        <RegistrarNotasGeneral
+                                            item={item}
+                                            idHorarioAsignatura={idHorarioAsig}
+                                            sigla={sigla}
+                                            handleCloseModuloDetalle={handleCloseModuloDetalle}
+                                        />
+                                        :
+                                        <RegistrarAsistenciaGeneral
+                                            item={item}
+                                            idHorarioAsignatura={idHorarioAsig}
+                                            handleCloseModuloAsistencia={handleCloseModuloAsistencia}
+                                        />
                                 ) : (
                                     <div className="p-1 bg-Solid">
                                         <h2 className="text-2xl font-bold mb-6"><span onClick={() => navigate(-1)} title="Atrás" role="button"><i className="bi bi-arrow-left-circle-fill text-blue-500"></i></span> Buscar Aulas Asignaturas</h2>
@@ -486,6 +510,7 @@ const BuscarAulasAsignaturas = () => {
 
                                                         <tr>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs" style={{ width: '5%' }}>#</th>
+                                                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sigla</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Modalidad</th>
@@ -517,16 +542,52 @@ const BuscarAulasAsignaturas = () => {
                                                                 listaMatriculasAsignatura.length == 0 ?
                                                                     (
                                                                         <tr className="text-center bg-white border-b">
-                                                                            <td colSpan={14} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
+                                                                            <td colSpan={15} className="text-sm p-2  border-b border-solid">{mensajeCarga == true ? "Seleccione los item para buscar" : "No hay datos para mostrar."}</td>
                                                                         </tr>
                                                                     )
                                                                     :
                                                                     (
                                                                         listaMatriculasAsignatura.map((item, index) => {
 
+                                                                            let cantDias = item.cantDias
+                                                                            let tipoEst = item.tipEstudioId
+                                                                            let denominacionH: string | undefined
+
+                                                                            if (tipoEst == 1 || tipoEst == 4) {
+                                                                                if (cantDias == 5) {
+                                                                                    denominacionH = denominacionHorario.intensivoLV.find((obj: any) => item.horaInicio.slice(0, -3) == obj.horaInicio)?.denominacion
+                                                                                }
+                                                                                if (cantDias == 2) {
+                                                                                    denominacionH = denominacionHorario.intensivoSD.find((obj: any) => item.horaInicio.slice(0, -3) == obj.horaInicio)?.denominacion
+
+                                                                                }
+                                                                            }
+                                                                            if (tipoEst == 2 || tipoEst == 3) {
+                                                                                denominacionH = denominacionHorario.superintensivoLV.find((obj: any) => item.horaInicio.slice(0, -3) == obj.horaInicio)?.denominacion
+
+                                                                            }
+
+                                                                            const codAsig = item.asiId.substring(0, 3)
+                                                                            const codNivel = parseInt(item.asiNivel)
+                                                                            const codModalidad = item.modalidad.charAt(0);
+                                                                            const codTipoEst = tipoEst == 1 ? 'I'
+                                                                                : tipoEst == 2 ? 'SI'
+                                                                                    : tipoEst == 4 ? 'IQ'
+                                                                                        : tipoEst == 3 ? 'SIQ' : '0'
+
+                                                                            const codDias = cantDias == 5 ? 'LV'
+                                                                                : cantDias == 2 ? 'SD' : '0'
+
+                                                                            const codPer = convertirNumeroAMes(item.mes)?.substring(0, 3);
+                                                                            const codAnio = item.anio.toString().slice(-2);
+
+                                                                            const formaSigla = `${codAsig}${codNivel}-${codModalidad}${codTipoEst}-${codDias}-${item.aula}-${denominacionH}-${codAnio}${codPer}`
+
+
                                                                             return (
                                                                                 <tr key={index} className="bg-white border-b" title={` ${convertirFormatoFechaSql(item.fechaRegistra)} ${convertirFormatoHoraSql(item.fechaRegistra)} `}>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.id}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{formaSigla}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.sede}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.anio} - {item.mes}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.modalidad}</td>
@@ -537,17 +598,25 @@ const BuscarAulasAsignaturas = () => {
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.asignatura}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.cantidad}/{item.capacidad}</td>
                                                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.dias}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin}</td>
-                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaInicio.slice(0, -3)}</td>
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid">{item.horaFin.slice(0, -3)}</td>
+                                                                                    
+                                                                                    <td className="text-sm p-2 text-center align-middle border-b border-solid flex justify-center gap-2">
                                                                                         <button
-                                                                                            title="Detalle"
+                                                                                            title="Listas de Estudiantes"
                                                                                             className="focus:outline-none text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded-md px-2 py-1"
-                                                                                            onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId)}
+                                                                                            onClick={() => handleOpenModuloDetalle(item, item.horarioAsigId,formaSigla)}
                                                                                         >
                                                                                             <i className="bi bi-list text-sm"></i>
 
                                                                                         </button>
+                                                                                        {/* <button
+                                                                                            title="Asistencia"
+                                                                                            className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 rounded-md px-2 py-1"
+                                                                                            onClick={() => handleOpenModuloAsistencia(item, item.horarioAsigId)}
+                                                                                        >
+                                                                                            <i className="bi bi-list-check text-sm"></i>
+                                                                                        </button> */}
                                                                                     </td>
                                                                                 </tr>
                                                                             );
