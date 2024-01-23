@@ -538,7 +538,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                     <div>
                         <div className="flex">
 
-                            {/* <div className="relative flex flex-wrap">
+                            { <div className="relative flex flex-wrap">
                                 <button
                                     title="Excel"
                                     className="ml-1 flex items-center rounded border-md border-green-500 bg-green-500 text-white p-2 hover:bg-green-700 focus:ring-2 focus:ring-green-400 active:ring-green-400"
@@ -551,7 +551,7 @@ const ListaEstudiantesMatriculados = (props: Props) => {
                                 >
                                     <i className="bi bi-file-earmark-excel-fill mr-1"></i> Excel
                                 </button>
-                            </div> */}
+                            </div> }
 
                             {/* <div className="relative flex flex-wrap">
                                 <button

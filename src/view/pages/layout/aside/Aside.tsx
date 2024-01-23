@@ -47,6 +47,7 @@ const menusAdmin: MenuItem[] = [
         modPosicion: 2,
         subMenu: true,
         subMenuItems: [
+
             {
                 id: "1",
                 titulo: "Registro de Horarios",
@@ -65,6 +66,7 @@ const menusAdmin: MenuItem[] = [
                 modPosicion: 2,
                 subMenu: false,
             },
+
             {
                 id: "3",
                 titulo: "Registro de Calendario",
@@ -74,6 +76,7 @@ const menusAdmin: MenuItem[] = [
                 modPosicion: 3,
                 subMenu: false,
             },
+
         ]
     },
     {
@@ -146,110 +149,10 @@ const menusEst: MenuItem[] = [
                 subMenu: false,
             },
 
-            // {
-            //     id: "2",
-            //     titulo: "Horario",
-            //     url: "/inicio/horario",
-            //     icono: "bi-calendar-week",
-            //     moduPadre: false,
-            //     modPosicion: 2,
-            //     subMenu: false,
-            // },
-            // {
-            //     id: "3",
-            //     titulo: "Nota",
-            //     url: "/inicio/inicio-docente",
-            //     icono: "bi-card-checklist",
-            //     moduPadre: false,
-            //     modPosicion: 3,
-            //     subMenu: false,
-            // },
 
         ],
     },
 ]
-/*
-const menus: MenuItem[] = [
-    {
-        id: "1",
-        titulo: "Estudiante",
-        icono: "bi-person-fill",
-        moduPadre: true,
-        modPosicion: 1,
-        subMenu: false,
-        subMenuItems: [
-            {
-                id: "1",
-                titulo: "Matricula Interna",
-                url: "/inicio/matricula-interna",
-                icono: "bi-pencil-square",
-                moduPadre: false,
-                modPosicion: 1,
-                subMenu: false,
-            },
-            {
-                id: "2",
-                titulo: "Matricula Externa",
-                url: "/inicio/matricula-externa",
-                icono: "bi-pencil-square",
-                moduPadre: false,
-                modPosicion: 2,
-                subMenu: false,
-            },
-            {
-                id: "3",
-                titulo: "Horario",
-                url: "/inicio/horario",
-                icono: "bi-calendar-week",
-                moduPadre: false,
-                modPosicion: 3,
-                subMenu: false,
-            },
-            {
-                id: "3",
-                titulo: "Reporte de Notas",
-                url: "/inicio/reporte-notas",
-                icono: "bi-clipboard2-plus",
-                moduPadre: false,
-                modPosicion: 1,
-                subMenu: false,
-            },
-        ],
-    },
-    {
-        id: "2",
-        titulo: "Administrativo",
-        icono: "bi-person-vcard",
-        moduPadre: true,
-        modPosicion: 1,
-        subMenu: false,
-        subMenuItems: [
-            {
-                id: "1",
-                titulo: "Inicio Docente",
-                url: "/inicio/inicio-docente",
-                icono: "bi-house-fill",
-                moduPadre: false,
-                modPosicion: 1,
-                subMenu: false,
-                subMenuItems: [],
-            },
-            {
-                id: "2",
-                titulo: "Agregar Horario",
-                url: "/inicio/horario-idiomas",
-                icono: "bi-calendar-plus",
-                moduPadre: false,
-                modPosicion: 2,
-                subMenu: false,
-                subMenuItems: [],
-            },
-
-        ],
-    },
-
-];
-*/
 
 
 const Aside = (props: Props) => {
