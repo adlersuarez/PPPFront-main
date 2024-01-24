@@ -5,11 +5,12 @@ import { Types } from "@/model/enum/types.model.enum";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import RespValue from "@/model/interfaces/RespValue.model.interface";
 
-import { InsertarAsistenciaHorarioAsignaturaFecha, ListarPreRegistroAsistencia } from "@/network/rest/idiomas.network";
+import { InsertarAsistenciaHorarioAsignaturaFecha, InsertarAsistenciaHorarioEspecifico, ListarPreRegistroAsistencia } from "@/network/rest/idiomas.network";
 
 import useSweerAlert from "@/component/hooks/useSweetAlert"
 import { diaSelect } from "@/helper/herramienta.helper";
 import toast from "react-hot-toast";
+import AsistenciaCelda from "./componente/AsistenciaCelda";
 
 
 type Props = {
@@ -21,7 +22,7 @@ type Props = {
 
 const RegistrarAsistenciaGeneral = (props: Props) => {
 
-    console.log(props.item)
+    //console.log(props.item)
 
     const codigo = JSON.parse(window.localStorage.getItem("codigo") || "");
 
@@ -33,6 +34,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
     const [, setRegistrado] = useState(0)
     const [seleccionarTodos, setSeleccionarTodos] = useState<boolean>(false);
+    const [fechaSeleccionada, setFechaSeleccionada] = useState('');
 
     //Mostra contenidos diferentes
     const [activeContent, setActiveContent] = useState<number | null>(1);
@@ -89,7 +91,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
     const registrarAsistenciaMasivo = async () => {
         // console.log(matriculadosAsig)
-        if (activeContent == 3) {
+        if (activeContent == 3 && fechaSeleccionada == '') {
             toast.error("Tiene que seleccionar una fecha")
             return
         }
@@ -105,40 +107,70 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
 
                     const registro = {
                         "detMatriculaId": item.detMatriculaId,
-                        "fechaAsitencia": new Date().toISOString(),
+                        "fechaAsistencia": fechaSeleccionada,
                         "estado": item.seleccionado,
                     }
-
                     asistenciaRegistro.push(registro)
                 })
 
                 //console.log(asistenciaRegistro)
 
-                const response = await InsertarAsistenciaHorarioAsignaturaFecha<RespValue>(codigo, asistenciaRegistro, abortController.current)
-                if (response instanceof Response) {
+                if (activeContent == 2) { //INSERTAR ASISTENCIA DE HOY
+                    const response = await InsertarAsistenciaHorarioAsignaturaFecha<RespValue>(codigo, asistenciaRegistro, abortController.current)
+                    if (response instanceof Response) {
 
-                    const mensaje = response.data.value as string
+                        const mensaje = response.data.value as string
 
-                    if (mensaje == 'procesado') {
+                        if (mensaje == 'procesado') {
 
-                        sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
-                            EstudiantesMatriculados()
+                            sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
+                                EstudiantesMatriculados()
+                            });
+
+
+                            //console.log('Se proceso')
+                        } else {
+                            sweet.openWarning("Mensaje", "Ocurrio un error al procesar la peticion", () => {
+                            });
+
+                            //console.log('No se proceso')
+                        }
+                    }
+                    if (response instanceof RestError) {
+                        if (response.getType() === Types.CANCELED) return;
+                        //console.log(response)
+                        sweet.openWarning("Mensaje", response.getMessage(), () => {
                         });
-
-
-                        //console.log('Se proceso')
-                    } else {
-                        sweet.openWarning("Mensaje", "Ocurrio un error al procesar la peticion", () => {
-                        });
-
-                        //console.log('No se proceso')
                     }
                 }
-                if (response instanceof RestError) {
-                    if (response.getType() === Types.CANCELED) return;
-                    //console.log(response.getMessage())
-                    sweet.openWarning("Mensaje", response.getMessage(), () => {
-                    });
+                if (activeContent == 3) { //INSERTAR ASISTENCIA ESPECIFICO
+                    const responseEspecifico = await InsertarAsistenciaHorarioEspecifico<RespValue>(codigo, asistenciaRegistro, abortController.current)
+
+                    if (responseEspecifico instanceof Response) {
+
+                        const mensajeEspec = responseEspecifico.data.value as string
+
+                        if (mensajeEspec == 'procesado') {
+
+                            sweet.openSuccess("Mensaje", "Registros insertados correctamente", () => {
+                                EstudiantesMatriculados()
+                            });
+
+
+                            //console.log('Se proceso')
+                        } else {
+                            sweet.openWarning("Mensaje", "Ocurrio un error al procesar la peticion", () => {
+                            });
+
+                            //console.log('No se proceso')
+                        }
+                    }
+                    if (responseEspecifico instanceof RestError) {
+                        if (responseEspecifico.getType() === Types.CANCELED) return;
+                        //console.log(responseEspecifico)
+                        sweet.openWarning("Mensaje", responseEspecifico.getMessage(), () => {
+                        });
+                    }
                 }
 
             }
@@ -161,7 +193,6 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
         setMatriculadoAsig(nuevosMatriculados);
     };
 
-
     const generarBody = () => {
 
         if (matriculadosAsig.length == 0) {
@@ -172,10 +203,8 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
             );
         }
 
-
         return matriculadosAsig.map((item, index) => {
 
-            //
             return (
                 <tr key={index} className={`text-sm ${index % 2 == 0 ? 'bg-gray-100' : 'bg-white'}`}>
                     <td className="border p-2 px-4 text-center">{++index}</td>
@@ -201,26 +230,23 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                     }
                     {
                         activeContent == 1 &&
-                        obtenerFechas(props.item.f_clases_ini, props.item.f_clases_fin, props.item.dias).map((dia) => (
-                            <td className="border p-2 text-center">
-                                {
-                                    dia.estado ?
-                                        <div className="bg-green-400 w-5 h-5 rounded-sm text-white font-semibold m-auto">
-                                            P
-                                        </div>
-                                        :
-                                        <div className="bg-red-400 w-5 h-5 rounded-sm text-white font-semibold m-auto">
-                                            F
-                                        </div>
-                                }
-                            </td>
-                        ))
+                        fechas.map((dia, index) => {
+
+
+                            return (
+                                <AsistenciaCelda
+                                    key={index}
+                                    codigo={item.estudianteId}
+                                    fecha={dia.fechaString}
+                                />
+                            )
+                        })
                     }
-                    <td className="border p-2 px-4">
+                    {/*<td className="border p-2 px-4">
                         <span className="bg-green-200 rounded-md px-2 font-medium text-green-700">
-                            50%
+                            {estadoCelda + '/' + cantidadDias}
                         </span>
-                    </td>
+                    </td>*/}
                 </tr>
             );
         });
@@ -266,7 +292,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                     numeroSemana: current.getDay(),
                     nombreDia: nombreDia[current.getDay()],
                     mes: meses[current.getMonth()], // Meses en JavaScript se cuentan desde 0
-                    estado: true
+                    fechaString: current.getFullYear() + '-' + String(current.getMonth() + 1).padStart(2, "0") + '-' + String(current.getDate()).padStart(2, "0")
                 };
 
                 fechas.push(fechaConInfo);
@@ -277,8 +303,12 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
         return fechas;
     };
 
+    const fechas = obtenerFechas(props.item.f_clases_ini, props.item.f_clases_fin, props.item.dias);
+
+
     //console.log(props.item.f_clases_ini, props.item.f_clases_fin, props.item)
     //console.log(obtenerFechas(props.item.f_clases_ini, props.item.f_clases_fin, props.item.dias))
+    //console.log(fechaSeleccionada)
 
     return (
         <>
@@ -291,19 +321,19 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                     </h2>
                     <div className="flex gap-4">
                         <button
-                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 3 ? 'bg-blue-600' : 'bg-gray-400'}`}
+                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 1 ? 'bg-blue-600' : 'bg-gray-400'}`}
                             onClick={() => handleButtonClick(1)}
                         >
                             <i className="bi bi-list-check mr-2" /> Registro general
                         </button>
                         <button
-                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 1 ? 'bg-blue-600' : 'bg-gray-400'}`}
+                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 2 ? 'bg-blue-600' : 'bg-gray-400'}`}
                             onClick={() => handleButtonClick(2)}
                         >
                             <i className="bi bi-list-check mr-2" />  Asistencia diaria
                         </button>
                         <button
-                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 2 ? 'bg-blue-600' : 'bg-gray-400'}`}
+                            className={`hover:bg-gray-700 text-white font-semibold text-sm py-2 px-4 rounded ${activeContent === 3 ? 'bg-blue-600' : 'bg-gray-400'}`}
                             onClick={() => handleButtonClick(3)}
                         >
                             <i className="bi bi-list-check mr-2" /> Asistencia especifica
@@ -350,7 +380,10 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                                             activeContent == 3 &&
                                             <div className="flex gap-2">
                                                 <label className="my-auto text-base font-semibold text-gray-500">Fecha</label>
-                                                <input type="date"
+                                                <input
+                                                    type="date"
+                                                    value={fechaSeleccionada}
+                                                    onChange={(e) => setFechaSeleccionada(e.target.value)}
                                                 />
                                             </div>
                                         }
@@ -407,7 +440,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                                             activeContent == 1 &&
                                             obtenerFechas(props.item.f_clases_ini, props.item.f_clases_fin, props.item.dias).map((fecha, index) => {
 
-                                                console.log(fecha)
+                                                //console.log(fecha)
 
                                                 return (
                                                     <th key={index} className="py-1 px-4 text-xs">
@@ -419,7 +452,7 @@ const RegistrarAsistenciaGeneral = (props: Props) => {
                                                 );
                                             })
                                         }
-                                        <th className="bg-gray-500 py-1 px-2">%</th>
+                                        {/*<th className="bg-gray-500 py-1 px-2">%</th>*/}
                                     </tr>
                                 </thead>
                                 <tbody>

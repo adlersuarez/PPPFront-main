@@ -229,7 +229,11 @@ export async function InsertarAsistenciaHorarioAsignaturaFecha<RespValue>(codigo
 }
 
 export async function InsertarAsistenciaHorarioEspecifico<RespValue>(codigo: string, params: object[], abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create(instance.post<RespValue>(`/Asistencia/InsertarAsistenciaHorarioAsignaturaFecha/${codigo}`, params, { signal: abortController?.signal }));
+    return await Resolve.create(instance.post<RespValue>(`/Asistencia/InsertarAsistenciaHorarioEspecifico/${codigo}`, params, { signal: abortController?.signal }));
+}
+
+export async function ValidarAsistenciaEstudianteFecha<RespValue>(codigo: string, fecha: string, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/Asistencia/ValidarAsistenciaEstudianteFecha/${codigo}/${fecha}`, { signal: abortController?.signal }));
 }
 
 // Calendario
