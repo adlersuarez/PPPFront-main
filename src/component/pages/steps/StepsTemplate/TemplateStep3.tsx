@@ -61,7 +61,7 @@ const TemplateStep3 = () => {
 
             <ModalDatosJefeInmediato show={showJefe} hide={handleCloseJefe} />
 
-            <ModalDatosDuracionExtra show={showHorario} hide={handleCloseHorario} />
+            <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} />
 
             <ContenedorSteps
                 numero={3}

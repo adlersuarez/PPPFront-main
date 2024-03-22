@@ -10,7 +10,7 @@ type StepperControlProps = {
 
 const StepperControl: React.FC<StepperControlProps> = (props) => {
     return (
-        <div className="flex justify-around mt-10">
+        <div className="flex justify-around mt-12 sm:mt-16">
             <StepControl {...props} />
         </div>
     );

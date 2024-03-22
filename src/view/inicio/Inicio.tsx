@@ -166,7 +166,7 @@ const Inicio = () => {
     }
 
     return (
-        <div className="flex w-full">
+        <div className="flex w-full h-screen overscroll-none">
 
             {
                 cargando &&
@@ -196,7 +196,7 @@ const Inicio = () => {
             <div
                 ref={refMain}
                 className={css.DivMain}>
-                <div className="w-full p-4 font-mont overflow-hidden">
+                <div className="w-full font-mont overflow-y-auto">
                     {/*INICIO NAVEGACION */}
                     <div className="content-wrapper flex-wrap">
                         <Outlet />

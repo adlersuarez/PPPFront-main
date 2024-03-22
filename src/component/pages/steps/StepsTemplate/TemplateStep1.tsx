@@ -1,8 +1,10 @@
-import { useState, lazy, Suspense} from 'react';
+import { useState, lazy, Suspense } from 'react';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import ListaElementos from './Contenedor/ListaElementos';
 import EstadoRequisito from './Contenedor/EstadoRequisito';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
+import { generatePDF } from '@/helper/pdf.generator';
+import DatosCartaAceptacion from '@/model/interfaces/cartaAceptacion/datosCartaAceptacion';
 
 const TemplateStep1 = () => {
 
@@ -57,6 +59,22 @@ const TemplateStep1 = () => {
         fecha: {
             presentacion: '2023-11-10T16:10:00.000'
         }
+    }
+
+    const data: DatosCartaAceptacion = {
+        nombreAnio: '“Año de la unidad, la paz y el desarrollo”',
+        ciudadFecha: 'Huancayo, 26 de octubre del 2023',
+        nombreReferente: 'FLOR DE MARIA HUAMAN RUTTI',
+        empresaReferente: 'DISFRACES POCHITA',
+        cargoReferente: 'ADMINISTRADOR',
+        curso: 'PRÁCTICAS PRE PROFESIONALESM III – CURRICULARES',
+        nombreEstudiante: 'RUTH STEFANY ESLAVA GASPAR',
+        nivelEstudiante: 'IX',
+        carrera: 'CONTABILIDAD Y FINANZAS',
+        facultad: 'Facultad de Ciencias Administrativas y Contables',
+        nombreAdministrativo: 'DR. EUTIMIO CATALINO JARA RODRIGUEZ',
+        cargoAdministrativo: 'DECANO (e)',
+        urlFirma: 'https://w7.pngwing.com/pngs/374/543/png-transparent-electronic-signature-digital-signature-lawyer-digital-signature-angle-white-electronics.png'
     }
 
     return (
@@ -171,7 +189,9 @@ const TemplateStep1 = () => {
                         <hr className="my-2" />
 
                         <div className="flex">
-                            <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded m-auto flex">
+                            <button onClick={() => generatePDF(data)}
+
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded m-auto flex">
                                 <i className="bi bi-file-earmark-arrow-down w-1/4 m-auto text-3xl" />
                                 <span className='w-3/4'>Descargar Carta de Presentación</span>
                             </button>

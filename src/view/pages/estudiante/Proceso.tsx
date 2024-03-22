@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import Stepper from '@/component/pages/steps/Stepper';
 import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
-import Volver from '@/component/Volver';
+import ContainerVIstas from '@/component/Container';
 
 const Proceso = () => {
 
@@ -51,7 +51,7 @@ const Proceso = () => {
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     };
 
-    const seleccionStep = (step : number) => {
+    const seleccionStep = (step: number) => {
         setCurrentStep(step);
     }
 
@@ -60,77 +60,67 @@ const Proceso = () => {
     const paso_3: boolean = true;
     const paso_4: boolean = true;
     const paso_5: boolean = true;
-    const paso_6: boolean = false;
+    const paso_6: boolean = true;
     const paso_7: boolean = false;
 
     const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6, paso_7];
 
     //
     useEffect(() => {
-        displayStep(currentStep);
-    }, [currentStep]);
+        displayStep(currentStep)
+    }, [currentStep])
 
     return (
-        <div className="flex flex-wrap -mx-3">
-            <div className="w-full max-w-full px-3 flex-0">
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
-                    <div className="text-2xl text-gray-400 font-bold flex gap-2">
-                        <Volver />
-                        Volver
-                    </div>
+        <ContainerVIstas titulo='Volver' retornar>
 
-                    <div className="flex flex-col gap-4 ">
-                        <div className='text-3xl text-gray-400 gap-2 w-full text-center grid grid-rows-2 sm:flex sm:justify-center sm:gap-3'>
-                            <span>Modalidad</span>
-                            <strong>CURRICULAR</strong>
-                        </div>
-                        <p className='text-xl text-gray-400'>¿Como va mi proceso?</p>
-                    </div>
-
-                    <div>
-                        <div className="md:w-full mx-auto pb-2 bg-white ">
-                            {
-                                <div className="w-full horizontal mt-5">
-                                <Stepper
-                                    steps={steps}
-                                    currentStep={currentStep}
-                                    estadoModel={estado_model}
-                                    seleccionStep={seleccionStep}
-                                />
-
-                                <StepperControl
-                                    handleClick={handleClick}
-                                    currentStep={currentStep}
-                                    steps={steps}
-                                    estadoModel={estado_model}
-                                />
-
-                                <StepperContext.Provider
-                                    value={{
-                                        userData,
-                                        setUserData,
-                                        finalData,
-                                        setFinalData
-                                    }}>
-
-                                    <Suspense fallback={<div>Loading...</div>}>
-                                        {stepComponent}
-                                    </Suspense>
-
-                                </StepperContext.Provider>
-
-                            </div>
-                            }
-
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border mt-3">
+            <div className='flex gap-6 whitespace-nowrap text-2xl sm:text-3xl text-upla-100 w-full text-center rounded font-bold justify-between'>
+                <span className='hidden xl:flex uppercase tracking-wide'>Prácticas Preprofesionales</span>
+                <span title='Prácticas Preprofesionales uppercase' className='flex xl:hidden'>Prácticas PP</span>
+                <div className='flex bg-upla-100 text-white text-lg px-2 py-0.5 rounded-lg'>
+                    <span className='m-auto font-normal flex whitespace-nowrap gap-2'>
+                        <span className='hidden sm:flex'>Modalidad</span>
+                        <strong>CURRICULAR</strong>
+                    </span>
                 </div>
             </div>
-        </div>
-    );
+
+            <hr className='my-4' />
+            <div className=''>
+                <p className='text-xl text-gray-400'>¿Como va mi proceso?</p>
+            </div>
+            <div className="md:w-full mx-auto bg-white sm:mt-4">
+                <div className="w-full">
+                    <Stepper
+                        steps={steps}
+                        currentStep={currentStep}
+                        estadoModel={estado_model}
+                        seleccionStep={seleccionStep}
+                    />
+
+                    <StepperControl
+                        handleClick={handleClick}
+                        currentStep={currentStep}
+                        steps={steps}
+                        estadoModel={estado_model}
+                    />
+
+                    <StepperContext.Provider
+                        value={{
+                            userData,
+                            setUserData,
+                            finalData,
+                            setFinalData
+                        }}>
+
+                        <Suspense fallback={<div>Loading...</div>}>
+                            {stepComponent}
+                        </Suspense>
+
+                    </StepperContext.Provider>
+                </div>
+            </div>
+        </ContainerVIstas>
+    )
 }
 
 export default Proceso;

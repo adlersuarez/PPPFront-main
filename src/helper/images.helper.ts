@@ -11,6 +11,8 @@ import modalidad_convalidacion from '../assets/images/convalidacion.jpg';
 
 import practicas from '../assets/images/practiccas.jpg';
 
+import no_user from '../assets/images/no-user.png'
+
 
 export default {
     logo,
@@ -22,5 +24,6 @@ export default {
     portada,
     modalidad_efectiva,
     modalidad_convalidacion,
-    practicas
+    practicas,
+    no_user
 }

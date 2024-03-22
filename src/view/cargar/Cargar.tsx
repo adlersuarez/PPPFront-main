@@ -8,65 +8,44 @@ import { images } from '../../helper/index.helper';
 
 const Cargar = () => {
 
-
     const dispatch = useDispatch();
 
     useEffect(() => {
-        valid();
-    }, []);
+        valid()
+    }, [])
 
-    const valid = async () => {       
-        const token = window.localStorage.getItem("token");
-        const codigo = window.localStorage.getItem("codigo");
+    const valid = async () => {
+        const token = window.localStorage.getItem("token")
+        const codigo = window.localStorage.getItem("codigo")
 
         if (token == null || codigo == null) {
-            dispatch(starting());
-            return;
+            dispatch(starting())
+            return
         }
 
         const response = await ValidarTokenRest();
 
-        if(response instanceof Response){
-            dispatch(restore({ codigo: JSON.parse(codigo), token: JSON.parse(token), authentication: true }));
-            return;
+        if (response instanceof Response) {
+            dispatch(restore({ codigo: JSON.parse(codigo), token: JSON.parse(token), authentication: true }))
+            return
         }
 
-        dispatch(starting());
-        return;
+        dispatch(starting())
+        return
     }
 
     return (
-        <>
-            <div className="fixed z-[500] w-screen h-screen">
-                <div className=" w-screen h-screen bg-gray-900"></div>
-                <div className=" w-full h-full absolute left-0 top-0 text-white flex justify-center items-center flex-col">
-                    <img src={images.logo} className="w-[10.5rem] mr-0 my-3" alt="Flowbite Logo" />
-                    <div style={{ "borderTopColor": "transparent" }}
-                        className="w-16 h-16 border-4 border-upla-100 border-solid rounded-full animate-spin">
-                    </div>
-                    <h1 className='m-3 text-center'>Se está estableciendo conexión con el servidor..</h1>
+        <div className="fixed z-[500] w-screen h-screen">
+            <div className=" w-screen h-screen bg-gray-900"></div>
+            <div className=" w-full h-full absolute left-0 top-0 text-white flex justify-center items-center flex-col">
+                <img src={images.logo} className="w-[10.5rem] mr-0 my-3" alt="Flowbite Logo" />
+                <div style={{ "borderTopColor": "transparent" }}
+                    className="w-16 h-16 border-4 border-upla-100 border-solid rounded-full animate-spin">
                 </div>
+                <h1 className='m-3 text-center'>Se está estableciendo conexión con el servidor..</h1>
             </div>
-            {/* <div className="loader text-center">
-                <div className="loader-inner">
-
-                    <div className="lds-roller mb-3">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-
-                    <h4 className="text-uppercase font-weight-bold">Cargando...</h4>
-                    <p className="font-italic text-muted">Se está estableciendo conexión con el servidor...</p>
-                </div>
-            </div> */}
-        </>
-    );
+        </div>
+    )
 }
 
-export default Cargar;
+export default Cargar

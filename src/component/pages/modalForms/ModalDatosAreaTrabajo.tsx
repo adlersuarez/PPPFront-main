@@ -95,7 +95,7 @@ const ModalDatosAreaTrabajo: React.FC<Props> = (props: Props) => {
                                 defaultValue={datos.direccion_trabajo}
                             />
                         </div>
-                        <div className='flex flex-col'>
+                        <div className='hidden flex-col'>
                             <label className='font-bold mb-1'>Días de realización de prácticas</label>
                             <div className="grid grid-cols-2 gap-x-4">
                                 {
@@ -114,7 +114,7 @@ const ModalDatosAreaTrabajo: React.FC<Props> = (props: Props) => {
                                 }
                             </div>
                         </div>
-                        <div className='flex flex-col'>
+                        <div className='hidden flex flex-col'>
                             <label className='font-bold mb-1'>Horario</label>
                             <div className="grid grid-cols gap-2">
                                 <div className="flex w-full justify-between items-center">

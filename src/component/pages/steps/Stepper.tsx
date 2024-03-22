@@ -21,6 +21,20 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, sele
     const [newStep, setNewStep] = useState<Step[]>([]);
     const stepRef = useRef<Step[]>([]);
 
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const updateStep = (stepNumber: number, steps: Step[]): Step[] => {
         const newSteps = [...steps];
 
@@ -80,7 +94,7 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, sele
     //
     const displaySteps = newStep.map((step, index) => {
         return (
-            window.innerWidth < 600 ?
+            windowWidth < 1200 ?
                 (
                     step.highlighted &&
                     <div
@@ -101,10 +115,10 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, sele
                         estado={estadoModel} />
                 </button>
         )
-    });
+    })
 
     return (
-        <div className="mx-auto my-5 p-8 flex justify-between items-center w-11/12">
+        <div className="mx-auto p-8 flex justify-between items-center w-11/12 ">
             {displaySteps}
         </div>
     );

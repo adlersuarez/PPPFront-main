@@ -7,8 +7,10 @@ import '../../../assets/index.css'
 
 import es from 'date-fns/locale/es';
 import { format } from 'date-fns';
+import toast from 'react-hot-toast';
 
 interface ExcludedDay {
+    id: number
     date: Date;
     reason: string;
 }
@@ -96,10 +98,32 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
             // Añadir un día al día excluido para evitar problemas con zonas horarias
             adjustedDate.setDate(adjustedDate.getDate() + 1);
 
-            setExcludedDays([...excludedDays, { date: adjustedDate, reason: newExcludedReason }]);
+            // Verificar si la fecha ya existe en la lista actual de días excluidos
+            const isDateAlreadyExcluded = excludedDays.some(day => {
+                const dayDate = new Date(day.date);
+                return dayDate.toDateString() === adjustedDate.toDateString();
+            });
+
+            // Si la fecha ya está en la lista, no se añade
+            if (isDateAlreadyExcluded) {
+                toast.error('La fecha ah excluir ya está registrada.');
+                return;
+            }
+
+            // Obtener el máximo id en la lista actual de días excluidos
+            const maxId = Math.max(...excludedDays.map(day => day.id), 0);
+            const newId = maxId + 1;
+
+            // Agregar el nuevo día excluido con el nuevo id
+            setExcludedDays([...excludedDays, { id: newId, date: adjustedDate, reason: newExcludedReason }]);
             setNewExcludedDate('');
             setNewExcludedReason('');
         }
+    };
+    
+    const removeExcludedDateById = (idToRemove: number) => {
+        const updatedExcludedDays = excludedDays.filter(day => day.id !== idToRemove);
+        setExcludedDays(updatedExcludedDays);
     };
 
     const renderExcludedDaysTable = () => {
@@ -110,6 +134,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                         <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
                         <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Fecha</th>
                         <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Motivo</th>
+                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">/</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -123,6 +148,11 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                             </td>
                             <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                 {excludedDay.reason}
+                            </td>
+                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                <button onClick={() => removeExcludedDateById(excludedDay.id)} title='Quitar' className='hover:bg-red-500 hover:text-white px-1 rounded py-0.5'>
+                                    <i className="bi bi-trash3" />
+                                </button>
                             </td>
                         </tr>
                     ))}
