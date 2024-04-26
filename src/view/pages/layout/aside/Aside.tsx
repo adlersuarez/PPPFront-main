@@ -6,6 +6,12 @@ import Overlay from "./widget/Overlay";
 import Body from "./widget/Body";
 import Estudiante from "../../../../model/interfaces/estudiante.model.interface";
 import Trabajador from "../../../../model/interfaces/trabajador.model.interface";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore.store";
+import MenuItem from "@/model/interfaces/menu/menu";
+import { useEffect, useState } from "react";
+import { ArmarMenu } from "@/helper/herramienta.helper";
+import useRolLogin from "@/component/hooks/useRolLogin";
 
 type Props = {
     informacion: Estudiante | Trabajador | undefined,
@@ -23,16 +29,6 @@ type Props = {
     subMenus?: MenuItem[]
 }*/
 
-type MenuItem = {
-    id: string,
-    titulo: string,
-    url?: string,
-    icono: string,
-    moduPadre: boolean,
-    modPosicion: number,
-    subMenu: boolean,
-    subMenuItems?: MenuItem[]
-}
 
 const menus: MenuItem[] = [
     {
@@ -222,6 +218,23 @@ const menus: MenuItem[] = [
 
 const Aside = (props: Props) => {
 
+    const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
+    const [menuGeneral, setMenuGeneral] = useState<MenuItem[]>([])
+
+    const roles = useRolLogin()
+
+    const loadInitMenu = async () => {
+        const [generalMenu] = await Promise.all([
+            await ArmarMenu(tipoUsuario, roles)
+        ])
+
+        setMenuGeneral(generalMenu)
+    }
+
+    useEffect(()=>{
+        loadInitMenu()
+    },[])
+
     return (
         <Body refAside={props.refAside}>
             <div className="relative z-30 h-full overflow-y-auto py-4">
@@ -231,7 +244,7 @@ const Aside = (props: Props) => {
 
                 <ul id="menus">
                     {
-                        menus.map((menu, index) => {
+                        menuGeneral.map((menu, index) => {
                             if (menu.subMenuItems?.length == 0) {
                                 return <Menu
                                     key={index}

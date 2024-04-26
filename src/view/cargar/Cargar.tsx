@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { restore, starting } from '../../store/authSlice.store';
 import { ValidarTokenRest } from '../../network/rest/services.network';
 import { images } from '../../helper/index.helper';
+import { restoreDataEstudiante } from '@/store/estudianteSlice.store';
+import { restoreDataPersonal } from '@/store/personalSlice.store';
 
 const Cargar = () => {
 
@@ -17,16 +19,21 @@ const Cargar = () => {
     const valid = async () => {
         const token = window.localStorage.getItem("token")
         const codigo = window.localStorage.getItem("codigo")
+        const tipUsuario = window.localStorage.getItem("tpu")
 
         if (token == null || codigo == null) {
             dispatch(starting())
             return
         }
 
-        const response = await ValidarTokenRest();
+        const response = await ValidarTokenRest()
 
         if (response instanceof Response) {
-            dispatch(restore({ codigo: JSON.parse(codigo), token: JSON.parse(token), authentication: true }))
+            dispatch(restore({ codigo: JSON.parse(codigo), token: JSON.parse(token), tipoUsuario: JSON.parse(tipUsuario as string), authentication: true }))
+
+            //Actualizamos los valores de los datos del estudiante
+            dispatch(restoreDataPersonal(JSON.parse(localStorage.getItem('infoPersonal') ?? '{}')))
+            dispatch(restoreDataEstudiante(JSON.parse(localStorage.getItem('infoEstudiante') ?? '{}')))
             return
         }
 

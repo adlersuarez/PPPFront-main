@@ -15,13 +15,21 @@ import RestError from '../../model/class/resterror.model.class';
 import Estudiante from '../../model/interfaces/estudiante.model.interface';
 import Trabajador from '../../model/interfaces/trabajador.model.interface';
 import { Toaster } from 'react-hot-toast';
+import { ConsultaInfoEstId, ConsultaInfoPerId } from '@/network/rest/practicas.network';
+import { InfoEstudiante } from '@/model/interfaces/estudiante/infoEstudiante';
+import { loginDataEstudiante } from '@/store/estudianteSlice.store';
+import { InfoPeriodo } from '@/model/interfaces/periodo/infoPeriodo';
+import { loginDataPersonal } from '@/store/personalSlice.store';
 
 const Inicio = () => {
 
-    const dispatch = useDispatch();
-    const location = useLocation();
+    const dispatch = useDispatch()
+    const location = useLocation()
 
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
+
+    //const roles = useRolLogin()
+    //console.log(codigoLoginToken, roles)
 
     if (!autenticado) {
         return <Navigate to="/acceso" />
@@ -29,99 +37,111 @@ const Inicio = () => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
 
-    const refAside = useRef<HTMLInputElement>(null);
+    const refAside = useRef<HTMLInputElement>(null)
 
-    const refBlock = useRef<HTMLInputElement>(null);
+    const refBlock = useRef<HTMLInputElement>(null)
 
-    const refMain = useRef<HTMLInputElement>(null);
+    const refMain = useRef<HTMLInputElement>(null)
 
-    const refOverlay = useRef<HTMLInputElement>(null);
+    const refOverlay = useRef<HTMLInputElement>(null)
 
-    const [cargando, setCargando] = useState<boolean>(true);
+    const [cargando, setCargando] = useState<boolean>(true)
 
-    const [informacion, setInformacion] = useState<Estudiante | Trabajador>();
+    const [informacion, setInformacion] = useState<Estudiante | Trabajador>()
 
     useEffectOnce(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        const menus = document.querySelectorAll<HTMLElement>("#menus li button") as NodeListOf<HTMLButtonElement>;
+        const menus = document.querySelectorAll<HTMLElement>("#menus li button") as NodeListOf<HTMLButtonElement>
         for (const button of menus) {
             button.addEventListener("click", () => {
-                const element = button.parentNode?.querySelector("ul") as HTMLElement;
+                const element = button.parentNode?.querySelector("ul") as HTMLElement
 
                 if (element.getAttribute("aria-expanded") !== "true") {
-                    element.setAttribute("aria-expanded", "true");
-                    element.style.maxHeight = element.scrollHeight + "px";
+                    element.setAttribute("aria-expanded", "true")
+                    element.style.maxHeight = element.scrollHeight + "px"
 
-                    button.classList.remove("text-gray-400");
-                    button.classList.add("text-white");
-                    button.classList.add("bg-gray-700");
+                    button.classList.remove("text-gray-400")
+                    button.classList.add("text-white")
+                    button.classList.add("bg-gray-700")
 
-                    button.children[2].classList.remove("rotate-[-90deg]");
+                    button.children[2].classList.remove("rotate-[-90deg]")
 
-                    const list = button.parentElement?.parentElement?.querySelectorAll<HTMLElement>("button") as NodeListOf<HTMLButtonElement>;
+                    const list = button.parentElement?.parentElement?.querySelectorAll<HTMLElement>("button") as NodeListOf<HTMLButtonElement>
                     for (const bu of list) {
                         if (button.getAttribute("id-list") !== bu.getAttribute("id-list")) {
-                            const elementUl = bu.parentNode?.querySelector("ul") as HTMLElement;
+                            const elementUl = bu.parentNode?.querySelector("ul") as HTMLElement
                             if (elementUl.getAttribute("aria-expanded") == "true") {
-                                elementUl.setAttribute("aria-expanded", "false");
-                                elementUl!.style.maxHeight = elementUl.style.maxHeight = "0px";
+                                elementUl.setAttribute("aria-expanded", "false")
+                                elementUl!.style.maxHeight = elementUl.style.maxHeight = "0px"
 
-                                bu!.classList.remove("text-white");
-                                bu!.classList.add("text-gray-400");
-                                bu!.classList.remove("bg-gray-700");
-                                bu.children[2].classList.add("rotate-[-90deg]");
+                                bu!.classList.remove("text-white")
+                                bu!.classList.add("text-gray-400")
+                                bu!.classList.remove("bg-gray-700")
+                                bu.children[2].classList.add("rotate-[-90deg]")
                             }
                         }
                     }
 
 
                 } else {
-                    element.setAttribute("aria-expanded", "false");
-                    element.style.maxHeight = element.style.maxHeight = "0px";
+                    element.setAttribute("aria-expanded", "false")
+                    element.style.maxHeight = element.style.maxHeight = "0px"
 
-                    button.classList.remove("text-white");
-                    button.classList.add("text-gray-400");
-                    button.classList.remove("bg-gray-700");
+                    button.classList.remove("text-white")
+                    button.classList.add("text-gray-400")
+                    button.classList.remove("bg-gray-700")
 
-                    button.children[2].classList.add("rotate-[-90deg]");
+                    button.children[2].classList.add("rotate-[-90deg]")
                 }
-            });
+            })
         }
-    });
+    })
 
     useEffect(() => {
         const load = async () => {
             if (codigo.length === 8) {
-                const response = await TrabajadorRest<Trabajador>(codigo);
+                const response = await TrabajadorRest<Trabajador>(codigo)
 
-                //console.log(response.data)
+                //console.log(response)
 
                 if (response instanceof Response) {
-                    setInformacion(response.data as Trabajador);
-                    setCargando(false);
+                    setInformacion(response.data as Trabajador)
+                    setCargando(false)
+
+                    const respuestaAlumno = await ConsultaInfoPerId<InfoPeriodo>()
+                    if (respuestaAlumno instanceof Response) {
+                        dispatch(loginDataPersonal(respuestaAlumno.data))
+                        //guardamos los datos del alumno
+                    }
                 }
 
                 if (response instanceof RestError) {
-                    dispatch(logout());
+                    dispatch(logout())
+                    //setCargando(false)
                 }
             } else {
-                const response = await EstudianteRest<Estudiante>(codigo);
+                const response = await EstudianteRest<Estudiante>(codigo)
 
                 if (response instanceof Response) {
-                    setInformacion(response.data as Estudiante);
-                    setCargando(false);
-                    //console.log(response)
+                    setInformacion(response.data as Estudiante)
+                    setCargando(false)
+
+                    const respuestaAlumno = await ConsultaInfoEstId<InfoEstudiante>(codigo)
+                    if (respuestaAlumno instanceof Response) {
+                        dispatch(loginDataEstudiante(respuestaAlumno.data))
+                        //guardamos los datos del alumno
+                    }
                 }
 
                 if (response instanceof RestError) {
-                    dispatch(logout());
+                    dispatch(logout())
                 }
             }
         }
 
-        load();
+        load()
 
-    }, []);
+    }, [])
 
     useEffect(() => {
         const onEventResize = (event: Event) => {
@@ -136,7 +156,7 @@ const Inicio = () => {
         window.addEventListener('resize', onEventResize);
 
         return () => window.removeEventListener('resize', onEventResize)
-    }, []);
+    }, [])
 
     useEffect(() => {
         const onEventFocused = () => {
@@ -146,7 +166,7 @@ const Inicio = () => {
         window.addEventListener('focus', onEventFocused);
 
         return () => window.removeEventListener('focus', onEventFocused);
-    }, []);
+    }, [])
 
     const onEventOverlay = () => {
         refAside.current?.classList.toggle("ml-[-256px]");

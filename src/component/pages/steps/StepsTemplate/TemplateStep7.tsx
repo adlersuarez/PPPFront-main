@@ -1,7 +1,12 @@
+import { useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
-import EstadoRequisito from "./Contenedor/EstadoRequisito";
+import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import ListaElementos from "./Contenedor/ListaElementos";
+import ModalInformeFinal from "../../modalForms/ModalTemplate6/ModalInformeFinal";
+import ModalConvenioPracticas from "../../modalForms/ModalTemplate6/ModalConvenioPracticas";
+import ModalConstanciaEmpresa from "../../modalForms/ModalTemplate6/ModalConstanciaEmpresa";
+import ModalAsistenciaVisada from "../../modalForms/ModalTemplate6/ModalAsistenciaVisada";
 
 const TemplateStep7 = () => {
 
@@ -30,8 +35,28 @@ const TemplateStep7 = () => {
         }
     }
 
+    const [showInformeFinal, setShowInformeFinal] = useState<boolean>(false)
+    const handleCloseInformeFinal = () => setShowInformeFinal(false)
+    const handleShowInformeFinal = () => setShowInformeFinal(true)
+
+    const [showConvenioPracticas, setShowConvenioPracticas] = useState<boolean>(false)
+    const handleCloseConvenioPracticas = () => setShowConvenioPracticas(false)
+    const handleShowConvenioPracticas = () => setShowConvenioPracticas(true)
+
+    const [showConstanciaEmpresa, setShowConstanciaEmpresa] = useState<boolean>(false)
+    const handleCloseConstanciaEmpresa = () => setShowConstanciaEmpresa(false)
+    const handleShowConstanciaEmpresa = () => setShowConstanciaEmpresa(true)
+
+    const [showAsistenciaVisada, setShowAsistenciaVisada] = useState<boolean>(false)
+    const handleCloseAsistenciaVisada = () => setShowAsistenciaVisada(false)
+    const handleShowAsistenciaVisada = () => setShowAsistenciaVisada(true)
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
+            <ModalInformeFinal show={showInformeFinal} hide={handleCloseInformeFinal} />
+            <ModalConvenioPracticas show={showConvenioPracticas} hide={handleCloseConvenioPracticas} />
+            <ModalConstanciaEmpresa show={showConstanciaEmpresa} hide={handleCloseConstanciaEmpresa} />
+            <ModalAsistenciaVisada show={showAsistenciaVisada} hide={handleCloseAsistenciaVisada} />
 
             <ContenedorSteps
                 numero={7}
@@ -72,29 +97,73 @@ const TemplateStep7 = () => {
                                 <tbody>
                                     <tr className='bg-white border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
+                                            <EstadoRequisito valor={0} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             Informe final
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                                <button
+                                                    onClick={handleShowInformeFinal}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button
+                                                    onClick={() => { }}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr className='bg-gray-100 border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
+                                            <EstadoRequisito valor={0} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            Constancia de prácticas
+                                            Convenio de prácticas
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                                <button
+                                                    onClick={handleShowConvenioPracticas}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button
+                                                    onClick={() => { }}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className='bg-white border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito valor={0} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Constancia de empresa
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button
+                                                    onClick={handleShowConstanciaEmpresa}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button
+                                                    onClick={() => { }}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className='bg-gray-100 border-b'>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <EstadoRequisito valor={0} />
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            Asistencia Visada
+                                        </td>
+                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                            <div className='flex gap-2 justify-center'>
+                                                <button
+                                                    onClick={handleShowAsistenciaVisada}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button
+                                                    onClick={() => { }}
+                                                    className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
                                             </div>
                                         </td>
                                     </tr>

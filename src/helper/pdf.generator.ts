@@ -1,6 +1,6 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit'
-import DatosCartaAceptacion from '@/model/interfaces/cartaAceptacion/datosCartaAceptacion';
+import DatosCartaAceptacion from '@/model/interfaces/cartaPresentacion/datosCartaAceptacion';
 
 export const generatePDF = async (data: DatosCartaAceptacion) => {
 
@@ -12,11 +12,11 @@ export const generatePDF = async (data: DatosCartaAceptacion) => {
     pdfDoc.registerFontkit(fontkit)
 
     // Obtener la fuente Cambria normal - cursiva - bold
-    const cambriaFontBytes = await fetch('/fuentes/cambria.ttf').then((res) => res.arrayBuffer())
+    //const cambriaFontBytes = await fetch('/fuentes/cambria.ttf').then((res) => res.arrayBuffer())
     const cambriaFontBytesCursiva = await fetch('/fuentes/cambriai.ttf').then((res) => res.arrayBuffer())
     const cambriaFontBytesBoldCursiva = await fetch('/fuentes/cambriaz.ttf').then((res) => res.arrayBuffer())
     // Incrustar la fuente "Cambria" en el documento
-    const cambriaNormal = await pdfDoc.embedFont(cambriaFontBytes);
+    //const cambriaNormal = await pdfDoc.embedFont(cambriaFontBytes);
     const cambriaCursiva = await pdfDoc.embedFont(cambriaFontBytesCursiva);
     const cambriaBold = await pdfDoc.embedFont(cambriaFontBytesBoldCursiva);
 
@@ -229,68 +229,68 @@ export const generatePDF = async (data: DatosCartaAceptacion) => {
 
     const text = `En tal sentido, agradeceré se sirva brindarle las facilidades necesarias, para el cumplimiento de sus objetivos de formación profesional, los mismos que redundarán en beneficio del mencionado estudiante y seguramente de su empresa.`;
 
-// Obtener el ancho y alto de la página
-const { width, height } = page.getSize();
+    // Obtener el ancho y alto de la página
+    const { width, height } = page.getSize();
 
-// Definir los márgenes
-const marginLeft = 50;
-const marginRight = 50;
+    // Definir los márgenes
+    const marginLeft = 50;
+    const marginRight = 50;
 
-// Definir la sangría
-const indent = 80;
+    // Definir la sangría
+    const indent = 80;
 
-// Definir el tamaño de letra y el espaciado entre líneas
-const fontSize = 12;
-const lineHeight = 20;
+    // Definir el tamaño de letra y el espaciado entre líneas
+    const fontSize = 12;
+    const lineHeight = 20;
 
-// Dividir el texto en palabras
-const words = text.split(' ');
+    // Dividir el texto en palabras
+    const words = text.split(' ');
 
-// Inicializar la posición horizontal y vertical
-let x = marginLeft + indent;
-let y = height - 60;
+    // Inicializar la posición horizontal y vertical
+    let x = marginLeft + indent;
+    let y = height - 600;
 
-// Variable para almacenar el texto de la línea actual
-let currentLine = '';
+    // Variable para almacenar el texto de la línea actual
+    let currentLine = '';
 
-// Dibujar cada palabra con sangría
-for (const word of words) {
-    const wordWidth = cambriaCursiva.widthOfTextAtSize(word, fontSize);
+    // Dibujar cada palabra con sangría
+    for (const word of words) {
+        const wordWidth = cambriaCursiva.widthOfTextAtSize(word, fontSize);
 
-    // Verificar si agregar la palabra excederá el ancho disponible
-    if (x + wordWidth > width - marginRight) {
-        // Agregar la línea actual al documento
+        // Verificar si agregar la palabra excederá el ancho disponible
+        if (x + wordWidth > width - marginRight) {
+            // Agregar la línea actual al documento
+            page.drawText(currentLine.trim(), {
+                x: marginLeft + indent,
+                y,
+                font: cambriaCursiva,
+                size: fontSize,
+            });
+
+            // Actualizar la posición vertical para la siguiente línea
+            y -= lineHeight;
+
+            // Reiniciar la posición horizontal y el texto de la línea actual
+            x = marginLeft + indent;
+            currentLine = '';
+        }
+
+        // Agregar la palabra a la línea actual
+        currentLine += (currentLine ? ' ' : '') + word;
+
+        // Actualizar la posición horizontal para la siguiente palabra
+        x += wordWidth + cambriaCursiva.widthOfTextAtSize(' ', fontSize);
+    }
+
+    // Dibujar la última línea restante, si hay alguna
+    if (currentLine.trim()) {
         page.drawText(currentLine.trim(), {
             x: marginLeft + indent,
             y,
             font: cambriaCursiva,
             size: fontSize,
         });
-
-        // Actualizar la posición vertical para la siguiente línea
-        y -= lineHeight;
-
-        // Reiniciar la posición horizontal y el texto de la línea actual
-        x = marginLeft + indent;
-        currentLine = '';
     }
-
-    // Agregar la palabra a la línea actual
-    currentLine += (currentLine ? ' ' : '') + word;
-
-    // Actualizar la posición horizontal para la siguiente palabra
-    x += wordWidth + cambriaCursiva.widthOfTextAtSize(' ', fontSize);
-}
-
-// Dibujar la última línea restante, si hay alguna
-if (currentLine.trim()) {
-    page.drawText(currentLine.trim(), {
-        x: marginLeft + indent,
-        y,
-        font: cambriaCursiva,
-        size: fontSize,
-    });
-}
 
 
 

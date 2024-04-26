@@ -16,81 +16,84 @@ import RestError from "../../model/class/resterror.model.class";
 import Login from "../../model/interfaces/login.model.interface";
 import { AiFillWarning } from "react-icons/ai";
 import { Types } from "../../model/enum/types.model";
+import { hashStringSHA256 } from "@/helper/herramienta.helper";
 
 const Acceso = () => {
 
     const dispatch = useDispatch();
     const autenticado = useSelector((state: RootState) => state.autenticacion.autenticado)
+    const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
 
-    const [codigo, setCodigo] = useState<string>('');
-    const [clave, setClave] = useState<string>('');
-    const [mensaje, setMensaje] = useState<string>('');
-    const [proceso, setProceso] = useState<boolean>(false);
+    const [codigo, setCodigo] = useState<string>('')
+    const [clave, setClave] = useState<string>('')
+    const [mensaje, setMensaje] = useState<string>('')
+    const [proceso, setProceso] = useState<boolean>(false)
 
-    const [ver, setVer] = useState<boolean>(false);
+    const [ver, setVer] = useState<boolean>(false)
 
-    const [codigoMensaje, setCodigoMensaje] = useState<string>('');
-    const [claveMensaje, setClaveMensaje] = useState<string>('');
+    const [codigoMensaje, setCodigoMensaje] = useState<string>('')
+    const [claveMensaje, setClaveMensaje] = useState<string>('')
 
-    const refCodigo = useRef<HTMLInputElement>(null);
-    const refClave = useRef<HTMLInputElement>(null);
+    const refCodigo = useRef<HTMLInputElement>(null)
+    const refClave = useRef<HTMLInputElement>(null)
 
     const onEventAcceso = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (proceso) return;
+        if (proceso) return
 
-        setCodigoMensaje("");
-        setClaveMensaje("");
-        setMensaje("");
+        setCodigoMensaje("")
+        setClaveMensaje("")
+        setMensaje("")
 
         if (codigo == "") {
             refCodigo.current!.focus();
-            setCodigoMensaje("!El campo es oblogatorio¡");
-            return;
+            setCodigoMensaje("!El campo es oblogatorio¡")
+            return
         }
 
         if (clave == "") {
             refClave.current!.focus();
-            setClaveMensaje("!El campo es oblogatorio¡");
-            return;
+            setClaveMensaje("!El campo es oblogatorio¡")
+            return
         }
 
         if (document.activeElement instanceof HTMLElement) {
-            document.activeElement.blur();
+            document.activeElement.blur()
         }
 
-        setProceso(true);
+        setProceso(true)
 
         const data = {
             "codigo": codigo,
             "contraseña": clave
         }
 
-        const response = await LoginRest<Login>(data);
+        const response = await LoginRest<Login>(data)
 
         //console.log(response)
 
         if (response instanceof Response) {
-            dispatch(login({codigo: response.data.docNumId ,token: response.data.token }));
-            return;
+            const tipUser = response.data.docNumId.length == 7 ? hashStringSHA256(import.meta.env.VITE_USER_TYPO_ES) : hashStringSHA256(import.meta.env.VITE_USER_TYPO_AD)
+            dispatch(login({ codigo: response.data.docNumId, token: response.data.token, tipoUsuario: tipUser }));
+            return
         }
 
         if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
+            if (response.getType() === Types.CANCELED) return
 
-            setMensaje(response.getMessage());
-            setProceso(false);
-            refCodigo.current?.focus();
+            setMensaje(response.getMessage())
+            setProceso(false)
+            refCodigo.current?.focus()
         }
     }
 
     const onEvenVerClave = () => {
-        setVer(!ver);
-        refClave.current?.focus();
+        setVer(!ver)
+        refClave.current?.focus()
     }
 
-    if (autenticado) {
+    if (autenticado && tipoUsuario) {
         return <Redirect to="/inicio" />
     }
 
@@ -171,4 +174,4 @@ const Acceso = () => {
     </>
 }
 
-export default Acceso;
+export default Acceso

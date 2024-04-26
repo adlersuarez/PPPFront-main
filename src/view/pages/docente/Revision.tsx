@@ -1,360 +1,183 @@
-import Volver from "@/component/Volver";
-import EstadoPracticas from "../../../component/pages/status/EstadoPracticas";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import ContainerVIstas from "@/component/Container";
+import SeccionesDocente from "@/model/interfaces/docente/secciones";
+import { useEffect, useRef, useState } from "react";
+import Response from "@/model/class/response.model.class";
+import RestError from "@/model/class/resterror.model.class";
+import { Types } from "@/model/enum/types.model";
+import Listas from "@/model/interfaces/Listas.model.interface";
+import { ListarSeccionAlumnos } from "@/network/rest/practicas.network";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore.store";
+import ListaSeccion from "@/model/interfaces/docente/listaSeccion";
+import { LoaderSvg } from "@/component/Svg.component";
+import { convertirANumerosRomanos } from "@/helper/herramienta.helper";
 
 const Revision = () => {
-    const navigate = useNavigate();
-    //const location = useLocation();
+    const navigate = useNavigate()
+    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    const periodo = useSelector((state: RootState) => state.infoPersonal.periodoId)
+
+    const abortController = useRef(new AbortController())
+
+    const location = useLocation()
+    const seccion: SeccionesDocente = location.state.seccion
 
     const datos: Record<string, string> = {
-        docente: 'JARA RODRIGUEZ, EUTIMIO CATALINO',
-        curso: '113286 - PRÁCTICA PRE PROFESIONAL I',
-        facultad: 'CIENCIAS ADMINISTRATIVAS Y CONTABLES',
-        escuela: 'ADMINISTRACIÓN Y SISTEMAS',
-        nivel_seccion: '08 - A1',
-        plan: '2015',
-    };
+        facultad: seccion.fac_Facultad,
+        carrera: seccion.car_Carrera,
+        sede: seccion.sed_Sede,
+        periodo: seccion.mtr_Anio + ' - ' + convertirANumerosRomanos(seccion.mtr_Periodo),
+        semestre: convertirANumerosRomanos(seccion.nta_Nivel),
+        curso: seccion.asi_Asignatura,
+        seccion: seccion.nta_Seccion,
 
-    var loading = false;
+        plan: seccion.pEs_Id,
+    }
 
-    const listaEstudiantes = [
-        {
-            id: 1,
-            codigo: "P00212D",
-            nombres: "ALVARO QUIROZ, FLOR DIANA",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 2,
-            codigo: "P00271E",
-            nombres: "AQUINO HIDALGO, NANCY PAMELA",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 2
-        },
-        {
-            id: 3,
-            codigo: "N02860F",
-            nombres: "ARCA SALAZAR, SAMUEL LUIS",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 3
-        },
-        {
-            id: 4,
-            codigo: "H07367E",
-            nombres: "ASTO MUCHA, FRANS BECKER",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 4
-        },
-        {
-            id: 5,
-            codigo: "N00680C",
-            nombres: "BUSTAMANTE SOLANO, DIANA",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 6,
-            codigo: "K07177G",
-            nombres: "CALDERON ARELLANO, ASHLY GABRIELA",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 7,
-            codigo: "F00386G",
-            nombres: "CAMPOS HIJAR, JESUS ROLANDO",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 2
-        },
-        {
-            id: 8,
-            codigo: "P00282F",
-            nombres: "CANO BASTIDAS, HAROLD WILLIAM",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 9,
-            codigo: "P00242E",
-            nombres: "CHARI PARADO, SIOMARA JHADIRA",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 3
-        },
-        {
-            id: 10,
-            codigo: "N03838E",
-            nombres: "CONDOR JAVIER, NAYELI YELITZA",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 4
-        },
-        {
-            id: 11,
-            codigo: "Q00623B",
-            nombres: "CORNELIO MARTINEZ, ROSY",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 12,
-            codigo: "P00261D",
-            nombres: "ESPIRITU CASTRO, YURIAN MARIO",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 2
-        },
-        {
-            id: 13,
-            codigo: "N00812K",
-            nombres: "GAMARRA AVILA, LETICIA KATERIN",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 3
-        },
-        {
-            id: 14,
-            codigo: "Q00636F",
-            nombres: "GASPAR MONAGO, YANDER YANZU",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 4
-        },
-        {
-            id: 15,
-            codigo: "M00898A",
-            nombres: "JAVIER MENDOZA, JANETH",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 16,
-            codigo: "M00899B",
-            nombres: "JIMENEZ CUICAPUSA, CORAIMA PATRICIA",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 2
-        },
-        {
-            id: 17,
-            codigo: "N00020K",
-            nombres: "LOPEZ GARCIA, ALDER FABRICIO",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 3
-        },
-        {
-            id: 18,
-            codigo: "M05079G",
-            nombres: "MEDINA AQUINO, JOSIAS ENRIQUE",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 4
-        },
-        {
-            id: 19,
-            codigo: "P00227J",
-            nombres: "QUISPE ALVAREZ, HUGO YAN CARLOS",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 2
-        },
-        {
-            id: 20,
-            codigo: "N00771G",
-            nombres: "SULCA MACHUCA, MARIA NICOLE",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 21,
-            codigo: "N00772H",
-            nombres: "SULLCARAY ZEVALLOS, YESETH ANAVEL",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-        {
-            id: 22,
-            codigo: "N00410H",
-            nombres: "TORRES CASO, FRANKLIN YEFERSON",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 2
-        },
-        {
-            id: 23,
-            codigo: "J03533C",
-            nombres: "TRISTAN BARZOLA, ANA MELBA",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 4
-        },
-        {
-            id: 24,
-            codigo: "N01927C",
-            nombres: "VALENZUELA QUISPE, MIRLA ESTEFANY",
-            facultad: "Facultad de Ciencias",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 3
-        },
-        {
-            id: 25,
-            codigo: "G05130J",
-            nombres: "VILLON URDAY, MARTIN JESUS",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            usuario_condicion: 1
-        },
-
-    ];
+    const [loading, setLoading] = useState<boolean>(false)
 
     const onEventDetalle = (
         codigo: string,
-        nombres: string,
-        facultad: string,
-        escuela_profesional: string,
-        usuario_condicion: number,
-        nivel_seccion: string,
-        plan: string
+        nombres: string
     ) => {
-        navigate(`./estudiante-detalle`, {
+        navigate(`../estudiante-detalle`, {
             state: {
                 codigo: codigo,
                 nombres: nombres,
-                facultad: facultad,
-                escuela_profesional: escuela_profesional,
-                usuario_condicion: usuario_condicion,
-                curso: nivel_seccion,
-                plan: plan,
+                facultad: datos.facultad,
+                carrera: datos.carrera,
+                sede: datos.sede,
+                periodo: datos.periodo,
+                semestre: datos.semestre,
+                curso: datos.curso,
+                seccion: datos.seccion,
+                plan: datos.plan,
             },
-        });
-    };
+        })
+    }
+
+    const [alumnosSeccion, setAlumnosSeccion] = useState<ListaSeccion[]>([])
+
+    const LoadSecciones = async () => {
+        setLoading(false)
+        setAlumnosSeccion([])
+        const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, codigo, seccion.sed_Id, periodo, abortController.current)
+
+        if (response instanceof Response) {
+            const data = response.data.resultado as ListaSeccion[]
+            setAlumnosSeccion(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+        setLoading(true)
+    }
+
+    useEffect(() => {
+        LoadSecciones()
+    }, [])
+
+    const [showDetalles, setShowDetalles] = useState<boolean>(false)
 
     return (
-        <>
-            <div className="flex flex-wrap -mx-3">
-                <div className="w-full max-w-full px-3 flex-0">
-                    <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
-                        <div className="text-2xl font-bold flex gap-2 text-gray-500">
-                            <Volver />
-                            Revisión docente
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
-                            {
-                                datos && Object.keys(datos).map((key, index) => (
-                                    <div key={index} className="">
-                                        <label className="block text-gray-700 tex-sm sm:text-lg font-bold">
-                                            {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
-                                        </label>
-                                        <p className="text-gray-700 text-base sm:text-xl">{datos[key]}</p>
-                                    </div>
-                                ))
-                            }
-                        </div>
+        <ContainerVIstas titulo='REVISIÓN DOCENTE' retornar>
+
+            <div onClick={() => setShowDetalles(!showDetalles)} className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-blue-500 text-lg sm:text-2xl">
+                    <div className=" font-bold ">
+                        {datos.curso} - {datos.seccion}
+                    </div>
+                    <i className={`bi bi-caret-down-fill transform my-auto ${showDetalles ? 'rotate-180' : ''}`} />
+                </div>
+                <div className={`${!showDetalles ? 'hidden' : 'flex'} p-4`}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-lg sm:text-lg w-full">
+                        <p className="font-bold text-gray-500">Facultad: <span className="ml-2 font-normal text-blue-500">{datos.facultad}</span></p>
+                        <p className="font-bold text-gray-500">Carrera: <span className="ml-2 font-normal text-blue-500">{datos.carrera}</span></p>
+                        <p className="font-bold text-gray-500">Sede: <span className="ml-2 font-normal text-blue-500">{datos.sede}</span></p>
+                        <p className="font-bold text-gray-500">Periodo: <span className="ml-2 font-normal text-blue-500">{datos.periodo}</span></p>
+                        <p className="font-bold text-gray-500">Semestre: <span className="ml-2 font-normal text-blue-500">{datos.semestre}</span></p>
+                        <p className="font-bold text-gray-500">Plan: <span className="ml-2 font-normal text-blue-500">{datos.plan}</span></p>
                     </div>
                 </div>
             </div>
 
             <div className="flex flex-wrap -mx-3 mt-4">
                 <div className="w-full max-w-full px-3 flex-0">
-                    <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border overflow-x-auto">
-                        <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
-                            <thead className="align-bottom">
-                                <tr>
-                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
-                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Código</th>
-                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estudiante</th>
-                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Facultad</th>
-                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Escuela Profesional</th>
-                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Notas</th>
-                                    <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Condición</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
 
-                                    loading ? (
+                    <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
+                        <thead className="align-bottom">
+                            <tr>
+                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
+                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Código</th>
+                                <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Estudiante</th>
+                                <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Empresa</th>
+                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                !loading ? (
+                                    <tr className="text-center bg-white border-b">
+                                        <td colSpan={5} className="text-sm p-2 border-b border-solid">
+                                            <div className="flex items-center justify-center gap-4">
+                                                <LoaderSvg /> <span>Cargando datos...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    alumnosSeccion.length == 0 ?
                                         <tr className="text-center bg-white border-b">
-                                            <td colSpan={8} className="text-sm p-2 border-b border-solid">
-                                                <div className="flex items-center justify-center">
-                                                    {/*
-                                                        <LoaderSvg /> <span>Cargando datos...</span>
-                                    */}
-                                                </div>
-                                            </td>
+                                            <td colSpan={5} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
                                         </tr>
-                                    ) : (
-                                        listaEstudiantes.length == 0 ?
-                                            (
-                                                <tr className="text-center bg-white border-b">
-                                                    <td colSpan={6} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
+                                        :
+                                        (alumnosSeccion.map((item, index) => {
+                                            return (
+                                                <tr key={index} className="bg-white border-b">
+                                                    <td className="text-sm p-2 text-center">
+                                                        {index + 1}
+                                                    </td>
+                                                    <td className="text-sm p-2 text-center font-medium text-gray-500">
+                                                        {item.est_Id}
+                                                    </td>
+                                                    <td className="text-sm px-6 p-2 text-left">
+                                                        {item.apellidoPaterno + " " + item.apellidoMaterno + " " + item.nombres}
+                                                    </td>
+                                                    <td className="text-sm px-6 p-2 text-left">
+                                                        {item.empresaNombre ?
+                                                            <span className="flex">
+                                                                <i className="mr-2 text-lg text-green-400 bi bi-check-circle-fill" />
+                                                                <p className="my-auto">{item.empresaNombre}</p>
+                                                            </span>
+                                                            :
+                                                            <span className="text-xs bg-gray-200 p-1 px-2 rounded-md"> -- No registrado --</span>
+                                                        }
+                                                    </td>
+                                                    <td className="text-sm p-2 text-center">
+                                                        <button
+                                                            title="Ver historial"
+                                                            className="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-md text-sm px-4 py-2"
+                                                            onClick={() =>
+                                                                onEventDetalle(item.est_Id,
+                                                                    item.nombres + " " + item.apellidoPaterno + " " + item.apellidoMaterno)
+                                                            }
+                                                        >
+                                                            <i className="bi bi-list-ul text-sm"></i>
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             )
-                                            :
-                                            (
-                                                listaEstudiantes.map((item, index) => {
-
-                                                    return (
-                                                        <tr key={index} className="bg-white border-b">
-                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                {item.id}
-                                                            </td>
-                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                {item.codigo}
-                                                            </td>
-                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                {item.nombres}
-                                                            </td>
-
-                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                {item.facultad}
-                                                            </td>
-                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                {item.escuela_profesional}
-                                                            </td>
-                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                <button
-                                                                    title="Ver historial"
-                                                                    className="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-md text-sm px-4 py-2"
-                                                                    onClick={() =>
-                                                                        onEventDetalle(item.codigo, item.nombres, item.facultad, item.escuela_profesional, item.usuario_condicion, datos.nivel_seccion, datos.plan)
-                                                                    }
-                                                                >
-                                                                    <i className="bi bi-list-ul text-sm"></i>
-
-                                                                </button>
-
-                                                            </td>
-                                                            <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                                <EstadoPracticas estado={item.usuario_condicion} />
-                                                            </td>
-
-                                                        </tr>
-                                                    );
-                                                })
-                                            )
-                                    )
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                        })
+                                        )
+                                )
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </>
-    );
-};
+        </ContainerVIstas>
+    )
+}
 
-export default Revision;
+export default Revision

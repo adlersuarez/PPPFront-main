@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from "../modal/ModalComponente";
 import { ConsultarDni, ConsultarRuc } from "../../../network/rest/apiconsultas.network";
+
 import Response from '@/model/class/response.model.class';
+import RestError from '@/model/class/resterror.model.class';
+import { Types } from '@/model/enum/types.model';
+
 import RucEmpresa from '@/model/interfaces/respuesta-api/ruc.empresa.model.interface';
 import DniPersona from '@/model/interfaces/respuesta-api/dni.persona.model.interface';
+
+import { ListarGrado } from '@/network/rest/practicas.network';
+
+
+import Listas from '@/model/interfaces/Listas.model.interface';
+import Grado from '@/model/interfaces/grado/grado';
+
 
 interface DatosState {
     ruc: string;
@@ -25,8 +36,12 @@ type Props = {
 
 const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
 
-    const [ruc, setRuc] = useState<string>('');
-    const [dni, setDni] = useState<string>('');
+    const [ruc, setRuc] = useState<string>('')
+    const [dni, setDni] = useState<string>('')
+    const [grado, setGrado] = useState<Grado[]>([])
+    const [tipoGrado, setTipoGrado] = useState<any[]>([])
+
+    const abortController = useRef(new AbortController())
 
     const [datos, setDatos] = useState<DatosState>({
         ruc: '',
@@ -85,6 +100,12 @@ const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
             }
         }
     }
+
+    useEffect(() => {
+      
+    }, [])
+
+
 
     return (
 
@@ -219,7 +240,13 @@ const ModalDatosCentroLaboral: React.FC<Props> = (props: Props) => {
                                 defaultValue={datos.id_grado_instruccion}
                             >
                                 <option value="">Selecciona una opción</option>
-                                <option value="1">Bachiller</option>
+                                {tipoGrado.map(tipo => (
+                                    <optgroup key={tipo.tipoGradoId} label={'Carrera '+tipo.tipoGrado}>
+                                        {grado.filter(gr => gr.tipoGradoId === tipo.tipoGradoId).map(gr => (
+                                            <option key={gr.gradoId} value={gr.gradoId}>{gr.gradoNombre}</option>
+                                        ))}
+                                    </optgroup>
+                                ))}
                             </select>
                         </div>
                         <div className='flex flex-col'>

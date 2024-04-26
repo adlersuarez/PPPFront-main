@@ -1,4 +1,4 @@
-import Volver from "@/component/Volver";
+import ContainerVIstas from "@/component/Container";
 import FormatoCard from "@/component/pages/cards/FormatoCard";
 
 
@@ -34,36 +34,26 @@ const Formato = () => {
     ];
 
     return (
-        <div className="flex flex-wrap -mx-3">
-            <div className="w-full max-w-full px-3 flex-0">
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
+        <ContainerVIstas titulo='FORMATOS' retornar>
+            <div className="flex flex-col gap-4">
+                <p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60 text-justify">
+                    Descargue formatos validados por la UPLA y su facultad, Estos documentos pueden ser usados si la organización no cuenta con alguno.
+                </p>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
 
-                    <div className="flex flex-col gap-2">
-                    <div className='font-bold text-2xl text-gray-400 flex gap-2'>
-                            <Volver />
-                            FORMATOS
-                        </div>
-
-                        <p className="leading-normal text-sm dark:text-white dark:opacity-60 text-justify">
-                            Descargue formatos validados por la UPLA y su facultad, Estos documentos pueden ser usados si la organización no cuenta con alguno.
-                            </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-
-                        {
-                            documents.map((document, index) => (
-                                <FormatoCard
-                                    key={index}
-                                    {...document}
-                                />
-                            ))
-                        }
-                    </div>
+                    {
+                        documents.map((document, index) => (
+                            <FormatoCard
+                                key={index}
+                                {...document}
+                            />
+                        ))
+                    }
                 </div>
             </div>
-        </div>
-    );
+        </ContainerVIstas>
+
+    )
 }
 
-export default Formato;
+export default Formato

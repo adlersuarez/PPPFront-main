@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../store/authSlice.store";
 import { useEffect, useState } from "react";
+import { logoutDataEstudiante } from "@/store/estudianteSlice.store";
 
 type MessageNotif = {
     id: string;
@@ -57,6 +58,12 @@ const Nav = (props: Props) => {
     const removeNotif = (idEliminar: string) => {
         setNotif(notif.filter((item) => item.id !== idEliminar));
     };
+
+
+    const cerrarSesion = () => {
+        dispatch(logout())
+        dispatch(logoutDataEstudiante())
+    }
 
     return (
         <nav
@@ -124,7 +131,7 @@ const Nav = (props: Props) => {
                 </li>
                 <li className="flex justify-center h-full">
                     <button
-                        onClick={() => dispatch(logout())}
+                        onClick={cerrarSesion}
                         className="px-4 text-white hover:bg-white hover:text-upla-100">
                         <i className="bi bi-person-circle text-xl" />
                     </button>

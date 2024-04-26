@@ -988,8 +988,8 @@ body.swal2-no-backdrop > .swal2-shown.swal2-bottom-right {
 
 .swal2-icon.swal2-warning {
   font-family: inherit;
-  color: #f3b312;
-  border-color: #f3b312;
+  color: #f8bb86;
+  border-color: #f8bb86;
   font-size: 60px;
   line-height: 80px;
   text-align: center;
@@ -998,8 +998,8 @@ body.swal2-no-backdrop > .swal2-shown.swal2-bottom-right {
 
 .swal2-icon.swal2-info {
   font-family: inherit;
-  color: #1083e6;
-  border-color: #1083e6;
+  color: #3fc3ee;
+  border-color: #3fc3ee;
   font-size: 60px;
   line-height: 80px;
   text-align: center;
@@ -1008,8 +1008,8 @@ body.swal2-no-backdrop > .swal2-shown.swal2-bottom-right {
 
 .swal2-icon.swal2-question {
   font-family: inherit;
-  color: #8e258c;
-  border-color: #8e258c;
+  color: #87adbd;
+  border-color: #87adbd;
   font-size: 60px;
   line-height: 80px;
   text-align: center;
@@ -1017,7 +1017,7 @@ body.swal2-no-backdrop > .swal2-shown.swal2-bottom-right {
 }
 
 .swal2-icon.swal2-success {
-  border-color: #b0e691;
+  border-color: #a5dc86;
   transform: scale(0.8);
 }
 

@@ -180,7 +180,7 @@ const ModalDatosDuracionExtra: React.FC<Props> = (props: Props) => {
         const newTimeRanges = [...timeRanges];
         newTimeRanges[index][key] = value;
         setTimeRanges(newTimeRanges);
-    };
+    }
 
     //
     const addTimeRangeForDay = (day: string) => {

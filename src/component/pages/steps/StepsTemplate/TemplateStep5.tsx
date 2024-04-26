@@ -1,9 +1,24 @@
+import { useEffect, useRef, useState } from "react";
+import ControlActividades from "../../modalForms/ModalTemplate5/ModalControlActividades";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
-import EstadoRequisito from "./Contenedor/EstadoRequisito";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import ListaElementos from "./Contenedor/ListaElementos";
+import UnidadTematica from "@/model/interfaces/planActividades/unidadTematica";
+import Response from "@/model/class/response.model.class";
+import RestError from "@/model/class/resterror.model.class";
+import { Types } from "@/model/enum/types.model";
+import { ListarDatosUnidadTematica } from "@/network/rest/practicas.network";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore.store";
+import Listas from "@/model/interfaces/Listas.model.interface";
+import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 
 const TemplateStep5 = () => {
+
+    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
+
+    const abortController = useRef(new AbortController())
 
     const Caracteristicas = [
         {
@@ -32,8 +47,42 @@ const TemplateStep5 = () => {
         }
     }
 
+    const [show, setShow] = useState<boolean>(false)
+    const [unidadesTematicas, setUnidadesTematicas] = useState<UnidadTematica[]>([])
+    const [idUnidad, setIdUnidad] = useState<number>(0)
+    const [numeroUnidad, setNumeroUnidad] = useState<number>(0)
+
+    const handleClose = () => setShow(false)
+
+    const handleShow = (unidadId: number) => {
+        setIdUnidad(unidadId)
+        setShow(true)
+        const unidadEncontrada = unidadesTematicas.find((unidad) => unidad.unidadTematicaId == unidadId)
+        setNumeroUnidad(unidadEncontrada?.numeroUnidad ?? 0)
+    }
+
+    const ListarUnidadTematica = async () => {
+        setUnidadesTematicas([])
+        const response = await ListarDatosUnidadTematica<Listas>(codigo, periodo, abortController.current)
+
+        if (response instanceof Response) {
+            const data = response.data.resultado as UnidadTematica[]
+            setUnidadesTematicas(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    useEffect(() => {
+        ListarUnidadTematica()
+    }, [])
+
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
+            <ControlActividades show={show} hide={handleClose} unidadId={idUnidad} numero={numeroUnidad} />
 
             <ContenedorSteps
                 numero={5}
@@ -71,76 +120,27 @@ const TemplateStep5 = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className='bg-white border-b'>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            Ficha de control 1
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr className='bg-gray-100 border-b'>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            Ficha de control 2
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr className='bg-white border-b'>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            Ficha de control 3
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr className='bg-gray-100 border-b'>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            Ficha de control 4
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr className='bg-white border-b'>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            Ficha de control 5
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {
+                                        unidadesTematicas.map((unidad, index) => (
+                                            <tr className='bg-white border-b' key={index}>
+                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                                    <EstadoRequisito valor={unidad.estadoUnidad} />
+                                                </td>
+                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                                    Unidad temática {unidad.numeroUnidad}
+                                                </td>
+                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">
+                                                    <div className='flex gap-2 justify-center'>
+                                                        <button onClick={() => handleShow(unidad.unidadTematicaId)}
+                                                            className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >
+                                                            Subir
+                                                        </button>
+                                                        <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
 
                                 </tbody>
                             </table>

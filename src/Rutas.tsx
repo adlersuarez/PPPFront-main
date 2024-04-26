@@ -14,6 +14,7 @@ import Fechas from './view/pages/facultades/medicina/admin/Fechas';
 import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
 import Proceso from './view/pages/estudiante/Proceso';
+import Secciones from './view/pages/docente/Secciones';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
         children: [
           {
             path: '',
+            element: <Secciones />,
+          },
+          {
+            path: 'docente',
             element: <Revision />,
           },
           {

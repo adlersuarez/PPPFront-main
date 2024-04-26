@@ -5,16 +5,29 @@
 /*Estilos Datepicker*/
 
 .react-datepicker__day--highlighted {
-    background-color: #838383;
+    background-color: #007dbc;
     color: white;
     border-radius: 0.3em;
     transition: background-color 0.3s ease;
 }
 
 .react-datepicker__day--highlighted:hover {
-    background-color: rgb(64, 114, 223);
+    background-color: rgb(51, 51, 51);
+    color: white;
 }
 
 .react-datepicker__current-month {
     text-transform: uppercase;
+}
+
+.react-datepicker__day--keyboard-selected {
+    border-radius: 0.3rem;
+    /*background-color: white;*/
+    /*color: rgb(0, 0, 0);*/
+}
+
+.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {
+    border-radius: 0.3rem;
+    /*background-color: #bad9f1;*/
+    /*color: rgb(0, 0, 0);*/
 }

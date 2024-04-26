@@ -1,14 +1,28 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useRef } from 'react';
 import Stepper from '@/component/pages/steps/Stepper';
 import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
 import ContainerVIstas from '@/component/Container';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/configureStore.store';
+import LoadingSuspense from '@/component/pages/steps/StepsTemplate/Suspense/LoadingSuspense';
+import { ObtenerEstadoPracticasEstudiante } from '@/network/rest/practicas.network';
+import EstadoPracticas from '@/model/interfaces/practicas/estadoPracticas';
+import Response from '@/model/class/response.model.class';
+import RestError from '@/model/class/resterror.model.class';
+import { Types } from '@/model/enum/types.model';
 
 const Proceso = () => {
 
-    const [currentStep, setCurrentStep] = useState<number>(1);
-    const [userData, setUserData] = useState<string>('');
-    const [finalData, setFinalData] = useState<any[]>([]);
+    const asignatura = useSelector((state: RootState) => state.infoEstudiante.asignatura)
+    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
+
+    const abortController = useRef(new AbortController())
+
+    const [currentStep, setCurrentStep] = useState<number>(1)
+    const [userData, setUserData] = useState<string>('')
+    const [finalData, setFinalData] = useState<any[]>([])
 
     const paso_proceso = {
         "efectiva": {
@@ -41,7 +55,7 @@ const Proceso = () => {
             console.error('Error al cargar el componente:', error);
             setStepComponent(null);
         }
-    };
+    }
 
     const handleClick = (direction: string) => {
         let newStep = currentStep;
@@ -49,32 +63,53 @@ const Proceso = () => {
         direction === "next" ? newStep++ : newStep--;
 
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
-    };
+    }
 
     const seleccionStep = (step: number) => {
         setCurrentStep(step);
     }
 
-    const paso_1: boolean = true;
-    const paso_2: boolean = true;
-    const paso_3: boolean = true;
-    const paso_4: boolean = true;
-    const paso_5: boolean = true;
-    const paso_6: boolean = true;
-    const paso_7: boolean = false;
+    const LoadEstadoPracticas = async () => {
+        setEstado_model([])
+        const response = await ObtenerEstadoPracticasEstudiante<EstadoPracticas>(codigo, periodo, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data as EstadoPracticas
+            //setEmpresaDatos(data)
+            setEstado_model(Object.values(data))
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
 
-    const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6, paso_7];
+    const paso_1: boolean = true
+    const paso_2: boolean = true
+    const paso_3: boolean = true
+    const paso_4: boolean = true
+    const paso_5: boolean = true
+    const paso_6: boolean = true
+    const paso_7: boolean = true
+
+    const [estado_model2, setEstado_model] = useState<boolean[]>([])
+
+    const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6, paso_7]
+    //console.log(estado_model2)
 
     //
     useEffect(() => {
         displayStep(currentStep)
     }, [currentStep])
 
+    useEffect(() => {
+        LoadEstadoPracticas()
+    }, [])
+
     return (
         <ContainerVIstas titulo='Volver' retornar>
 
             <div className='flex gap-6 whitespace-nowrap text-2xl sm:text-3xl text-upla-100 w-full text-center rounded font-bold justify-between'>
-                <span className='hidden xl:flex uppercase tracking-wide'>Prácticas Preprofesionales</span>
+                <span className='hidden xl:flex uppercase tracking-wide'>{asignatura}{/* PRÁCTICAS PREPROFESIONALES III */}</span>
                 <span title='Prácticas Preprofesionales uppercase' className='flex xl:hidden'>Prácticas PP</span>
                 <div className='flex bg-upla-100 text-white text-lg px-2 py-0.5 rounded-lg'>
                     <span className='m-auto font-normal flex whitespace-nowrap gap-2'>
@@ -112,7 +147,7 @@ const Proceso = () => {
                             setFinalData
                         }}>
 
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={<LoadingSuspense />}>
                             {stepComponent}
                         </Suspense>
 

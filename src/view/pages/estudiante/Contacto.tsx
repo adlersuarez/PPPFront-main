@@ -1,4 +1,4 @@
-import Volver from "@/component/Volver";
+import ContainerVIstas from "@/component/Container";
 import ComponenteContacto from "@/component/pages/contacto/ComponenteContacto";
 
 const Contacto = () => {
@@ -36,37 +36,23 @@ const Contacto = () => {
     };
 
     return (
-        <div className="flex flex-wrap -mx-3">
-            <div className="w-full max-w-full px-3 flex-0">
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
+        <ContainerVIstas titulo='CONTACTOS' retornar>
+            <div className="grid grid-cols-1 gap-4 sm:gap-8 sm:grid-cols-2">
+                <ComponenteContacto
+                    {...docenteData}
+                />
 
-                    <div className="flex flex-col gap-2">
-                        <div className='font-bold text-2xl text-gray-400 flex gap-2'>
-                            <Volver />
-                            CONTACTOS
-                        </div>
-                        <p className="leading-normal text-sm dark:text-white dark:opacity-60"></p>
-                    </div>
+                <ComponenteContacto
+                    {...coordinatorData}
+                />
 
-                    <div className="grid grid-cols-1 gap-4 sm:gap-8 sm:grid-cols-2">
+                <ComponenteContacto
+                    {...soporteData}
+                />
 
-                        <ComponenteContacto
-                            {...docenteData}
-                        />
-
-                        <ComponenteContacto
-                            {...coordinatorData}
-                        />
-
-                        <ComponenteContacto
-                            {...soporteData}
-                        />
-
-                    </div>
-                </div>
             </div>
-        </div>
-    );
+        </ContainerVIstas>
+    )
 }
 
 export default Contacto;

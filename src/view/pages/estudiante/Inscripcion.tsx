@@ -6,14 +6,6 @@ import { images } from '@/helper/index.helper';
 
 const Inscripcion = () => {
 
-    /*const sweet = () => {
-        Alerta().fire({
-            title: 'Auto close alert!',
-            text: 'I will close in 2 seconds.',
-            timer: 2000
-        });
-    };*/
-
     return (
         <ContainerVIstas >
             <div className='flex flex-col p-0 sm:p-2'>

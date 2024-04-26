@@ -43,6 +43,11 @@ module.exports = {
       'black-light': '#00000082',
       'transparent': '#fff0',
       'sombra': '#00000054',
+      'success': '#a5dc86',
+      'error':'#f27474',
+      'warning':'#f8bb86',
+      'info':'#3fc3ee',
+      'question':'#87adbd',
       upla: {
         50: '#4CC2FD',
         100: '#007dbc',
@@ -188,7 +193,8 @@ module.exports = {
     }
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require('tailwind-scrollbar')({ nocompatible: true }),
   ],
   variants: {
 

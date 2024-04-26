@@ -13,19 +13,20 @@ let informacion: string = "";
 const SubTitle = (props: Props) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    const carrera = useSelector((state: RootState) => state.infoEstudiante.carrera)
 
     if (props.informacion !== undefined) {
         let estudiante = props.informacion as Estudiante;
         if (estudiante.codigo !== undefined) {
-            informacion = estudiante.nombres+", "+estudiante.apellidoPaterno+" "+estudiante.apellidoMaterno;
+            informacion = estudiante.nombres + ", " + estudiante.apellidoPaterno + " " + estudiante.apellidoMaterno;
         } else {
             let trabajador = props.informacion as Trabajador;
-            informacion = trabajador.asesNombres+", "+trabajador.asesPaterno+" "+trabajador.asesMaterno;
+            informacion = trabajador.asesNombres + ", " + trabajador.asesPaterno + " " + trabajador.asesMaterno;
         }
     }
 
     return (
-        <div className="mt-6 md:mt-0">
+        <div className="mt-6 md:mt-0 mb-4">
             <img
                 className=" p-1 m-auto w-24 h-24 rounded-full ring-2 ring-gray-300 hover:scale-110 ease-in duration-300"
                 src={`https://academico.upla.edu.pe/FotosAlum/037000${codigo}.jpg`}
@@ -51,7 +52,8 @@ const SubTitle = (props: Props) => {
                     {informacion}
                 </h1>
             </div>
-            <p className="text-center text-white">{codigo}</p>
+            <p className="text-center text-white">{codigo}</p>{/* BORRAR PARA */}
+            <p className="text-center text-white">{carrera}</p>
         </div>
     );
 }

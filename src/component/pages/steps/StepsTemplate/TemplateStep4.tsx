@@ -1,7 +1,9 @@
+import { useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
-import EstadoRequisito from "./Contenedor/EstadoRequisito";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import ListaElementos from "./Contenedor/ListaElementos";
+import ModalCargarPlan from "../../modalForms/ModalTemplate4/ModalCargarPlan";
+import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 
 const TemplateStep4 = () => {
 
@@ -32,9 +34,14 @@ const TemplateStep4 = () => {
             presentacion: '2023-11-10T16:10:00.000'
         }
     }
+    const [show, setShow] = useState<boolean>(false)
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
+
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
+            <ModalCargarPlan show={show} hide={handleClose} />
 
             <ContenedorSteps
                 numero={4}
@@ -54,8 +61,8 @@ const TemplateStep4 = () => {
                     </div>
                 </ContenedorSteps.Informacion>
                 <ContenedorSteps.Proceso>
-                <div className='flex flex-col'>
-                        
+                    <div className='flex flex-col'>
+
                         <EstadoTemplate
                             datos={EstadoActual}
                         />
@@ -74,14 +81,16 @@ const TemplateStep4 = () => {
                                 <tbody>
                                     <tr className='bg-white border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
+                                            <EstadoRequisito valor={0} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             Plan de actividades
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button 
+                                                onClick={handleShow}
+                                                className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
                                                 <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
                                             </div>
                                         </td>
@@ -103,7 +112,7 @@ const TemplateStep4 = () => {
                             </div>
                         </div>
                     </div>
-                    
+
                 </ContenedorSteps.Proceso>
             </ContenedorSteps>
 

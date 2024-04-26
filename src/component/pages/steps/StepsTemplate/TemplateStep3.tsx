@@ -1,27 +1,21 @@
 import { useState } from 'react';
-import ModalDatosAreaTrabajo from '../../modalForms/ModalDatosAreaTrabajo';
-import ModalDatosJefeInmediato from '../../modalForms/ModalDatosJefeInmediato';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import ListaElementos from './Contenedor/ListaElementos';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
-import EstadoRequisito from './Contenedor/EstadoRequisito';
-import ModalDatosDuracion from '../../modalForms/ModalDatosDuracion';
-import ModalDatosDuracionExtra from '../../modalForms/ModalDatosDuracionExtra';
+import ModalDatosDuracion from '../../modalForms/ModalTemplate3/ModalDatosDuracion';
+import ModalEmpresaPracticas from '../../modalForms/ModalTemplate3/ModalEmpresaPracticas';
+import { EstadoRequisito } from './Contenedor/EstadoRequisito';
 
 const TemplateStep3 = () => {
 
-    const [showArea, setShowArea] = useState<boolean>(false);
-    const [showJefe, setShowJefe] = useState<boolean>(false);
-    const [showHorario, setShowHorario] = useState<boolean>(false);
+    const [showArea, setShowArea] = useState<boolean>(false)
+    const [showHorario, setShowHorario] = useState<boolean>(false)
 
-    const handleCloseArea = () => setShowArea(false);
-    const handleShowArea = () => setShowArea(true);
+    const handleCloseArea = () => setShowArea(false)
+    const handleShowArea = () => setShowArea(true)
 
-    const handleCloseJefe = () => setShowJefe(false);
-    const handleShowJefe = () => setShowJefe(true);
-
-    const handleCloseHorario = () => setShowHorario(false);
-    const handleShowHorario = () => setShowHorario(true);
+    const handleCloseHorario = () => setShowHorario(false)
+    const handleShowHorario = () => setShowHorario(true)
 
     const Requisitos = [
         {
@@ -54,13 +48,11 @@ const TemplateStep3 = () => {
         }
     }
 
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <ModalDatosAreaTrabajo show={showArea} hide={handleCloseArea} />
-
-            <ModalDatosJefeInmediato show={showJefe} hide={handleCloseJefe} />
-
+            <ModalEmpresaPracticas show={showArea} hide={handleCloseArea} />
             <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} />
 
             <ContenedorSteps
@@ -101,7 +93,7 @@ const TemplateStep3 = () => {
                                 <tbody>
                                     <tr className='bg-white border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
+                                            <EstadoRequisito valor={0} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             Datos del área de trabajo
@@ -109,13 +101,13 @@ const TemplateStep3 = () => {
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <div className='flex gap-2 justify-center'>
                                                 <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowArea}>Iniciar</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowArea}>Ver</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={() => { }}>Ver</button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr className='bg-gray-100 border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={2} />
+                                            <EstadoRequisito valor={0} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             Duración y Horario
@@ -123,25 +115,11 @@ const TemplateStep3 = () => {
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <div className='flex gap-2 justify-center'>
                                                 <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowHorario}>Iniciar</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowHorario}>Ver</button>
+                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={() => { }}>Ver</button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr className='bg-white border-b'>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={2} />
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            Datos del jefe inmediato
-                                        </td>
-                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowJefe}>Iniciar</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" onClick={handleShowJefe}>Ver</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
+
                                 </tbody>
                             </table>
                         </div>

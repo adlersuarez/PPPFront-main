@@ -1,35 +1,35 @@
-import Volver from "@/component/Volver";
+import ContainerVIstas from "@/component/Container";
 import ComponenteReglamento from "@/component/pages/reglamento/ComponeteReglamento";
 
 interface Articulo {
-    id: number;
-    text: string;
-    tipo_lista?: string; //dot, numerico, alfabetico
-    lista?: ListaElement[];
+    id: number
+    text: string
+    tipo_lista?: string //dot, numerico, alfabetico
+    lista?: ListaElement[]
 }
 
 interface ListaElement {
-    elemento: string;
+    elemento: string
 }
 
 interface ContentData {
-    title?: string;
-    articulos: Articulo[];
+    title?: string
+    articulos: Articulo[]
 }
 
 interface PropsReglamento {
-    encabezado: string;
-    urlImg: string;
-    urlDoc: string;
-    titulo: string;
-    texto: string;
-    contenido: Contenido[];
+    encabezado: string
+    urlImg: string
+    urlDoc: string
+    titulo: string
+    texto: string
+    contenido: Contenido[]
 }
 
 interface Contenido {
-    nombre: string;
-    tipo: string; //numerico , // (PRIMERO, SEGUNDO, etc)
-    content: ContentData[];
+    nombre: string
+    tipo: string //numerico , // (PRIMERO, SEGUNDO, etc)
+    content: ContentData[]
 }
 
 const Reglamento = () => {
@@ -324,35 +324,29 @@ const Reglamento = () => {
 
 
     ]
-    
+
     return (
 
-        <div className="flex flex-wrap -mx-3">
-            <div className="w-full max-w-full px-3 flex-0 ">
-                <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
+        <ContainerVIstas titulo='MARCO LEGAL' retornar>
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                    <p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60 text-justify">Las prácticas preprofesionales se encuentran respaldadas por un <mark className="bg-green-200">marco leg</mark><span>al</span> que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la  preparación de futuros profesionales.</p>
+                </div>
 
-                    <div className="flex flex-col gap-2">
-                        <div className='font-bold text-2xl text-gray-400 flex gap-2'>
-                            <Volver />
-                            MARCO LEGAL
-                        </div>
-                        <p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60 text-justify">Las prácticas preprofesionales se encuentran respaldadas por un marco legal que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la preparación de futuros profesionales.</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-1">
-                        {
-                            reglamentos.map((reglamento, index) => (
-                                <div key={index}
-                                    className={`pb-6 ${index !== reglamentos.length - 1 ? 'border-b-4' : ''}`}>
-                                    <ComponenteReglamento {...reglamento} />
-                                </div>
-                            ))
-                        }
-                    </div>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-1">
+                    {
+                        reglamentos.map((reglamento, index) => (
+                            <div key={index}
+                                className={`pb-6 ${index !== reglamentos.length - 1 ? 'border-b-4' : ''}`}>
+                                <ComponenteReglamento {...reglamento} />
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
-        </div>
-    );
+        </ContainerVIstas>
+
+    )
 }
 
 export default Reglamento;

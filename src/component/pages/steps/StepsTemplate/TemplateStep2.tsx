@@ -1,7 +1,9 @@
+import { useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps";
-import EstadoRequisito from "./Contenedor/EstadoRequisito";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import ListaElementos from "./Contenedor/ListaElementos";
+import ModalCargarCartaAceptacion from "../../modalForms/ModalCargarCartaAceptacion";
+import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 
 const TemplateStep2 = () => {
 
@@ -34,8 +36,14 @@ const TemplateStep2 = () => {
         }
     }
 
+    const [show, setShow] = useState<boolean>(false)
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
+
+            <ModalCargarCartaAceptacion show={show} hide={handleClose} />
 
             <ContenedorSteps
                 numero={2}
@@ -57,7 +65,7 @@ const TemplateStep2 = () => {
 
                 <ContenedorSteps.Proceso>
                     <div className='flex flex-col'>
-                        
+
                         <EstadoTemplate
                             datos={EstadoActual}
                         />
@@ -76,14 +84,16 @@ const TemplateStep2 = () => {
                                 <tbody>
                                     <tr className='bg-white border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
+                                            <EstadoRequisito valor={1} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             Carta de aceptación
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <div className='flex gap-2 justify-center'>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
+                                                <button 
+                                                onClick={handleShow}
+                                                className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
                                                 <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
                                             </div>
                                         </td>

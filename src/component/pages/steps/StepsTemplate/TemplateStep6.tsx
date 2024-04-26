@@ -1,5 +1,5 @@
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
-import EstadoRequisito from "./Contenedor/EstadoRequisito";
+import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import ListaElementos from "./Contenedor/ListaElementos";
 
@@ -66,7 +66,7 @@ const TemplateStep6 = () => {
                                 <tbody>
                                     <tr className='bg-white border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito estado={1} />
+                                            <EstadoRequisito valor={0} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             Evaluación de desempeño

@@ -1,37 +1,34 @@
-type EstadoElemento = {
-    estado?: number;
+interface EstadoUnidadTematica {
+    valor: number
 }
 
-const EstadoRequisito = ({ estado }: EstadoElemento) => {
+export const EstadoRequisito: React.FC<EstadoUnidadTematica> = ({ valor }) => {
 
-    var titulo = ''
-    var color = ''
-    var icono = ''
-    
-    switch (estado) {
+    let iconoClass = ''
+    let descripcion = ''
+    let colorFondo = ''
+
+    switch (valor) {
+        case 0:
+            iconoClass = 'bi-hourglass-bottom' // Icono de reloj para "En proceso"
+            descripcion = 'Pendiente'
+            colorFondo = 'gray-400'
+            break
         case 1:
-            titulo = 'Completado'
-            color = 'green-500'
-            icono = 'check-lg'
-            break;
-
-        case 2:
-            titulo = 'Requerido'
-            color = 'yellow-300'
-            icono = 'exclamation-lg'
-            break;
-
+            iconoClass = 'bi-check-lg' // Icono de marca de verificación para "Aceptado"
+            descripcion = 'Completado'
+            colorFondo = 'green-400'
+            break
         default:
-            break;
+            iconoClass = 'bi-question-square' // Icono de interrogación para estados desconocidos
+            descripcion = 'Desconocido'
+            colorFondo = 'black'
+            break
     }
 
     return (
-        <div
-        title={titulo} 
-            className={`rounded-full bg-${color} text-white items-center justify-center w-6 h-6 flex mx-auto`}>
-            <i className={`bi bi-${icono} m-auto`} />
+        <div className={`inline-block bg-${colorFondo} text-white text-xs w-6 h-6 flex mx-auto rounded-full hover:scale-110`}>
+            <i className={`bi ${iconoClass} m-auto`} title={descripcion}></i>
         </div>
-    );
-};
-
-export default EstadoRequisito;
+    )
+}

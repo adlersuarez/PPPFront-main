@@ -9,6 +9,7 @@ import Paso5 from './PasosRevision.tsx/Paso5';
 import Paso6 from './PasosRevision.tsx/Paso6';
 import Paso7 from './PasosRevision.tsx/Paso7';
 import Paso8 from './PasosRevision.tsx/Paso8';
+import ContainerVIstas from '@/component/Container';
 
 ///// interfaces
 interface DatosEmpresa {
@@ -88,52 +89,20 @@ const Especifico = () => {
         codigo: location.state.codigo,
         estudiante: location.state.nombres,
         facultad: location.state.facultad,
-        escuela: location.state.escuela_profesional,
+        carrera: location.state.carrera,
+        sede: location.state.sede,
+        periodo: location.state.periodo,
+        semestre: location.state.semestre,
         curso: location.state.curso,
+        seccion: location.state.seccion,
         plan: location.state.plan,
-    };
+    }
 
-    const [pasoActual, setPasoActual] = useState<number>(1);
-    const [showDetalles, setShowDetalles] = useState<boolean>(false);
+    const [pasoActual, setPasoActual] = useState<number>(1)
+    const [showDetalles, setShowDetalles] = useState<boolean>(false)
 
     const pasos: number[] = [1, 2, 3, 4, 5, 6, 7, 8]
 
-    const [datosPaso1,] = useState<Paso1Props[]>([
-        {
-            intento: 1,
-            fecha: '2023-13-12',
-            estado: false,
-            datosEmpresa: {
-                ruc: '20106897914',
-                nombre: 'Entel Perú S.A. ',
-                estado: 'ACTIVO',
-                direccion: 'República de Colombia 791, San Isidro - Lima - Lima',
-            },
-            datosRepresentante: {
-                dni: '16592267',
-                nombre: 'Fernando García',
-                grado: 'Magister',
-                cargo: 'Vicepresidente de TI y Operaciones',
-            }
-        },
-        {
-            intento: 2,
-            fecha: '2023-15-12',
-            estado: true,
-            datosEmpresa: {
-                ruc: '20129646099',
-                nombre: 'ELECTROCENTRO S.A. ',
-                estado: 'ACTIVO',
-                direccion: ' Jr. Amazonas Nro. 641, Huancayo - Huancayo - Junin',
-            },
-            datosRepresentante: {
-                dni: '92761834',
-                nombre: 'Chuyes Cesar',
-                grado: 'Titulado',
-                cargo: 'Gerente Comercial',
-            }
-        },
-    ])
 
     const datosPaso2: Documentos = {
         pdfUrl: '/Ejemplos/Carta_aceptacion.pdf',
@@ -212,139 +181,125 @@ const Especifico = () => {
         TI: '',
         Py: '',
         EP: '',
-    });
+    })
 
     const irAlSiguientePaso = () => {
-        setPasoActual(pasoActual + 1);
-    };
+        setPasoActual(pasoActual + 1)
+    }
 
     const irAlPasoAnterior = () => {
-        setPasoActual(pasoActual - 1);
-    };
+        setPasoActual(pasoActual - 1)
+    }
 
     const onNotaChange = (campo: string, valor: string) => {
-        setNotas({ ...notas, [campo]: valor });
-    };
+        setNotas({ ...notas, [campo]: valor })
+    }
 
 
-    let componenteActual: React.ReactNode;
+    let componenteActual: React.ReactNode
 
     switch (pasoActual) {
         case 1:
-            componenteActual = <Paso1 elementos={datosPaso1} />;
-            break;
+            componenteActual = <Paso1 estudianteId={datos.codigo} />
+            break
         case 2:
-            componenteActual = <Paso2 elementos={datosPaso2} />;
-            break;
+            componenteActual = <Paso2 elementos={datosPaso2} />
+            break
         case 3:
-            componenteActual = <Paso3 elementos={datosPaso3} />;
-            break;
+            componenteActual = <Paso3 estudianteId={datos.codigo} />
+            break
         case 4:
-            componenteActual = <Paso4 elementos={datosPaso4} />;
-            break;
+            componenteActual = <Paso4 elementos={datosPaso4} />
+            break
         case 5:
-            componenteActual = <Paso5 elementos={datosPaso5} />;
-            break;
+            componenteActual = <Paso5 elementos={datosPaso5} />
+            break
         case 6:
-            componenteActual = <Paso6 />;
-            break;
+            componenteActual = <Paso6 />
+            break
         case 7:
-            componenteActual = <Paso7 elementos={datosPaso7} />;
-            break;
+            componenteActual = <Paso7 elementos={datosPaso7} />
+            break
         case 8:
-            componenteActual = <Paso8 notas={notas} onNotaChange={onNotaChange} />;
-            break;
+            componenteActual = <Paso8 notas={notas} onNotaChange={onNotaChange} />
+            break
         default:
-            componenteActual = <div>Paso no válido</div>;
+            componenteActual = <div>Paso no válido</div>
     }
 
+    //const current = new Date('2024-04-03 00:00:00');
+   // const dayOfWeek = current.toLocaleDateString('es-ES', { weekday: 'long' });
+
     return (
-        <>
-            <div className="flex flex-wrap -mx-3">
-                <div className="w-full max-w-full px-3 flex-0">
-                    <div className="flex flex-col visible w-full h-auto min-w-0 p-4 break-words bg-white opacity-100 border rounded-md bg-clip-border gap-4">
-
-                        <div className="text-2xl font-bold flex gap-2 text-gray-500">
-                            <Volver />
-                            Detalle estudiante
+        <ContainerVIstas titulo='Detalle estudiante' retornar>
+            <div className="w-full ">
+                <div onClick={() => setShowDetalles(!showDetalles)} className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                    <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-blue-500 text-lg sm:text-2xl">
+                        <div className=" font-bold ">
+                            {datos.estudiante} - {datos.codigo}
                         </div>
+                        <i className={`bi bi-caret-down-fill transform my-auto ${showDetalles ? 'rotate-180' : ''}`} />
+                    </div>
+                    <div className={`${!showDetalles ? 'hidden' : 'flex'} p-4`}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-lg sm:text-lg w-full">
+                            <p className="font-bold text-gray-500">Facultad: <span className="ml-2 font-normal text-blue-500">{datos.facultad}</span></p>
+                            <p className="font-bold text-gray-500">Carrera: <span className="ml-2 font-normal text-blue-500">{datos.carrera}</span></p>
+                            <p className="font-bold text-gray-500">Sede: <span className="ml-2 font-normal text-blue-500">{datos.sede}</span></p>
+                            <p className="font-bold text-gray-500">Periodo: <span className="ml-2 font-normal text-blue-500">{datos.periodo}</span></p>
+                            <p className="font-bold text-gray-500">Asignatura: <span className="ml-2 font-normal text-blue-500">{datos.curso}</span></p>
+                            <p className="font-bold text-gray-500">Sección: <span className="ml-2 font-normal text-blue-500">{datos.seccion}</span></p>
+                        </div>
+                    </div>
+                </div>
 
-                        <div className="w-full">
-                            <div onClick={() => setShowDetalles(!showDetalles)} className="w-full rounded-lg border-2 border-gray-300 border-t-4">
-                                <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-blue-500 text-lg sm:text-2xl">
-                                    <div className=" font-bold ">
-                                        {datos.estudiante} - {datos.codigo}
-                                    </div>
-
-                                    <i 
-                                        className={`bi bi-caret-down-fill transform my-auto ${showDetalles ? 'rotate-180' : ''}`} />
-
-                                </div>
-                                <div className={`${!showDetalles ? 'hidden' : 'flex'} p-4`}>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-lg sm:text-2xl">
-                                        <p className="font-bold text-gray-500">Facultad: <span className="font-normal text-blue-500">{datos.facultad}</span></p>
-                                        <p className="font-bold text-gray-500">Escuela Profesional: <span className="font-normal text-blue-500">{datos.escuela}</span></p>
-                                        <p className="font-bold text-gray-500">Nivel-sección: <span className="font-normal text-blue-500">{datos.curso}</span></p>
-                                        <p className="font-bold text-gray-500">Plan: <span className="font-normal text-blue-500">{datos.plan}</span></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="w-full rounded-lg border-2 border-gray-300 mt-4 border-t-4">
-                                <div className="border-b-2 border-gray-200">
-                                    <div className="flex items-center justify-center p-4 pb-0 sm:p-8">
+                <div className="w-full rounded-lg border-2 border-gray-300 mt-4 border-t-4">
+                    <div className="border-b-2 border-gray-200">
+                        <div className="flex items-center justify-center p-4 pb-0 sm:p-8">
+                            {
+                                pasos.map((paso, index) => (
+                                    <React.Fragment key={paso}>
                                         {
-                                            pasos.map((paso, index) => (
-                                                <React.Fragment key={paso}>
-                                                    {
-                                                        index > 0 && (
-                                                            <div
-                                                                className={`hidden sm:flex h-2 w-8 bg-gray-300 ${paso <= pasoActual ? 'bg-blue-500' : ''}`}
-                                                            />
-                                                        )
-                                                    }
-                                                    <button
-                                                        onClick={() => setPasoActual(paso)}
-                                                        disabled={paso === pasoActual}
-                                                        className={`h-12 w-12 flex items-center justify-center border-4  rounded-full ${paso === pasoActual ? 'border-gray-500 bg-gray-500' : 'border-gray-300 hidden sm:flex'
-                                                            }`}
-                                                    >
-                                                        <span className={`font-bold ${paso === pasoActual ? 'text-white text-xl' : 'text-gray-400'}`}>{paso}</span>
-                                                    </button>
-                                                </React.Fragment>
-                                            ))
-                                        }
-                                    </div>
-                                    <div className="flex gap-3 justify-center p-4 border-b-2 border-gray-200">
-                                        {
-                                            pasoActual > 1 && (
-                                                <button onClick={irAlPasoAnterior} className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
-                                                    <i className="bi bi-arrow-left text-xl" />
-                                                    <span className='hidden sm:flex'>Paso Anterior</span>
-                                                </button>
+                                            index > 0 && (
+                                                <div className={`hidden sm:flex h-2 w-8 bg-gray-300 ${paso <= pasoActual ? 'bg-blue-500' : ''}`} />
                                             )
                                         }
-                                        {
-                                            pasoActual < 8 && (
-                                                <button onClick={irAlSiguientePaso} className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
-                                                    <span className='hidden sm:flex'>Siguiente Paso</span>
-                                                    <i className="bi bi-arrow-right text-xl" />
-                                                </button>
-                                            )
-                                        }
-                                    </div>
-                                    <div className='p-4 sm:p-8'>
-                                        {
-                                            componenteActual
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+                                        <button
+                                            onClick={() => setPasoActual(paso)}
+                                            disabled={paso === pasoActual}
+                                            className={`h-12 w-12 flex items-center justify-center border-4  rounded-full ${paso === pasoActual ? 'border-gray-500 bg-gray-500' : 'border-gray-300 hidden sm:flex'
+                                                }`}
+                                        >
+                                            <span className={`font-bold ${paso === pasoActual ? 'text-white text-xl' : 'text-gray-400'}`}>{paso}</span>
+                                        </button>
+                                    </React.Fragment>
+                                ))
+                            }
+                        </div>
+                        <div className="flex gap-3 justify-center p-4 border-b-2 border-gray-200">
+                            {
+                                pasoActual > 1 && (
+                                    <button onClick={irAlPasoAnterior} className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
+                                        <i className="bi bi-arrow-left text-xl" />
+                                        <span className='hidden sm:flex'>Paso Anterior</span>
+                                    </button>
+                                )
+                            }
+                            {
+                                pasoActual < 8 && (
+                                    <button onClick={irAlSiguientePaso} className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
+                                        <span className='hidden sm:flex'>Siguiente Paso</span>
+                                        <i className="bi bi-arrow-right text-xl" />
+                                    </button>
+                                )
+                            }
+                        </div>
+                        <div className='p-4 sm:p-8'>
+                            {componenteActual}
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </ContainerVIstas>
     )
 
 }

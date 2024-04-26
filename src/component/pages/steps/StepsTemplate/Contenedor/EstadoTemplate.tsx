@@ -2,11 +2,11 @@ import EstadoProceso from "./EstadoProceso";
 import EstadoTiempo from "./EstadoTiempo";
 
 type DatosEstado = {
-    estado: number;
+    estado: number
     fecha: {
-        presentacion: string;
-    };
-};
+        presentacion: string
+    }
+}
 
 const EstadoTemplate : React.FC<{ datos: DatosEstado }> = ({ datos }) => {
 
@@ -22,7 +22,7 @@ const EstadoTemplate : React.FC<{ datos: DatosEstado }> = ({ datos }) => {
                 />
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default EstadoTemplate;
+export default EstadoTemplate
