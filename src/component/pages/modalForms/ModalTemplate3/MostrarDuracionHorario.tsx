@@ -20,7 +20,28 @@ const MostrarDuracionHorario: React.FC<Props> = ({ show, hide }) => {
             <Modal.Header closeButton onHide={hide}> </Modal.Header>
             <Modal.Body>
                 <div className="flex flex-col gap-4">
-                   mostrar duracion
+                    <span className="font-medium text-gray-400 text-lg">DURACIÓN PRÁCTICAS PREPROFESIONALES</span>
+                    <div className="flex gap-8">
+                        <div>
+                            Fecha Inicio: <span className="text-blue-500 font-medium">25/05/2024</span>
+                        </div>
+                        <div>
+                            Fecha Fin: <span className="text-blue-500 font-medium">25/05/2024</span>
+                        </div>
+                    </div>
+                    <div>
+                        Horario de practicas
+                    </div>
+                    <div>
+                     <b>aqui</b> va el detalle
+                    </div>
+                    <div>
+                        <b>lista</b> dias excluidos
+                    </div>
+                    <div>
+                        <b>botones</b>  --- mostrar horario con calendario
+                    </div>
+
                 </div>
             </Modal.Body>
             <Modal.Footer>

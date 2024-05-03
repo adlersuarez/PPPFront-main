@@ -20,7 +20,24 @@ const MostrarPlanActividades: React.FC<Props> = ({ show, hide }) => {
             <Modal.Header closeButton onHide={hide}> </Modal.Header>
             <Modal.Body>
                 <div className="flex flex-col gap-4">
-                   mostrar plan MostrarPlanActividades
+                    <span className="font-medium text-gray-400 text-lg">PLAN DE ACTIVIDADES</span>
+                    <div className="flex gap-8">
+                        <div>
+                            OBJETIVO GENERAL: <span className="text-blue-500 font-medium">objetivo propuesto</span>
+                        </div>
+
+                    </div>
+                    <div>
+                        <b>UNIDAD TEMATICA</b>
+                    </div>
+                    <div>
+                        <b>Objetivo especifico</b> detallar el objetivo
+                    </div>
+                    <div>
+                        <b>lista</b> de actividades
+                    </div>
+
+
                 </div>
             </Modal.Body>
             <Modal.Footer>
