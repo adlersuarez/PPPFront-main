@@ -32,7 +32,6 @@ const Proceso = () => {
                 "Ficha de datos de jefe inmediato",
                 "Plan de actividades",
                 "Ficha de control de actividades",
-                "Evaluación de desempeño",
                 "Informe final",
             ],
         },
@@ -48,12 +47,12 @@ const Proceso = () => {
     //Cambiar de step
     const displayStep = async (step: number) => {
         try {
-            const TemplateStepModule = await import(`../../../component/pages/steps/StepsTemplate/TemplateStep${step}.tsx`);
-            const TemplateStep = TemplateStepModule.default;
-            setStepComponent(<TemplateStep />);
+            const TemplateStepModule = await import(`../../../component/pages/steps/StepsTemplate/TemplateStep${step}.tsx`)
+            const TemplateStep = TemplateStepModule.default
+            setStepComponent(<TemplateStep estado/>)
         } catch (error) {
-            console.error('Error al cargar el componente:', error);
-            setStepComponent(null);
+            console.error('Error al cargar el componente:', error)
+            setStepComponent(null)
         }
     }
 
@@ -89,11 +88,10 @@ const Proceso = () => {
     const paso_4: boolean = true
     const paso_5: boolean = true
     const paso_6: boolean = true
-    const paso_7: boolean = true
 
     const [estado_model2, setEstado_model] = useState<boolean[]>([])
 
-    const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6, paso_7]
+    const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6]
     //console.log(estado_model2)
 
     //

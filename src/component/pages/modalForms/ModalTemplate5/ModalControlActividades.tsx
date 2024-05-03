@@ -163,7 +163,6 @@ const ControlActividades: React.FC<Props> = ({ show, hide, unidadId, numero }) =
     const [unidadSeleccionada, setUnidadSeleccioanda] = useState<number>(1)
     const changeUnidadSeleccionada = (newUnidad: number) => setUnidadSeleccioanda(newUnidad)
 
-    console.log(unidadTem)
 
     return (
 

@@ -1,31 +1,34 @@
 type EstadoElemento = {
-    estado?: number;
+    estado?: number
 }
 
 const EstadoProceso = ({ estado }: EstadoElemento) => {
 
-    var color = ''
-    var texto = ''
+    let color = ''
+    let texto = ''
+    let icon = ''
 
     switch (estado) {
         case 1:
             color = 'green-500'
             texto = 'Completado'
-            break;
+            icon = 'bi-check-circle'
+            break
 
-        case 2:
-            color = 'yellow-300'
+        case 0:
+            color = 'gray-400'
             texto = 'En proceso'
-            break;
+            icon = 'bi-clock-history'
+            break
 
         default:
-            break;
+            break
     }
 
     return (
-        <div
-            className={`flex rounded-lg bg-${color} text-white text-xs px-2 w-auto`}>
-            <span className="m-auto">{texto}</span>
+        <div className={`flex rounded-md bg-${color} text-white text-xs px-2 w-auto gap-2 cursor-default`} >
+            <i className={`bi ${icon} my-auto`} />
+            <span className="my-auto">{texto}</span>
         </div>
     );
 };

@@ -25,10 +25,10 @@ import { EmpresaAreaTrabajo } from "@/model/interfaces/empresa/empresaAreaTrabaj
 type Props = {
     show: boolean
     hide: () => void
-    // init: () => void
+    init: () => void
 }
 
-const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide }) => {
+const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide,init }) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -352,7 +352,7 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide }) => {
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
                         sweet.openSuccess("¡Operación completada con éxito!", "Los datos del Área de trabajo han sido registrados satisfactoriamente.", () => {
-                            //init() // Actualizar la lista de Cartas
+                            init() // Actualizar la lista de Cartas
                             cerrarModal() // Cerrar modal
                         })
                     }

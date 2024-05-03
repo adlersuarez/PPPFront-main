@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import ListaElementos from "./Contenedor/ListaElementos";
 import ModalCargarPlan from "../../modalForms/ModalTemplate4/ModalCargarPlan";
 import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore.store";
+import { EstadoPlanActividades } from "@/network/rest/practicas.network";
+import EstadoValor from "@/model/interfaces/estado/EstadoValor";
+import Response from "@/model/class/response.model.class";
+import RestError from "@/model/class/resterror.model.class";
+import { Types } from "@/model/enum/types.model";
+import MostrarPlanActividades from "../../modalForms/ModalTemplate4/MostrarPlanActividades";
 
 const TemplateStep4 = () => {
+    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
+    const abortController = useRef(new AbortController())
 
     const Caracteristicas = [
         {
@@ -28,20 +39,45 @@ const TemplateStep4 = () => {
         },
     ]
 
-    const EstadoActual = {
-        estado: 2,
-        fecha: {
-            presentacion: '2023-11-10T16:10:00.000'
-        }
-    }
+
     const [show, setShow] = useState<boolean>(false)
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
+    // Mostrar plan
+    const [showPlanDatos, setShowPlanDatos] = useState<boolean>(false)
+
+    const handleClosePlanDatos = () => setShowPlanDatos(false)
+    const handleShowPlanDatos = () => setShowPlanDatos(true)
+
+
+    const [estadoPlan, setEstadoPlan] = useState<number | null>(null)
+
+    const LoadEstadoPlan = async () => {
+        // setGrado([])
+        const response = await EstadoPlanActividades<EstadoValor>(codigo, periodo, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data as EstadoValor
+            setEstadoPlan(Number(data.value))
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    const Init = () => {
+        LoadEstadoPlan()
+    }
+
+    useEffect(() => {
+        Init()
+    }, [])
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
-            <ModalCargarPlan show={show} hide={handleClose} />
+            <ModalCargarPlan show={show} hide={handleClose} init={Init} />
+            <MostrarPlanActividades show={showPlanDatos} hide={handleClosePlanDatos} />
 
             <ContenedorSteps
                 numero={4}
@@ -64,7 +100,7 @@ const TemplateStep4 = () => {
                     <div className='flex flex-col'>
 
                         <EstadoTemplate
-                            datos={EstadoActual}
+                            paso={4}
                         />
 
                         <hr className="my-2" />
@@ -81,22 +117,31 @@ const TemplateStep4 = () => {
                                 <tbody>
                                     <tr className='bg-white border-b'>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                            <EstadoRequisito valor={0} />
+                                            <EstadoRequisito valor={estadoPlan === 0 ? 1 : 2} />
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             Plan de actividades
                                         </td>
                                         <td className="text-sm p-2 text-center align-middle border-b border-solid">
                                             <div className='flex gap-2 justify-center'>
-                                                <button 
-                                                onClick={handleShow}
-                                                className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Subir</button>
-                                                <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
+                                                {estadoPlan === 0 &&
+                                                    <button
+                                                        onClick={handleShow}
+                                                        className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >
+                                                        Subir
+                                                    </button>
+                                                }
+                                                {estadoPlan === 1 &&
+                                                    <button
+                                                        onClick={handleShowPlanDatos}
+                                                        className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >
+                                                        Ver
+                                                    </button>
+                                                }
+
                                             </div>
                                         </td>
                                     </tr>
-
-
                                 </tbody>
                             </table>
                         </div>

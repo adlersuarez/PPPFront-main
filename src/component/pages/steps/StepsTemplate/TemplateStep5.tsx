@@ -11,7 +11,8 @@ import { ListarDatosUnidadTematica } from "@/network/rest/practicas.network";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore.store";
 import Listas from "@/model/interfaces/Listas.model.interface";
-import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
+import DocumentoDespliegue from "./Contenedor/DocumentoDespliegue";
+import ModalUnidadTemática from "../../modalForms/ModalTemplate5/ModalUnidadTematica";
 
 const TemplateStep5 = () => {
 
@@ -40,12 +41,6 @@ const TemplateStep5 = () => {
         }
     ]
 
-    const EstadoActual = {
-        estado: 2,
-        fecha: {
-            presentacion: '2023-11-10T16:10:00.000'
-        }
-    }
 
     const [show, setShow] = useState<boolean>(false)
     const [unidadesTematicas, setUnidadesTematicas] = useState<UnidadTematica[]>([])
@@ -56,15 +51,16 @@ const TemplateStep5 = () => {
 
     const handleShow = (unidadId: number) => {
         setIdUnidad(unidadId)
-        setShow(true)
+        // setShow(true)
+
         const unidadEncontrada = unidadesTematicas.find((unidad) => unidad.unidadTematicaId == unidadId)
         setNumeroUnidad(unidadEncontrada?.numeroUnidad ?? 0)
+        handleShowInformeFinal()
     }
 
     const ListarUnidadTematica = async () => {
         setUnidadesTematicas([])
         const response = await ListarDatosUnidadTematica<Listas>(codigo, periodo, abortController.current)
-
         if (response instanceof Response) {
             const data = response.data.resultado as UnidadTematica[]
             setUnidadesTematicas(data)
@@ -79,10 +75,27 @@ const TemplateStep5 = () => {
         ListarUnidadTematica()
     }, [])
 
+    //
+    const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+    const handleToggle = (posicion: number) => {
+        setOpenIndex(openIndex === posicion ? null : posicion)
+    }
+
+    //
+    const [showInformeFinal, setShowInformeFinal] = useState<boolean>(false)
+    const handleCloseInformeFinal = () => setShowInformeFinal(false)
+    const handleShowInformeFinal = () => setShowInformeFinal(true)
+
+    const [estadoInit, setEstadoInit] = useState<boolean>(false)
+    const changeEstado = () => setEstadoInit(!estadoInit)
+
+    //
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
             <ControlActividades show={show} hide={handleClose} unidadId={idUnidad} numero={numeroUnidad} />
+            <ModalUnidadTemática numero={numeroUnidad} show={showInformeFinal} hide={handleCloseInformeFinal} changeInit={changeEstado} />
 
             <ContenedorSteps
                 numero={5}
@@ -105,56 +118,30 @@ const TemplateStep5 = () => {
                     <div className='flex flex-col'>
 
                         <EstadoTemplate
-                            datos={EstadoActual}
+                            paso={5}
                         />
 
                         <hr className="my-2" />
 
-                        <div className="overflow-x-auto p-2">
-                            <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto">
-                                <thead>
-                                    <tr>
-                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
-                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Requisito</th>
-                                        <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        unidadesTematicas.map((unidad, index) => (
-                                            <tr className='bg-white border-b' key={index}>
-                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                    <EstadoRequisito valor={unidad.estadoUnidad} />
-                                                </td>
-                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                    Unidad temática {unidad.numeroUnidad}
-                                                </td>
-                                                <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                    <div className='flex gap-2 justify-center'>
-                                                        <button onClick={() => handleShow(unidad.unidadTematicaId)}
-                                                            className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >
-                                                            Subir
-                                                        </button>
-                                                        <button className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >Ver</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
+                        <div className="flex flex-col gap-2">
 
-                                </tbody>
-                            </table>
-                        </div>
+                            {
+                                unidadesTematicas.map((unidad, index) => (
+                                    <DocumentoDespliegue
+                                        key={index}
+                                        titulo={`UNIDAD TEMÁTICA ${unidad.numeroUnidad}`}
+                                        tipoDoc={`UT${unidad.numeroUnidad}`}
+                                        posicion={index + 1}
+                                        onToggle={handleToggle}
+                                        openIndex={openIndex}
+                                        openAction={() => handleShow(unidad.unidadTematicaId)}
+                                        estadoInit={estadoInit}
+                                    />
+                                ))
 
-                        <hr className="my-2" />
+                            }
 
-                        <div className="flex flex-col p-2 gap-2">
-                            <div className='bg-green-200 rounded-lg text-center'>
-                                <span className="px-4 text-green-600 font-semibold">Documentos debidamente cargados</span>
-                            </div>
-                            <div className='bg-red-200 rounded-lg text-center'>
-                                <span className="px-4 text-red-600 font-semibold">Documentos requeridos</span>
-                            </div>
+
 
                         </div>
 

@@ -84,6 +84,8 @@ const Paso3 = (datos: Paso3Props) => {
     const handleShowExcluido = () => setVerExcluido(true)
     const handleCloseExcluido = () => setVerExcluido(false)
 
+    console.log(valoresEmpresa)
+
     return (
         <div className='flex flex-col gap-4'>
 
@@ -94,115 +96,123 @@ const Paso3 = (datos: Paso3Props) => {
                 <i className={`bi bi-3-square-fill`} />
                 <h1 className="font-bold">FICHA DE DATOS ÁREA DE TRABAJO</h1>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16">
-                <div className={`flex flex-col  gap-4 h-auto`}>
-                    <div className='flex flex-col bg-white rounded border'>
-                        <div className="flex bg-gray-400 text-white gap-4 text-left whitespace-normal">
-                            <span className="font-bold py-2 px-4">
-                                {valoresEmpresa?.empresaNombre}
-                            </span>
-                        </div>
-                        <hr />
-                        <div className="flex flex-col  text-sm sm:text-lg">
-                            <div className="flex text-gray-400 gap-2 p-2">
-                                <p className="w-2/5">RUC:</p>
-                                <span className="font-bold w-3/5">
-                                    {valoresEmpresa?.empresaRuc}
+            {
+            valoresEmpresa !== null ?
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16">
+                    <div className={`flex flex-col  gap-4 h-auto`}>
+                        <div className='flex flex-col bg-white rounded border'>
+                            <div className="flex bg-gray-400 text-white gap-4 text-left whitespace-normal">
+                                <span className="font-bold py-2 px-4">
+                                    {valoresEmpresa?.empresaNombre}
                                 </span>
                             </div>
                             <hr />
-                            <div className="flex flex-col p-2 gap-2">
-                                <div className="flex text-gray-400 gap-2">
-                                    <p className="w-2/5">RESPONSABLE:</p>
+                            <div className="flex flex-col  text-sm sm:text-lg">
+                                <div className="flex text-gray-400 gap-2 p-2">
+                                    <p className="w-2/5">RUC:</p>
                                     <span className="font-bold w-3/5">
-                                        {valoresEmpresa?.representante}
+                                        {valoresEmpresa?.empresaRuc}
                                     </span>
                                 </div>
+                                <hr />
+                                <div className="flex flex-col p-2 gap-2">
+                                    <div className="flex text-gray-400 gap-2">
+                                        <p className="w-2/5">RESPONSABLE:</p>
+                                        <span className="font-bold w-3/5">
+                                            {valoresEmpresa?.representante}
+                                        </span>
+                                    </div>
 
-                                <div className="flex text-gray-400 gap-2">
-                                    <p className="w-2/5">CARGO:</p>
-                                    <span className="font-bold w-3/5">
-                                        {valoresEmpresa?.repCargo}
-                                    </span>
+                                    <div className="flex text-gray-400 gap-2">
+                                        <p className="w-2/5">CARGO:</p>
+                                        <span className="font-bold w-3/5">
+                                            {valoresEmpresa?.repCargo}
+                                        </span>
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
 
                     </div>
-
-                </div>
-                <div className="flex flex-col gap-4">
-                    <div className="border-l-4 border-blue-600 bg-gray-100 p-2 text-center">
-                        <h2 className="font-bold text-xl sm:text-2xl">ÁREA DE TRABAJO</h2>
-                    </div>
-                    <div className="flex flex-col gap-4 uppercase text-sm sm:text-lg">
-                        <div className="flex gap-2">
-                            <div className="w-1/3 font-bold">Dirección</div>
-                            <div className="w-2/3">{valoresEmpresa?.direccionAreaPracticas}</div>
+                    <div className="flex flex-col gap-4">
+                        <div className="border-l-4 border-blue-600 bg-gray-100 p-2 text-center">
+                            <h2 className="font-bold text-xl sm:text-2xl">ÁREA DE TRABAJO</h2>
                         </div>
-                        <div className="flex gap-2">
-                            <div className="w-1/3 font-bold">DURACIÓN</div>
-                            <div className="w-2/3">
-                                {formatoFecha_Date_fechaSlash(valoresEmpresa?.fechaInicio ?? '') + ' - ' + formatoFecha_Date_fechaSlash(valoresEmpresa?.fechaFinal ?? '')}
-                            </div>
-                        </div>
-                        {
-                            listaDiasPracticas.length !== 0 &&
+                        <div className="flex flex-col gap-4 uppercase text-sm sm:text-lg">
                             <div className="flex gap-2">
-                                <div className="w-1/3 font-bold">HORARIO</div>
-                                <div className="w-2/3">
-                                    <button
-                                        onClick={handleShowDuracion}
-                                        className="bg-green-400 text-white hover:scale-105 hover:bg-green-600 px-2 rounded-md py-0.5">
-                                        <i className="bi bi-eye" /> Mostrar
-                                    </button>
-                                </div>
+                                <div className="w-1/3 font-bold">Dirección</div>
+                                <div className="w-2/3">{valoresEmpresa?.direccionAreaPracticas}</div>
                             </div>
-                        }
-                        {
-                            listaDiasExcluido.length !== 0 &&
                             <div className="flex gap-2">
-                                <div className="w-1/3 font-bold">Excluidos</div>
+                                <div className="w-1/3 font-bold">DURACIÓN</div>
                                 <div className="w-2/3">
-                                    <button
-                                        onClick={handleShowExcluido}
-                                        className="bg-green-400 text-white hover:scale-105 hover:bg-green-600 px-2 rounded-md py-0.5">
-                                        <i className="bi bi-eye" /> Mostrar
-                                    </button>
+                                    {formatoFecha_Date_fechaSlash(valoresEmpresa?.fechaInicio ?? '') + ' - ' + formatoFecha_Date_fechaSlash(valoresEmpresa?.fechaFinal ?? '')}
                                 </div>
                             </div>
-                        }
+                            {
+                                listaDiasPracticas.length !== 0 &&
+                                <div className="flex gap-2">
+                                    <div className="w-1/3 font-bold">HORARIO</div>
+                                    <div className="w-2/3">
+                                        <button
+                                            onClick={handleShowDuracion}
+                                            className="bg-green-400 text-white hover:scale-105 hover:bg-green-600 px-2 rounded-md py-0.5">
+                                            <i className="bi bi-eye" /> Mostrar
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                            {
+                                listaDiasExcluido.length !== 0 &&
+                                <div className="flex gap-2">
+                                    <div className="w-1/3 font-bold">Excluidos</div>
+                                    <div className="w-2/3">
+                                        <button
+                                            onClick={handleShowExcluido}
+                                            className="bg-green-400 text-white hover:scale-105 hover:bg-green-600 px-2 rounded-md py-0.5">
+                                            <i className="bi bi-eye" /> Mostrar
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-4 ">
+                        <div className="border-l-4 border-blue-600 bg-gray-100 p-2 text-center">
+                            <h2 className="font-bold text-xl sm:text-2xl">JEFE INMEDIATO</h2>
+                        </div>
+                        <div className="flex flex-col gap-4 uppercase text-sm sm:text-lg">
+                            <div className="flex gap-2">
+                                <div className="w-1/3 font-bold ">NOMBRE</div>
+                                <div className="w-2/3">{valoresEmpresa?.jefeInmediato}</div>
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="w-1/3 font-bold">GRADO</div>
+                                <div className="w-2/3">{valoresEmpresa?.jefeGrado}</div>
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="w-1/3 font-bold">CARGO</div>
+                                <div className="w-2/3"> {valoresEmpresa?.jefeCargo}</div>
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="w-1/3 font-bold">TELÉFONO</div>
+                                <div className="w-2/3"> {" ---- "}</div>
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="w-1/3 font-bold">CORREO</div>
+                                <div className="w-2/3"> {" ---- "}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="flex flex-col gap-4 ">
-                    <div className="border-l-4 border-blue-600 bg-gray-100 p-2 text-center">
-                        <h2 className="font-bold text-xl sm:text-2xl">JEFE INMEDIATO</h2>
-                    </div>
-                    <div className="flex flex-col gap-4 uppercase text-sm sm:text-lg">
-                        <div className="flex gap-2">
-                            <div className="w-1/3 font-bold ">NOMBRE</div>
-                            <div className="w-2/3">{valoresEmpresa?.jefeInmediato}</div>
-                        </div>
-                        <div className="flex gap-2">
-                            <div className="w-1/3 font-bold">GRADO</div>
-                            <div className="w-2/3">{valoresEmpresa?.jefeGrado}</div>
-                        </div>
-                        <div className="flex gap-2">
-                            <div className="w-1/3 font-bold">CARGO</div>
-                            <div className="w-2/3"> {valoresEmpresa?.jefeCargo}</div>
-                        </div>
-                        <div className="flex gap-2">
-                            <div className="w-1/3 font-bold">TELÉFONO</div>
-                            <div className="w-2/3"> {" ---- "}</div>
-                        </div>
-                        <div className="flex gap-2">
-                            <div className="w-1/3 font-bold">CORREO</div>
-                            <div className="w-2/3"> {" ---- "}</div>
-                        </div>
-                    </div>
+                :
+                <div className="text-center sm:col-span-3 p-4 sm:p-8 bg-gray-200 rounded shadow-lg">
+                    <p className="text-base sm:text-2xl font-bold text-gray-500">El estudiante aún no ha completado los datos de su Área de trabajo</p>
                 </div>
-            </div>
+            }
+
         </div>
     );
 };

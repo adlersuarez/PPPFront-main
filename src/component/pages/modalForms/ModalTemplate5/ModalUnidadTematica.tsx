@@ -1,9 +1,6 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import Modal from "../../modal/ModalComponente"
 import toast from "react-hot-toast"
-import EmpresaCarta from "@/model/interfaces/empresa/empresaCarta"
-import { ListarEmpresasCartaAlumno } from "@/network/rest/practicas.network"
-import Listas from "@/model/interfaces/Listas.model.interface"
 import { useSelector } from "react-redux"
 import { RootState } from "@/store/configureStore.store"
 import RestError from "@/model/class/resterror.model.class"
@@ -11,27 +8,30 @@ import { Types } from "@/model/enum/types.model"
 import Response from "@/model/class/response.model.class"
 import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile"
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
-import { ConfirmarEmpresaCarta } from "@/network/rest/cargarArchivos.network"
+import { RegistrarDocumento } from "@/network/rest/cargarArchivos.network"
 import RespValue from "@/model/interfaces/RespValue.model.interface"
+import HerramientaDoc from "../ModalTemplate6/componente/HerramientaDoc"
+import FilePreview from "@/model/interfaces/documento/filePreview"
 
 type Props = {
+    numero: number
     show: boolean
     hide: () => void
+    changeInit: () => void
 }
 
-const ModalCargarUnidadTematica1: React.FC<Props> = ({ show, hide }) => {
+const ModalUnidadTemática: React.FC<Props> = ({ show, hide, numero,changeInit }) => {
 
     const sweet = useSweerAlert()
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
+    const asignatura = useSelector((state: RootState) => state.infoEstudiante.asignatura)
 
     //Datos para el nombre del archivo
     const anio = useSelector((state: RootState) => state.infoEstudiante.anioActual)
     const per = useSelector((state: RootState) => state.infoEstudiante.periodoActual)
     const codAsig = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
-
-    const abortController = useRef(new AbortController())
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
@@ -59,7 +59,7 @@ const ModalCargarUnidadTematica1: React.FC<Props> = ({ show, hide }) => {
     const handleGuardarCambios = () => {
         if (selectedFile) {
             //Carta aceptacion es CA-
-            const nombreArchivo: string = "UT1-" + codigo + "-" + anio + per + "-" + codAsig + ".pdf"
+            const nombreArchivo: string = "UT" + numero + "-" + codigo + "-" + anio + per + "-" + codAsig + ".pdf"
 
             // Crear una nueva instancia de File con el nuevo nombre
             const archivoConNuevoNombre = new File([selectedFile], nombreArchivo, {
@@ -67,17 +67,18 @@ const ModalCargarUnidadTematica1: React.FC<Props> = ({ show, hide }) => {
             })
 
             sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
-                if (value) {/*
+                if (value) {
                     const formData = new FormData()
                     formData.append('Archivo', archivoConNuevoNombre)
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await ConfirmarEmpresaCarta<RespValue>(selectedEmpresa, formData)
-          
+                    const response = await RegistrarDocumento<RespValue>('UT' + numero, codigo, periodo, formData)
+
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
                             sweet.openSuccess("¡Operación completada con éxito!", "La carta de aceptación ha sido cargada satisfactoriamente.", () => {
+                                changeInit()
                                 hide()
                             })
                         }
@@ -93,7 +94,7 @@ const ModalCargarUnidadTematica1: React.FC<Props> = ({ show, hide }) => {
                         sweet.openWarning("Error", "Por favor, comuníquese con la Oficina de Informática.", () => { })
                     }
 
-                */}
+                }
             })
         }
     }
@@ -103,7 +104,7 @@ const ModalCargarUnidadTematica1: React.FC<Props> = ({ show, hide }) => {
     const handleShowDoc = () => setShowDoc(true)
     const handleCloseDoc = () => setShowDoc(false)
 
-    const archivosVistaPrevia = [
+    const archivosVistaPrevia: FilePreview[] = [
         {
             nombre: selectedFile?.name ?? '',
             url: selectedFile ? URL.createObjectURL(selectedFile) : '',
@@ -121,23 +122,47 @@ const ModalCargarUnidadTematica1: React.FC<Props> = ({ show, hide }) => {
                         close={handleCloseDoc}
                         files={archivosVistaPrevia}
                     />
-                     <div className='bg-gray-100 w-full rounded-lg flex p-2 justify-between'>
+                    <div className='bg-gray-100 w-full rounded-lg flex p-2 justify-between'>
                         <div className='flex text-upla-100'>
                             <i className="bi bi-clipboard-check ml-2 text-2xl" />
-                            <span className='ml-4 font-bold sm:text-xl my-auto'>CARTA DE ACEPTACIÓN</span>
+                            <span className='ml-4 font-bold sm:text-xl my-auto'>UNIDAD TEMÁTICA {numero}</span>
                         </div>
-                      
+
                     </div>
                     <div className='bg-gray-100 w-full rounded-lg p-4'>
                         <div className='flex flex-col sm:gap-x-8 gap-2 sm:gap-y-3'>
                             <div className="grid grid-grid-cols-1 sm:grid-cols-2 gap-10">
+                                <div className="flex flex-col gap-4">
+                                    <div className="text-upla-100 font-semibold">
+                                        {asignatura}
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <span className="text-gray-500 font-medium flex gap-2">
+                                            <div className="animate-pulse">
+                                                <i className="animat bi bi-gear" />
+                                            </div>  Herramientas de apoyo
+                                        </span>
+                                        <div className="flex flex-col gap-4 ">
+
+                                            <HerramientaDoc
+                                                titulo='Estructura de Unidad Temática'
+                                                tipoDoc='pdf'
+                                                urlDownload='/Formatos/FCAC/Estructura AS - PP1.pdf'
+                                                urlShow='/Formatos/FCAC/Estructura AS - PP1.pdf'
+                                            />
+
+                                        </div>
+                                    </div>
+
+                                </div>
                                 <div className="flex flex-col h-full">
                                     <div className="flex flex-col gap-1 h-full">
                                         <label htmlFor="fileInput" className='font-bold text-gray-500 flex items-center'>
                                             Seleccionar Archivo <span className="ml-1 font-medium">(Max 5MB)</span> <i className="text-red-500 bi bi-asterisk text-xs ml-1" />
                                         </label>
                                         <div className="flex flex-col gap-2">
-                                            <input type="file" id="fileInput" className="border rounded-md text-xs w-full h-full bg-white" accept=".pdf" onChange={handleFileChange} />
+                                            <input type="file" id="fileInput" className="border rounded-md text-xs w-full h-full bg-white" accept=".pdf"
+                                                onChange={handleFileChange} />
                                             {
                                                 selectedFile &&
                                                 <div className="flex bg-white p-2">
@@ -184,4 +209,4 @@ const ModalCargarUnidadTematica1: React.FC<Props> = ({ show, hide }) => {
     )
 }
 
-export default ModalCargarUnidadTematica1
+export default ModalUnidadTemática

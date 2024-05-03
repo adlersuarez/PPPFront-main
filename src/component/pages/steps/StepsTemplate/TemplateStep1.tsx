@@ -17,7 +17,7 @@ import Response from '@/model/class/response.model.class';
 import PagoCarta from '@/model/interfaces/pagos/pagoCarta';
 import { CargandoPagos } from '../../carga/CargandoPagos';
 import { LoaderSvg } from '@/component/Svg.component';
-import { convertirFechaPago_aaaa_mm_dd } from '@/helper/herramienta.helper';
+import { convertirFechaPago_aaaa_mm_dd, formatoFecha_Date_fechaSlash } from '@/helper/herramienta.helper';
 
 const Requisitos = [
     {
@@ -78,13 +78,6 @@ const TemplateStep1 = () => {
         setOperacionSeleccionada(codOperacion)
         const pagoEncontrado = pagosCarta.find(pago => pago.operacion === codOperacion);
         setFechaOperacionSeleccionada(convertirFechaPago_aaaa_mm_dd(pagoEncontrado?.fecha_operacion ?? ''))
-    }
-
-    const EstadoActual = {
-        estado: 2,
-        fecha: {
-            presentacion: '2023-11-10T16:10:00.000'
-        }
     }
 
     const [pagosCarta, setPagosCarta] = useState<PagoCarta[]>([])
@@ -174,7 +167,7 @@ const TemplateStep1 = () => {
                 <ContenedorSteps.Proceso>
                     <div className='flex flex-col'>
                         <EstadoTemplate
-                            datos={EstadoActual}
+                            paso={1}
                         />
                         <hr className="my-2" />
 
@@ -269,7 +262,7 @@ const TemplateStep1 = () => {
                                                         {carta.empresaNombre}
                                                     </td>
                                                     <td className="text-sm p-2 text-center align-middle border-b border-solid whitespace-nowrap">
-                                                        {carta.cartaFechaRegistro.slice(0, 10)}
+                                                        {formatoFecha_Date_fechaSlash(carta.cartaFechaRegistro)}
                                                     </td>
                                                     <td className="text-sm w-9">
                                                         <div className='flex gap-2 p-2'>

@@ -29,9 +29,10 @@ interface UnidadTema {
 type Props = {
     show: boolean
     hide: () => void
+    init: () => void
 }
 
-const ModalCargarPlan: React.FC<Props> = ({ show, hide }) => {
+const ModalCargarPlan: React.FC<Props> = ({ show, hide, init }) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -272,7 +273,7 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide }) => {
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
                         sweet.openSuccess("¡Operación completada con éxito!", "El plan de actividades ha sido registrado satisfactoriamente.", () => {
-                            //init() // Actualizar la lista de Cartas
+                            init() // Actualizar la lista de Cartas
                             hide() // Cerrar modal
                         })
                     }

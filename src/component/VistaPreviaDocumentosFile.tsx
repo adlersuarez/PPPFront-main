@@ -1,9 +1,6 @@
+import { obtenerNombreArchivo } from '@/helper/herramienta.helper';
+import FilePreview from '@/model/interfaces/documento/filePreview';
 import React, { useEffect, useRef, useState } from 'react';
-
-interface FilePreview {
-    nombre: string
-    url: string
-}
 
 interface ModalFunctions {
     show: boolean
@@ -19,11 +16,11 @@ const VistaPreviaDocumentosFile: React.FC<ModalFunctions> = ({ show, close, file
         setSelectedFile(file)
     }
 
-    const tipoDocActual = (nombreArchivo: string): string => {
-        if (nombreArchivo.endsWith('.pdf')) {
+    const tipoDocActual = (urlArchivo: string, nombreArchivo: string): string => {
+        if (nombreArchivo.endsWith('.pdf') || urlArchivo.endsWith('.pdf')) {
             return 'pdf'
         }
-        if (nombreArchivo.endsWith('.jpg') || nombreArchivo.endsWith('.png') || nombreArchivo.endsWith('.jpeg')) {
+        if (nombreArchivo.endsWith('.jpg') || urlArchivo.endsWith('.jpg') || nombreArchivo.endsWith('.png') || urlArchivo.endsWith('.png') || nombreArchivo.endsWith('.jpeg') || urlArchivo.endsWith('.jpeg')) {
             return 'img'
         }
         return '-'
@@ -61,10 +58,29 @@ const VistaPreviaDocumentosFile: React.FC<ModalFunctions> = ({ show, close, file
         }
     }
 
+    const handleDownloadFile = () => {
+
+        const fileName = obtenerNombreArchivo(selectedFile?.download ?? selectedFile?.nombre ?? '')
+        const filePath = selectedFile?.download ?? selectedFile?.url ?? ''
+
+        fetch(filePath)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute('download', fileName)
+                document.body.appendChild(link)
+                link.click()
+                link.parentNode?.removeChild(link)
+            })
+            .catch(error => console.error('Error al descargar el archivo:', error))
+    }
+
     return (
         <>
             {show &&
-                <div className="fixed top-0 left-0 flex flex-col w-full h-full bg-black bg-opacity-70 ">
+                <div className="fixed top-0 left-0 flex flex-col w-full h-full bg-black bg-opacity-70 z-[1000]">
                     <div className='bg-black text-white'>
                         <div className="flex justify-between items-center p-2 px-4">
                             <div className='flex gap-8'>
@@ -74,23 +90,24 @@ const VistaPreviaDocumentosFile: React.FC<ModalFunctions> = ({ show, close, file
                                 <div className='cursor-default my-auto'>{selectedFile?.nombre}</div>
                             </div>
 
-                            <a href={selectedFile?.url} download={selectedFile?.nombre}
+                            <button onClick={handleDownloadFile}
+                            //href={selectedFile?.url} download={selectedFile?.download ? selectedFile.download : selectedFile?.nombre}
                                 className='flex hover:bg-gray-800 rounded w-8 h-8'
                             >
                                 <i className="m-auto bi bi-cloud-download" />
-                            </a>
+                            </button>
                         </div>
                     </div>
                     <div className="flex p-4 rounded-lg h-full">
                         {selectedFile &&
                             <div className='flex m-auto h-full w-[800px]'>
-                                {tipoDocActual(selectedFile.nombre) === 'pdf' &&
+                                {tipoDocActual(selectedFile.url, selectedFile.nombre) === 'pdf' &&
                                     <embed className="w-full m-auto h-full" src={selectedFile.url} type="application/pdf" />
                                 }
-                                {tipoDocActual(selectedFile.nombre) === 'img' &&
+                                {tipoDocActual(selectedFile.url, selectedFile.nombre) === 'img' &&
                                     <img className="w-full m-auto object-contain" src={selectedFile.url} alt="Preview" />
                                 }
-                                {tipoDocActual(selectedFile.nombre) === '-' &&
+                                {tipoDocActual(selectedFile.url, selectedFile.nombre) === '-' &&
                                     <div className="h-64 m-auto flex flex-col justify-center gap-4">
                                         <span className='text-white font-semibold text-xl'>Documento sin vista previa.</span>
                                         <a href={selectedFile?.url} download={selectedFile?.nombre}
@@ -119,8 +136,8 @@ const VistaPreviaDocumentosFile: React.FC<ModalFunctions> = ({ show, close, file
                                 >
                                     <div className='flex w-full text-3xl text-center'>
                                         <span className='m-auto'>
-                                            {tipoDocActual(file.nombre) === 'img' && <i className="bi bi-file-earmark-image " />}
-                                            {tipoDocActual(file.nombre) === 'pdf' && <i className="bi bi-filetype-pdf" />}
+                                            {tipoDocActual(file.url, file.nombre) === 'img' && <i className="bi bi-file-earmark-image " />}
+                                            {tipoDocActual(file.url, file.nombre) === 'pdf' && <i className="bi bi-filetype-pdf" />}
                                         </span>
                                     </div>
                                     <span title={file.nombre} className='line-clamp-1 px-2 text-xs w-full text-center'>{file.nombre}</span>

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import EstadoTemplate from './EstadoTemplate';
 
 type ContenedorStepsProps = {
     numero: number
@@ -31,10 +32,6 @@ const Informacion = ({ children }: { children: ReactNode }) => {
 const Proceso = ({ children }: { children: ReactNode }) => {
     return (
         <div className="w-full sm:w-1/2 flex flex-col bg-gray-100 rounded-lg p-4">
-            {/*<EstadoTemplate
-                datos={EstadoActual}
-            />
-            <hr className="my-2" />*/}
             {children}
         </div>
     )

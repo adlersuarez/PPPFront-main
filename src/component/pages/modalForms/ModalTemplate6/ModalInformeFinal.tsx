@@ -10,21 +10,22 @@ import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile"
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 import { RegistrarDocumento } from "@/network/rest/cargarArchivos.network"
 import RespValue from "@/model/interfaces/RespValue.model.interface"
+import HerramientaDoc from "./componente/HerramientaDoc"
+import FilePreview from "@/model/interfaces/documento/filePreview"
 
 type Props = {
     show: boolean
     hide: () => void
+    changeInit: () => void
 }
 
-const ModalInformeFinal: React.FC<Props> = ({ show, hide }) => {
+const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
 
     const sweet = useSweerAlert()
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
     const asignatura = useSelector((state: RootState) => state.infoEstudiante.asignatura)
-    const asigId = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
-    const carreraId = useSelector((state: RootState) => state.infoEstudiante.carrera)
 
     //Datos para el nombre del archivo
     const anio = useSelector((state: RootState) => state.infoEstudiante.anioActual)
@@ -71,11 +72,12 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await RegistrarDocumento<RespValue>('IF', codigo, periodo, nombreArchivo, formData)
+                    const response = await RegistrarDocumento<RespValue>('IF', codigo, periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
                             sweet.openSuccess("¡Operación completada con éxito!", "La carta de aceptación ha sido cargada satisfactoriamente.", () => {
+                                changeInit()
                                 hide()
                             })
                         }
@@ -96,44 +98,19 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide }) => {
         }
     }
 
+
+
     //////////Vista previa Documentos
     const [showDoc, setShowDoc] = useState<boolean>(false)
     const handleShowDoc = () => setShowDoc(true)
     const handleCloseDoc = () => setShowDoc(false)
 
-    const archivosVistaPrevia = [
+    const archivosVistaPrevia: FilePreview[] = [
         {
             nombre: selectedFile?.name ?? '',
             url: selectedFile ? URL.createObjectURL(selectedFile) : '',
         },
     ]
-
-    ///descargar
-    const handleDownloadFile = (facultad: string, fileName?: string) => {
-        let filePath: string
-        let nombreFile = fileName ?? ''
-        filePath = `/Formatos/${facultad}/${fileName}`
-
-        if (!fileName) {
-
-            filePath = `/Formatos/${facultad}/${fileName}`
-        }
-
-
-        fetch(filePath)
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(new Blob([blob]))
-                const link = document.createElement('a')
-                link.href = url
-                link.setAttribute('download', nombreFile)
-                document.body.appendChild(link)
-                link.click()
-                link.parentNode?.removeChild(link)
-            })
-            .catch(error => console.error('Error al descargar el archivo:', error))
-    }
-
 
     return (
 
@@ -167,44 +144,21 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide }) => {
                                             </div>  Herramientas de apoyo
                                         </span>
                                         <div className="flex flex-col gap-4 ">
-                                            <div className="flex flex-col border border-upla-100 bg-white rounded-md overflow-hidden">
-                                                <div className="flex justify-between p-2 bg-upla-100">
-                                                    <span className="text-sm text-white">Estructura de Informe Final</span>
-                                                    <div className="my-auto text-xs bg-white p-0.5 px-2 rounded">Formato: <span className="font-medium"><i>pdf</i> <i className="bi bi-file-earmark-pdf-fill text-red-600" /></span></div>
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-3 w-full p-3 px-6">
-                                                    <button
-                                                        onClick={() => { }}
-                                                        className="bg-gray-100 py-1 text-sm rounded border border-gray-400 hover:border-upla-100 hover:bg-upla-100 hover:text-white hover:scale-105 w-full">
-                                                        <i className="bi bi-eye mr-2" /> Ver
-                                                    </button>
-                                                    <button
-                                                        onClick={() => { }}
-                                                        className="bg-gray-100 py-1 text-sm rounded border border-gray-400 hover:border-upla-100 hover:bg-upla-100 hover:text-white hover:scale-105 w-full">
-                                                        <i className="bi bi-download mr-2" /> Descargar
-                                                    </button>
-                                                </div>
 
-                                            </div>
-                                            <div className="flex flex-col border border-upla-100 bg-white rounded-md overflow-hidden">
-                                                <div className="flex justify-between p-2 bg-upla-100">
-                                                    <span className="text-sm text-white">Modelo de carátula </span>
-                                                    <div className="my-auto text-xs bg-white p-0.5 px-2 rounded">Formato: <span className="font-medium"><i>docx</i> <i className="bi bi-file-earmark-word-fill text-blue-600" /></span></div>
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-3 w-full p-3 px-6">
-                                                    <button
-                                                        onClick={() => { }}
-                                                        className="bg-gray-100 py-1 text-sm rounded border border-gray-400 hover:border-upla-100 hover:bg-upla-100 hover:text-white hover:scale-105 w-full">
-                                                        <i className="bi bi-eye mr-2" /> Ver
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDownloadFile('FCAC','Modelo de Caratula.docx')}
-                                                        className="bg-gray-100 py-1 text-sm rounded border border-gray-400 hover:border-upla-100 hover:bg-upla-100 hover:text-white hover:scale-105 w-full">
-                                                        <i className="bi bi-download mr-2" /> Descargar
-                                                    </button>
-                                                </div>
+                                            <HerramientaDoc
+                                                titulo='Estructura de Informe Final'
+                                                tipoDoc='pdf'
+                                                urlDownload='/Formatos/FCAC/Estructura AS - PP1.pdf'
+                                                urlShow='/Formatos/FCAC/Estructura AS - PP1.pdf'
+                                            />
 
-                                            </div>
+                                            <HerramientaDoc
+                                                titulo='Modelo de carátula'
+                                                tipoDoc='docx'
+                                                urlDownload='/Formatos/FCAC/Modelo de Caratula.docx'
+                                                urlShow='/Formatos/FCAC/Modelo de Caratula.pdf'
+                                            />
+
                                         </div>
                                     </div>
 

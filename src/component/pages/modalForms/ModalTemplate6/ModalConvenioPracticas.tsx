@@ -10,13 +10,15 @@ import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile"
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 import { RegistrarDocumento } from "@/network/rest/cargarArchivos.network"
 import RespValue from "@/model/interfaces/RespValue.model.interface"
+import HerramientaDoc from "./componente/HerramientaDoc"
 
 type Props = {
     show: boolean
     hide: () => void
+    changeInit: () => void
 }
 
-const ModalConvenioPracticas: React.FC<Props> = ({ show, hide }) => {
+const ModalConvenioPracticas: React.FC<Props> = ({ show, hide,changeInit }) => {
 
     const sweet = useSweerAlert()
 
@@ -69,11 +71,12 @@ const ModalConvenioPracticas: React.FC<Props> = ({ show, hide }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await RegistrarDocumento<RespValue>('IF', codigo, periodo, nombreArchivo, formData)
+                    const response = await RegistrarDocumento<RespValue>('CP', codigo, periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
                             sweet.openSuccess("¡Operación completada con éxito!", "La carta de aceptación ha sido cargada satisfactoriamente.", () => {
+                                changeInit()
                                 hide()
                             })
                         }
@@ -137,27 +140,21 @@ const ModalConvenioPracticas: React.FC<Props> = ({ show, hide }) => {
                                                 <i className="animat bi bi-gear" />
                                             </div>  Herramientas de apoyo
                                         </span>
-                                        <div className="flex flex-col gap-4 ">
-                                          
-                                            <div className="flex flex-col border border-upla-100 bg-white rounded-md overflow-hidden">
-                                                <div className="flex justify-between p-2 bg-upla-100">
-                                                    <span className="text-sm text-white">Modelo de convenio </span>
-                                                    <div className="my-auto text-xs bg-white p-0.5 px-2 rounded">Formato: <span className="font-medium"><i>docx</i> <i className="bi bi-file-earmark-word-fill text-blue-600" /></span></div>
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-3 w-full p-3 px-6">
-                                                    <button
-                                                        onClick={() => { }}
-                                                        className="bg-gray-100 py-1 text-sm rounded border border-gray-400 hover:border-upla-100 hover:bg-upla-100 hover:text-white hover:scale-105 w-full">
-                                                        <i className="bi bi-eye mr-2" /> Ver
-                                                    </button>
-                                                    <button
-                                                        onClick={() => { }}
-                                                        className="bg-gray-100 py-1 text-sm rounded border border-gray-400 hover:border-upla-100 hover:bg-upla-100 hover:text-white hover:scale-105 w-full">
-                                                        <i className="bi bi-download mr-2" /> Descargar
-                                                    </button>
-                                                </div>
+                                        <div className="flex flex-col gap-4">
 
-                                            </div>
+                                            <HerramientaDoc
+                                                titulo='Convenio no remunerado'
+                                                tipoDoc='docx'
+                                                urlDownload='/Formatos/FCAC/Formato Convenio PPP no remuneradas.docx'
+                                                urlShow='/Formatos/FCAC/Formato Convenio PPP no remuneradas.pdf'
+                                            />
+                                            <HerramientaDoc
+                                                titulo='Convenio remunerado'
+                                                tipoDoc='docx'
+                                                urlDownload='/Formatos/FCAC/Formato Convenio PPP remuneradas.docx'
+                                                urlShow='/Formatos/FCAC/Formato Convenio PPP remuneradas.pdf'
+                                            />
+
                                         </div>
                                     </div>
 

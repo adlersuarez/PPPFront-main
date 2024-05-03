@@ -1,19 +1,29 @@
 import React, { useState } from "react";
+import MostrarDocEstudiante from "./componente/MostrarDocEstudiante";
 
-interface Paso5Props {
-    pdfUrl?: string;
-    fecha?: string;
-    fechaEntrega?: string;
+interface Paso3Props {
+    estudianteId: string
 }
 
-const Paso5: React.FC<{ elementos: Paso5Props[] }> = ({ elementos }) => {
+const Paso5 = (datos: Paso3Props) => {
 
-  
-    const [indiceSeleccionado, setIndiceSeleccionado] = useState<number>(0);
+    const [openIndex, setOpenIndex] = useState<number | null>(null)
 
-    const handleClickBoton = (index: number) => {
-        setIndiceSeleccionado(index);
-    };
+    const handleToggle = (posicion: number) => {
+        setOpenIndex(openIndex === posicion ? null : posicion)
+    }
+
+    const [estadoInitUT1, setEstadoInitUT1] = useState<boolean>(false)
+    const changeEstadoUT1 = () => setEstadoInitUT1(!estadoInitUT1)
+
+    const [estadoInitUT2, setEstadoInitUT2] = useState<boolean>(false)
+    const changeEstadoUT2 = () => setEstadoInitUT2(!estadoInitUT2)
+
+    const [estadoInitUT3, setEstadoInitUT3] = useState<boolean>(false)
+    const changeEstadoUT3 = () => setEstadoInitUT3(!estadoInitUT3)
+
+    const [estadoInitUT4, setEstadoInitUT4] = useState<boolean>(false)
+    const changeEstadoUT4 = () => setEstadoInitUT4(!estadoInitUT4)
 
     return (
         <div className='flex flex-col gap-4'>
@@ -21,73 +31,70 @@ const Paso5: React.FC<{ elementos: Paso5Props[] }> = ({ elementos }) => {
                 <i className={`bi bi-5-square-fill`} />
                 <h1 className="font-bold">FICHA DE CONTROL DE ACTIVIDADES</h1>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16">
-
+            <div className="flex bg-gray-100 p-4 rounded">
                 {
-                    elementos.length !== 0 ?
-                        <React.Fragment>
+                    true ?
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16">
                             <div className="flex flex-col gap-4 justify-between">
-                                {
-                                    elementos.map((element, index) => (
-
-                                        <div key={index} className={`flex flex-col bg-white p-4 rounded border gap-4 ${indiceSeleccionado === index && 'sm:border-4 sm:border-blue-500'}`} >
-                                            <div className='flex flex-col'>
-                                                <div className="uppercase font-bold text-gray-400 text-lg">
-                                                    Consolidado {index + 1}
-                                                </div>
-                                                <div className="flex text-gray-400 gap-4">
-                                                    <p className="w-28">Fecha entrega:</p>
-                                                    <span className="font-bold">
-                                                        {element.fechaEntrega}
-                                                    </span>
-                                                </div>
-                                                <div className="flex text-gray-400 gap-4">
-                                                    <p className="w-28">Fecha carga:</p>
-                                                    <span className="font-bold">
-                                                        {element.fecha}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <button
-                                                onClick={() => handleClickBoton(index)}
-                                                className={`p-2 w-full text-white ${indiceSeleccionado === index ? 'bg-blue-500' : 'bg-gray-400 hover:bg-gray-300'} rounded hidden sm:flex justify-center`}
-                                            >
-                                                Ver Empresa
-                                            </button>
-                                            <a href={element.pdfUrl}
-                                                download
-                                                className="text-sm flex gap-2 w-full bg-gray-500 text-white p-2 rounded-sm justify-center sm:text-lg font-bold text-center sm:hidden">
-                                                <span className="my-auto">
-                                                    Descargar
-                                                </span>
-                                            </a>
+                                <div className="flex flex-col gap-4 sm:gap-8">
+                                    <div className="flex flex-col gap-1 text-gray-500">
+                                        <h2 className="text-lg font-semibold uppercase ">Requisitos a considerar</h2>
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div> Escaneado a colores</div>
+                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div>Debidamente firmada y sellada por la empresa</div>
                                         </div>
-                                    ))
-                                }
-                                <hr />
-                                <div className="flex flex-col gap-1 text-gray-500">
-                                    <h2 className="text-lg font-semibold uppercase ">Requisitos a considerar</h2>
-                                    <ul className="list-disc list-inside ml-2">
-                                        <li>Escaneado a colores</li>
-                                        <li>Debidamente firmada y sellada por la empresa</li>
-                                    </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="w-full col-span-2 hidden sm:flex">
-                                <iframe
-                                    title="PDF Viewer"
-                                    src={elementos[indiceSeleccionado].pdfUrl}
-                                    width="100%"
-                                    height="400px"
-                                    className="border-2"
+                            <div className="p-2 flex flex-col gap-4 col-span-2">
+                                <MostrarDocEstudiante
+                                    estId={datos.estudianteId}
+                                    titulo='UNIDAD TEMÁTICA 1'
+                                    tipoDoc='UT1'
+                                    posicion={1}
+                                    onToggle={handleToggle}
+                                    openIndex={openIndex}
+                                    openAction={changeEstadoUT1}
+                                    estadoInit={estadoInitUT1}
+                                />
+                                <MostrarDocEstudiante
+                                    estId={datos.estudianteId}
+                                    titulo='UNIDAD TEMÁTICA 2'
+                                    tipoDoc='UT2'
+                                    posicion={2}
+                                    onToggle={handleToggle}
+                                    openIndex={openIndex}
+                                    openAction={changeEstadoUT2}
+                                    estadoInit={estadoInitUT2}
+                                />
+                                <MostrarDocEstudiante
+                                    estId={datos.estudianteId}
+                                    titulo='UNIDAD TEMÁTICA 3'
+                                    tipoDoc='UT3'
+                                    posicion={3}
+                                    onToggle={handleToggle}
+                                    openIndex={openIndex}
+                                    openAction={changeEstadoUT3}
+                                    estadoInit={estadoInitUT3}
+                                />
+                                <MostrarDocEstudiante
+                                    estId={datos.estudianteId}
+                                    titulo='UNIDAD TEMÁTICA 4'
+                                    tipoDoc='UT4'
+                                    posicion={4}
+                                    onToggle={handleToggle}
+                                    openIndex={openIndex}
+                                    openAction={changeEstadoUT4}
+                                    estadoInit={estadoInitUT4}
                                 />
                             </div>
-                        </React.Fragment>
+                        </div>
                         :
                         <div className="text-center sm:col-span-3 p-4 sm:p-8 bg-gray-200 rounded shadow-lg">
-                            <p className="text-base sm:text-2xl font-bold text-gray-500">El estudiante aún no ha cargado su carta de aceptación</p>
+                            <p className="text-base sm:text-2xl font-bold text-gray-500">El estudiante aún no ha cargado su Carta de Aceptación</p>
                         </div>
                 }
+
             </div>
         </div>
     );

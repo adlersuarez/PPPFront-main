@@ -20,10 +20,10 @@ instance.interceptors.request.use((config) => {
 })
 
 //Empresa
-export async function ConfirmarEmpresaCarta<RespValue>(CartaId: number, formData: FormData, signal = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create<RespValue>(instance.post(`/Empresa/ConfirmarEmpresaCarta/${CartaId}`, formData, { signal: signal! }))
+export async function ConfirmarEmpresaCarta<RespValue>(CartaId: number, EstudianteId: string, PeriodoId: number, formData: FormData, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create<RespValue>(instance.post(`/Empresa/ConfirmarEmpresaCarta/${CartaId}/${EstudianteId}/${PeriodoId}`, formData, { signal: signal! }))
 }
 
-export async function RegistrarDocumento<RespValue>(TipoDoc: string, EstudianteId: string, PeriodoId: number, Referencia: string, formData: FormData, signal = null): Promise<Response<RespValue> | RestError> {
-    return await Resolve.create(instance.post<RespValue>(`/DocumentoProcesado/RegistrarDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}/${Referencia}`, formData, { signal: signal! }))
+export async function RegistrarDocumento<RespValue>(TipoDoc: string, EstudianteId: string, PeriodoId: number, formData: FormData, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/DocumentoProcesado/RegistrarDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}`, formData, { signal: signal! }))
 }

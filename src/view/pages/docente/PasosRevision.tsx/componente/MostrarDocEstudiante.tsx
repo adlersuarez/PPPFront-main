@@ -1,43 +1,44 @@
-import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile";
-import { EstadoRequisito } from "@/component/pages/steps/StepsTemplate/Contenedor/EstadoRequisito";
-import { formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from "@/helper/herramienta.helper";
-import Response from "@/model/class/response.model.class";
-import RestError from "@/model/class/resterror.model.class";
-import { Types } from "@/model/enum/types.model";
-import Listas from "@/model/interfaces/Listas.model.interface";
-import FilePreview from "@/model/interfaces/documento/filePreview";
-import MostrarDocumentoUrl from "@/model/interfaces/documento/mostrarDocumento";
-import { MostrarDocumento } from "@/network/rest/practicas.network";
-import { RootState } from "@/store/configureStore.store";
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import ModalValidarDocumento from "./componente/ValidarDocumento";
+import Response from '@/model/class/response.model.class';
+import RestError from '@/model/class/resterror.model.class';
+import { Types } from '@/model/enum/types.model';
+import Listas from '@/model/interfaces/Listas.model.interface';
+import MostrarDocumentoUrl from '@/model/interfaces/documento/mostrarDocumento';
+import { MostrarDocumento } from '@/network/rest/practicas.network';
+import { RootState } from '@/store/configureStore.store';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { EstadoRequisito } from '../../../../../component/pages/steps/StepsTemplate/Contenedor/EstadoRequisito';
+import { formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from '@/helper/herramienta.helper';
+import VistaPreviaDocumentosFile from '@/component/VistaPreviaDocumentosFile';
+import FilePreview from '@/model/interfaces/documento/filePreview';
+import ModalValidarDocumento from './ValidarDocumento';
 
-interface DatosProps {
-    estudianteId: string
+interface Props {
+    estId: string
+    titulo: string
+    tipoDoc: string
+    posicion: number
+    onToggle: (posicion: number) => void
+    openIndex: number | null
+    openAction: () => void
+    estadoInit: boolean
 }
 
-const Paso2 = (datos: DatosProps) => {
+const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, titulo, tipoDoc, estadoInit , estId}) => {
 
     const periodo = useSelector((state: RootState) => state.infoPersonal.periodoId)
     const abortController = useRef(new AbortController())
 
-    const [idDocument, setIdDocument] = useState<number>(0)
-    const [showValidar, setShowValidar] = useState<boolean>(false)
-    const handleCloseValidar = () => setShowValidar(false)
-    const handleShowValidar = (idDocumnet: number) => {
-        setIdDocument(idDocumnet)
-        setShowValidar(true)
-    }
-    const [listaCartas, setListaCartas] = useState<MostrarDocumentoUrl[]>([])
+    const [listaDocumentos, setListaDocumentos] = useState<MostrarDocumentoUrl[]>([])
+    const [docUrlMostrado, setDocUrlMostrado] = useState<MostrarDocumentoUrl | null>(null)
 
-    const ObtenerDocumento = async (tipoDoc: string) => {
-        setListaCartas([])
-        const response = await MostrarDocumento<Listas>(tipoDoc, datos.estudianteId, periodo, abortController.current)
-
+    const ObtenerDocumento = async () => {
+        setListaDocumentos([])
+        const response = await MostrarDocumento<Listas>(tipoDoc, estId, periodo, abortController.current)
+        console.log(response)
         if (response instanceof Response) {
             const data = response.data.resultado as MostrarDocumentoUrl[]
-            setListaCartas(data)
+            setListaDocumentos(data)
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return
@@ -45,28 +46,9 @@ const Paso2 = (datos: DatosProps) => {
         }
     }
 
-    useEffect(() => {
-        Init()
-    }, [])
-
     const Init = () => {
-        ObtenerDocumento('CA')
+        ObtenerDocumento()
     }
-
-
-    /////Mostrar documento
-    const [docUrlMostrado, setDocUrlMostrado] = useState<MostrarDocumentoUrl | null>(null)
-
-    const [showDoc, setShowDoc] = useState<boolean>(false)
-
-    const handleShowDoc = (index: number) => {
-        const docEncontrado = listaCartas[index]
-        setDocUrlMostrado(docEncontrado)
-        setShowDoc(true)
-    }
-    const handleCloseDoc = () => setShowDoc(false)
-
-    const [archivosVistaPrevia, setArchivoVistaPrevia] = useState<FilePreview[]>([])
 
     useEffect(() => {
         if (docUrlMostrado !== null) {
@@ -74,43 +56,65 @@ const Paso2 = (datos: DatosProps) => {
         }
     }, [docUrlMostrado])
 
-    return (
-        <div className='flex flex-col gap-4'>
-            <VistaPreviaDocumentosFile show={showDoc} close={handleCloseDoc} files={archivosVistaPrevia} />
-            <ModalValidarDocumento show={showValidar} hide={handleCloseValidar} tipoDoc='CA' changeInit={Init} idDoc={idDocument} />
+    useEffect(() => {
+        Init()
+    }, [estadoInit])
 
-            <div className="flex text-gray-400 gap-2 text-lg sm:text-2xl">
-                <i className={`bi bi-2-square-fill`} />
-                <h1 className="font-bold">CARTA DE ACEPTACIÓN</h1>
+    //////////Vista previa Documentos
+    const [showDoc, setShowDoc] = useState<boolean>(false)
+    const handleShowDoc = (index: number) => {
+        const docEncontrado = listaDocumentos[index]
+        setDocUrlMostrado(docEncontrado)
+        setShowDoc(true)
+    }
+    const handleCloseDoc = () => setShowDoc(false)
+
+    const [archivosVistaPrevia, setArchivoVistaPrevia] = useState<FilePreview[]>([])
+
+    ////
+    const [idDocument, setIdDocument] = useState<number>(0)
+    const [showValidar, setShowValidar] = useState<boolean>(false)
+    const handleCloseValidar = () => setShowValidar(false)
+    const handleShowValidar = (idDocumnet: number) => {
+        setIdDocument(idDocumnet)
+        setShowValidar(true)
+    }
+
+    return (
+        <div className='flex flex-col border-gray-300'>
+            <VistaPreviaDocumentosFile show={showDoc} close={handleCloseDoc} files={archivosVistaPrevia} />
+            <ModalValidarDocumento show={showValidar} hide={handleCloseValidar} tipoDoc={tipoDoc} changeInit={Init} idDoc={idDocument} />
+
+            <div className="px-4 py-2 flex flex-row justify-between bg-gray-200 cursor-pointer  text-gray-500" >
+                <div className='flex gap-4'>
+                    <div className='my-auto w-60 font-medium'><h2> {titulo}</h2></div>
+
+                </div>
+
+                <div title={openIndex === posicion ? 'Replegar' : 'Desplegar'} onClick={() => onToggle(posicion)} role='button'
+                    className={`my-auto transition-all hover:bg-gray-400 hover:text-white px-1 rounded hover:scale-105 duration-500 transform ${openIndex === posicion ? 'rotate-180' : ''}`} >
+                    <i className="bi bi-chevron-down" />
+                </div>
+
             </div>
-            <div className="flex bg-gray-100 p-4 rounded">
-                {
-                    listaCartas.length !== 0 ?
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16">
-                            <div className="flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4 sm:gap-8">
-                                    <div className="flex flex-col gap-1 text-gray-500">
-                                        <h2 className="text-lg font-semibold uppercase ">Requisitos a considerar</h2>
-                                        <div className="flex flex-col gap-1">
-                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div> Escaneado a colores</div>
-                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div>Debidamente firmada y sellada por la empresa</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="p-2 flex flex-col gap-4 col-span-2">
+
+            <div className="overflow-hidden bg-white border border-gray-300">
+                <div className={`transition-height duration-500 ${openIndex === posicion ? 'h-40' : 'h-0'}`}>
+                    <div className="flex flex-col h-40 overflow-y-auto">
+                        {listaDocumentos.length !== 0 ?
+                            <div className='p-1'>
                                 <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto">
                                     <thead>
                                         <tr>
                                             <th className="px-6 w-10 py-2 font-bold text-center uppercase text-white text-xs">#</th>
                                             <th className="px-6 w-36 py-2 font-bold text-center uppercase text-white text-xs">Fecha</th>
                                             <th className="px-2 py-2 font-bold text-left uppercase text-white text-xs">Observación</th>
-                                            <th className="px-2 w-60 py-2 font-bold text-center uppercase text-white text-xs">Acción</th>
+                                            <th className="px-2 w-36 py-2 font-bold text-center uppercase text-white text-xs">Acción</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
-                                            listaCartas.map((carta, index) => (
+                                            listaDocumentos.map((carta, index) => (
                                                 <tr key={index} className='bg-white border-b'>
                                                     <td className="text-sm p-2 py-3 text-center content-start border-b border-solid">
                                                         <EstadoRequisito valor={carta.estadoDoc} />
@@ -138,26 +142,31 @@ const Paso2 = (datos: DatosProps) => {
                                                                     <i className="bi bi-card-checklist mr-1" /> Validar
                                                                 </button>
                                                             }
-
                                                         </div>
                                                     </td>
                                                 </tr>
                                             ))
                                         }
 
+
+
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        :
-                        <div className="text-center sm:col-span-3 p-4 sm:p-8 bg-gray-200 rounded shadow-lg">
-                            <p className="text-base sm:text-2xl font-bold text-gray-500">El estudiante aún no ha cargado su Carta de Aceptación</p>
-                        </div>
-                }
 
+                            :
+                            <div className="flex m-auto">
+                                <div className="bg-blue-50 border-2 border-upla-100 border-dashed rounded-lg p-2 px-3 m-auto">
+                                    <i className="text-upla-100 bi bi-info-circle-fill mr-1" />  Aún no ha adjuntado un documento
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     )
 }
 
-export default Paso2;
+export default MostrarDocEstudiante

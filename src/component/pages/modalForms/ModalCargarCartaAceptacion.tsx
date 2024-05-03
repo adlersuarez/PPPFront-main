@@ -17,9 +17,10 @@ import RespValue from "@/model/interfaces/RespValue.model.interface"
 type Props = {
     show: boolean
     hide: () => void
+    init: () => void
 }
 
-const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide }) => {
+const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
 
     const sweet = useSweerAlert()
 
@@ -100,12 +101,12 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await ConfirmarEmpresaCarta<RespValue>(selectedEmpresa, formData)
-                    console.log(response)
+                    const response = await ConfirmarEmpresaCarta<RespValue>(selectedEmpresa, codigo, periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
                             sweet.openSuccess("¡Operación completada con éxito!", "La carta de aceptación ha sido cargada satisfactoriamente.", () => {
+                                init()
                                 hide()
                             })
                         }
@@ -150,16 +151,16 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide }) => {
                         close={handleCloseDoc}
                         files={archivosVistaPrevia}
                     />
-                     <div className='bg-gray-100 w-full rounded-lg flex p-2 justify-between'>
+                    <div className='bg-gray-100 w-full rounded-lg flex p-2 justify-between'>
                         <div className='flex text-upla-100'>
                             <i className="bi bi-clipboard-check ml-2 text-2xl" />
                             <span className='ml-4 font-bold sm:text-xl my-auto'>CARTA DE ACEPTACIÓN</span>
                         </div>
-                      
+
                     </div>
                     <div className='bg-gray-100 w-full rounded-lg p-4'>
                         <div className='flex flex-col sm:gap-x-8 gap-2 sm:gap-y-3'>
-                        
+
                             <div className="grid grid-grid-cols-1 sm:grid-cols-2 gap-10">
                                 <div className="flex flex-col gap-4 justify-between">
                                     <div className="flex flex-col gap-4">

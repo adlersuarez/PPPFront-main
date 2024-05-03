@@ -129,6 +129,27 @@ export async function ListarDetalleExcluido<Listas>(DuracionId: number, abortCon
 }
 
 //Documento
-export async function MostrarDocumento<MostrarDocumentoUrl>(TipoDoc:string, EstudianteId: string,PeriodoId: number, abortController: AbortController | null): Promise<Response<MostrarDocumentoUrl> | RestError> {
-    return await Resolve.create<MostrarDocumentoUrl>(instance.get<MostrarDocumentoUrl>(`/DocumentoProcesado/MostrarDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+export async function MostrarDocumento<Listas>(TipoDoc: string, EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/DocumentoProcesado/MostrarDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
+
+export async function EstadoDocumento<EstadoValor>(TipoDoc: string, EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<EstadoValor> | RestError> {
+    return await Resolve.create<EstadoValor>(instance.post<EstadoValor>(`/DocumentoProcesado/EstadoDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
+export async function EstadoAreaTrabajo<EstadoValor>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<EstadoValor> | RestError> {
+    return await Resolve.create<EstadoValor>(instance.post<EstadoValor>(`/Practicas/EstadoAreaTrabajo/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
+export async function EstadoDuracionPracticas<EstadoValor>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<EstadoValor> | RestError> {
+    return await Resolve.create<EstadoValor>(instance.post<EstadoValor>(`/Practicas/EstadoDuracionPracticas/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
+export async function EstadoPlanActividades<EstadoValor>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<EstadoValor> | RestError> {
+    return await Resolve.create<EstadoValor>(instance.post<EstadoValor>(`/PlanActividades/EstadoPlanActividades/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
+export async function ValidarDocumento<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/DocumentoProcesado/ValidarDocumento`, params, { signal: abortController?.signal }))
 }

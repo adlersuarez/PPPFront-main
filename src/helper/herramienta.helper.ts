@@ -8,6 +8,8 @@ import HorarioItem from '@/model/interfaces/horario/horarioItem'
 import DuracionPracticas from '@/model/interfaces/practicas/duracionPracticas'
 import MostrarDuracionFlexible from '@/model/interfaces/practicas/mostrarDuracionFlexible'
 import MostrarDuracionEstandar, { ListaDias, ListaHorarioDias } from '@/model/interfaces/practicas/mostrarDuracionRegular'
+import MostrarDocumentoUrl from '@/model/interfaces/documento/mostrarDocumento'
+import FilePreview from '@/model/interfaces/documento/filePreview'
 
 export function formatTime(value: string) {
   var hourEnd = value.indexOf(":")
@@ -335,7 +337,7 @@ export function combinarHorarios(horariosEstaticos: HorarioEspecifico[], detalle
 
   // Agregar horarios dinámicos
   detallesDuracion.forEach((detalle) => {
-    if(detalle.horaInicio !== '' && detalle.horaFin !== ''){
+    if (detalle.horaInicio !== '' && detalle.horaFin !== '') {
       horarios.push({
         detHorarioId: 2,
         asiId: "---", // Valor no relevante en la lista dinámica
@@ -360,13 +362,13 @@ function obtenerDiaSemana(diaId: number): string {
 // Función para determinar si hay cruces de horarios en una lista dada
 export function hayCruces(horarios: HorarioItem[]): boolean {
   for (let i = 0; i < horarios.length; i++) {
-      for (let j = i + 1; j < horarios.length; j++) {
-          // Verificar si hay cruce entre los horarios
-          if (horarios[i].diaId === horarios[j].diaId &&
-              hayCruceHorario(horarios[i].horaIni, horarios[i].horaFin, horarios[j].horaIni, horarios[j].horaFin)) {
-              return true // Hay un cruce, devolver true
-          }
+    for (let j = i + 1; j < horarios.length; j++) {
+      // Verificar si hay cruce entre los horarios
+      if (horarios[i].diaId === horarios[j].diaId &&
+        hayCruceHorario(horarios[i].horaIni, horarios[i].horaFin, horarios[j].horaIni, horarios[j].horaFin)) {
+        return true // Hay un cruce, devolver true
       }
+    }
   }
   return false; // No hay cruces, devolver false
 }
@@ -376,7 +378,7 @@ function hayCruceHorario(horaIni1: string, horaFin1: string, horaIni2: string, h
   return horaIni1 < horaFin2 && horaFin1 > horaIni2
 }
 
-export function convertirHora24to12(hora24:string) {
+export function convertirHora24to12(hora24: string) {
   // Dividir la hora en horas y minutos
   var partes = hora24.split(':')
   var horas = parseInt(partes[0])
@@ -401,21 +403,21 @@ export function convertirDuracionAMostrarFlexible(duraciones: DuracionPracticas[
 
   // Iterar sobre cada DuracionPracticas y agrupar por día
   duraciones.forEach(duracion => {
-      if (!duracionesAgrupadas[duracion.diaId]) {
-          // Si el día no existe en el objeto agrupado, crear uno nuevo
-          duracionesAgrupadas[duracion.diaId] = {
-              diaId: duracion.diaId,
-              diaNombre: duracion.diaNombre,
-              detalleDia: []
-          };
-      }
+    if (!duracionesAgrupadas[duracion.diaId]) {
+      // Si el día no existe en el objeto agrupado, crear uno nuevo
+      duracionesAgrupadas[duracion.diaId] = {
+        diaId: duracion.diaId,
+        diaNombre: duracion.diaNombre,
+        detalleDia: []
+      };
+    }
 
-      // Agregar el horario al detalleDia correspondiente
-      duracionesAgrupadas[duracion.diaId].detalleDia.push({
-          detalleDiaId: duracion.detalleDiaId,
-          horaInicio: duracion.horaInicio,
-          horaFin: duracion.horaFin
-      });
+    // Agregar el horario al detalleDia correspondiente
+    duracionesAgrupadas[duracion.diaId].detalleDia.push({
+      detalleDiaId: duracion.detalleDiaId,
+      horaInicio: duracion.horaInicio,
+      horaFin: duracion.horaFin
+    });
   });
 
   // Convertir el objeto agrupado a un array
@@ -431,28 +433,92 @@ export function convertirDuracionAMostrarRegular(duraciones: DuracionPracticas[]
 
   // Iterar sobre la lista de duraciones
   for (let i = 0; i < duraciones.length; i++) {
-      const duracion = duraciones[i];
+    const duracion = duraciones[i];
 
-      // Si es el primer día en la lista
-      if (i === 0) {
-          listaHorarioDia.push({
-              horaInicio: duracion.horaInicio,
-              horaFin: duracion.horaFin
-          });
-      }
+    // Si es el primer día en la lista
+    if (i === 0) {
+      listaHorarioDia.push({
+        horaInicio: duracion.horaInicio,
+        horaFin: duracion.horaFin
+      });
+    }
 
-      // Si el día no está en la lista de días, agregarlo
-      const existeDia = listaDias.some(dia => dia.diaId === duracion.diaId);
-      if (!existeDia) {
-          listaDias.push({
-              diaId: duracion.diaId,
-              diaNombre: duracion.diaNombre
-          });
-      }
+    // Si el día no está en la lista de días, agregarlo
+    const existeDia = listaDias.some(dia => dia.diaId === duracion.diaId);
+    if (!existeDia) {
+      listaDias.push({
+        diaId: duracion.diaId,
+        diaNombre: duracion.diaNombre
+      });
+    }
   }
 
   return {
-      listaDias: listaDias,
-      listaHorarioDia: listaHorarioDia
-  };
+    listaDias: listaDias,
+    listaHorarioDia: listaHorarioDia
+  }
+}
+
+export const obtenerNombreArchivo = (url: string) => {
+  const partesURL = url.split('/')
+  return partesURL[partesURL.length - 1]
+}
+
+export const obtenerTipoArchivo = (nombreArchivo: string): string => {
+  const extension = nombreArchivo.split('.').pop()?.toLowerCase() // Obtener la extensión del archivo
+  if (extension) {
+    switch (extension) {
+      case 'pdf':
+        return 'pdf'
+      case 'png':
+      case 'jpg':
+      case 'jpeg':
+        return 'imagen'
+      case 'doc':
+      case 'docx':
+        return 'doc'
+      // Agrega más casos para otras extensiones si es necesario
+      default:
+        return 'Desconocido'
+    }
+  } else {
+    return 'Desconocido' // Si no se puede determinar la extensión
+  }
+}
+
+export const obtenerArchivosVistaPrevia = (docUrlMostrado?: MostrarDocumentoUrl | null): FilePreview[] => {
+  const archivosVistaPrevia: FilePreview[] = docUrlMostrado ? [
+    {
+      nombre: docUrlMostrado.urlDoc,
+      url: import.meta.env.VITE_STORAGE_DOCUMENT + '/' + docUrlMostrado.urlCifrado,
+    },
+  ] : []
+
+  return archivosVistaPrevia
+}
+
+
+export const obtenerDescripcion = (tipoDoc: string): string => {
+  switch (tipoDoc) {
+      case 'IF':
+          return 'Informe Final';
+      case 'CE':
+          return 'Constancia de Empresa';
+      case 'CP':
+          return 'Convenio de Prácticas';
+      case 'CA':
+          return 'Carta de Aceptación';
+      case 'AV':
+          return 'Asistencia Visada';
+      case 'UT1':
+          return 'Unidad Temática 1';
+      case 'UT2':
+          return 'Unidad Temática 2';
+      case 'UT3':
+          return 'Unidad Temática 3';
+      case 'UT4':
+          return 'Unidad Temática 4';
+      default:
+          return '';
+  }
 }
