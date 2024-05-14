@@ -12,6 +12,7 @@ import { formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from '@/help
 import VistaPreviaDocumentosFile from '@/component/VistaPreviaDocumentosFile';
 import FilePreview from '@/model/interfaces/documento/filePreview';
 import EstadoValor from '@/model/interfaces/estado/EstadoValor';
+import { EstadoDocumentoDespliegue } from './EstadoDocumentoDespliegue';
 
 interface Props {
     titulo: string
@@ -98,7 +99,7 @@ const DocumentoDespliegue: React.FC<Props> = ({ posicion, onToggle, openIndex, t
             <VistaPreviaDocumentosFile show={showDoc} close={handleCloseDoc} files={archivosVistaPrevia} />
 
             <div className="px-4 py-2 flex flex-row justify-between bg-gray-200 cursor-pointer  text-gray-500" >
-                <div className='flex gap-4'>
+                <div className='flex flex-col sm:flex-row gap-y-2 gap-x-4'>
                     <div className='my-auto w-60 font-medium'><h2> {titulo}</h2></div>
                     {
                         estadoCarta === 0 &&
@@ -109,6 +110,7 @@ const DocumentoDespliegue: React.FC<Props> = ({ posicion, onToggle, openIndex, t
                             Adjuntar archivo
                         </button>
                     }
+                    <EstadoDocumentoDespliegue seleccionado={openIndex !== posicion} listaDocumentos={listaDocumentos} />
                 </div>
 
                 <div title={openIndex === posicion ? 'Replegar' : 'Desplegar'} onClick={() => onToggle(posicion)} role='button'

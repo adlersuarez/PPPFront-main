@@ -12,6 +12,7 @@ import { RegistrarDocumento } from "@/network/rest/cargarArchivos.network"
 import RespValue from "@/model/interfaces/RespValue.model.interface"
 import HerramientaDoc from "./componente/HerramientaDoc"
 import FilePreview from "@/model/interfaces/documento/filePreview"
+import { obtenerNombreInforme } from "@/helper/herramienta.helper"
 
 type Props = {
     show: boolean
@@ -98,8 +99,6 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
         }
     }
 
-
-
     //////////Vista previa Documentos
     const [showDoc, setShowDoc] = useState<boolean>(false)
     const handleShowDoc = () => setShowDoc(true)
@@ -111,6 +110,9 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
             url: selectedFile ? URL.createObjectURL(selectedFile) : '',
         },
     ]
+
+    //Código de asignatura
+    const idAsign = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
 
     return (
 
@@ -148,8 +150,8 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Estructura de Informe Final'
                                                 tipoDoc='pdf'
-                                                urlDownload='/Formatos/FCAC/Estructura AS - PP1.pdf'
-                                                urlShow='/Formatos/FCAC/Estructura AS - PP1.pdf'
+                                                urlDownload={'/Formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
+                                                urlShow={'/Formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
                                             />
 
                                             <HerramientaDoc

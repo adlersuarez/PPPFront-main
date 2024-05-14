@@ -1,6 +1,6 @@
 import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile";
 import { EstadoRequisito } from "@/component/pages/steps/StepsTemplate/Contenedor/EstadoRequisito";
-import { formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from "@/helper/herramienta.helper";
+import { formatoFecha_Date_completo, formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from "@/helper/herramienta.helper";
 import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
@@ -9,9 +9,12 @@ import FilePreview from "@/model/interfaces/documento/filePreview";
 import MostrarDocumentoUrl from "@/model/interfaces/documento/mostrarDocumento";
 import { MostrarDocumento } from "@/network/rest/practicas.network";
 import { RootState } from "@/store/configureStore.store";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ModalValidarDocumento from "./componente/ValidarDocumento";
+import MensajePasoNoCargado from "./componente/MensajePasoNoCargado";
+import RequisitosLista from "./componente/RequisitosLista";
+import { ProcesoPasosDocente } from "@/helper/requisitos.helper";
 
 interface DatosProps {
     estudianteId: string
@@ -53,7 +56,6 @@ const Paso2 = (datos: DatosProps) => {
         ObtenerDocumento('CA')
     }
 
-
     /////Mostrar documento
     const [docUrlMostrado, setDocUrlMostrado] = useState<MostrarDocumentoUrl | null>(null)
 
@@ -74,38 +76,34 @@ const Paso2 = (datos: DatosProps) => {
         }
     }, [docUrlMostrado])
 
+    //Requisitos paso 2
+    const requisitos = ProcesoPasosDocente[1].requisitos ?? []
+
     return (
         <div className='flex flex-col gap-4'>
             <VistaPreviaDocumentosFile show={showDoc} close={handleCloseDoc} files={archivosVistaPrevia} />
             <ModalValidarDocumento show={showValidar} hide={handleCloseValidar} tipoDoc='CA' changeInit={Init} idDoc={idDocument} />
 
             <div className="flex text-gray-400 gap-2 text-lg sm:text-2xl">
-                <i className={`bi bi-2-square-fill`} />
+                <i className={`bi bi-2-square-fill mr-2`} />
                 <h1 className="font-bold">CARTA DE ACEPTACIÓN</h1>
             </div>
-            <div className="flex bg-gray-100 p-4 rounded">
+            <div className="flex flex-col">
                 {
                     listaCartas.length !== 0 ?
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16">
-                            <div className="flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4 sm:gap-8">
-                                    <div className="flex flex-col gap-1 text-gray-500">
-                                        <h2 className="text-lg font-semibold uppercase ">Requisitos a considerar</h2>
-                                        <div className="flex flex-col gap-1">
-                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div> Escaneado a colores</div>
-                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div>Debidamente firmada y sellada por la empresa</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="p-2 flex flex-col gap-4 col-span-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-8 sm:gap-x-12 p-3 sm:p-6 bg-gray-100 rounded-md w-full">
+                            <RequisitosLista
+                                requisitos={requisitos}
+                            />
+
+                            <div className="flex flex-col col-span-2 gap-y-4">
                                 <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto">
                                     <thead>
                                         <tr>
                                             <th className="px-6 w-10 py-2 font-bold text-center uppercase text-white text-xs">#</th>
                                             <th className="px-6 w-36 py-2 font-bold text-center uppercase text-white text-xs">Fecha</th>
                                             <th className="px-2 py-2 font-bold text-left uppercase text-white text-xs">Observación</th>
-                                            <th className="px-2 w-60 py-2 font-bold text-center uppercase text-white text-xs">Acción</th>
+                                            <th className="hidden sm:table-cell px-2 w-60 py-2 font-bold text-center uppercase text-white text-xs">Acción</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -115,7 +113,8 @@ const Paso2 = (datos: DatosProps) => {
                                                     <td className="text-sm p-2 py-3 text-center content-start border-b border-solid">
                                                         <EstadoRequisito valor={carta.estadoDoc} />
                                                     </td>
-                                                    <td className="text-sm p-2 py-3 text-center content-start border-b border-solid cursor-default">
+                                                    <td title={"Fecha registro:  " + formatoFecha_Date_completo(carta.fechaDoc)}
+                                                        className="text-sm p-2 py-3 text-center content-start border-b border-solid cursor-default">
                                                         {formatoFecha_Date_fechaSlash(carta.fechaDoc)}
                                                     </td>
                                                     <td className="text-xs p-2 py-3 text-left content-start border-b border-solid normal-case">
@@ -125,7 +124,7 @@ const Paso2 = (datos: DatosProps) => {
                                                             {carta.estadoDoc === 3 && carta.observacionDoc}
                                                         </div>
                                                     </td>
-                                                    <td className="text-sm p-2 text-center content-start border-b border-solid">
+                                                    <td className="hidden sm:table-cell text-sm p-2 text-center content-start border-b border-solid">
                                                         <div className='flex gap-2 mt-1 justify-center'>
                                                             <button onClick={() => handleShowDoc(index)}
                                                                 className="bg-gray-400 my-auto hover:bg-blue-500 hover:scale-105 text-white px-3 py-1 rounded" >
@@ -147,12 +146,14 @@ const Paso2 = (datos: DatosProps) => {
 
                                     </tbody>
                                 </table>
+
+                                <div className="sm:hidden flex text-red-600 p-2 rounded-md text-center bg-red-100 border border-red-500 border-dashed font-medium px-4 text-sm">
+                                    Tenga en cuenta que la validación de documentos requiere el uso de un dispositivo con pantalla más grande.
+                                </div>
                             </div>
                         </div>
                         :
-                        <div className="text-center sm:col-span-3 p-4 sm:p-8 bg-gray-200 rounded shadow-lg">
-                            <p className="text-base sm:text-2xl font-bold text-gray-500">El estudiante aún no ha cargado su Carta de Aceptación</p>
-                        </div>
+                        <MensajePasoNoCargado step={2} />
                 }
 
             </div>

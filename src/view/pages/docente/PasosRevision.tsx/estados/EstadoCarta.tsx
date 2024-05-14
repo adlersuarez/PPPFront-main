@@ -20,7 +20,7 @@ const EstadoCarta: React.FC<EstadoCartaProps> = (props) => {
             break
         case 3:
             estado = 'Inactivo'
-            bgColor = 'bg-green-400'
+            bgColor = 'bg-gray-500'
             textColor = 'text-gray-100'
             break
         default:
@@ -29,7 +29,7 @@ const EstadoCarta: React.FC<EstadoCartaProps> = (props) => {
             textColor = 'text-gray-200'
     }
 
-    return <span className={`px-2 py-1 rounded text-xs font-bold ${bgColor} ${textColor}`}>{estado}</span>;
-};
+    return <span className={`cursor-default px-2 py-1 rounded text-xs font-bold ${bgColor} ${textColor}`}>{estado}</span>
+}
 
-export default EstadoCarta;
+export default EstadoCarta

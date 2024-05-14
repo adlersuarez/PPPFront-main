@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
-import ListaElementos from './Contenedor/ListaElementos';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
 import ModalDatosDuracion from '../../modalForms/ModalTemplate3/ModalDatosDuracion';
 import ModalEmpresaPracticas from '../../modalForms/ModalTemplate3/ModalEmpresaPracticas';
@@ -14,6 +13,8 @@ import { Types } from '@/model/enum/types.model';
 import Response from '@/model/class/response.model.class';
 import MostrarDuracionHorario from '../../modalForms/ModalTemplate3/MostrarDuracionHorario';
 import MostrarAreaPracticas from '../../modalForms/ModalTemplate3/MostrarAreaPracticas';
+import { ProcesoPasosEstudiante } from '@/helper/requisitos.helper';
+import RequisitosListaEstudiante from './Contenedor/RequisitoEstudiante';
 
 const TemplateStep3 = () => {
 
@@ -39,31 +40,6 @@ const TemplateStep3 = () => {
 
     const handleCloseHorarioDatos = () => setShowHorarioDatos(false)
     const handleShowHorarioDatos = () => setShowHorarioDatos(true)
-
-
-    const Requisitos = [
-        {
-            descripcion: 'Fecha de inicio y finalización de practicas',
-            estado: 1,
-        },
-        {
-            descripcion: 'Datos del centro laboral',
-            estado: 2,
-        },
-        {
-            descripcion: 'Datos del área de trabajo',
-            estado: 3,
-        },
-        {
-            descripcion: 'Datos del jefe inmediato',
-        },
-    ]
-
-    const Procedimientos = [
-        {
-            descripcion: 'Rellenar ficha'
-        },
-    ]
 
     const [estadoAreaTrabajo, setEstadoAreaTrabajo] = useState<number | null>(null)
 
@@ -104,14 +80,21 @@ const TemplateStep3 = () => {
         Init()
     }, [])
 
+    ///
+    const [valorChange, setValorChange] = useState<boolean>(false)
+    const handleValorChange = () => setValorChange(!valorChange)
+
+    //Requisitos step 3
+    const requisitos = ProcesoPasosEstudiante[2].requisitos ?? []
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <ModalEmpresaPracticas show={showArea} hide={handleCloseArea} init={Init} />
-            <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} init={Init} />
+            <ModalEmpresaPracticas show={showArea} hide={handleCloseArea} init={Init} change={handleValorChange} />
+            <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} init={Init} change={handleValorChange} />
 
-            <MostrarDuracionHorario show={showHorarioDatos} hide={handleCloseHorarioDatos} />
-            <MostrarAreaPracticas show={showAreaDatos} hide={handleCloseAreaDatos} />
+            <MostrarDuracionHorario show={showHorarioDatos} hide={handleCloseHorarioDatos} valor={valorChange} />
+            <MostrarAreaPracticas show={showAreaDatos} hide={handleCloseAreaDatos} valor={valorChange} />
 
             <ContenedorSteps
                 numero={3}
@@ -119,14 +102,8 @@ const TemplateStep3 = () => {
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>
-                        <ListaElementos
-                            titulo='Requisitos'
-                            elementos={Requisitos}
-                        />
-                        <hr className="my-2" />
-                        <ListaElementos
-                            titulo='Procedimiento'
-                            elementos={Procedimientos}
+                        <RequisitosListaEstudiante
+                            requisitos={requisitos}
                         />
                     </div>
                 </ContenedorSteps.Informacion>

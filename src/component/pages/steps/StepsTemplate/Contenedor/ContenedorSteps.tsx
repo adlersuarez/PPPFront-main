@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import EstadoTemplate from './EstadoTemplate';
 
 type ContenedorStepsProps = {
     numero: number

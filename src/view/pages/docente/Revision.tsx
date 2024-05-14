@@ -12,6 +12,7 @@ import { RootState } from "@/store/configureStore.store";
 import ListaSeccion from "@/model/interfaces/docente/listaSeccion";
 import { LoaderSvg } from "@/component/Svg.component";
 import { convertirANumerosRomanos } from "@/helper/herramienta.helper";
+import EstadosAlumno from './PasosRevision.tsx/componente/EstadosAlumno';
 
 const Revision = () => {
     const navigate = useNavigate()
@@ -33,7 +34,11 @@ const Revision = () => {
         seccion: seccion.nta_Seccion,
 
         plan: seccion.pEs_Id,
+
+        periodoString : seccion.mtr_Anio+seccion.mtr_Periodo,
+        idAsign: seccion.asi_Id
     }
+
 
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -53,6 +58,9 @@ const Revision = () => {
                 curso: datos.curso,
                 seccion: datos.seccion,
                 plan: datos.plan,
+
+                periodoString : datos.periodoString,
+                idAsign: datos.idAsign
             },
         })
     }
@@ -84,8 +92,9 @@ const Revision = () => {
     return (
         <ContainerVIstas titulo='REVISIÓN DOCENTE' retornar>
 
-            <div onClick={() => setShowDetalles(!showDetalles)} className="w-full rounded-lg border-2 border-gray-300 border-t-4">
-                <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-blue-500 text-lg sm:text-2xl">
+            <div onClick={() => setShowDetalles(!showDetalles)} role='button'
+                className="w-full rounded-lg border-2 border-gray-300 border-t-4">
+                <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-upla-100 text-lg sm:text-2xl">
                     <div className=" font-bold ">
                         {datos.curso} - {datos.seccion}
                     </div>
@@ -93,13 +102,25 @@ const Revision = () => {
                 </div>
                 <div className={`${!showDetalles ? 'hidden' : 'flex'} p-4`}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-lg sm:text-lg w-full">
-                        <p className="font-bold text-gray-500">Facultad: <span className="ml-2 font-normal text-blue-500">{datos.facultad}</span></p>
-                        <p className="font-bold text-gray-500">Carrera: <span className="ml-2 font-normal text-blue-500">{datos.carrera}</span></p>
-                        <p className="font-bold text-gray-500">Sede: <span className="ml-2 font-normal text-blue-500">{datos.sede}</span></p>
-                        <p className="font-bold text-gray-500">Periodo: <span className="ml-2 font-normal text-blue-500">{datos.periodo}</span></p>
-                        <p className="font-bold text-gray-500">Semestre: <span className="ml-2 font-normal text-blue-500">{datos.semestre}</span></p>
-                        <p className="font-bold text-gray-500">Plan: <span className="ml-2 font-normal text-blue-500">{datos.plan}</span></p>
-                    </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Facultad: </div> <span className="font-medium text-upla-100">{datos.facultad}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Carrera: </div> <span className="font-medium text-upla-100">{datos.carrera}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Sede: </div> <span className="font-medium text-upla-100">{datos.sede}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Periodo: </div> <span className="font-medium text-upla-100">{datos.periodo}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Semestre: </div> <span className="font-medium text-upla-100">{datos.semestre}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Plan: </div> <span className="font-medium text-upla-100">{datos.plan}</span>
+                            </div>
+                        </div>
                 </div>
             </div>
 
@@ -112,7 +133,9 @@ const Revision = () => {
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Código</th>
                                 <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Estudiante</th>
-                                <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Empresa</th>
+                                <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Empresa de prácticas</th>
+                                
+                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Detalle</th>
                             </tr>
                         </thead>
@@ -120,7 +143,7 @@ const Revision = () => {
                             {
                                 !loading ? (
                                     <tr className="text-center bg-white border-b">
-                                        <td colSpan={5} className="text-sm p-2 border-b border-solid">
+                                        <td colSpan={6} className="text-sm p-2 border-b border-solid">
                                             <div className="flex items-center justify-center gap-4">
                                                 <LoaderSvg /> <span>Cargando datos...</span>
                                             </div>
@@ -129,7 +152,7 @@ const Revision = () => {
                                 ) : (
                                     alumnosSeccion.length == 0 ?
                                         <tr className="text-center bg-white border-b">
-                                            <td colSpan={5} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
+                                            <td colSpan={6} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
                                         </tr>
                                         :
                                         (alumnosSeccion.map((item, index) => {
@@ -153,6 +176,9 @@ const Revision = () => {
                                                             :
                                                             <span className="text-xs bg-gray-200 p-1 px-2 rounded-md"> -- No registrado --</span>
                                                         }
+                                                    </td>
+                                                    <td className="text-sm p-2 text-center">
+                                                        <EstadosAlumno EstudianteId={item.est_Id}/>
                                                     </td>
                                                     <td className="text-sm p-2 text-center">
                                                         <button

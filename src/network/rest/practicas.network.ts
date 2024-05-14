@@ -31,6 +31,11 @@ export async function ListarCargo<Listas>(abortController: AbortController | nul
 export async function ObtenerDatosCartaPresentacion<Listas>(EstudianteId: string, OperacionPago: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/CartaPresentacion/ObtenerDatosCartaPresentacion/${EstudianteId}/${OperacionPago}`, { signal: abortController?.signal }))
 }
+
+export async function ObtenerDatosCartaPresentacionAdmin<Listas>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/CartaPresentacion/ObtenerDatosCartaPresentacionAdmin/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }))
+}
+
 export async function RegistrarCartaPresentacion<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/CartaPresentacion/RegistrarCartaPresentacion`, params, { signal: abortController?.signal }))
 }
@@ -72,6 +77,10 @@ export async function ObtenerEstadoPracticasEstudiante<EstadoPracticas>(Estudian
     return await Resolve.create<EstadoPracticas>(instance.get<EstadoPracticas>(`/Practicas/ObtenerEstadoPracticasEstudiante/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
 }
 
+export async function ObtenerEstadoPracticasDocente<EstadoPracticasDocente>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<EstadoPracticasDocente> | RestError> {
+    return await Resolve.create<EstadoPracticasDocente>(instance.get<EstadoPracticasDocente>(`/Practicas/ObtenerEstadoPracticasDocente/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
 export async function ObtenerFechasDuracionPracticas<FechaPracticas>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<FechaPracticas> | RestError> {
     return await Resolve.create<FechaPracticas>(instance.get<FechaPracticas>(`/Practicas/ObtenerFechasDuracionPracticas/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
 }
@@ -109,11 +118,20 @@ export async function ConsultaPagoCartaPresentacion<Listas>(EstudianteId: string
     return await Resolve.create<Listas>(instance.get<Listas>(`/Pago/ConsultaPagoCartaPresentacion/${EstudianteId}`, { signal: abortController?.signal }))
 }
 
+export async function ConsultaPagoTramite<Listas>(EstudianteId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Pago/ConsultaPagoTramite/${EstudianteId}`, { signal: abortController?.signal }))
+}
+
+
 
 // Docente
 export async function ListarSeccionDocente<Listas>(DocenteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/Docente/ListarSeccionDocente/${DocenteId}/${PeriodoId}`, { signal: abortController?.signal }))
 }
+export async function ListarSeccionDocenteAdmin<Listas>(DocenteId: string, CarreraId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Docente/ListarSeccionDocenteAdmin/${DocenteId}/${CarreraId}/${PeriodoId}`, { signal: abortController?.signal }))
+}
+
 
 export async function ListarSeccionAlumnos<Listas>(CarreraId: string, AsigId: string, DocenteId: string, SedeId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/Estudiante/ListarSeccionAlumnos/${CarreraId}/${AsigId}/${DocenteId}/${SedeId}/${PeriodoId}`, { signal: abortController?.signal }))
@@ -128,11 +146,19 @@ export async function ListarDetalleExcluido<Listas>(DuracionId: number, abortCon
     return await Resolve.create<Listas>(instance.get<Listas>(`/Practicas/ListarDetalleExcluido/${DuracionId}`, { signal: abortController?.signal }))
 }
 
+export async function ListarDocentesCarreraAdmin<Listas>(PeriodoId: number, CarreraId: string, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Docente/ListarDocentesCarreraAdmin/${PeriodoId}/${CarreraId}`, { signal: abortController?.signal }))
+}
+
+
 //Documento
 export async function MostrarDocumento<Listas>(TipoDoc: string, EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/DocumentoProcesado/MostrarDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
 }
 
+export async function MostrarDocumentosAdmin<Listas>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/DocumentoProcesado/MostrarDocumentosAdmin/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
 
 export async function EstadoDocumento<EstadoValor>(TipoDoc: string, EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<EstadoValor> | RestError> {
     return await Resolve.create<EstadoValor>(instance.post<EstadoValor>(`/DocumentoProcesado/EstadoDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
@@ -152,4 +178,16 @@ export async function EstadoPlanActividades<EstadoValor>(EstudianteId: string, P
 
 export async function ValidarDocumento<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/DocumentoProcesado/ValidarDocumento`, params, { signal: abortController?.signal }))
+}
+
+export async function ObtenerDatosAreaTrabajo<AreaTrabajoPracticas>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<AreaTrabajoPracticas> | RestError> {
+    return await Resolve.create<AreaTrabajoPracticas>(instance.get<AreaTrabajoPracticas>(`/Practicas/ObtenerDatosAreaTrabajo/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
+export async function ObtenerDatosDuracion<DuracionDetallePracticas>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<DuracionDetallePracticas> | RestError> {
+    return await Resolve.create<DuracionDetallePracticas>(instance.get<DuracionDetallePracticas>(`/Practicas/ObtenerDatosDuracion/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
+}
+
+export async function ObtenerObjetivoGeneral<ObjetivoGeneral>(EstudianteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<ObjetivoGeneral> | RestError> {
+    return await Resolve.create<ObjetivoGeneral>(instance.get<ObjetivoGeneral>(`/Practicas/ObtenerObjetivoGeneral/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
 }

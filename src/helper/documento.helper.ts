@@ -147,3 +147,50 @@ export const handleCrearSolicitudYConvertirAPdf = async (data: CartaPresentacion
         console.error('Error al convertir la carta de presentación a PDF:', error)
     }
 }
+
+
+export const handleCrearConvenio = async (data: DatosCartaAceptacion): Promise<void> => {
+    // Cargar la plantilla
+    const response = await fetch('/plantillas/plantilla-carta-presentacion.docx');
+
+    const contenidoPlantilla = await response.arrayBuffer();
+    const zip = new PizZip(contenidoPlantilla);
+    const doc = new Docxtemplater()
+    doc.loadZip(zip)
+
+    // Procesar la plantilla con los datos
+    const datos = {
+        nombreAnio: data.nombreAnio,
+        ciudadFecha: data.ciudadFecha,
+        nombreReferente: data.nombreReferente,
+        empresaReferente: data.empresaReferente,
+        cargoReferente: data.cargoReferente,
+        cursoSolicitud: data.curso.toUpperCase(),
+        curso: data.curso,
+        nombreEstudiante: data.nombreEstudiante,
+        nivelEstudiante: data.nivelEstudiante,
+        carrera: data.carrera,
+        facultad: data.facultad,
+        nombreAdministrativo: data.nombreAdministrativo,
+        cargoAdministrativo: data.cargoAdministrativo,
+        //urlFirma: data.urlFirma,
+    }
+
+    doc.render(datos)
+
+    // Generar el documento final
+    const buffer = doc.getZip().generate({ type: 'blob' })
+
+    // Crear un objeto URL para el blob generado
+    const blobURL = URL.createObjectURL(buffer)
+
+    // Crear un enlace de descarga y simular un clic en él para iniciar la descarga del archivo
+    const link = document.createElement('a')
+    link.href = blobURL
+    link.download = 'documentoSalida.docx'
+    document.body.appendChild(link)
+    link.click()
+
+    // Limpiar el objeto URL creado
+    URL.revokeObjectURL(blobURL)
+}

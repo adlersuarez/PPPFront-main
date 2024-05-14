@@ -89,7 +89,7 @@ const Proceso = () => {
     const paso_5: boolean = true
     const paso_6: boolean = true
 
-    const [estado_model2, setEstado_model] = useState<boolean[]>([])
+    const [, setEstado_model] = useState<boolean[]>([])
 
     const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6]
     //console.log(estado_model2)

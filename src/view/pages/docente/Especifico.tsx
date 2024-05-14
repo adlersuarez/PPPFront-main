@@ -24,6 +24,9 @@ const Especifico = () => {
         curso: location.state.curso,
         seccion: location.state.seccion,
         plan: location.state.plan,
+
+        periodoString: location.state.periodoString,
+        idAsign: location.state.idAsign
     }
 
     const [pasoActual, setPasoActual] = useState<number>(1)
@@ -58,37 +61,51 @@ const Especifico = () => {
             componenteActual = <Paso5 estudianteId={datos.codigo} />
             break
         case 6:
-            componenteActual = <Paso6 estudianteId={datos.codigo}/>
+            componenteActual = <Paso6 estudianteId={datos.codigo} />
             break
         case 7:
-            componenteActual = <Paso7 estudianteId={datos.codigo} />
+            componenteActual = <Paso7 estudianteId={datos.codigo} periodo={datos.periodoString} idAsi={datos.idAsign}/>
             break
- 
+
         default:
             componenteActual = <div>Paso no válido</div>
     }
 
     //const current = new Date('2024-04-03 00:00:00');
-   // const dayOfWeek = current.toLocaleDateString('es-ES', { weekday: 'long' });
+    // const dayOfWeek = current.toLocaleDateString('es-ES', { weekday: 'long' });
 
     return (
         <ContainerVIstas titulo='Detalle estudiante' retornar>
             <div className="w-full ">
                 <div onClick={() => setShowDetalles(!showDetalles)} className="w-full rounded-lg border-2 border-gray-300 border-t-4">
-                    <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-blue-500 text-lg sm:text-2xl">
-                        <div className=" font-bold ">
-                            {datos.estudiante} - {datos.codigo}
+                    <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4  text-lg sm:text-2xl">
+                        <div className="font-bold flex flex-col sm:flex-row sm:gap-4 ">
+                            <span className='text-gray-500'>{datos.estudiante}</span>
+
+                            <span className='text-upla-100'>{datos.codigo}</span>
                         </div>
-                        <i className={`bi bi-caret-down-fill transform my-auto ${showDetalles ? 'rotate-180' : ''}`} />
+                        <i className={`text-gray-500 bi bi-caret-down-fill transform my-auto ${showDetalles ? 'rotate-180' : ''}`} />
                     </div>
                     <div className={`${!showDetalles ? 'hidden' : 'flex'} p-4`}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-lg sm:text-lg w-full">
-                            <p className="font-bold text-gray-500">Facultad: <span className="ml-2 font-normal text-blue-500">{datos.facultad}</span></p>
-                            <p className="font-bold text-gray-500">Carrera: <span className="ml-2 font-normal text-blue-500">{datos.carrera}</span></p>
-                            <p className="font-bold text-gray-500">Sede: <span className="ml-2 font-normal text-blue-500">{datos.sede}</span></p>
-                            <p className="font-bold text-gray-500">Periodo: <span className="ml-2 font-normal text-blue-500">{datos.periodo}</span></p>
-                            <p className="font-bold text-gray-500">Asignatura: <span className="ml-2 font-normal text-blue-500">{datos.curso}</span></p>
-                            <p className="font-bold text-gray-500">Sección: <span className="ml-2 font-normal text-blue-500">{datos.seccion}</span></p>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Facultad: </div> <span className="font-medium text-upla-100">{datos.facultad}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Carrera: </div> <span className="font-medium text-upla-100">{datos.carrera}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Sede: </div> <span className="font-medium text-upla-100">{datos.sede}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Periodo: </div> <span className="font-medium text-upla-100">{datos.periodo}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Asignatura: </div> <span className="font-medium text-upla-100">{datos.curso}</span>
+                            </div>
+                            <div className='flex gap-2 font-bold text-gray-500'>
+                                <div className="w-28 shrink-0">Sección: </div> <span className="font-medium text-upla-100">{datos.seccion}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,8 +124,8 @@ const Especifico = () => {
                                         <button
                                             onClick={() => setPasoActual(paso)}
                                             disabled={paso === pasoActual}
-                                            className={`h-12 w-12 flex items-center justify-center border-4  rounded-full ${paso === pasoActual ? 'border-gray-500 bg-gray-500' : 'border-gray-300 hidden sm:flex'
-                                                }`}
+                                            className={`h-12 w-12 flex items-center justify-center border-4 rounded-full
+                                                ${paso === pasoActual ? 'border-gray-500 bg-gray-500 scale-110' : 'border-gray-300 hidden sm:flex hover:scale-110 hover:bg-gray-100 hover:text-gray-500'}`}
                                         >
                                             <span className={`font-bold ${paso === pasoActual ? 'text-white text-xl' : 'text-gray-400'}`}>{paso}</span>
                                         </button>
@@ -119,15 +136,15 @@ const Especifico = () => {
                         <div className="flex gap-3 justify-center p-4 border-b-2 border-gray-200">
                             {
                                 pasoActual > 1 && (
-                                    <button onClick={irAlPasoAnterior} className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
+                                    <button onClick={irAlPasoAnterior} className="bg-gray-500 hover:bg-upla-100 hover:scale-105 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
                                         <i className="bi bi-arrow-left text-xl" />
                                         <span className='hidden sm:flex'>Paso Anterior</span>
                                     </button>
                                 )
                             }
                             {
-                                pasoActual < 8 && (
-                                    <button onClick={irAlSiguientePaso} className="bg-gray-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
+                                pasoActual < pasos.length && (
+                                    <button onClick={irAlSiguientePaso} className="bg-gray-500 hover:bg-upla-100 hover:scale-105 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
                                         <span className='hidden sm:flex'>Siguiente Paso</span>
                                         <i className="bi bi-arrow-right text-xl" />
                                     </button>

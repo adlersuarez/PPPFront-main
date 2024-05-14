@@ -30,9 +30,11 @@ type Props = {
     show: boolean
     hide: () => void
     init: () => void
+
+    change: () => void
 }
 
-const ModalCargarPlan: React.FC<Props> = ({ show, hide, init }) => {
+const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -273,6 +275,7 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init }) => {
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
                         sweet.openSuccess("¡Operación completada con éxito!", "El plan de actividades ha sido registrado satisfactoriamente.", () => {
+                            change()
                             init() // Actualizar la lista de Cartas
                             hide() // Cerrar modal
                         })

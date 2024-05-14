@@ -11,6 +11,7 @@ export default interface RegistroAreaTrabajo {
     }
     jsonAreaPractica: {
         direccionAreaPracticas: string
+        depProvDist: string
         ubigeo: string
     }
 }

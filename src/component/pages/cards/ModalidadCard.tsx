@@ -28,7 +28,7 @@ const ModalidadCard = (props: Props) => {
             </div>
             <hr />
             <div className="grid grid-cols-5 sm:grid-cols-2 gap-4 p-3">
-                <div className="flex col-span-1 sm:pl-2">
+                <div className="hidden col-span-1 sm:pl-2">
                     <NavLink
                         to={props.info}
                         className="flex  w-full px-auto rounded-md justify-center xl:justify-start sm:text-blue-500 hover:no-underline bg-blue-500 text-white sm:bg-white sm:hover:underline"
@@ -38,7 +38,7 @@ const ModalidadCard = (props: Props) => {
                     </NavLink>
                 </div>
 
-                <div className="flex w-full col-span-4 sm:col-span-1">
+                <div className="flex w-full col-span-5 sm:col-span-2">
                     <NavLink
                         to={props.to}
                         className={`flex w-full p-2 px-4 text-center rounded-md items-center justify-between text-lg font-normal transition-all duration-200 bg-gray-400 text-white hover:bg-upla-100 hover:scale-105 hover:text-white`}

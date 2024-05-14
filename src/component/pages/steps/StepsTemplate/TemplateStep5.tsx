@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import ControlActividades from "../../modalForms/ModalTemplate5/ModalControlActividades";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
-import ListaElementos from "./Contenedor/ListaElementos";
 import UnidadTematica from "@/model/interfaces/planActividades/unidadTematica";
 import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
@@ -13,6 +12,8 @@ import { RootState } from "@/store/configureStore.store";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import DocumentoDespliegue from "./Contenedor/DocumentoDespliegue";
 import ModalUnidadTemática from "../../modalForms/ModalTemplate5/ModalUnidadTematica";
+import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
+import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
 
 const TemplateStep5 = () => {
 
@@ -20,27 +21,6 @@ const TemplateStep5 = () => {
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
     const abortController = useRef(new AbortController())
-
-    const Caracteristicas = [
-        {
-            descripcion: 'Descarga el formato de ficha de control',
-            estado: 1,
-        },
-        {
-            descripcion: 'Registra las posibles actividades a realizadas por cada semana',
-            estado: 2,
-        },
-    ]
-
-    const Procedimiento = [
-        {
-            descripcion: 'Plazo máximo de ## días posteriores de iniciar el proceso.'
-        },
-        {
-            descripcion: 'La ficha de control de actividades debe ser escaneada a colores, debidamente firmada y sellada por su jefe inmediato'
-        }
-    ]
-
 
     const [show, setShow] = useState<boolean>(false)
     const [unidadesTematicas, setUnidadesTematicas] = useState<UnidadTematica[]>([])
@@ -91,6 +71,8 @@ const TemplateStep5 = () => {
     const changeEstado = () => setEstadoInit(!estadoInit)
 
     //
+    //Requisitos step 5
+    const requisitos = ProcesoPasosEstudiante[4].requisitos ?? []
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
@@ -103,19 +85,13 @@ const TemplateStep5 = () => {
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>
-                        <ListaElementos
-                            titulo="Características"
-                            elementos={Caracteristicas}
-                        />
-                        <hr className="my-2" />
-                        <ListaElementos
-                            titulo="Procedimiento"
-                            elementos={Procedimiento}
+                        <RequisitosListaEstudiante
+                            requisitos={requisitos}
                         />
                     </div>
                 </ContenedorSteps.Informacion>
                 <ContenedorSteps.Proceso>
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col h-full'>
 
                         <EstadoTemplate
                             paso={5}
@@ -123,25 +99,28 @@ const TemplateStep5 = () => {
 
                         <hr className="my-2" />
 
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 h-full">
 
                             {
-                                unidadesTematicas.map((unidad, index) => (
-                                    <DocumentoDespliegue
-                                        key={index}
-                                        titulo={`UNIDAD TEMÁTICA ${unidad.numeroUnidad}`}
-                                        tipoDoc={`UT${unidad.numeroUnidad}`}
-                                        posicion={index + 1}
-                                        onToggle={handleToggle}
-                                        openIndex={openIndex}
-                                        openAction={() => handleShow(unidad.unidadTematicaId)}
-                                        estadoInit={estadoInit}
-                                    />
-                                ))
+                                unidadesTematicas.length !== 0 ?
+                                    unidadesTematicas.map((unidad, index) => (
+                                        <DocumentoDespliegue
+                                            key={index}
+                                            titulo={`UNIDAD TEMÁTICA ${unidad.numeroUnidad}`}
+                                            tipoDoc={`UT${unidad.numeroUnidad}`}
+                                            posicion={index + 1}
+                                            onToggle={handleToggle}
+                                            openIndex={openIndex}
+                                            openAction={() => handleShow(unidad.unidadTematicaId)}
+                                            estadoInit={estadoInit}
+                                        />
+                                    ))
 
+                                    :
+                                    <div className="bg-red-50 border border-red-400 text-red-500 border-dashed rounded-md p-4 px-6 m-auto">
+                                        Es necesario completar primero el plan de actividades
+                                    </div>
                             }
-
-
 
                         </div>
 

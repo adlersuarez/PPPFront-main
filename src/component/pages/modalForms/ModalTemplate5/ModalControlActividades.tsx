@@ -1,9 +1,6 @@
 import Modal from "../../modal/ModalComponente"
 import { useEffect, useRef, useState } from "react"
-import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 
-import { useSelector } from "react-redux"
-import { RootState } from "@/store/configureStore.store"
 import UnidadTematica from "@/model/interfaces/planActividades/unidadTematica"
 import { ObtenerActividadesUnidadTematicaEspecifica, ObtenerDatosUnidadTematicaEspecifica } from "@/network/rest/practicas.network"
 import Response from "@/model/class/response.model.class"
@@ -25,7 +22,6 @@ type Props = {
 
 const ControlActividades: React.FC<Props> = ({ show, hide, unidadId, numero }) => {
 
-    const sweet = useSweerAlert()
 
     const abortController = useRef(new AbortController())
 
@@ -72,7 +68,7 @@ const ControlActividades: React.FC<Props> = ({ show, hide, unidadId, numero }) =
 
     ////////////////////////////////////
     // Estados para el objetivo, actividades, imágenes y descripciones
-    const [images, setImages] = useState<UnidadTematicaRegistro[]>([
+    const [images, ] = useState<UnidadTematicaRegistro[]>([
         {
             registroUnidadId: 1,
             unidadTematicaId: 1,

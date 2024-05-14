@@ -10,6 +10,7 @@ import MostrarDuracionFlexible from '@/model/interfaces/practicas/mostrarDuracio
 import MostrarDuracionEstandar, { ListaDias, ListaHorarioDias } from '@/model/interfaces/practicas/mostrarDuracionRegular'
 import MostrarDocumentoUrl from '@/model/interfaces/documento/mostrarDocumento'
 import FilePreview from '@/model/interfaces/documento/filePreview'
+import DocumentoAdmin from '@/model/interfaces/documento/mostrarDocumentoAdmin'
 
 export function formatTime(value: string) {
   var hourEnd = value.indexOf(":")
@@ -152,6 +153,27 @@ export function formatoFecha_Date_fechaSlash(fecha: string): string {
   return `${dia}/${mes}/${año}`;
 }
 
+export function formatoFecha_Date_completo(fecha: string): string {
+  const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+  const fechaObjeto = new Date(fecha);
+  const dia = String(fechaObjeto.getDate()).padStart(2, '0');
+  const mes = meses[fechaObjeto.getMonth()];
+  const año = fechaObjeto.getFullYear();
+
+  let hora = fechaObjeto.getHours();
+  const minutos = String(fechaObjeto.getMinutes()).padStart(2, '0');
+  const periodo = hora >= 12 ? 'pm' : 'am';
+
+  if (hora > 12) {
+    hora -= 12;
+  } else if (hora === 0) {
+    hora = 12;
+  }
+
+  return `${dia} de ${mes} del ${año}, ${hora}:${minutos} ${periodo}`;
+}
+
 // Función para convertir de "aaaa-mm-dd" a "dd/mm/aaaa"
 export function convertirFormatoFechaInput(fecha: string) {
   if (fecha === '') return ''
@@ -243,10 +265,10 @@ export const ArmarMenu = async (tipoUsuario: string, isAdmin: boolean) => {
   }
 
   if (compararHashSHA256(import.meta.env.VITE_USER_TYPO_AD, tipoUsuario)) {
+
+    menus = menusDocente
     if (isAdmin) {
-      menus = menusCoordinador
-    } else {
-      menus = menusDocente
+      menus = menus.concat(menusCoordinador)
     }
   }
 
@@ -342,6 +364,43 @@ export function combinarHorarios(horariosEstaticos: HorarioEspecifico[], detalle
         detHorarioId: 2,
         asiId: "---", // Valor no relevante en la lista dinámica
         asignatura: "Horario Prácticas Seleccionadas",
+        diaId: detalle.diaId,
+        dia: obtenerDiaSemana(detalle.diaId), // Función para obtener el nombre del día a partir del díaId
+        horaIni: detalle.horaInicio,
+        horaFin: detalle.horaFin,
+        color: '#81C784'
+      })
+    }
+  })
+
+  return horarios
+}
+
+//// combinar listas
+export function combinarHorariosDetalle(horariosEstaticos: HorarioEspecifico[], detallesDuracion: DetalleDuracion[]): HorarioItem[] {
+  const horarios: HorarioItem[] = []
+
+  // Agregar horarios estáticos
+  horariosEstaticos.forEach((horarioEstatico) => {
+    horarios.push({
+      detHorarioId: 1,
+      asiId: horarioEstatico.idAsig,
+      asignatura: horarioEstatico.nombreAsig,
+      diaId: horarioEstatico.idDia,
+      dia: horarioEstatico.dia,
+      horaIni: horarioEstatico.horaini,
+      horaFin: horarioEstatico.horafin,
+      color: '#EF9A9A'
+    })
+  })
+
+  // Agregar horarios dinámicos
+  detallesDuracion.forEach((detalle) => {
+    if (detalle.horaInicio !== '' && detalle.horaFin !== '') {
+      horarios.push({
+        detHorarioId: 2,
+        asiId: "---", // Valor no relevante en la lista dinámica
+        asignatura: "Horario Prácticas PreProfesionales",
         diaId: detalle.diaId,
         dia: obtenerDiaSemana(detalle.diaId), // Función para obtener el nombre del día a partir del díaId
         horaIni: detalle.horaInicio,
@@ -497,28 +556,64 @@ export const obtenerArchivosVistaPrevia = (docUrlMostrado?: MostrarDocumentoUrl 
   return archivosVistaPrevia
 }
 
+export const obtenerArchivosVistaPreviaAdmin = (docAdmin?: DocumentoAdmin | null): FilePreview[] => {
+  const archivosVistaPrevia: FilePreview[] = docAdmin ? [
+    {
+      nombre: docAdmin.documentoUrl,
+      url: import.meta.env.VITE_STORAGE_DOCUMENT + '/' + docAdmin.documentoCifrado,
+    },
+  ] : [];
+
+  return archivosVistaPrevia;
+}
 
 export const obtenerDescripcion = (tipoDoc: string): string => {
   switch (tipoDoc) {
-      case 'IF':
-          return 'Informe Final';
-      case 'CE':
-          return 'Constancia de Empresa';
-      case 'CP':
-          return 'Convenio de Prácticas';
-      case 'CA':
-          return 'Carta de Aceptación';
-      case 'AV':
-          return 'Asistencia Visada';
-      case 'UT1':
-          return 'Unidad Temática 1';
-      case 'UT2':
-          return 'Unidad Temática 2';
-      case 'UT3':
-          return 'Unidad Temática 3';
-      case 'UT4':
-          return 'Unidad Temática 4';
-      default:
-          return '';
+    case 'IF':
+      return 'Informe Final';
+    case 'CE':
+      return 'Constancia de Empresa';
+    case 'CP':
+      return 'Convenio de Prácticas';
+    case 'CA':
+      return 'Carta de Aceptación';
+    case 'AV':
+      return 'Asistencia Visada';
+    case 'UT1':
+      return 'Unidad Temática 1';
+    case 'UT2':
+      return 'Unidad Temática 2';
+    case 'UT3':
+      return 'Unidad Temática 3';
+    case 'UT4':
+      return 'Unidad Temática 4';
+    default:
+      return '';
   }
+}
+
+export const obtenerNombreInforme = (codigo: number) => {
+
+  switch (codigo) {
+    case 113286:
+      return 'AS - PP1'
+    case 113296:
+      return 'AS - PP2'
+    case 123276:
+      return 'CF - PP1'
+    case 123284:
+      return 'CF - PP2'
+    case 123297:
+      return 'CF - PP3'
+    default:
+      return ''
+  }
+}
+
+export function convertirHorarioDetalle(detallePracticas: DuracionPracticas[]): DetalleDuracion[] {
+  return detallePracticas.map((detalle: DuracionPracticas) => ({
+    diaId: detalle.diaId,
+    horaInicio: detalle.horaInicio,
+    horaFin: detalle.horaFin
+  }))
 }

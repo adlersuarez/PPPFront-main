@@ -330,7 +330,8 @@ const Reglamento = () => {
         <ContainerVIstas titulo='MARCO LEGAL' retornar>
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
-                    <p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60 text-justify">Las prácticas preprofesionales se encuentran respaldadas por un <mark className="bg-green-200">marco leg</mark><span>al</span> que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la  preparación de futuros profesionales.</p>
+                    {/*<p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60 text-justify">Las prácticas preprofesionales se encuentran respaldadas por un <mark className="bg-green-200">marco leg</mark><span>al</span> que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la  preparación de futuros profesionales.</p>*/}
+                    <p className="leading-normal text-sm sm:text-base dark:text-white dark:opacity-60 text-justify">Las prácticas preprofesionales se encuentran respaldadas por un marco legal que busca regular y promover la formación práctica de los estudiantes en el ámbito laboral. La normativa peruana reconoce la importancia de estas prácticas como un componente esencial en la  preparación de futuros profesionales.</p>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-1">

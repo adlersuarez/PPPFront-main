@@ -1,6 +1,5 @@
 import { useState, Suspense, useRef, useEffect } from 'react';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
-import ListaElementos from './Contenedor/ListaElementos';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
 import { handleCrearSolicitudYConvertirAPdf } from '@/helper/documento.helper';
 import { EstadoCarta } from '../../modalForms/componentes/EstadoCarta';
@@ -8,7 +7,7 @@ import ModalAgregarEmpresa from '../../modalForms/ModalAgregarEmpresa';
 import ModalMostrarDatos from '../../modalForms/ModalMostrarDatos';
 import CartaPresentacionDatos from '@/model/interfaces/cartaPresentacion/cartaPresentacion';
 import Listas from '@/model/interfaces/Listas.model.interface';
-import { ConsultaPagoCartaPresentacion, ObtenerDatosCartaPresentacion } from '@/network/rest/practicas.network';
+import { ConsultaPagoCartaPresentacion, ConsultaPagoTramite, ObtenerDatosCartaPresentacion } from '@/network/rest/practicas.network';
 import RestError from '@/model/class/resterror.model.class';
 import { Types } from '@/model/enum/types.model';
 import { useSelector } from 'react-redux';
@@ -18,40 +17,16 @@ import PagoCarta from '@/model/interfaces/pagos/pagoCarta';
 import { CargandoPagos } from '../../carga/CargandoPagos';
 import { LoaderSvg } from '@/component/Svg.component';
 import { convertirFechaPago_aaaa_mm_dd, formatoFecha_Date_fechaSlash } from '@/helper/herramienta.helper';
-
-const Requisitos = [
-    {
-        descripcion: 'Pago por carta de presentación',
-        estado: 1,
-    },
-    {
-        descripcion: 'RUC de la empresa',
-        estado: 2,
-    },
-    {
-        descripcion: 'Razón social',
-        estado: 3,
-    },
-    {
-        descripcion: 'Datos completos del representante de la empresa',
-    },
-    {
-        descripcion: 'Actualización de datos generales',
-    },
-]
-
-const Procedimientos = [
-    {
-        descripcion: 'Rellenar ficha'
-    },
-    {
-        descripcion: 'Imprimir carta de presentación'
-    }
-]
+import { ProcesoPasosEstudiante } from '@/helper/requisitos.helper';
+import RequisitosListaEstudiante from './Contenedor/RequisitoEstudiante';
+import ImportanteListaEstudiante from './Contenedor/ImportanteEstudiante';
 
 const TemplateStep1 = () => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    //Código de asignatura
+    const idAsign = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
+
     const abortController = useRef(new AbortController())
 
     const [operacionSeleccionada, setOperacionSeleccionada] = useState<string>('')
@@ -99,8 +74,25 @@ const TemplateStep1 = () => {
         setCargarDatosCarta(false)
     }
 
-    const [cartaPresentDatos, setCartaPresentDatos] = useState<CartaPresentacionDatos[]>([])
 
+    const LoadPagosTramite = async () => {
+        setCargarDatosCarta(true)
+        setPagosCarta([])
+        const response = await ConsultaPagoTramite<Listas>(codigo, abortController.current)
+
+        if (response instanceof Response) {
+            const data = response.data.resultado as PagoCarta[]
+            setPagosCarta(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+        setCargarDatosCarta(false)
+    }
+
+
+    const [cartaPresentDatos, setCartaPresentDatos] = useState<CartaPresentacionDatos[]>([])
 
     const LoadDatosCartas = async () => {
         setCartaPresentDatos([])
@@ -123,8 +115,20 @@ const TemplateStep1 = () => {
         setCargaGenerarSolicitud(false)
     }
 
+    ////
+    const [tituloPago, setTituloPago] = useState<string>("")
+
     useEffect(() => {
-        LoadPagosCarta()
+        // Para PPP 2 y PPP 3 si requieren carta de presentacion y tramite
+        if (idAsign === 113296 || idAsign === 123297) {
+            LoadPagosCarta()
+            setTituloPago("Pago(s) por Derecho de Trámite y por Carta de Presentación")
+        }
+        // Solo para pago de trámite PP1 y PP2
+        if (idAsign === 123276 || idAsign === 123284 || idAsign === 113286) {
+            LoadPagosTramite()
+            setTituloPago("Pago(s) por Derecho de Trámite")
+        }
     }, [])
 
     useEffect(() => {
@@ -136,6 +140,10 @@ const TemplateStep1 = () => {
             LoadDatosCartas()
         }
     }, [operacionSeleccionada])
+
+    //Requisitos step 1
+    const requisitos = ProcesoPasosEstudiante[0].requisitos ?? []
+    const importante = ProcesoPasosEstudiante[0].importante ?? []
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
@@ -151,15 +159,12 @@ const TemplateStep1 = () => {
                 titulo='CARTA DE PRESENTACIÓN'
             >
                 <ContenedorSteps.Informacion>
-                    <div className='flex flex-col justify-between'>
-                        <ListaElementos
-                            titulo='Requisitos'
-                            elementos={Requisitos}
+                    <div className='flex flex-col gap-6'>
+                        <RequisitosListaEstudiante
+                            requisitos={requisitos}
                         />
-                        <hr className="my-2" />
-                        <ListaElementos
-                            titulo='Procedimiento'
-                            elementos={Procedimientos}
+                        <ImportanteListaEstudiante
+                            importante={importante}
                         />
                     </div>
                 </ContenedorSteps.Informacion>
@@ -172,9 +177,9 @@ const TemplateStep1 = () => {
                         <hr className="my-2" />
 
                         <div className='p-2'>
-                            <div className='my-2 bg-white border-upla-100 border flex flex-col sm:flex-row'>
+                            <div className='my-2 bg-white border-upla-100 border flex flex-col '>
                                 <div className='font-bold border-b border-b-upla-100 p-2 py-1 sm:py-2 text-sm flex bg-upla-100 text-white'>
-                                    <span className='hidden sm:flex px-4'>Pago(s):</span>
+                                    <span className='hidden sm:flex px-2'>{tituloPago}:</span>
                                     <span className='flex sm:hidden mx-auto'>Pagos(s) realizados</span>
                                 </div>
                                 <div className='flex flex-wrap gap-2 p-2 w-full'>

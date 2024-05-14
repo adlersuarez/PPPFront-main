@@ -28,7 +28,7 @@ const Formato = () => {
     return (
         <ContainerVIstas titulo='FORMATOS' retornar>
             <div className="flex flex-col gap-4">
-                <p className="leading-normal text-sm sm:text-lg dark:text-white dark:opacity-60 text-justify">
+                <p className="leading-normal text-sm sm:text-base dark:text-white dark:opacity-60 text-justify">
                     Descargue formatos validados por la UPLA y su facultad, Estos documentos pueden ser usados si la organización no cuenta con alguno.
                 </p>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

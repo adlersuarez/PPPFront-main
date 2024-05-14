@@ -2,10 +2,10 @@
 import { NavLink } from "react-router-dom";
 
 type Props = {
-    pathname: string,
-    icon: string,
-    nombre: string,
-    to: string,
+    pathname: string
+    icon: string
+    nombre: string
+    to: string
 }
 
 const Menu = (props: Props) => {
@@ -13,23 +13,24 @@ const Menu = (props: Props) => {
         <li className="">
             <NavLink
                 to={props.to}
-                className={`${props.to === props.pathname ? "bg-upla-100 text-white" : ""}
+                className={`${props.to === props.pathname ? "bg-upla-100 text-white" : "hover:bg-gray-500"}
                 flex 
                 items-center 
-                p-3 
+                p-3 px-6
                 text-sm 
                 font-normal 
                 text-gray-400                    
                 transition-all 
                 duration-200
-                hover:text-white`}
+                hover:text-white
+                
+                `}
             >
-                <i className={`bi ${props.icon} text-xl pr-2`} ></i>
-                <span className=""> {props.nombre}</span>
+                <i className={`bi ${props.icon} text-xl pr-4`} ></i>
+                <span className="my-auto"> {props.nombre}</span>
             </NavLink>
         </li>
-    );
-
+    )
 }
 
-export default Menu;
+export default Menu

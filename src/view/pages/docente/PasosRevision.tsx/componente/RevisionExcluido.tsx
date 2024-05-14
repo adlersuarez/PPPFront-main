@@ -27,7 +27,7 @@ const RevisionExcluido: React.FC<Props> = ({ show, hide, datos }) => {
                             <div className="flex-grow text-left px-3">Motivo</div>
 
                         </div>
-                        <div className='flex flex-col max-h-24 overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-upla-100'>
+                        <div className='flex flex-col max-h-92 overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-upla-100'>
                             {/* Filas de datos */}
                             {datos.map((excludedDay, index) => (
                                 <div key={index} className="flex bg-white border-b border-gray-200 py-2 text-sm font-normal">

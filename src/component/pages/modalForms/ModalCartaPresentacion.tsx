@@ -16,21 +16,6 @@ const ModalCartaPresentacion = (props: Props) => {
 
     //console.log(props)
 
-    const datos = {
-        dni: '76634282',
-        nombres: 'Doe',
-        apellido_paterno: 'Rodriguez',
-        apellido_materno: 'Gutierrez',
-        correo_institucional: `prueba@upla.edu.pe`,
-        correo: '',
-        celular: '',
-        telefono: '',
-        direccion: '',
-        id_departamento: '',
-        id_provincia: '',
-        id_distrito: '',
-    }
-
     return (
 
         <Modal onShow={props.show} onHide={props.hide}>

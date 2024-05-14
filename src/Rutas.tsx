@@ -15,6 +15,11 @@ import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
 import Proceso from './view/pages/estudiante/Proceso';
 import Secciones from './view/pages/docente/Secciones';
+import RevisionAdmin from './view/pages/admin/RevisionAdmin';
+import RevisionDocente from './view/pages/admin/RevisionDocente';
+import RevisionEstudiante from './view/pages/admin/RevisionEstudiante';
+import RevisionSeccionAlumno from './view/pages/admin/RevisionSeccionAlumno';
+import RevisionAlumnoEspecifico from './view/pages/admin/RevisionAlumnoEspecifico';
 
 const router = createBrowserRouter([
   {
@@ -32,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'proceso',
-        element: <Proceso/>,
+        element: <Proceso />,
       },
       {
         path: 'formatos',
@@ -64,8 +69,33 @@ const router = createBrowserRouter([
           },
           {
             path: 'estudiante-detalle',
-            element: <Especifico/>,
+            element: <Especifico />,
           },
+        ]
+      },
+      {
+        path: 'admin/*',
+        children: [
+          {
+            path: '',
+            element: <RevisionAdmin />,
+          },
+          {
+            path: 'docente',
+            element: <RevisionDocente />,
+          },
+          {
+            path: 'docente-detalle',
+            element: <RevisionEstudiante />,
+          },
+          {
+            path: 'estudiante-detalle',
+            element: <RevisionSeccionAlumno />,
+          },
+          {
+            path: 'estudiante-especifico',
+            element: <RevisionAlumnoEspecifico />,
+          }
         ]
       },
       {
@@ -73,19 +103,19 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'internado-medico',
-            element: <ProcesoMedicina/>,
+            element: <ProcesoMedicina />,
           },
           {
             path: 'registro',
-            element: <Registro/>,
+            element: <Registro />,
           },
           {
             path: 'estudiantes',
-            element: <CargarInformes/>,
+            element: <CargarInformes />,
           },
           {
             path: 'administrador',
-            element: <Fechas/>,
+            element: <Fechas />,
           },
         ]
       },

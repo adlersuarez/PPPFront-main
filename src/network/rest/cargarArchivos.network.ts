@@ -27,3 +27,8 @@ export async function ConfirmarEmpresaCarta<RespValue>(CartaId: number, Estudian
 export async function RegistrarDocumento<RespValue>(TipoDoc: string, EstudianteId: string, PeriodoId: number, formData: FormData, signal = null): Promise<Response<RespValue> | RestError> {
     return await Resolve.create(instance.post<RespValue>(`/DocumentoProcesado/RegistrarDocumento/${TipoDoc}/${EstudianteId}/${PeriodoId}`, formData, { signal: signal! }))
 }
+
+export async function RegistrarDocumentoDocente<RespValue>(TipoDoc: string, EstudianteId: string, PeriodoId: number, formData: FormData, signal = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/DocumentoProcesado/RegistrarDocumentoDocente/${TipoDoc}/${EstudianteId}/${PeriodoId}`, formData, { signal: signal! }))
+}
+

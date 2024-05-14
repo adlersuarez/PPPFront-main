@@ -12,18 +12,18 @@ const Contacto = () => {
         telefono: "904182526",
         correo: "coordinador@upla.edu.pe",
         direccion: "123 Calle Principal, Ciudad X",
-    };
+    }
 
     /* FIJO */
     const soporteData = {
         titulo: "Soporte",
         codigo: "",
-        nombre: "Jose Rodriguez",
+        nombre: "John Suárez",
         oficina: "Oficina de Informática",
-        telefono: "96632100",
-        correo: "soporte@upla.edu.pe",
-        direccion: "123 Calle Principal, Ciudad X",
-    };
+        telefono: "904198090",
+        correo: "",
+        direccion: "Av. Giráldez N° 230, Huancayo (5to piso)",
+    }
 
     /* DEPENDE DEL ID DE ESTUDIANTE, ID CURSO */
     const docenteData = {
@@ -33,11 +33,11 @@ const Contacto = () => {
         oficina: "Facultad de Ingeniería",
         telefono: "984456852",
         correo: "docente@upla.edu.pe",
-    };
+    }
 
     return (
         <ContainerVIstas titulo='CONTACTOS' retornar>
-            <div className="grid grid-cols-1 gap-4 sm:gap-8 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:gap-8 2xl:grid-cols-2">
                 <ComponenteContacto
                     {...docenteData}
                 />

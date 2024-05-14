@@ -41,6 +41,8 @@ type Props = {
     show: boolean
     hide: () => void
     init: () => void
+
+    change: () => void
 }
 
 const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
@@ -595,6 +597,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
                         sweet.openSuccess("¡Operación completada con éxito!", "Los datos del Área de trabajo han sido registrados satisfactoriamente.", () => {
+                            props.change()
                             props.init() // Actualizar la lista de Cartas
                             props.hide() // Cerrar modal
                         })

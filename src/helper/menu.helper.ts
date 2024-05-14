@@ -117,9 +117,9 @@ export const menusEstudiante: MenuItem[] = [
 export const menusDocente: MenuItem[] = [
     {
         id: "6",
-        titulo: "Docente",
+        titulo: "Secciones",
         url: "/inicio/revision",
-        icono: "bi-file-ruled",
+        icono: "bi-backpack4",
         moduPadre: false,
         modPosicion: 6,
         subMenu: false,
@@ -130,8 +130,18 @@ export const menusDocente: MenuItem[] = [
 export const menusCoordinador: MenuItem[] = [
     {
         id: "7",
-        titulo: "Administrador",
-        url: "/inicio/administrador",
+        titulo: "Revisión",
+        url: "/inicio/admin",
+        icono: "bi-backpack4",
+        moduPadre: false,
+        modPosicion: 7,
+        subMenu: false,
+        subMenuItems: []
+    },
+    {
+        id: "8",
+        titulo: "Dashboard",
+        url: "/inicio/dashboard",
         icono: "bi-bar-chart-line-fill",
         moduPadre: false,
         modPosicion: 7,

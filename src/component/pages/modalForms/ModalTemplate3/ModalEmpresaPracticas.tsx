@@ -26,9 +26,11 @@ type Props = {
     show: boolean
     hide: () => void
     init: () => void
+
+    change: () => void
 }
 
-const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide,init }) => {
+const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -157,7 +159,6 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide,init }) => {
     }
 
     const LoadDatosEmpresa = async () => {
-        setGrado([])
         const response = await ObtenerDatosEmpresaElegida<EmpresaAreaTrabajo>(codigo, periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as EmpresaAreaTrabajo
@@ -305,6 +306,12 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide,init }) => {
             toast.error("En necesario consignar la dirección del centro laboral donde realiza sus prácticas")
             return
         }
+
+        if (searchTermDPD.trim() == '') {
+            toast.error("En necesario consignar la ubicación Departamento - Provincia - Distrito del centro laboral")
+            return
+        }
+
         if (datosAreaTrabajo.jefeNombres == "-") {
             toast.error("En necesario consignar un dni válido correspondiente a su jefe inmediato")
             return
@@ -330,7 +337,7 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide,init }) => {
             jsonDatosJefe: {
                 gradoId: datosAreaTrabajo.gradoId,
                 cargoId: datosAreaTrabajo.cargoId,
-                jefeDni:datosAreaTrabajo.jefeDni,
+                jefeDni: datosAreaTrabajo.jefeDni,
                 jefeNombres: datosAreaTrabajo.jefeNombres,
                 jefeApellidoPat: datosAreaTrabajo.jefeApellidoPat,
                 jefeApellidoMat: datosAreaTrabajo.jefeApellidoMat,
@@ -339,6 +346,7 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide,init }) => {
             },
             jsonAreaPractica: {
                 direccionAreaPracticas: datosAreaTrabajo.areaTrabajoDireccion,
+                depProvDist: searchTermDPD,
                 ubigeo: datosAreaTrabajo.areaTrabajoUbigeo
             }
         }
@@ -348,10 +356,11 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide,init }) => {
 
                 sweet.openInformation("Mensaje", "Procesando información...")
                 const response = await RegistrarJefeInmediato<RespValue>(periodo, codigo, params, abortController.current)
-    
+
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
                         sweet.openSuccess("¡Operación completada con éxito!", "Los datos del Área de trabajo han sido registrados satisfactoriamente.", () => {
+                            change()
                             init() // Actualizar la lista de Cartas
                             cerrarModal() // Cerrar modal
                         })

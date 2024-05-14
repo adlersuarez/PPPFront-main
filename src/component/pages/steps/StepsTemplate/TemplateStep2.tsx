@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
-import ListaElementos from "./Contenedor/ListaElementos";
 import ModalCargarCartaAceptacion from "../../modalForms/ModalCargarCartaAceptacion";
 import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import MostrarDocumentoUrl from "@/model/interfaces/documento/mostrarDocumento";
@@ -16,28 +15,8 @@ import { Types } from "@/model/enum/types.model";
 import EstadoValor from "@/model/interfaces/estado/EstadoValor";
 import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile";
 import FilePreview from "@/model/interfaces/documento/filePreview";
-
-const Caracteristicas = [
-    {
-        descripcion: 'Carta de aceptación o convenio de prácticas',
-        estado: 1,
-    },
-    {
-        descripcion: 'Escaneada a colores',
-        estado: 2,
-    },
-    {
-        descripcion: 'Debidamente firmada y sellada por la empresa',
-        estado: 3,
-    },
-
-]
-
-const Importante = [
-    {
-        descripcion: 'Plazo máximo de ## días posteriores de iniciar el proceso.'
-    },
-]
+import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
+import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
 
 const TemplateStep2 = () => {
 
@@ -78,7 +57,7 @@ const TemplateStep2 = () => {
 
     //EstadoDocumento
     const [estadoCarta, setEstadoCarta] = useState<number | null>(null)
-    
+
     const LoadEstadoCarta = async () => {
         // setGrado([])
         const response = await EstadoDocumento<EstadoValor>('CA', codigo, periodo, abortController.current)
@@ -111,6 +90,9 @@ const TemplateStep2 = () => {
         }
     }, [docUrlMostrado])
 
+    //Requisitos step 2
+    const requisitos = ProcesoPasosEstudiante[1].requisitos ?? []
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
@@ -123,14 +105,8 @@ const TemplateStep2 = () => {
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>
-                        <ListaElementos
-                            titulo="Características"
-                            elementos={Caracteristicas}
-                        />
-                        <hr className="my-2" />
-                        <ListaElementos
-                            titulo="Importante"
-                            elementos={Importante}
+                        <RequisitosListaEstudiante
+                            requisitos={requisitos}
                         />
                     </div>
                 </ContenedorSteps.Informacion>

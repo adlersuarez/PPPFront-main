@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
-import ListaElementos from "./Contenedor/ListaElementos";
 import ModalCargarPlan from "../../modalForms/ModalTemplate4/ModalCargarPlan";
 import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import { useSelector } from "react-redux";
@@ -12,33 +11,13 @@ import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
 import MostrarPlanActividades from "../../modalForms/ModalTemplate4/MostrarPlanActividades";
+import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
+import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
 
 const TemplateStep4 = () => {
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
     const abortController = useRef(new AbortController())
-
-    const Caracteristicas = [
-        {
-            descripcion: 'Descarga el formato de plan de actividades',
-            estado: 1,
-        },
-        {
-            descripcion: 'Registra las posibles actividades a realizar durante todo el periodo de prácticas',
-            estado: 2,
-        },
-
-    ]
-
-    const Importante = [
-        {
-            descripcion: 'Plazo máximo de ## días posteriores de iniciar el proceso.'
-        },
-        {
-            descripcion: 'El plan de actividades debe ser escaneado a colores, debidamente firmado y sellado por su jefe inmediato'
-        },
-    ]
-
 
     const [show, setShow] = useState<boolean>(false)
     const handleClose = () => setShow(false)
@@ -74,10 +53,17 @@ const TemplateStep4 = () => {
         Init()
     }, [])
 
+    //actualizar
+    const [cambios, setCambios] = useState<boolean>(false)
+    const handleChangeCambios = () => setCambios(!cambios)
+
+    //Requisitos step 4
+    const requisitos = ProcesoPasosEstudiante[3].requisitos ?? []
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
-            <ModalCargarPlan show={show} hide={handleClose} init={Init} />
-            <MostrarPlanActividades show={showPlanDatos} hide={handleClosePlanDatos} />
+            <ModalCargarPlan show={show} hide={handleClose} init={Init} change={handleChangeCambios} />
+            <MostrarPlanActividades show={showPlanDatos} hide={handleClosePlanDatos} cambios={cambios} />
 
             <ContenedorSteps
                 numero={4}
@@ -85,14 +71,8 @@ const TemplateStep4 = () => {
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>
-                        <ListaElementos
-                            titulo="Características"
-                            elementos={Caracteristicas}
-                        />
-                        <hr className="my-2" />
-                        <ListaElementos
-                            titulo="Importante"
-                            elementos={Importante}
+                        <RequisitosListaEstudiante
+                            requisitos={requisitos}
                         />
                     </div>
                 </ContenedorSteps.Informacion>
@@ -146,16 +126,7 @@ const TemplateStep4 = () => {
                             </table>
                         </div>
 
-                        <hr className="my-2" />
-
-                        <div className="flex flex-col p-2 gap-2">
-                            <div className='bg-green-200 rounded-lg text-center'>
-                                <span className="px-4 text-green-600 font-semibold">Documento debidamente cargado</span>
-                            </div>
-                            <div className='bg-red-200 rounded-lg text-center'>
-                                <span className="px-4 text-red-600 font-semibold">Documento requerido</span>
-                            </div>
-                        </div>
+                        
                     </div>
 
                 </ContenedorSteps.Proceso>

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import MostrarDocEstudiante from "./componente/MostrarDocEstudiante";
+import MensajePasoNoCargado from "./componente/MensajePasoNoCargado";
+import { ProcesoPasosDocente } from "@/helper/requisitos.helper";
+import RequisitosLista from "./componente/RequisitosLista";
 
 interface Paso3Props {
     estudianteId: string
@@ -25,28 +28,24 @@ const Paso6 = (datos: Paso3Props) => {
     const [estadoInitAV, setEstadoInitAV] = useState<boolean>(false)
     const changeEstadoAV = () => setEstadoInitAV(!estadoInitAV)
 
+    //Requisitos paso 6
+    const requisitos = ProcesoPasosDocente[5].requisitos ?? []
+
     return (
         <div className='flex flex-col gap-4'>
             <div className="flex text-gray-400 gap-2 text-lg sm:text-2xl">
-                <i className={`bi bi-6-square-fill`} />
+                <i className={`bi bi-6-square-fill mr-2`} />
                 <h1 className="font-bold">PRESENTACIÓN DE DOCUMENTOS</h1>
             </div>
-            <div className="flex bg-gray-100 p-4 rounded">
+            <div className="flex flex-col">
                 {
                     true ?
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16">
-                            <div className="flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4 sm:gap-8">
-                                    <div className="flex flex-col gap-1 text-gray-500">
-                                        <h2 className="text-lg font-semibold uppercase ">Requisitos a considerar</h2>
-                                        <div className="flex flex-col gap-1">
-                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div> Escaneado a colores</div>
-                                            <div className="flex"><div className="shrink-0 w-6"><i className="bi bi-dot" /></div>Debidamente firmada y sellada por la empresa</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="p-2 flex flex-col gap-4 col-span-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-8 sm:gap-x-12 p-3 sm:p-6 bg-gray-100 rounded-md w-full">
+                            <RequisitosLista
+                                requisitos={requisitos}
+                            />
+
+                            <div className="flex flex-col gap-y-4 col-span-2">
                                 <MostrarDocEstudiante
                                     estId={datos.estudianteId}
                                     titulo='INFORME FINAL'
@@ -88,11 +87,13 @@ const Paso6 = (datos: Paso3Props) => {
                                     estadoInit={estadoInitAV}
                                 />
                             </div>
+
+                            <div className="sm:hidden flex text-red-600 p-2 rounded-md text-center bg-red-100 border border-red-500 border-dashed font-medium px-4 text-sm">
+                                Tenga en cuenta que la validación de documentos requiere el uso de un dispositivo con pantalla más grande.
+                            </div>
                         </div>
                         :
-                        <div className="text-center sm:col-span-3 p-4 sm:p-8 bg-gray-200 rounded shadow-lg">
-                            <p className="text-base sm:text-2xl font-bold text-gray-500">El estudiante aún no ha cargado su Carta de Aceptación</p>
-                        </div>
+                        <MensajePasoNoCargado step={6} />
                 }
 
             </div>

@@ -28,7 +28,7 @@ const SubTitle = (props: Props) => {
     return (
         <div className="mt-6 md:mt-0 mb-4">
             <img
-                className=" p-1 m-auto w-24 h-24 rounded-full ring-2 ring-gray-300 hover:scale-110 ease-in duration-300"
+                className=" p-1 m-auto w-32 h-32 rounded-full ring-2 ring-gray-300 ease-in duration-300"
                 src={`https://academico.upla.edu.pe/FotosAlum/037000${codigo}.jpg`}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
@@ -52,8 +52,8 @@ const SubTitle = (props: Props) => {
                     {informacion}
                 </h1>
             </div>
-            <p className="text-center text-white">{codigo}</p>{/* BORRAR PARA */}
-            <p className="text-center text-white">{carrera}</p>
+            <p className="text-center text-white font-bold text-xl">Código: {codigo}</p>{/* BORRAR PARA */}
+            <p className="text-center text-white text-sm">{carrera}</p>
         </div>
     );
 }

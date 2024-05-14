@@ -1,86 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
-import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
-import ListaElementos from "./Contenedor/ListaElementos";
 import ModalInformeFinal from "../../modalForms/ModalTemplate6/ModalInformeFinal";
 import ModalConvenioPracticas from "../../modalForms/ModalTemplate6/ModalConvenioPracticas";
 import ModalConstanciaEmpresa from "../../modalForms/ModalTemplate6/ModalConstanciaEmpresa";
 import ModalAsistenciaVisada from "../../modalForms/ModalTemplate6/ModalAsistenciaVisada";
-import MostrarDocumentoUrl from "@/model/interfaces/documento/mostrarDocumento";
-import { MostrarDocumento } from "@/network/rest/practicas.network";
-import Response from "@/model/class/response.model.class";
-import RestError from "@/model/class/resterror.model.class";
-import { Types } from "@/model/enum/types.model";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/configureStore.store";
-import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile";
-import { obtenerArchivosVistaPrevia } from "@/helper/herramienta.helper";
-import FilePreview from "@/model/interfaces/documento/filePreview";
 import DocumentoDespliegue from "./Contenedor/DocumentoDespliegue";
+import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
+import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
 
 const TemplateStep6 = () => {
-
-    const Caracteristicas = [
-        {
-            descripcion: 'Descarga el formato de informe final',
-            estado: 1,
-        },
-        {
-            descripcion: 'Constancia de prácticas emitido por la empresa',
-            estado: 2,
-        },
-
-    ]
-
-    const Importante = [
-        {
-            descripcion: 'Plazo máximo de ## días posteriores de iniciar el proceso.'
-        },
-    ]
-
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
-    const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
-    const abortController = useRef(new AbortController())
-
-    const [docUrlMostrado, setDocUrlMostrado] = useState<MostrarDocumentoUrl | null>(null)
-    const [tipoDocMostrado, setTipoDocMostrado] = useState<string>('')
-    const [archivosVistaPrevia, setArchivoVistaPrevia] = useState<FilePreview[]>([])
-    /////
-    const ObtenerDocumento = async (tipoDoc: string) => {
-        setDocUrlMostrado(null)
-        const response = await MostrarDocumento<MostrarDocumentoUrl>(tipoDoc, codigo, periodo, abortController.current)
-        console.log(tipoDoc)
-        console.log(response)
-        if (response instanceof Response) {
-            const data = response.data as MostrarDocumentoUrl
-            setDocUrlMostrado(data)
-        }
-        if (response instanceof RestError) {
-            if (response.getType() === Types.CANCELED) return;
-            console.log(response.getMessage())
-        }
-    }
-
-    useEffect(() => {
-        if (tipoDocMostrado !== '') {
-            ObtenerDocumento(tipoDocMostrado)
-        }
-    }, [tipoDocMostrado])
-
-    useEffect(() => {
-        if (docUrlMostrado !== null) {
-            setArchivoVistaPrevia(obtenerArchivosVistaPrevia(docUrlMostrado))
-        }
-    }, [docUrlMostrado])
-
-    //////////Vista previa Documentos
-    const [showDoc, setShowDoc] = useState<boolean>(false)
-    const handleShowDoc = (tipoDoc: string) => {
-        setTipoDocMostrado(tipoDoc)
-        setShowDoc(true)
-    }
-    const handleCloseDoc = () => setShowDoc(false)
 
     const [showInformeFinal, setShowInformeFinal] = useState<boolean>(false)
     const handleCloseInformeFinal = () => setShowInformeFinal(false)
@@ -117,14 +46,15 @@ const TemplateStep6 = () => {
     const [estadoInitAV, setEstadoInitAV] = useState<boolean>(false)
     const changeEstadoAV = () => setEstadoInitAV(!estadoInitAV)
 
+    //Requisitos step 6
+    const requisitos = ProcesoPasosEstudiante[5].requisitos ?? []
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
             <ModalInformeFinal show={showInformeFinal} hide={handleCloseInformeFinal} changeInit={changeEstadoIF} />
-            <ModalConvenioPracticas show={showConvenioPracticas} hide={handleCloseConvenioPracticas} changeInit={changeEstadoCP}/>
-            <ModalConstanciaEmpresa show={showConstanciaEmpresa} hide={handleCloseConstanciaEmpresa} changeInit={changeEstadoCE}/>
-            <ModalAsistenciaVisada show={showAsistenciaVisada} hide={handleCloseAsistenciaVisada} changeInit={changeEstadoAV}/>
-
-            <VistaPreviaDocumentosFile show={showDoc} close={handleCloseDoc} files={archivosVistaPrevia} />
+            <ModalConvenioPracticas show={showConvenioPracticas} hide={handleCloseConvenioPracticas} changeInit={changeEstadoCP} />
+            <ModalConstanciaEmpresa show={showConstanciaEmpresa} hide={handleCloseConstanciaEmpresa} changeInit={changeEstadoCE} />
+            <ModalAsistenciaVisada show={showAsistenciaVisada} hide={handleCloseAsistenciaVisada} changeInit={changeEstadoAV} />
 
             <ContenedorSteps
                 numero={6}
@@ -132,14 +62,8 @@ const TemplateStep6 = () => {
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>
-                        <ListaElementos
-                            titulo="Características"
-                            elementos={Caracteristicas}
-                        />
-                        <hr className="my-2" />
-                        <ListaElementos
-                            titulo="Importante"
-                            elementos={Importante}
+                        <RequisitosListaEstudiante
+                            requisitos={requisitos}
                         />
                     </div>
                 </ContenedorSteps.Informacion>
@@ -154,7 +78,7 @@ const TemplateStep6 = () => {
                         <hr className="my-2" />
 
                         <div className="flex flex-col gap-2">
-                            
+
                             <DocumentoDespliegue
                                 titulo='INFORME FINAL'
                                 tipoDoc='IF'
@@ -207,10 +131,9 @@ const TemplateStep6 = () => {
                     </div>
 
                 </ContenedorSteps.Proceso>
-
             </ContenedorSteps>
         </div>
-    );
-};
+    )
+}
 
-export default TemplateStep6;
+export default TemplateStep6

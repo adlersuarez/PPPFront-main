@@ -34,7 +34,7 @@ const Inscripcion = () => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className='w-full flex mt-2 sm:mt-4'>
+                                <div className='w-full mt-2 sm:mt-4 hidden'>
                                     <BotonAnimado
                                         onClick={() => { }}
                                         className='w-full sm:w-auto px-4 py-1 border-upla-100 text-upla-100 border hover:bg-upla-100 hover:text-white'
@@ -55,67 +55,72 @@ const Inscripcion = () => {
                 </div>
 
                 <hr className='my-6' />
-                <div className="flex flex-col w-full h-auto min-w-0 bg-white opacity-100">
-                    <div className="flex-auto mb-3">
-                        <p className="text-lg font-bold m-auto text-gray-400">MODALIDADES</p>
-                        <p>Existen 2 modalidades, elige la que se adecue a tu situación</p>
-                    </div>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-8'>
+                    <div className="flex flex-col w-full h-auto min-w-0 bg-white opacity-100">
+                        <div className="flex-auto mb-3">
+                            <p className="text-lg font-bold m-auto text-gray-400">MODALIDADES</p>
+                            {/*<p>Existen 2 modalidades, elige la que se adecue a tu situación</p>*/}
+                            <p>Actualmente existen 1 modalidad</p>
+                        </div>
 
-                    <div className="grid grid-grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 justify-start sm:p-4">
-                        <ModalidadCard
-                            imagen={images.modalidad_efectiva}
-                            titulo={'CURRICULAR'}
-                            resumen={'Esta modalidad brinda a los estudiantes en formación la oportunidad de poner en práctica sus conocimientos, habilidades y aptitudes en un entorno laboral real.'}
-                            to={'/inicio/proceso'}
-                            info={''}
-                        />
+                        <div className="grid grid-grid-cols-1 sm:grid-cols-1 xl:grid-cols-1 gap-6 justify-start sm:p-4">
+                            <ModalidadCard
+                                imagen={images.modalidad_efectiva}
+                                titulo={'CURRICULAR'}
+                                resumen={'Esta modalidad brinda a los estudiantes en formación la oportunidad de poner en práctica sus conocimientos, habilidades y aptitudes en un entorno laboral real.'}
+                                to={'/inicio/proceso'}
+                                info={''}
+                            />
+                            {/*
                         <ModalidadCard
                             imagen={images.modalidad_convalidacion}
                             titulo={'CONVALIDACIÓN'}
                             resumen={'Esta modalidad está dirigida a estudiantes que se encuentran empleados de manera formal en una empresa y desempeñando actividades relacionadas con su carrera.'}
                             to={''}
                             info={''}
-                        />
+                        />*/}
+                        </div>
                     </div>
-                </div>
-                <hr className='my-6' />
-                <div className='flex flex-col gap-4'>
-                    <h2 className='font-bold text-gray-400'>HERRAMIENTAS DE APOYO</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 xl:gap-6">
-                        <ButtonLink
-                            to={'/inicio/inscripcion'}
-                            nombre={'Manual'}
-                            icon={'bi-book'}
-                            color='bg-upla-100'
-                            hover='bg-upla-200'
-                        />
+                    {/*<hr className='my-6' />*/}
+                    <div className='flex flex-col gap-4'>
+                        <h2 className='font-bold text-gray-400'>HERRAMIENTAS DE APOYO</h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-3 sm:gap-4 xl:gap-6">
+                            <ButtonLink
+                                to={'/inicio/inscripcion'}
+                                nombre={'Manual'}
+                                icon={'bi-book'}
+                                color='bg-upla-100'
+                                hover='bg-upla-200'
+                            />
 
-                        <ButtonLink
-                            to={'/inicio/reglamentos'}
-                            nombre={'Reglamento'}
-                            icon={'bi-journal-check'}
-                            color='bg-upla-100'
-                            hover='bg-upla-200'
-                        />
+                            <ButtonLink
+                                to={'/inicio/reglamentos'}
+                                nombre={'Reglamento'}
+                                icon={'bi-journal-check'}
+                                color='bg-upla-100'
+                                hover='bg-upla-200'
+                            />
 
-                        <ButtonLink
-                            to={'/inicio/soporte'}
-                            nombre={'Soporte'}
-                            icon={'bi-telephone'}
-                            color='bg-upla-100'
-                            hover='bg-upla-200'
-                        />
+                            <ButtonLink
+                                to={'/inicio/contactos'}
+                                nombre={'Contactos'}
+                                icon={'bi-telephone'}
+                                color='bg-upla-100'
+                                hover='bg-upla-200'
+                            />
 
-                        <ButtonLink
+                            {/*<ButtonLink
                             to={'/inicio/requisitos'}
                             nombre={'Requisitos'}
                             icon={'bi-list-check'}
                             color='bg-upla-100'
                             hover='bg-upla-200'
-                        />
+                        />*/}
 
+                        </div>
                     </div>
                 </div>
+
             </div>
 
         </ContainerVIstas>

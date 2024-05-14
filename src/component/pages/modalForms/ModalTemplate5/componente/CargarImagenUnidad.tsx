@@ -18,6 +18,7 @@ export const CargarImagenUnidad: React.FC<Props> = ({ show, hide, fechaIni, fech
     const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
     const [zoom, setZoom] = useState<number>(1)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<{ width: number; height: number; x: number; y: number } | null>(null)
+    console.log(croppedAreaPixels)
     const [imgRecortada,setImgRecortada] = useState<string | null>(null)
 
     const tamanioMaxFile: number = 250000
@@ -28,6 +29,7 @@ export const CargarImagenUnidad: React.FC<Props> = ({ show, hide, fechaIni, fech
     const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
         calcularSizeResol(croppedAreaPixels)
         setCroppedAreaPixels(croppedAreaPixels)
+        console.log(croppedArea)
     }
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {

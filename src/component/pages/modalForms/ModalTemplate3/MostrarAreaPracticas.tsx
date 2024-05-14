@@ -1,30 +1,45 @@
 import Modal from "../../modal/ModalComponente"
 import { useSelector } from "react-redux"
 import { RootState } from "@/store/configureStore.store"
-import { corregirDNI } from "@/helper/herramienta.helper"
+import { useEffect, useRef, useState } from "react"
+import AreaTrabajoPracticas from "@/model/interfaces/empresa/areaTrabajoPracticas"
+import { ObtenerDatosAreaTrabajo } from "@/network/rest/practicas.network"
+import Response from "@/model/class/response.model.class"
+import RestError from "@/model/class/resterror.model.class"
+import { Types } from "@/model/enum/types.model"
 
 type Props = {
     show: boolean
     hide: () => void
+
+    valor: boolean
 }
 
-const MostrarAreaPracticas: React.FC<Props> = ({ show, hide }) => {
+const MostrarAreaPracticas: React.FC<Props> = ({ show, hide, valor }) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
-    const asignatura = useSelector((state: RootState) => state.infoEstudiante.asignatura)
 
-    const datosCarta = {
-        empresaNombre: "",
-        empresaRuc: "",
-        empresaDireccion: "",
-        empresaDPD: "",
-        areaDireccion: "",
-        areaDPD: "",
-        jefeNombreCompleto: "",
-        jefeDni: "",
-        jefeCargoNombre: "",
+    const abortController = useRef(new AbortController())
+
+    const [datosAreaTrabajo, setDatosAreaTrabajo] = useState<AreaTrabajoPracticas | null>(null)
+
+    const LoadAreaPracticas = async () => {
+        const response = await ObtenerDatosAreaTrabajo<AreaTrabajoPracticas>(codigo, periodo, abortController.current)
+
+        if (response instanceof Response) {
+            const data = response.data as AreaTrabajoPracticas
+            setDatosAreaTrabajo(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
     }
+
+    useEffect(() => {
+        LoadAreaPracticas()
+    }, [valor])
 
     return (
 
@@ -39,11 +54,11 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide }) => {
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap'>Nombre :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaNombre}</span>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.empresaNombre}</span>
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap'>RUC :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaRuc}</span>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.empresaRuc}</span>
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap'>Estado :</div>
@@ -52,14 +67,6 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide }) => {
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap'>Condición domicilio :</div>
                                 <span className="text-blue-700 font-bold">{'HABIDO'}</span>
-                            </div>
-                            <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Dirección :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaDireccion}</span>
-                            </div>
-                            <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Ubicación :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaDPD}</span>
                             </div>
                         </div>
                     </div>
@@ -71,11 +78,11 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide }) => {
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap'>Dirección :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaDireccion}</span>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.direccionAreaPracticas}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Ubicación :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaDPD}</span>
+                                <div className='whitespace-nowrap'>Ubigeo :</div>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.ubigeo}</span>
                             </div>
                         </div>
                     </div>
@@ -87,15 +94,19 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide }) => {
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap'>Nombre :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.jefeNombreCompleto}</span>
-                            </div>
-                            <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>DNI :</div>
-                                <span className="text-blue-700 font-bold">{corregirDNI(datosCarta.jefeDni)}</span>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.jefeInmediato}</span>
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap'>Cargo :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.jefeCargoNombre}</span>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.repCargo}</span>
+                            </div>
+                            <div className='w-full flex gap-3'>
+                                <div className='whitespace-nowrap'>Celular :</div>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.jefeCelular}</span>
+                            </div>
+                            <div className='w-full flex gap-3'>
+                                <div className='whitespace-nowrap'>Email :</div>
+                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.jefeEmail}</span>
                             </div>
                         </div>
                     </div>

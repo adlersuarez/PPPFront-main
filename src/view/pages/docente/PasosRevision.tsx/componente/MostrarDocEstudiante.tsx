@@ -5,13 +5,14 @@ import Listas from '@/model/interfaces/Listas.model.interface';
 import MostrarDocumentoUrl from '@/model/interfaces/documento/mostrarDocumento';
 import { MostrarDocumento } from '@/network/rest/practicas.network';
 import { RootState } from '@/store/configureStore.store';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'; 
 import { useSelector } from 'react-redux';
 import { EstadoRequisito } from '../../../../../component/pages/steps/StepsTemplate/Contenedor/EstadoRequisito';
-import { formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from '@/helper/herramienta.helper';
+import { formatoFecha_Date_completo, formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from '@/helper/herramienta.helper';
 import VistaPreviaDocumentosFile from '@/component/VistaPreviaDocumentosFile';
 import FilePreview from '@/model/interfaces/documento/filePreview';
 import ModalValidarDocumento from './ValidarDocumento';
+import { EstadoDocumentoVista } from './AvisoDocumento';
 
 interface Props {
     estId: string
@@ -24,7 +25,7 @@ interface Props {
     estadoInit: boolean
 }
 
-const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, titulo, tipoDoc, estadoInit , estId}) => {
+const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, titulo, tipoDoc, estadoInit, estId }) => {
 
     const periodo = useSelector((state: RootState) => state.infoPersonal.periodoId)
     const abortController = useRef(new AbortController())
@@ -35,7 +36,6 @@ const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, 
     const ObtenerDocumento = async () => {
         setListaDocumentos([])
         const response = await MostrarDocumento<Listas>(tipoDoc, estId, periodo, abortController.current)
-        console.log(response)
         if (response instanceof Response) {
             const data = response.data.resultado as MostrarDocumentoUrl[]
             setListaDocumentos(data)
@@ -86,9 +86,9 @@ const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, 
             <ModalValidarDocumento show={showValidar} hide={handleCloseValidar} tipoDoc={tipoDoc} changeInit={Init} idDoc={idDocument} />
 
             <div className="px-4 py-2 flex flex-row justify-between bg-gray-200 cursor-pointer  text-gray-500" >
-                <div className='flex gap-4'>
-                    <div className='my-auto w-60 font-medium'><h2> {titulo}</h2></div>
-
+                <div className='flex flex-col sm:flex-row gap-2'>
+                    <div className='my-auto font-medium sm:w-60'><h2> {titulo}</h2></div>
+                    <EstadoDocumentoVista seleccionado={openIndex !== posicion} listaDocumentos={listaDocumentos}/>
                 </div>
 
                 <div title={openIndex === posicion ? 'Replegar' : 'Desplegar'} onClick={() => onToggle(posicion)} role='button'
@@ -107,9 +107,9 @@ const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, 
                                     <thead>
                                         <tr>
                                             <th className="px-6 w-10 py-2 font-bold text-center uppercase text-white text-xs">#</th>
-                                            <th className="px-6 w-36 py-2 font-bold text-center uppercase text-white text-xs">Fecha</th>
+                                            <th className="px-6 w-28 py-2 font-bold text-center uppercase text-white text-xs">Fecha</th>
                                             <th className="px-2 py-2 font-bold text-left uppercase text-white text-xs">Observación</th>
-                                            <th className="px-2 w-36 py-2 font-bold text-center uppercase text-white text-xs">Acción</th>
+                                            <th className="hidden sm:table-cell w-60 px-2 py-2 font-bold text-center uppercase text-white text-xs">Acción</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -119,26 +119,27 @@ const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, 
                                                     <td className="text-sm p-2 py-3 text-center content-start border-b border-solid">
                                                         <EstadoRequisito valor={carta.estadoDoc} />
                                                     </td>
-                                                    <td className="text-sm p-2 py-3 text-center content-start border-b border-solid cursor-default">
+                                                    <td title={"Fecha registro:  " + formatoFecha_Date_completo(carta.fechaDoc)}
+                                                    className="text-sm p-2 py-3 text-center content-start border-b border-solid cursor-default">
                                                         {formatoFecha_Date_fechaSlash(carta.fechaDoc)}
                                                     </td>
                                                     <td className="text-xs p-2 py-3 text-left content-start border-b border-solid normal-case">
                                                         <div className="bg-gray-100 p-1 border px-2 min-h-10">
                                                             {carta.estadoDoc === 1 && '-- En Proceso --'}
                                                             {carta.estadoDoc === 2 && '-- Sin observaciones --'}
-                                                            {carta.estadoDoc === 3 && carta.observacionDoc}
+                                                            {carta.estadoDoc === 3 && carta.observacionDoc} 
                                                         </div>
                                                     </td>
-                                                    <td className="text-sm p-2 text-center content-start border-b border-solid">
+                                                    <td className="hidden sm:table-cell text-sm p-2 text-center content-start border-b border-solid">
                                                         <div className='flex gap-2 mt-1 justify-center'>
                                                             <button onClick={() => handleShowDoc(index)}
-                                                                className="bg-gray-400 my-auto hover:bg-blue-500 hover:scale-105 text-white px-3 py-1 rounded" >
+                                                                className="bg-gray-400 my-auto hover:bg-blue-500 hover:scale-105 text-white px-3 py-1 rounded shrink-0" >
                                                                 <i className="bi bi-eye mr-1" /> Ver archivo
                                                             </button>
                                                             {
                                                                 carta.estadoDoc === 1 &&
                                                                 <button onClick={() => handleShowValidar(carta.idDoc)}
-                                                                    className="bg-gray-400 my-auto hover:bg-blue-500 hover:scale-105 text-white px-3 py-1 rounded" >
+                                                                    className="bg-gray-400 my-auto hover:bg-blue-500 hover:scale-105 text-white px-3 py-1 rounded shrink-0" >
                                                                     <i className="bi bi-card-checklist mr-1" /> Validar
                                                                 </button>
                                                             }
@@ -156,8 +157,8 @@ const MostrarDocEstudiante: React.FC<Props> = ({ posicion, onToggle, openIndex, 
 
                             :
                             <div className="flex m-auto">
-                                <div className="bg-blue-50 border-2 border-upla-100 border-dashed rounded-lg p-2 px-3 m-auto">
-                                    <i className="text-upla-100 bi bi-info-circle-fill mr-1" />  Aún no ha adjuntado un documento
+                                <div className="bg-blue-50 border border-upla-100 border-dashed rounded-lg p-2 px-3 sm:m-auto mx-6 text-center">
+                                    <i className="text-upla-100 bi bi-info-circle-fill mr-1" />  Documentos aún no adjuntados
                                 </div>
                             </div>
 
