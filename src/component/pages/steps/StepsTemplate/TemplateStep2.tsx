@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps";
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
-import ModalCargarCartaAceptacion from "../../modalForms/ModalCargarCartaAceptacion";
 import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import MostrarDocumentoUrl from "@/model/interfaces/documento/mostrarDocumento";
 import { formatoFecha_Date_fechaSlash, obtenerArchivosVistaPrevia } from "@/helper/herramienta.helper";
@@ -13,12 +12,19 @@ import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
 import EstadoValor from "@/model/interfaces/estado/EstadoValor";
-import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile";
 import FilePreview from "@/model/interfaces/documento/filePreview";
 import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
 import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
+import { SuspenseModal } from "@/component/suspense/SuspenseModal";
 
-const TemplateStep2 = () => {
+const ModalCargarCartaAceptacion = React.lazy(() => import("../../modalForms/ModalCargarCartaAceptacion"));
+const VistaPreviaDocumentosFile = React.lazy(() => import("@/component/VistaPreviaDocumentosFile"));
+
+interface Props {
+    InitEstado: () => void
+}
+
+const TemplateStep2: React.FC<Props> = ({InitEstado}) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -44,8 +50,8 @@ const TemplateStep2 = () => {
         }
     }
 
-
     const InitDocument = () => {
+        InitEstado()
         LoadEstadoCarta()
         ObtenerDocumento('CA')
     }
@@ -96,8 +102,10 @@ const TemplateStep2 = () => {
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <ModalCargarCartaAceptacion show={show} hide={handleClose} init={InitDocument} />
-            <VistaPreviaDocumentosFile show={showDoc} close={handleCloseDoc} files={archivosVistaPrevia} />
+            <Suspense fallback={<SuspenseModal />}>
+                <ModalCargarCartaAceptacion show={show} hide={handleClose} init={InitDocument}/>
+                <VistaPreviaDocumentosFile show={showDoc} close={handleCloseDoc} files={archivosVistaPrevia} />
+            </Suspense>
 
             <ContenedorSteps
                 numero={2}

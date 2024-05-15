@@ -17,6 +17,7 @@ import RespValue from "@/model/interfaces/RespValue.model.interface"
 type Props = {
     show: boolean
     hide: () => void
+
     init: () => void
 }
 

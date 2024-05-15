@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
-import ModalDatosDuracion from '../../modalForms/ModalTemplate3/ModalDatosDuracion';
-import ModalEmpresaPracticas from '../../modalForms/ModalTemplate3/ModalEmpresaPracticas';
+
 import { EstadoRequisito } from './Contenedor/EstadoRequisito';
 import { EstadoAreaTrabajo, EstadoDuracionPracticas } from '@/network/rest/practicas.network';
 import EstadoValor from '@/model/interfaces/estado/EstadoValor';
@@ -11,12 +10,22 @@ import { RootState } from '@/store/configureStore.store';
 import RestError from '@/model/class/resterror.model.class';
 import { Types } from '@/model/enum/types.model';
 import Response from '@/model/class/response.model.class';
-import MostrarDuracionHorario from '../../modalForms/ModalTemplate3/MostrarDuracionHorario';
-import MostrarAreaPracticas from '../../modalForms/ModalTemplate3/MostrarAreaPracticas';
+
 import { ProcesoPasosEstudiante } from '@/helper/requisitos.helper';
 import RequisitosListaEstudiante from './Contenedor/RequisitoEstudiante';
+import { SuspenseModal } from '@/component/suspense/SuspenseModal';
 
-const TemplateStep3 = () => {
+const ModalEmpresaPracticas = React.lazy(() => import('../../modalForms/ModalTemplate3/ModalEmpresaPracticas'));
+const ModalDatosDuracion = React.lazy(() => import('../../modalForms/ModalTemplate3/ModalDatosDuracion'));
+const MostrarDuracionHorario = React.lazy(() => import('../../modalForms/ModalTemplate3/MostrarDuracionHorario'));
+const MostrarAreaPracticas = React.lazy(() => import('../../modalForms/ModalTemplate3/MostrarAreaPracticas'));
+
+
+interface Props {
+    InitEstado: () => void
+}
+
+const TemplateStep3: React.FC<Props> = ({InitEstado}) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -72,6 +81,7 @@ const TemplateStep3 = () => {
     }
 
     const Init = () => {
+        InitEstado()
         LoadEstadoAreaTrabajo()
         LoadEstadoDuracion()
     }
@@ -90,11 +100,13 @@ const TemplateStep3 = () => {
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            <ModalEmpresaPracticas show={showArea} hide={handleCloseArea} init={Init} change={handleValorChange} />
-            <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} init={Init} change={handleValorChange} />
+            <Suspense fallback={<SuspenseModal />}>
+                <ModalEmpresaPracticas show={showArea} hide={handleCloseArea} init={Init} change={handleValorChange} />
+                <ModalDatosDuracion show={showHorario} hide={handleCloseHorario} init={Init} change={handleValorChange} />
 
-            <MostrarDuracionHorario show={showHorarioDatos} hide={handleCloseHorarioDatos} valor={valorChange} />
-            <MostrarAreaPracticas show={showAreaDatos} hide={handleCloseAreaDatos} valor={valorChange} />
+                <MostrarDuracionHorario show={showHorarioDatos} hide={handleCloseHorarioDatos} valor={valorChange} />
+                <MostrarAreaPracticas show={showAreaDatos} hide={handleCloseAreaDatos} valor={valorChange} />
+            </Suspense>
 
             <ContenedorSteps
                 numero={3}

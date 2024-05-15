@@ -12,6 +12,7 @@ type StepModelNewProps = {
 }
 
 function StepModelNew(props: StepModelNewProps) {
+
     const { index, step, estado } = props
 
     const auxiliar = estado.indexOf(false) + 1

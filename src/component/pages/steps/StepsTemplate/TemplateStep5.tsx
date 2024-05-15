@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import ControlActividades from "../../modalForms/ModalTemplate5/ModalControlActividades";
+import React, { Suspense, useEffect, useRef, useState } from "react";
+
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import UnidadTematica from "@/model/interfaces/planActividades/unidadTematica";
@@ -11,11 +11,18 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore.store";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import DocumentoDespliegue from "./Contenedor/DocumentoDespliegue";
-import ModalUnidadTemática from "../../modalForms/ModalTemplate5/ModalUnidadTematica";
 import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
 import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
+import { SuspenseModal } from "@/component/suspense/SuspenseModal";
 
-const TemplateStep5 = () => {
+const ControlActividades = React.lazy(() => import("../../modalForms/ModalTemplate5/ModalControlActividades"));
+const ModalUnidadTemática = React.lazy(() => import("../../modalForms/ModalTemplate5/ModalUnidadTematica"));
+
+interface Props {
+    InitEstado: () => void
+}
+
+const TemplateStep5: React.FC<Props> = ({ InitEstado }) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -68,16 +75,20 @@ const TemplateStep5 = () => {
     const handleShowInformeFinal = () => setShowInformeFinal(true)
 
     const [estadoInit, setEstadoInit] = useState<boolean>(false)
-    const changeEstado = () => setEstadoInit(!estadoInit)
-
+    const changeEstado = () => {
+        setEstadoInit(!estadoInit)
+        InitEstado()
+    }
     //
     //Requisitos step 5
     const requisitos = ProcesoPasosEstudiante[4].requisitos ?? []
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
-            <ControlActividades show={show} hide={handleClose} unidadId={idUnidad} numero={numeroUnidad} />
-            <ModalUnidadTemática numero={numeroUnidad} show={showInformeFinal} hide={handleCloseInformeFinal} changeInit={changeEstado} />
+            <Suspense fallback={<SuspenseModal />}>
+                <ControlActividades show={show} hide={handleClose} unidadId={idUnidad} numero={numeroUnidad} />
+                <ModalUnidadTemática numero={numeroUnidad} show={showInformeFinal} hide={handleCloseInformeFinal} changeInit={changeEstado} />
+            </Suspense>
 
             <ContenedorSteps
                 numero={5}

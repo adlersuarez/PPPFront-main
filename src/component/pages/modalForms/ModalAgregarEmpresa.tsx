@@ -1,7 +1,7 @@
 import Modal from "../modal/ModalComponente"
 import { useRef, useState } from "react"
 import { VerificacionDatos } from "./componentes/VerificacionDatos"
-import  DatosEmpresa  from "@/model/interfaces/empresa/empresa"
+import DatosEmpresa from "@/model/interfaces/empresa/empresa"
 import { FormularioEmpresa } from "./componentes/DatosEmpresa"
 import toast from "react-hot-toast"
 import useSweerAlert from "../../../component/hooks/useSweetAlert"
@@ -19,11 +19,13 @@ type Props = {
     fechaOperacion: string
     show: boolean
     hide: () => void
+
     init: () => void
+    initEstado: () => void
 }
 
-const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion,fechaOperacion }) => {
-    
+const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fechaOperacion, initEstado }) => {
+
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
@@ -147,19 +149,20 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion,fech
                     if (response.data.value == "procesado") {
                         sweet.openSuccess("¡Operación completada con éxito!", "La carta de presentación ha sido generada satisfactoriamente.", () => {
                             init() // Actualizar la lista de Cartas
+                            initEstado() // Actualizar estadoPasos
                             cerrarModal() // Cerrar modal
                         })
                     }
                 }
-                
+
                 if (response instanceof RestError) {
                     if (response.getType() === Types.CANCELED) return
                     if (response.getStatus() == 401) return
                     if (response.getStatus() == 403) return
-                
+
                     sweet.openWarning("Error", "Por favor, comuníquese con la Oficina de Informática.", () => { })
                 }
-                
+
             }
         })
     }

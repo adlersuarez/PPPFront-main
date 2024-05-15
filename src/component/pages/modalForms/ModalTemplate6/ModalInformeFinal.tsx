@@ -77,7 +77,7 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
-                            sweet.openSuccess("¡Operación completada con éxito!", "La carta de aceptación ha sido cargada satisfactoriamente.", () => {
+                            sweet.openSuccess("¡Operación completada con éxito!", "El informe final ha sido cargado satisfactoriamente.", () => {
                                 changeInit()
                                 hide()
                             })
@@ -211,7 +211,7 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
                     <button onClick={handleGuardarCambios}
                         className={`w-full sm:w-auto text-white bg-green-400 hover:scale-105 hover:bg-upla-100 hover:border-upla-100 focus:outline-none rounded-lg border border-green-400 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10`}
                     >
-                        Registrar carta aceptación
+                        Registrar INFORME FINAL
                     </button>
                 </div>
             </Modal.Footer>

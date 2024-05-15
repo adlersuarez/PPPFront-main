@@ -50,7 +50,6 @@ const MostrarHorarioCruce: React.FC<Props> = ({ show, hide, horarioElegido, chan
         }
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return
-
         }
     }
 

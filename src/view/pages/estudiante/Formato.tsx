@@ -1,5 +1,8 @@
 import ContainerVIstas from "@/component/Container";
 import FormatoCard from "@/component/pages/cards/FormatoCard";
+import { obtenerNombreInforme } from "@/helper/herramienta.helper";
+import { RootState } from "@/store/configureStore.store";
+import { useSelector } from "react-redux";
 
 interface Document {
     tipo: string
@@ -9,6 +12,9 @@ interface Document {
 }
 
 const Formato = () => {
+
+    //Código de asignatura
+    const idAsign = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
 
     const documents: Document[] = [
         {
@@ -21,7 +27,7 @@ const Formato = () => {
             tipo: 'Estructura',
             nombre: "Informe Final",
             resumen: "Documento detallado de la experiencia del estudiante durante su periodo de prácticas en una organización",
-            urlDownload: '/Formatos/FCAC/Estructura CF - PP1.pdf',
+            urlDownload: '/Formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf',
         },
     ]
 

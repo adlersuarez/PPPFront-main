@@ -1,9 +1,9 @@
 type StepControlProps = {
-    handleClick: (direction: string) => void;
-    currentStep: number;
-    steps: any[];
-    estadoModel: boolean[];
-};
+    handleClick: (direction: string) => void
+    currentStep: number
+    steps: any[]
+    estadoModel: boolean[]
+}
 
 function StepControl({ handleClick, currentStep, steps, estadoModel }: StepControlProps) {
     const valido = ' bg-gray-500 border-2 border-gray-500 hover:bg-blue-700 hover:border-blue-700 hover:text-white transition duration-200 ease-in-out cursor-pointer';
@@ -11,8 +11,8 @@ function StepControl({ handleClick, currentStep, steps, estadoModel }: StepContr
     const blockEstado = ' bg-[#e8b962] border-2 border-[#e8b962] cursor-not-allowed hover:bg-[#ac853d] hover:border-[#ac853d] hover:text-white transition duration-200 ease-in-out';
 
     const solicitud_proceso = () => {
-        
-    };
+
+    }
 
     return (
         <div className="flex gap-4 w-32">

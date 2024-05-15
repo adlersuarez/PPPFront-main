@@ -78,7 +78,7 @@ const Nav = (props: Props) => {
                 <i className="bi bi-justify text-2xl" />
             </button>
             <ul className="flex items-center flex-1 justify-end sm:pr-3 h-full">
-                <li className="flex justify-center h-full relative">
+                <li className="flexx hidden justify-center h-full relative">
                     <button className="px-4 text-white hover:bg-white hover:text-upla-100 relative"
                         onClick={() => setOpen(!open)}>
                         <i className="bi bi-bell text-xl" />

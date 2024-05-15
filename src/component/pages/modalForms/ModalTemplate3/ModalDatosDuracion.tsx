@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import Modal from "../../modal/ModalComponente";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -20,7 +20,10 @@ import RespValue from '@/model/interfaces/RespValue.model.interface';
 import Response from '@/model/class/response.model.class';
 import RestError from '@/model/class/resterror.model.class';
 import { Types } from '@/model/enum/types.model';
-import MostrarHorarioCruce from './componente/MostrarHorarioCruce';
+
+import { SuspenseModal } from '@/component/suspense/SuspenseModal';
+
+const MostrarHorarioCruce = React.lazy(() => import('./componente/MostrarHorarioCruce'));
 
 interface ExcludedDay {
     id: number
@@ -653,12 +656,15 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         <Modal onShow={props.show}>
             <Modal.Header closeButton onHide={props.hide}> </Modal.Header>
             <Modal.Body>
-                <MostrarHorarioCruce
-                    show={verCruces}
-                    hide={handleCloseCruces}
-                    horarioElegido={convertirAFormatoDeseado(selectedDays, tipoHorarioSeleccionado)}
-                    changeExisteCruce={changeExisteCruce}
-                />
+
+                <Suspense fallback={<SuspenseModal />}>
+                    <MostrarHorarioCruce
+                        show={verCruces}
+                        hide={handleCloseCruces}
+                        horarioElegido={convertirAFormatoDeseado(selectedDays, tipoHorarioSeleccionado)}
+                        changeExisteCruce={changeExisteCruce}
+                    />
+                </Suspense>
 
                 <div className='flex flex-col gap-3'>
                     <div className='bg-gray-100 w-full rounded-lg flex p-2 justify-between'>

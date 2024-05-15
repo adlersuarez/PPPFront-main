@@ -1,10 +1,8 @@
-import { useState, Suspense, useRef, useEffect } from 'react';
+import React, { useState, Suspense, useRef, useEffect } from 'react';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
 import { handleCrearSolicitudYConvertirAPdf } from '@/helper/documento.helper';
 import { EstadoCarta } from '../../modalForms/componentes/EstadoCarta';
-import ModalAgregarEmpresa from '../../modalForms/ModalAgregarEmpresa';
-import ModalMostrarDatos from '../../modalForms/ModalMostrarDatos';
 import CartaPresentacionDatos from '@/model/interfaces/cartaPresentacion/cartaPresentacion';
 import Listas from '@/model/interfaces/Listas.model.interface';
 import { ConsultaPagoCartaPresentacion, ConsultaPagoTramite, ObtenerDatosCartaPresentacion } from '@/network/rest/practicas.network';
@@ -20,8 +18,16 @@ import { convertirFechaPago_aaaa_mm_dd, formatoFecha_Date_fechaSlash } from '@/h
 import { ProcesoPasosEstudiante } from '@/helper/requisitos.helper';
 import RequisitosListaEstudiante from './Contenedor/RequisitoEstudiante';
 import ImportanteListaEstudiante from './Contenedor/ImportanteEstudiante';
+import { SuspenseModal } from '@/component/suspense/SuspenseModal';
 
-const TemplateStep1 = () => {
+const ModalAgregarEmpresa = React.lazy(() => import('../../modalForms/ModalAgregarEmpresa'));
+const ModalMostrarDatos = React.lazy(() => import('../../modalForms/ModalMostrarDatos'));
+
+interface Props {
+    InitEstado: () => void
+}
+
+const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     //Código de asignatura
@@ -145,12 +151,13 @@ const TemplateStep1 = () => {
     const requisitos = ProcesoPasosEstudiante[0].requisitos ?? []
     const importante = ProcesoPasosEstudiante[0].importante ?? []
 
+    const pagoLista = pagosCarta.filter((pago) => pago.operacion !== '')
+
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
 
-            {/* Agrega el Suspense para manejar la carga perezosa de modales */}
-            <Suspense fallback={<div>Cargando...</div>}>
-                <ModalAgregarEmpresa show={showEmpresa} hide={handleCloseEmpresa} operacion={operacionSeleccionada} fechaOperacion={fechaOperacionSeleccionada} init={LoadDatosCartas} />
+            <Suspense fallback={<SuspenseModal />}>
+                <ModalAgregarEmpresa show={showEmpresa} hide={handleCloseEmpresa} operacion={operacionSeleccionada} fechaOperacion={fechaOperacionSeleccionada} init={LoadDatosCartas} initEstado={InitEstado} />
                 <ModalMostrarDatos show={showDatos} hide={handleCloseDatos} datosCarta={dataDetalle} />
             </Suspense>
 
@@ -184,8 +191,8 @@ const TemplateStep1 = () => {
                                 </div>
                                 <div className='flex flex-wrap gap-2 p-2 w-full'>
                                     {!cargarDatosCarta ?
-                                        pagosCarta.length != 0 ?
-                                            pagosCarta.map((item, index) => (
+                                        pagoLista.length != 0 ?
+                                            pagoLista.map((item, index) => (
                                                 <div key={index} title={item.fecha_operacion}
                                                     role='button' onClick={() => handleSeleccionarOperacion(item.operacion)}
                                                     className={`bg-gray-400 hover:bg-upla-100 text-white font-semibold text-xs p-1 px-2 hover:scale-105 `}>

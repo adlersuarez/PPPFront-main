@@ -40,7 +40,7 @@ const Revision = () => {
     }
 
 
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
 
     const onEventDetalle = (
         codigo: string,
@@ -68,7 +68,7 @@ const Revision = () => {
     const [alumnosSeccion, setAlumnosSeccion] = useState<ListaSeccion[]>([])
 
     const LoadSecciones = async () => {
-        setLoading(false)
+        setLoading(true)
         setAlumnosSeccion([])
         const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, codigo, seccion.sed_Id, periodo, abortController.current)
 
@@ -80,7 +80,7 @@ const Revision = () => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-        setLoading(true)
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -141,7 +141,7 @@ const Revision = () => {
                         </thead>
                         <tbody>
                             {
-                                !loading ? (
+                                loading ? (
                                     <tr className="text-center bg-white border-b">
                                         <td colSpan={6} className="text-sm p-2 border-b border-solid">
                                             <div className="flex items-center justify-center gap-4">

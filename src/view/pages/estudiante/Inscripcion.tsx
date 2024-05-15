@@ -2,12 +2,43 @@ import ContainerVIstas from '@/component/Container';
 import { BotonAnimado } from '@/component/pages/buttons/ButtonAnimado';
 import ButtonLink from '@/component/pages/buttons/ButtonLink';
 import ModalidadCard from '@/component/pages/cards/ModalidadCard';
+import { compararHashSHA256 } from '@/helper/herramienta.helper';
 import { images } from '@/helper/index.helper';
+import { RootState } from '@/store/configureStore.store';
+import { useSelector } from 'react-redux';
 
 const Inscripcion = () => {
 
+    const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
+
+    //Docente - Admin
+    if (compararHashSHA256(import.meta.env.VITE_USER_TYPO_AD, tipoUsuario)) {
+        return (
+            <ContainerVIstas>
+                <div className='flex flex-col'>
+                    <div className="flex flex-col gap-8 py-4 sm:py-8 px-4">
+                        <div className='flex flex-col gap-4'>
+                            <h1 className="text-3xl font-bold text-center text-upla-100">
+                                Bienvenido al Sistema de Prácticas Preprofesionales
+                            </h1>
+                            <p className="text-lg text-gray-700 text-center">
+                                Una solución diseñada para simplificar la revisión y validación de las prácticas de nuestros estudiantes.
+                            </p>
+                        </div>
+
+                        <div className='flex w-full sm:w-1/3 mx-auto'>
+                            <img src={images.logo} className="m-auto" alt="Flowbite Logo" />
+                        </div>
+
+                    </div>
+                </div>
+            </ContainerVIstas>
+        )
+    }
+
+    //Estudiante
     return (
-        <ContainerVIstas >
+        <ContainerVIstas>
             <div className='flex flex-col p-0 sm:p-2'>
                 <div className="grid grid-cols-1 gap-4 rounded-lg">
                     <div className="flex flex-col justify-between">

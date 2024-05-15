@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, useRef } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import Stepper from '@/component/pages/steps/Stepper';
 import StepperControl from '@/component/pages/steps/StepperControl';
 import { StepperContext } from '@/component/pages/steps/Context/StepperContexts';
@@ -47,12 +47,13 @@ const Proceso = () => {
     //Cambiar de step
     const displayStep = async (step: number) => {
         try {
-            const TemplateStepModule = await import(`../../../component/pages/steps/StepsTemplate/TemplateStep${step}.tsx`)
-            const TemplateStep = TemplateStepModule.default
-            setStepComponent(<TemplateStep estado/>)
+            const LazyComponent = React.lazy(() => import(`../../../component/pages/steps/StepsTemplate/TemplateStep${step}.tsx`));
+            setStepComponent(
+                <LazyComponent estado InitEstado={InitEstado} />
+            )
         } catch (error) {
-            console.error('Error al cargar el componente:', error)
-            setStepComponent(null)
+            console.error('Error al cargar el componente:', error);
+            setStepComponent(null);
         }
     }
 
@@ -65,7 +66,7 @@ const Proceso = () => {
     }
 
     const seleccionStep = (step: number) => {
-        setCurrentStep(step);
+        setCurrentStep(step)
     }
 
     const LoadEstadoPracticas = async () => {
@@ -82,17 +83,20 @@ const Proceso = () => {
         }
     }
 
-    const paso_1: boolean = true
+    /*const paso_1: boolean = true
     const paso_2: boolean = true
     const paso_3: boolean = true
     const paso_4: boolean = true
     const paso_5: boolean = true
-    const paso_6: boolean = true
+    const paso_6: boolean = true*/
 
-    const [, setEstado_model] = useState<boolean[]>([])
+    const [estado_model, setEstado_model] = useState<boolean[]>([])
 
-    const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6]
+    //const estado_model: boolean[] = [paso_1, paso_2, paso_3, paso_4, paso_5, paso_6]
     //console.log(estado_model2)
+    const InitEstado = () => {
+        LoadEstadoPracticas()
+    }
 
     //
     useEffect(() => {

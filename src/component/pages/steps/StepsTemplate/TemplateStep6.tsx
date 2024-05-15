@@ -1,15 +1,21 @@
-import { useState } from "react";
+import React, { Suspense, useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
-import ModalInformeFinal from "../../modalForms/ModalTemplate6/ModalInformeFinal";
-import ModalConvenioPracticas from "../../modalForms/ModalTemplate6/ModalConvenioPracticas";
-import ModalConstanciaEmpresa from "../../modalForms/ModalTemplate6/ModalConstanciaEmpresa";
-import ModalAsistenciaVisada from "../../modalForms/ModalTemplate6/ModalAsistenciaVisada";
 import DocumentoDespliegue from "./Contenedor/DocumentoDespliegue";
 import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
 import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
+import { SuspenseModal } from "@/component/suspense/SuspenseModal";
 
-const TemplateStep6 = () => {
+const ModalInformeFinal = React.lazy(() => import('../../modalForms/ModalTemplate6/ModalInformeFinal'));
+const ModalConvenioPracticas = React.lazy(() => import('../../modalForms/ModalTemplate6/ModalConvenioPracticas'));
+const ModalConstanciaEmpresa = React.lazy(() => import('../../modalForms/ModalTemplate6/ModalConstanciaEmpresa'));
+const ModalAsistenciaVisada = React.lazy(() => import('../../modalForms/ModalTemplate6/ModalAsistenciaVisada'));
+
+interface Props {
+    InitEstado: () => void
+}
+
+const TemplateStep6: React.FC<Props> = ({ InitEstado }) => {
 
     const [showInformeFinal, setShowInformeFinal] = useState<boolean>(false)
     const handleCloseInformeFinal = () => setShowInformeFinal(false)
@@ -35,26 +41,41 @@ const TemplateStep6 = () => {
     }
 
     const [estadoInitIF, setEstadoInitIF] = useState<boolean>(false)
-    const changeEstadoIF = () => setEstadoInitIF(!estadoInitIF)
+    const changeEstadoIF = () => {
+        setEstadoInitIF(!estadoInitIF)
+        InitEstado()
+    }
 
     const [estadoInitCP, setEstadoInitCP] = useState<boolean>(false)
-    const changeEstadoCP = () => setEstadoInitCP(!estadoInitCP)
+    const changeEstadoCP = () => {
+        setEstadoInitCP(!estadoInitCP)
+        InitEstado()
+    }
 
     const [estadoInitCE, setEstadoInitCE] = useState<boolean>(false)
-    const changeEstadoCE = () => setEstadoInitCE(!estadoInitCE)
+    const changeEstadoCE = () => {
+        setEstadoInitCE(!estadoInitCE)
+        InitEstado()
+    }
 
     const [estadoInitAV, setEstadoInitAV] = useState<boolean>(false)
-    const changeEstadoAV = () => setEstadoInitAV(!estadoInitAV)
+    const changeEstadoAV = () => {
+        setEstadoInitAV(!estadoInitAV)
+        InitEstado()
+    }
 
     //Requisitos step 6
     const requisitos = ProcesoPasosEstudiante[5].requisitos ?? []
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
-            <ModalInformeFinal show={showInformeFinal} hide={handleCloseInformeFinal} changeInit={changeEstadoIF} />
-            <ModalConvenioPracticas show={showConvenioPracticas} hide={handleCloseConvenioPracticas} changeInit={changeEstadoCP} />
-            <ModalConstanciaEmpresa show={showConstanciaEmpresa} hide={handleCloseConstanciaEmpresa} changeInit={changeEstadoCE} />
-            <ModalAsistenciaVisada show={showAsistenciaVisada} hide={handleCloseAsistenciaVisada} changeInit={changeEstadoAV} />
+
+            <Suspense fallback={<SuspenseModal />}>
+                <ModalInformeFinal show={showInformeFinal} hide={handleCloseInformeFinal} changeInit={changeEstadoIF} />
+                <ModalConvenioPracticas show={showConvenioPracticas} hide={handleCloseConvenioPracticas} changeInit={changeEstadoCP} />
+                <ModalConstanciaEmpresa show={showConstanciaEmpresa} hide={handleCloseConstanciaEmpresa} changeInit={changeEstadoCE} />
+                <ModalAsistenciaVisada show={showAsistenciaVisada} hide={handleCloseAsistenciaVisada} changeInit={changeEstadoAV} />
+            </Suspense>
 
             <ContenedorSteps
                 numero={6}

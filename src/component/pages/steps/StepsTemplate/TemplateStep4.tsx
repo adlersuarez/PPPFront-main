@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import ContenedorSteps from "./Contenedor/ContenedorSteps"
 import EstadoTemplate from "./Contenedor/EstadoTemplate";
-import ModalCargarPlan from "../../modalForms/ModalTemplate4/ModalCargarPlan";
 import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore.store";
@@ -10,11 +9,19 @@ import EstadoValor from "@/model/interfaces/estado/EstadoValor";
 import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
-import MostrarPlanActividades from "../../modalForms/ModalTemplate4/MostrarPlanActividades";
 import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
 import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
+import { SuspenseModal } from "@/component/suspense/SuspenseModal";
 
-const TemplateStep4 = () => {
+const ModalCargarPlan = React.lazy(() => import("../../modalForms/ModalTemplate4/ModalCargarPlan"));
+const MostrarPlanActividades = React.lazy(() => import("../../modalForms/ModalTemplate4/MostrarPlanActividades"));
+
+interface Props {
+    InitEstado: () => void
+}
+
+const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
+
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
     const abortController = useRef(new AbortController())
@@ -46,6 +53,7 @@ const TemplateStep4 = () => {
     }
 
     const Init = () => {
+        InitEstado()
         LoadEstadoPlan()
     }
 
@@ -62,8 +70,10 @@ const TemplateStep4 = () => {
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
-            <ModalCargarPlan show={show} hide={handleClose} init={Init} change={handleChangeCambios} />
-            <MostrarPlanActividades show={showPlanDatos} hide={handleClosePlanDatos} cambios={cambios} />
+            <Suspense fallback={<SuspenseModal />}>
+                <ModalCargarPlan show={show} hide={handleClose} init={Init} change={handleChangeCambios} />
+                <MostrarPlanActividades show={showPlanDatos} hide={handleClosePlanDatos} cambios={cambios} />
+            </Suspense>
 
             <ContenedorSteps
                 numero={4}
@@ -126,7 +136,7 @@ const TemplateStep4 = () => {
                             </table>
                         </div>
 
-                        
+
                     </div>
 
                 </ContenedorSteps.Proceso>

@@ -2,38 +2,38 @@ import React, { useEffect, useState, useRef } from "react";
 import StepModelNew from "./Componente/StepModelNew";
 
 type Step = {
-    id: number;
-    description: string;
-    completed: boolean;
-    highlighted: boolean;
-    selected: boolean;
-};
+    id: number
+    description: string
+    completed: boolean
+    highlighted: boolean
+    selected: boolean
+}
 
 type StepperProps = {
-    seleccionStep: (step: number) => void;
-    steps: string[];
-    currentStep: number;
-    estadoModel: boolean[];
-};
+    seleccionStep: (step: number) => void
+    steps: string[]
+    currentStep: number
+    estadoModel: boolean[]
+}
 
 const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, seleccionStep }) => {
 
-    const [newStep, setNewStep] = useState<Step[]>([]);
-    const stepRef = useRef<Step[]>([]);
+    const [newStep, setNewStep] = useState<Step[]>([])
+    const stepRef = useRef<Step[]>([])
 
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
     useEffect(() => {
         const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
+            setWindowWidth(window.innerWidth)
+        }
 
-        window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize)
 
         return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
 
     const updateStep = (stepNumber: number, steps: Step[]): Step[] => {
         const newSteps = [...steps];
@@ -68,7 +68,7 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, sele
             }
         }
         return newSteps;
-    };
+    }
 
     useEffect(() => {
         const stepsStatePrueba: Step[] = [];
@@ -80,19 +80,37 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, sele
                 completed: false,
                 highlighted: i === 0,
                 selected: i === 0,
-            });
+            })
         }
 
-        stepRef.current = stepsStatePrueba;
+        stepRef.current = stepsStatePrueba
+        const current = updateStep(currentStep - 1, stepRef.current)
 
-        const current = updateStep(currentStep - 1, stepRef.current);
-
-        setNewStep(current);
-    }, [steps, currentStep]);
-
+        setNewStep(current)
+    }, [steps, currentStep])
 
     //
     const displaySteps = newStep.map((step, index) => {
+
+        const checkState = (estadoModel: boolean[], id: number) => {
+            // Verificar si el id está dentro de los límites del array
+            if (id <= 0 || id > estadoModel.length) {
+                return false
+            }
+
+            // Verificar si el valor actual es false
+            if (estadoModel[id - 1] == false) {
+                // Si el valor actual es false, verificamos si el valor anterior también es false
+                if (id > 1 && estadoModel[id - 2] == false) {
+                    return true // Si el valor anterior también es false, devolvemos true
+                } else {
+                    return false // Si el valor anterior es true o no existe, devolvemos false
+                }
+            }
+        
+            return false // Si el valor actual es true, devolvemos false
+        }
+
         return (
             windowWidth < 1200 ?
                 (
@@ -107,7 +125,7 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, sele
                 )
                 :
                 <button
-                    onClick={() => seleccionStep(step.id)}
+                    onClick={() => seleccionStep(step.id)} disabled={checkState(estadoModel, step.id)}
                     key={step.id} className={step.id > 1 ? "w-full uppercase" : "uppercase"}>
                     <StepModelNew
                         index={index}
@@ -121,7 +139,7 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep, estadoModel, sele
         <div className="mx-auto p-8 flex justify-between items-center w-11/12 ">
             {displaySteps}
         </div>
-    );
-};
+    )
+}
 
 export default Stepper;

@@ -138,7 +138,7 @@ export const menusCoordinador: MenuItem[] = [
         subMenu: false,
         subMenuItems: []
     },
-    {
+    /*{
         id: "8",
         titulo: "Dashboard",
         url: "/inicio/dashboard",
@@ -147,5 +147,5 @@ export const menusCoordinador: MenuItem[] = [
         modPosicion: 7,
         subMenu: false,
         subMenuItems: []
-    }
+    }*/
 ]

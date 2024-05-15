@@ -19,17 +19,6 @@ const Secciones = () => {
 
     const abortController = useRef(new AbortController())
 
-    const listaEstudiantes = [
-        {
-            seccionId: "P00212D",
-            facultad: "Ciencias Administrativas y Contables",
-            escuela_profesional: "Administración y Sistemas",
-            curso: 'Prácticas PreProfesionales I',
-            seccion: 'C1',
-            cantidadAlumos: 34,
-        },
-    ]
-
     const onEventDetalle = (seccion: SeccionesDocente) => {
         navigate(`./docente`, {
             state: {
@@ -38,11 +27,11 @@ const Secciones = () => {
         })
     }
 
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
     const [secciones, setSecciones] = useState<SeccionesDocente[]>([])
 
     const LoadSecciones = async () => {
-        setLoading(false)
+        setLoading(true)
         setSecciones([])
         const response = await ListarSeccionDocente<Listas>(codigo, periodo, abortController.current)
 
@@ -54,13 +43,12 @@ const Secciones = () => {
             if (response.getType() === Types.CANCELED) return;
             console.log(response.getMessage())
         }
-        setLoading(true)
+        setLoading(false)
     }
 
     useEffect(() => {
         LoadSecciones()
     }, [])
-
 
     return (
         <ContainerVIstas titulo='SECCIONES' retornar>
@@ -84,18 +72,18 @@ const Secciones = () => {
                         <tbody>
                             {
 
-                                !loading ? (
+                                loading ? (
                                     <tr className="text-center bg-white border-b">
                                         <td colSpan={8} className="text-sm p-2 border-b border-solid">
                                             <div className="flex items-center justify-center">
-                                                <LoaderSvg /> <span>Cargando datos...</span>
+                                                <LoaderSvg /> <span className='ml-2'>Cargando datos...</span>
                                             </div>
                                         </td>
                                     </tr>
                                 ) : (
-                                    listaEstudiantes.length == 0 ?
+                                    secciones.length == 0 ?
                                         <tr className="text-center bg-white border-b">
-                                            <td colSpan={6} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
+                                            <td colSpan={8} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
                                         </tr>
                                         :
                                         (
