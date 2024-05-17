@@ -25,10 +25,43 @@ const Inscripcion = () => {
                                 Una solución diseñada para simplificar la revisión y validación de las prácticas de nuestros estudiantes.
                             </p>
                         </div>
+                        <div className='grid grid-cols-1 sm:grid-cols-3 gap-y-6 sm:gap-y-0'>
+                            <div className='col-span-1 grid grid-cols-1 p-4'>
+                                <div className='flex flex-col gap-8 sm:my-auto'>
+                                    <ButtonLink
+                                        to={'/inicio/inscripcion'}
+                                        nombre={'Manual'}
+                                        icon={'bi-book'}
+                                        color='bg-upla-100'
+                                        hover='bg-upla-200'
+                                        download='/Manual/Manual-docente.pdf'
+                                    />
 
-                        <div className='flex w-full sm:w-1/3 mx-auto'>
-                            <img src={images.logo} className="m-auto" alt="Flowbite Logo" />
+                                    <ButtonLink
+                                        to={'/inicio/reglamentos'}
+                                        nombre={'Reglamento'}
+                                        icon={'bi-journal-check'}
+                                        color='bg-upla-100'
+                                        hover='bg-upla-200'
+                                    />
+
+                                    <ButtonLink
+                                        to={'/inicio/contactos'}
+                                        nombre={'Contactos'}
+                                        icon={'bi-telephone'}
+                                        color='bg-upla-100'
+                                        hover='bg-upla-200'
+                                    />
+                                </div>
+                            </div>
+                            <div className='col-span-2 flex'>
+                                <div className='mx-auto w-[400px] '>
+                                    <img src={images.logo} className="m-auto" alt="Logo UPLA" />
+                                </div>
+                            </div>
+
                         </div>
+
 
                     </div>
                 </div>
@@ -122,6 +155,7 @@ const Inscripcion = () => {
                                 icon={'bi-book'}
                                 color='bg-upla-100'
                                 hover='bg-upla-200'
+                                download='/Manual/Manual-estudiante.pdf'
                             />
 
                             <ButtonLink

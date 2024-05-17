@@ -29,9 +29,9 @@ const Proceso = () => {
             pasos: [
                 "Carta de presentación",
                 "Carta de aceptación",
-                "Ficha de datos de jefe inmediato",
+                "Área de trabajo y horario",
                 "Plan de actividades",
-                "Ficha de control de actividades",
+                "Control de actividades",
                 "Informe final",
             ],
         },

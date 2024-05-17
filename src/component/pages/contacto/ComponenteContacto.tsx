@@ -1,4 +1,6 @@
+import { RootState } from "@/store/configureStore.store"
 import { useState } from "react"
+import { useSelector } from "react-redux"
 
 interface PropsContacto {
     titulo: string
@@ -8,13 +10,30 @@ interface PropsContacto {
     correo: string
     direccion?: string
     oficina?: string
+    wspMsg?: boolean
+    horario?: string
 }
 
-const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono, correo, direccion, oficina }) => {
+const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono, correo, direccion, oficina, wspMsg,horario }) => {
 
     const [show, setShow] = useState<boolean>(true)
 
-    const formatoNumero = telefono?.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+    const formatoNumero = telefono?.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3')
+
+    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
+    const nombreEstudiante = useSelector((state: RootState) => state.infoEstudiante.estudiante)
+    const carrera = useSelector((state: RootState) => state.infoEstudiante.carrera)
+    const facultad = useSelector((state: RootState) => state.infoEstudiante.facultad)
+
+    function enviarMensajeWhatsApp() {
+        // Formatear el mensaje con Markdown
+        const mensaje = `Hola,\nSoy ${nombreEstudiante}, estudiante de la carrera de ${carrera} de la facultad de ${facultad}\n\n
+        Código Estudiante: *${codigo}*\nRequiero ayuda con lo siguiente:`
+        // URL de WhatsApp con el número de teléfono y el mensaje
+        const urlWhatsApp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`
+        // Abrir WhatsApp en una nueva ventana
+        window.open(urlWhatsApp)
+    }
 
     return (
         <div className="bg-white rounded-lg border max-w-3xl p-4 flex flex-col sm:flex-row gap-4">
@@ -32,11 +51,21 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono,
                         <p className="text-lg sm:text-base text-gray-500 italic">
                             {oficina}
                         </p>
+                        {
+                            wspMsg &&
+                            <div className="p-2 mt-3">
+                                <button onClick={enviarMensajeWhatsApp}
+                                    className="bg-green-400 text-white p-1 px-2 rounded-md font-medium">
+                                    Solicitar apoyo <i className="ml-2 bi bi-whatsapp" />
+                                </button>
+                            </div>
+                        }
+
                     </div>
 
                     <button
                         onClick={() => setShow(!show)}
-                        className="bg-gray-400 text-white rounded-lg p-2 sm:w-10/12 mx-auto flex px-5 gap-4">
+                        className="bg-gray-400 text-white rounded-lg p-2 sm:w-10/12 mx-auto flex px-5 gap-4 sm:hidden">
                         <p className="text-xs text-center uppercase font-semibold">
                             Aquí puedes encontrar sus datos de contacto
                         </p>
@@ -87,7 +116,15 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono,
                                 <p>{direccion}</p>
                             </div>
                         }
-
+   {
+                            horario &&
+                            <div className="flex" title="Horario de atención">
+                                <div className="w-8 shrink-0">
+                                    <i className="bi bi-clock text-gray-400" />
+                                </div>
+                                <p>{horario}</p>
+                            </div>
+                        }
                     </div>
                 </div>
             }

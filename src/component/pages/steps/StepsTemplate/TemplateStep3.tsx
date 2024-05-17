@@ -110,7 +110,7 @@ const TemplateStep3: React.FC<Props> = ({InitEstado}) => {
 
             <ContenedorSteps
                 numero={3}
-                titulo='FICHA DE JEFE INMEDIATO'
+                titulo='ÁREA DE TRABAJO Y HORARIO'
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>

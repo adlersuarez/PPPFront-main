@@ -21,6 +21,6 @@ instance.interceptors.request.use((config) => {
 
 //Convertir Docx-Pdf
 export async function ConvertirWordToPdf<Blob>(formData: FormData, signal = null): Promise<Response<Blob> | RestError> {
-    return await Resolve.create<Blob>(instance.post<Blob>(`/Convertir/ConvertirWordToPdfFree`, formData, { signal: signal! }))
+    return await Resolve.create<Blob>(instance.post<Blob>(`/Convertir/ConvertirWordToPdfAspose`, formData, { signal: signal! }))
 }
 

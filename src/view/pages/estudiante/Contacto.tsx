@@ -4,7 +4,7 @@ import ComponenteContacto from "@/component/pages/contacto/ComponenteContacto";
 const Contacto = () => {
 
     /* FIJO */
-    const coordinatorData = {
+    /*const coordinatorData = {
         titulo: "Coordinador",
         codigo: "",
         nombre: "Juan Perez",
@@ -12,7 +12,8 @@ const Contacto = () => {
         telefono: "904182526",
         correo: "coordinador@upla.edu.pe",
         direccion: "123 Calle Principal, Ciudad X",
-    }
+        wspMsg: false
+    }*/
 
     /* FIJO */
     const soporteData = {
@@ -23,28 +24,39 @@ const Contacto = () => {
         telefono: "904198090",
         correo: "",
         direccion: "Av. Giráldez N° 230, Huancayo (5to piso)",
+        wspMsg: true,
+        horario: "3:00 p.m. - 6:00 p.m."
     }
 
     /* DEPENDE DEL ID DE ESTUDIANTE, ID CURSO */
-    const docenteData = {
+    /*const docenteData = {
         titulo: "Docente",
         codigo: "",
         nombre: "Edison Ponce",
         oficina: "Facultad de Ingeniería",
         telefono: "984456852",
         correo: "docente@upla.edu.pe",
-    }
+        wspMsg: false
+    }*/
 
     return (
         <ContainerVIstas titulo='CONTACTOS' retornar>
             <div className="grid grid-cols-1 gap-4 sm:gap-8 2xl:grid-cols-2">
-                <ComponenteContacto
-                    {...docenteData}
-                />
-
-                <ComponenteContacto
-                    {...coordinatorData}
-                />
+                {
+                    /*
+                        <ComponenteContacto
+                            {...docenteData}
+                        />
+                    */
+                }
+                {
+                    /*
+                        <ComponenteContacto
+                            {...coordinatorData}
+                        />
+                    */
+                }
+              
 
                 <ComponenteContacto
                     {...soporteData}

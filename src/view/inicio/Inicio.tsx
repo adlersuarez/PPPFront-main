@@ -32,7 +32,7 @@ const Inicio = () => {
     //console.log(codigoLoginToken, roles)
 
     if (!autenticado) {
-        return <Navigate to="/acceso" />
+        return <Navigate to="/login" />
     }
 
     const codigo = useSelector((state: RootState) => state.autenticacion.codigo)

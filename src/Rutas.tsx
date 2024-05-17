@@ -128,10 +128,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Navigate to="acceso" replace />,
+    element: <Navigate to="login" replace />,
   },
   {
-    path: 'acceso',
+    path: 'login',
     element: <Acceso />
   },
   {

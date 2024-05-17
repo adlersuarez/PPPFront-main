@@ -14,8 +14,6 @@ interface Paso3Props {
 
 const Paso7 = (datos: Paso3Props) => {
 
-    console.log(datos.estudianteId)
-
     const [showFichaRegistro, setShowFichaRegistro] = useState<boolean>(false)
     const handleCloseFichaRegistro = () => setShowFichaRegistro(false)
     const handleShowFichaRegistro = () => setShowFichaRegistro(true)
@@ -55,7 +53,7 @@ const Paso7 = (datos: Paso3Props) => {
             <ModalFichaEvaluacion show={showFichaEvaluacion} hide={handleCloseFichaEvaluacion} changeInit={changeEstadoFE} estudianteId={datos.estudianteId} periodoString={datos.periodo} asiId={datos.idAsi} />
 
             <div className="flex text-gray-400 gap-2 text-lg sm:text-2xl">
-                <i className={`bi bi-6-square-fill mr-2`} />
+                <i className={`bi bi-7-square-fill mr-2`} />
                 <h1 className="font-bold">CARGAR DE DOCUMENTOS</h1>
             </div>
             <div className="flex flex-col">

@@ -90,7 +90,7 @@ const MostrarPlanActividades: React.FC<Props> = ({ show, hide, cambios }) => {
                                 </div>
                                 <hr />
                                 <div className="border border-gray-400 rounded-md overflow-hidden">
-                                    <div className="p-2 flex flex-col gap-3 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-upla-100 bg-white">
+                                    <div className="p-2 flex flex-col gap-3 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-upla-100 bg-white">
                                         {
                                             unidadesTematicas.map((unidad, index) => (
                                                 <DetalleUnidadTematica

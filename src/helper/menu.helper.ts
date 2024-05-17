@@ -116,12 +116,42 @@ export const menusEstudiante: MenuItem[] = [
 
 export const menusDocente: MenuItem[] = [
     {
+        id: "1",
+        titulo: "Inicio",
+        url: "/inicio/inscripcion",
+        icono: "bi-info-circle",
+        moduPadre: false,
+        modPosicion: 1,
+        subMenu: false,
+        subMenuItems: []
+    },
+    {
         id: "6",
         titulo: "Secciones",
         url: "/inicio/revision",
         icono: "bi-backpack4",
         moduPadre: false,
         modPosicion: 6,
+        subMenu: false,
+        subMenuItems: []
+    }    ,
+    {
+        id: "4",
+        titulo: "Reglamentos",
+        url: "/inicio/reglamentos",
+        icono: "bi-file-ruled",
+        moduPadre: false,
+        modPosicion: 4,
+        subMenu: false,
+        subMenuItems: []
+    },
+    {
+        id: "5",
+        titulo: "Contactos",
+        url: "/inicio/contactos",
+        icono: "bi-envelope-at",
+        moduPadre: false,
+        modPosicion: 5,
         subMenu: false,
         subMenuItems: []
     },

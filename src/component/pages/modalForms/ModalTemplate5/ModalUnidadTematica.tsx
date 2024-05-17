@@ -79,7 +79,7 @@ const ModalUnidadTemática: React.FC<Props> = ({ show, hide, numero, changeInit 
                         if (response.data.value == "procesado") {
                             sweet.openSuccess("¡Operación completada con éxito!", "La unidad temática " + numero + " ha sido cargada satisfactoriamente.", () => {
                                 changeInit()
-                                hide()
+                                closeModal()
                             })
                         }
                     }
@@ -111,10 +111,15 @@ const ModalUnidadTemática: React.FC<Props> = ({ show, hide, numero, changeInit 
         },
     ]
 
+    const closeModal = () => {
+        hide()
+        setSelectedFile(null)
+    }
+
     return (
 
         <Modal onShow={show}>
-            <Modal.Header closeButton onHide={hide}> </Modal.Header>
+            <Modal.Header closeButton onHide={closeModal}> </Modal.Header>
             <Modal.Body>
                 <div className="flex flex-col gap-3">
                     <VistaPreviaDocumentosFile

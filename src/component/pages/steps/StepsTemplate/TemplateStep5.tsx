@@ -92,7 +92,7 @@ const TemplateStep5: React.FC<Props> = ({ InitEstado }) => {
 
             <ContenedorSteps
                 numero={5}
-                titulo="FICHA DE CONTROL DE ACTIVIDADES"
+                titulo="CONTROL DE ACTIVIDADES"
             >
                 <ContenedorSteps.Informacion>
                     <div className='flex flex-col justify-between'>
