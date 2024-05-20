@@ -30,7 +30,6 @@ const Inicio = () => {
 
     //const roles = useRolLogin()
     //console.log(codigoLoginToken, roles)
-
     if (!autenticado) {
         return <Navigate to="/login" />
     }

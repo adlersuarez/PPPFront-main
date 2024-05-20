@@ -21,7 +21,6 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono,
     const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
 
     const isDocente = compararHashSHA256(import.meta.env.VITE_USER_TYPO_AD, tipoUsuario)
-    console.log(isDocente)
 
     const [show, setShow] = useState<boolean>(true)
 
@@ -34,8 +33,7 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono,
 
     function enviarMensajeWhatsApp() {
         // Formatear el mensaje con Markdown
-        const mensaje = `Hola,\nSoy ${nombreEstudiante}, estudiante de la carrera de ${carrera} de la facultad de ${facultad}\n\n
-        Código Estudiante: *${codigo}*\nRequiero ayuda con lo siguiente:`
+        const mensaje = `Hola,\nSoy *${nombreEstudiante}*, estudiante de la carrera de *${carrera}* de la facultad de *${facultad}*\n - Código Estudiante: *${codigo}*\nRequiero ayuda con lo siguiente:`
         // URL de WhatsApp con el número de teléfono y el mensaje
         const urlWhatsApp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`
         // Abrir WhatsApp en una nueva ventana

@@ -7,7 +7,7 @@ import { images } from '@/helper/index.helper';
 import { RootState } from '@/store/configureStore.store';
 import { useSelector } from 'react-redux';
 
-const Inscripcion = () => {
+const InicioAfterLogin = () => {
 
     const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
 
@@ -29,7 +29,7 @@ const Inscripcion = () => {
                             <div className='col-span-1 grid grid-cols-1 p-4'>
                                 <div className='flex flex-col gap-8 sm:my-auto'>
                                     <ButtonLink
-                                        to={'/inicio/inscripcion'}
+                                        to={'/inscripcion'}
                                         nombre={'Manual'}
                                         icon={'bi-book'}
                                         color='bg-upla-100'
@@ -38,7 +38,7 @@ const Inscripcion = () => {
                                     />
 
                                     <ButtonLink
-                                        to={'/inicio/reglamentos'}
+                                        to={'/reglamentos'}
                                         nombre={'Reglamento'}
                                         icon={'bi-journal-check'}
                                         color='bg-upla-100'
@@ -46,7 +46,7 @@ const Inscripcion = () => {
                                     />
 
                                     <ButtonLink
-                                        to={'/inicio/contactos'}
+                                        to={'/contactos'}
                                         nombre={'Contactos'}
                                         icon={'bi-telephone'}
                                         color='bg-upla-100'
@@ -132,7 +132,7 @@ const Inscripcion = () => {
                                 imagen={images.modalidad_efectiva}
                                 titulo={'CURRICULAR'}
                                 resumen={'Esta modalidad brinda a los estudiantes en formación la oportunidad de poner en práctica sus conocimientos, habilidades y aptitudes en un entorno laboral real.'}
-                                to={'/inicio/proceso'}
+                                to={'/proceso'}
                                 info={''}
                             />
                             {/*
@@ -150,7 +150,7 @@ const Inscripcion = () => {
                         <h2 className='font-bold text-gray-400'>HERRAMIENTAS DE APOYO</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-3 sm:gap-4 xl:gap-6">
                             <ButtonLink
-                                to={'/inicio/inscripcion'}
+                                to={'/inicio'}
                                 nombre={'Manual'}
                                 icon={'bi-book'}
                                 color='bg-upla-100'
@@ -159,7 +159,7 @@ const Inscripcion = () => {
                             />
 
                             <ButtonLink
-                                to={'/inicio/reglamentos'}
+                                to={'/reglamentos'}
                                 nombre={'Reglamento'}
                                 icon={'bi-journal-check'}
                                 color='bg-upla-100'
@@ -167,7 +167,7 @@ const Inscripcion = () => {
                             />
 
                             <ButtonLink
-                                to={'/inicio/contactos'}
+                                to={'/contactos'}
                                 nombre={'Contactos'}
                                 icon={'bi-telephone'}
                                 color='bg-upla-100'
@@ -192,4 +192,4 @@ const Inscripcion = () => {
     )
 }
 
-export default Inscripcion
+export default InicioAfterLogin

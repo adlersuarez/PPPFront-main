@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { logoutDataEstudiante } from "@/store/estudianteSlice.store";
 
 type MessageNotif = {
-    id: string;
-    codigo: string;
-    titulo: string;
-    mensaje: string;
-};
+    id: string
+    codigo: string
+    titulo: string
+    mensaje: string
+}
 
 let messageNotif: MessageNotif[] = [
     {
@@ -35,7 +35,7 @@ let messageNotif: MessageNotif[] = [
         titulo: "Titulo 4",
         mensaje: "Mensaje de Prueba 5",
     },
-];
+]
 
 type Props = {
     refBlock: React.RefObject<HTMLInputElement>,
@@ -44,21 +44,18 @@ type Props = {
 
 const Nav = (props: Props) => {
 
+    const dispatch = useDispatch()
 
-
-    const dispatch = useDispatch();
-
-    const [open, setOpen] = useState<boolean>(false);
-    const [notif, setNotif] = useState<MessageNotif[]>([]);
+    const [open, setOpen] = useState<boolean>(false)
+    const [notif, setNotif] = useState<MessageNotif[]>([])
 
     useEffect(() => {
         setNotif(messageNotif);
     }, []);
 
     const removeNotif = (idEliminar: string) => {
-        setNotif(notif.filter((item) => item.id !== idEliminar));
-    };
-
+        setNotif(notif.filter((item) => item.id !== idEliminar))
+    }
 
     const cerrarSesion = () => {
         dispatch(logout())
@@ -138,7 +135,7 @@ const Nav = (props: Props) => {
                 </li>
             </ul>
         </nav>
-    );
+    )
 }
 
-export default Nav;
+export default Nav

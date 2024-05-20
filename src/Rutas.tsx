@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Inicio from './view/inicio/Inicio';
-import Inscripcion from './view/pages/estudiante/Inscripcion';
+import InicioAfterLogin from './view/pages/Inicio';
 import Formato from './view/pages/estudiante/Formato';
 import Contacto from './view/pages/estudiante/Contacto';
 import Reglamento from './view/pages/estudiante/Reglamento';
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
       {
         //index: true,
         path: 'inscripcion',
-        element: <Inscripcion />,
+        element: <InicioAfterLogin />,
       },
       {
         path: 'proceso',

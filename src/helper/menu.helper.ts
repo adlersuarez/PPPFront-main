@@ -4,7 +4,7 @@ export const menusEstudiante: MenuItem[] = [
     {
         id: "1",
         titulo: "Inicio",
-        url: "/inicio/inscripcion",
+        url: "/inicio",
         icono: "bi-info-circle",
         moduPadre: false,
         modPosicion: 1,
@@ -14,7 +14,7 @@ export const menusEstudiante: MenuItem[] = [
     {
         id: "2",
         titulo: "Proceso",
-        url: "/inicio/proceso",
+        url: "/proceso",
         icono: "bi-bar-chart-steps",
         moduPadre: false,
         modPosicion: 2,
@@ -24,7 +24,7 @@ export const menusEstudiante: MenuItem[] = [
     {
         id: "3",
         titulo: "Formatos",
-        url: "/inicio/formatos",
+        url: "/formatos",
         icono: "bi-file-earmark-text",
         moduPadre: false,
         modPosicion: 3,
@@ -34,7 +34,7 @@ export const menusEstudiante: MenuItem[] = [
     {
         id: "4",
         titulo: "Reglamentos",
-        url: "/inicio/reglamentos",
+        url: "/reglamentos",
         icono: "bi-file-ruled",
         moduPadre: false,
         modPosicion: 4,
@@ -44,7 +44,7 @@ export const menusEstudiante: MenuItem[] = [
     {
         id: "5",
         titulo: "Contactos",
-        url: "/inicio/contactos",
+        url: "/contactos",
         icono: "bi-envelope-at",
         moduPadre: false,
         modPosicion: 5,
@@ -118,7 +118,7 @@ export const menusDocente: MenuItem[] = [
     {
         id: "1",
         titulo: "Inicio",
-        url: "/inicio/inscripcion",
+        url: "/inicio",
         icono: "bi-info-circle",
         moduPadre: false,
         modPosicion: 1,
@@ -128,7 +128,7 @@ export const menusDocente: MenuItem[] = [
     {
         id: "6",
         titulo: "Secciones",
-        url: "/inicio/revision",
+        url: "/revision",
         icono: "bi-backpack4",
         moduPadre: false,
         modPosicion: 6,
@@ -138,7 +138,7 @@ export const menusDocente: MenuItem[] = [
     {
         id: "4",
         titulo: "Reglamentos",
-        url: "/inicio/reglamentos",
+        url: "/reglamentos",
         icono: "bi-file-ruled",
         moduPadre: false,
         modPosicion: 4,
@@ -148,7 +148,7 @@ export const menusDocente: MenuItem[] = [
     {
         id: "5",
         titulo: "Contactos",
-        url: "/inicio/contactos",
+        url: "/contactos",
         icono: "bi-envelope-at",
         moduPadre: false,
         modPosicion: 5,
@@ -161,7 +161,7 @@ export const menusCoordinador: MenuItem[] = [
     {
         id: "7",
         titulo: "Revisión",
-        url: "/inicio/admin",
+        url: "/admin",
         icono: "bi-backpack4",
         moduPadre: false,
         modPosicion: 7,

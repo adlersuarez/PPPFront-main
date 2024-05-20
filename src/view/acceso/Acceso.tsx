@@ -94,6 +94,7 @@ const Acceso = () => {
     }
 
     if (autenticado && tipoUsuario) {
+
         return <Redirect to="/inicio" />
     }
 
