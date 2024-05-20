@@ -1,3 +1,4 @@
+import { compararHashSHA256 } from "@/helper/herramienta.helper"
 import { RootState } from "@/store/configureStore.store"
 import { useState } from "react"
 import { useSelector } from "react-redux"
@@ -14,7 +15,13 @@ interface PropsContacto {
     horario?: string
 }
 
-const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono, correo, direccion, oficina, wspMsg,horario }) => {
+const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono, correo, direccion, oficina, wspMsg, horario }) => {
+
+    /// ADMIN O NO PERTENECE
+    const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
+
+    const isDocente = compararHashSHA256(import.meta.env.VITE_USER_TYPO_AD, tipoUsuario)
+    console.log(isDocente)
 
     const [show, setShow] = useState<boolean>(true)
 
@@ -52,7 +59,7 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono,
                             {oficina}
                         </p>
                         {
-                            wspMsg &&
+                            (wspMsg && !isDocente) && 
                             <div className="p-2 mt-3">
                                 <button onClick={enviarMensajeWhatsApp}
                                     className="bg-green-400 text-white p-1 px-2 rounded-md font-medium">
@@ -116,7 +123,7 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono,
                                 <p>{direccion}</p>
                             </div>
                         }
-   {
+                        {
                             horario &&
                             <div className="flex" title="Horario de atención">
                                 <div className="w-8 shrink-0">

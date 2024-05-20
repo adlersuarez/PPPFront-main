@@ -11,6 +11,7 @@ import EstadoPracticas from '@/model/interfaces/practicas/estadoPracticas';
 import Response from '@/model/class/response.model.class';
 import RestError from '@/model/class/resterror.model.class';
 import { Types } from '@/model/enum/types.model';
+import { compararHashSHA256 } from '@/helper/herramienta.helper';
 
 const Proceso = () => {
 
@@ -106,6 +107,24 @@ const Proceso = () => {
     useEffect(() => {
         LoadEstadoPracticas()
     }, [])
+
+
+    /// ADMIN O NO PERTENECE
+    const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
+    const asigId = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
+
+    //Docente - Admin
+    if (compararHashSHA256(import.meta.env.VITE_USER_TYPO_AD, tipoUsuario) || asigId == 0) {
+        return (
+            <div className='flex h-[600px] p-8'>
+                <div className='flex bg-gray-100 w-full h-full border-[1.5px] border-upla-100 rounded border-dashed'>
+                    <span className='m-auto text-upla-100 font-semibold text-2xl'>
+                        NO DISPONIBLE
+                    </span>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <ContainerVIstas titulo='Volver' retornar>
