@@ -20,8 +20,8 @@ import RequisitosListaEstudiante from './Contenedor/RequisitoEstudiante';
 import ImportanteListaEstudiante from './Contenedor/ImportanteEstudiante';
 import { SuspenseModal } from '@/component/suspense/SuspenseModal';
 
-const ModalAgregarEmpresa = React.lazy(() => import('../../modalForms/ModalAgregarEmpresa'));
-const ModalMostrarDatos = React.lazy(() => import('../../modalForms/ModalMostrarDatos'));
+const ModalAgregarEmpresa = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalAgregarEmpresa'));
+const ModalMostrarDatos = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalMostrarDatos'));
 
 interface Props {
     InitEstado: () => void

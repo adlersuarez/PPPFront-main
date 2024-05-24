@@ -1,9 +1,5 @@
-//import Menu from "./Menu";
-//import { AiOutlineMinus } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-//import { css } from "../../../../../helper/index.helper";
-import { useEffectOnce } from "react-use";
-import { useRef } from "react";
 
 type Props = {
     desplegar: boolean,
@@ -14,33 +10,26 @@ type Props = {
 }
 
 const ListMenu = (props: Props) => {
+    const [isOpen, setIsOpen] = useState(props.desplegar)
 
-    const refUl = useRef<HTMLUListElement>(null);
+    const toggleMenu = () => {
+        setIsOpen(!isOpen)
+    }
 
-    useEffectOnce(() => {
-        if (props.desplegar) {
-            const element = refUl.current as HTMLElement;
-            element.setAttribute("aria-expanded", "true");
-            element.style.maxHeight = element.scrollHeight + "px";
-
-            const button = (element.parentNode as HTMLElement).querySelector("button") as HTMLButtonElement;
-
-            button.classList.remove("text-gray-400");
-            button.classList.add("text-white");
-            button.classList.add("bg-gray-700");
-            button.children[2].classList.remove("rotate-[-90deg]");
-        }
-    });
+    useEffect(()=>{
+        setIsOpen(props.desplegar)
+    },[props.desplegar])
 
     return (
         <li>
             <button
                 type="button"
+                onClick={toggleMenu}
                 id-list={props.idList}
                 className={`
                 flex 
                 items-center 
-                p-3 
+                p-3 px-6
                 w-full 
                 text-sm 
                 font-normal 
@@ -61,23 +50,21 @@ const ListMenu = (props: Props) => {
                 >
                     {props.nombre}
                 </span>
-                <IoIosArrowDown className={`rotate-[-90deg] w-5 h-5 transition-all duration-700`} />
+                <IoIosArrowDown className={`${isOpen ? 'rotate-0' : 'rotate-[-90deg]'} w-5 h-5 transition-all duration-700`} />
             </button>
             <ul
-                ref={refUl}
-                aria-expanded={false}
+                aria-expanded={isOpen}
                 className={`max-h-0 
                             overflow-hidden 
                             transition-all 
-                            duration-500                          
+                            duration-500
+                            ${isOpen ? 'max-h-[500px]' : 'max-h-0'}                          
                             bg-gray-700`}
             >
                 {props.children}
-
             </ul>
         </li>
-    );
-
+    )
 }
 
-export default ListMenu;
+export default ListMenu

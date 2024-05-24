@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import Modal from "../modal/ModalComponente"
+import Modal from "../../modal/ModalComponente"
 import CartaPresentacionDatos from "@/model/interfaces/cartaPresentacion/cartaPresentacion"
 import { convertirANumerosRomanos, corregirDNI } from "@/helper/herramienta.helper"
 
@@ -17,8 +17,7 @@ const ModalMostrarDatos: React.FC<Props> = ({ show, hide, datosCarta }) => {
     if (datosCarta == null) {
         return
     }
-
-
+    console.log(123)
 
     return (
 
@@ -32,28 +31,28 @@ const ModalMostrarDatos: React.FC<Props> = ({ show, hide, datosCarta }) => {
                                 <i className="bi bi-building mr-2" /> EMPRESA
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Nombre :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaNombre}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Nombre :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.empresaNombre}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>RUC :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaRuc}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>RUC :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.empresaRuc}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Estado :</div>
-                                <span className="text-blue-700 font-bold">{'ACTIVO'}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Estado :</div>
+                                <span className="text-upla-100 font-bold">{'ACTIVO'}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Condición domicilio :</div>
-                                <span className="text-blue-700 font-bold">{'HABIDO'}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Condición :</div>
+                                <span className="text-upla-100 font-bold">{'HABIDO'}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Dirección :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaDireccion}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Dirección :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.empresaDireccion}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Ubicación :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.empresaDPD}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Ubicación :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.empresaDPD}</span>
                             </div>
                         </div>
                     </div>
@@ -64,16 +63,16 @@ const ModalMostrarDatos: React.FC<Props> = ({ show, hide, datosCarta }) => {
                                 <i className="bi bi-person-workspace mr-2" /> REPRESENTANTE
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Nombre :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.repNombreCompleto}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Nombre :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.repNombreCompleto}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>DNI :</div>
-                                <span className="text-blue-700 font-bold">{corregirDNI(datosCarta.repDni)}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>DNI :</div>
+                                <span className="text-upla-100 font-bold">{corregirDNI(datosCarta.repDni)}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Cargo :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.repCargoNombre}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Cargo :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.repCargoNombre}</span>
                             </div>
                         </div>
                     </div>
@@ -84,29 +83,29 @@ const ModalMostrarDatos: React.FC<Props> = ({ show, hide, datosCarta }) => {
                                 <i className="bi bi-person-vcard mr-2" /> PRACTICANTE
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Nombre :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.estNombreCompleto}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Nombre :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.estNombreCompleto}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Código :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.estId}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Código :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.estId}</span>
                             </div>
 
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Facultad :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.estFacultad}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Facultad :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.estFacultad}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Carrera :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.estCarrera}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Carrera :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.estCarrera}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Nivel :</div>
-                                <span className="text-blue-700 font-bold">{convertirANumerosRomanos(datosCarta.estNivel)}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Nivel :</div>
+                                <span className="text-upla-100 font-bold">{convertirANumerosRomanos(datosCarta.estNivel)}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Curso :</div>
-                                <span className="text-blue-700 font-bold">{datosCarta.estCurso}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Curso :</div>
+                                <span className="text-upla-100 font-bold">{datosCarta.estCurso}</span>
                             </div>
                         </div>
                     </div>

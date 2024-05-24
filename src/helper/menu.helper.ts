@@ -134,7 +134,7 @@ export const menusDocente: MenuItem[] = [
         modPosicion: 6,
         subMenu: false,
         subMenuItems: []
-    }    ,
+    },
     {
         id: "4",
         titulo: "Reglamentos",
@@ -168,14 +168,42 @@ export const menusCoordinador: MenuItem[] = [
         subMenu: false,
         subMenuItems: []
     },
-    /*{
+    {
         id: "8",
-        titulo: "Dashboard",
-        url: "/inicio/dashboard",
+        titulo: "Reportes",
+        url:"/reportes",
         icono: "bi-bar-chart-line-fill",
-        moduPadre: false,
-        modPosicion: 7,
-        subMenu: false,
-        subMenuItems: []
-    }*/
+        moduPadre: true,
+        modPosicion: 8,
+        subMenu: true,
+        subMenuItems: [
+            {
+                id: '1',
+                titulo: "Dashboard",
+                url: "/reportes/dashboard",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            },
+            {
+                id: '2',
+                titulo: "General",
+                url: "/reportes/general",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            },
+            {
+                id: '3',
+                titulo: "Específico",
+                url: "/reportes/especifico",
+                icono: "bi-dash",
+                moduPadre: false,
+                modPosicion: 1,
+                subMenu: false,
+            },
+        ]
+    }
 ]

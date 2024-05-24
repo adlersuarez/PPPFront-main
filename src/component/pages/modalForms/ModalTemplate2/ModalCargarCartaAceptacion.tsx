@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import Modal from "../modal/ModalComponente"
+import Modal from "../../modal/ModalComponente"
 import toast from "react-hot-toast"
 import EmpresaCarta from "@/model/interfaces/empresa/empresaCarta"
 import { ListarEmpresasCartaAlumno } from "@/network/rest/practicas.network"
@@ -10,7 +10,7 @@ import RestError from "@/model/class/resterror.model.class"
 import { Types } from "@/model/enum/types.model"
 import Response from "@/model/class/response.model.class"
 import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile"
-import useSweerAlert from "../../../component/hooks/useSweetAlert"
+import useSweerAlert from "../../../hooks/useSweetAlert"
 import { ConfirmarEmpresaCarta } from "@/network/rest/cargarArchivos.network"
 import RespValue from "@/model/interfaces/RespValue.model.interface"
 
@@ -38,6 +38,7 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
     const [selectedEmpresa, setSelectedEmpresa] = useState<number>(0)
     const [empresaMostrada, setEmpresaMostrada] = useState<EmpresaCarta | null>(null)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const [tipoConvenio, setTipoConvenio] = useState<number | string>('0')
 
     const maxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
 
@@ -48,6 +49,10 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
         setSelectedEmpresa(id)
         const empresaMuestra = empresa.find(empresaItem => empresaItem.cartaId === id)
         setEmpresaMostrada(empresaMuestra ?? null)
+    }
+
+    const handleTipoConvenio = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setTipoConvenio(e.target.value)
     }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +91,20 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
     }, [])
 
     const handleGuardarCambios = () => {
+
+        if (selectedEmpresa === 0) {
+            toast.error('Tiene que seleccionar la empresa')
+            return
+        }
+        if (tipoConvenio === '0') {
+            toast.error('Tiene que seleccionar el tipo de convenio')
+            return
+        }
+        if (selectedFile === null) {
+            toast.error('Tiene que seleccionar el archivo')
+            return
+        }
+
         if (selectedFile) {
             //Carta aceptacion es CA-
             const nombreArchivo: string = "CA-" + codigo + "-" + anio + per + "-" + codAsig + ".pdf"
@@ -102,7 +121,7 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await ConfirmarEmpresaCarta<RespValue>(selectedEmpresa, codigo, periodo, formData)
+                    const response = await ConfirmarEmpresaCarta<RespValue>(selectedEmpresa, codigo, periodo,Number(tipoConvenio), formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
@@ -168,14 +187,14 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
                                         <div className="flex flex-col gap-1">
                                             <label htmlFor="empresaSelect" className='font-bold text-gray-500'>
                                                 Seleccionar Empresa
-                                                <i className="text-red-500 bi bi-asterisk text-xs" />
+                                                <i className="text-red-500 bi bi-asterisk text-xs ml-2" />
                                             </label>
                                             <select
                                                 id="empresaSelect"
                                                 className="w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm"
                                                 value={selectedEmpresa}
                                                 onChange={handleEmpresaChange}>
-                                                <option value={0}>Seleccionar...</option>
+                                                <option value={0} disabled>Seleccionar...</option>
                                                 {empresa.map((empresa) => (
                                                     <option key={empresa.cartaId} value={empresa.cartaId}>{empresa.empresaNombre}</option>
                                                 ))}
@@ -214,8 +233,22 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
                                     }
 
                                 </div>
-                                <div className="flex flex-col h-full">
-
+                                <div className="flex flex-col gap-4 h-full">
+                                    <div className="flex flex-col gap-1">
+                                        <label htmlFor="convenioSelect" className='font-bold text-gray-500'>
+                                            Seleccionar Tipo de convenio
+                                            <i className="text-red-500 bi bi-asterisk text-xs ml-2" />
+                                        </label>
+                                        <select
+                                            id="convenioSelect"
+                                            className="w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm"
+                                            value={tipoConvenio}
+                                            onChange={handleTipoConvenio}>
+                                            <option value={'0'} disabled>Seleccionar...</option>
+                                            <option value={'1'}>No remunerado</option>
+                                            <option value={'2'}>Remunerado</option>
+                                        </select>
+                                    </div>
                                     <div className="flex flex-col gap-1 h-full">
                                         <label htmlFor="fileInput" className='font-bold text-gray-500 flex items-center'>
                                             Seleccionar Archivo <span className="ml-1 font-medium">(Max 5MB)</span> <i className="text-red-500 bi bi-asterisk text-xs ml-1" />

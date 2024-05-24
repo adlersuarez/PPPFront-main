@@ -35,9 +35,9 @@ const Aside = (props: Props) => {
         setMenuGeneral(generalMenu)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         loadInitMenu()
-    },[roles])
+    }, [roles])
 
     return (
         <Body refAside={props.refAside}>
@@ -61,6 +61,7 @@ const Aside = (props: Props) => {
                                 return <ListMenu
                                     key={index}
                                     idList={menu.id}
+                                    //desplegar={true}
                                     desplegar={menu.subMenuItems?.filter(item => item.url === props.pathname).length != 0}
                                     icon={menu.icono}
                                     nombre={menu.titulo}

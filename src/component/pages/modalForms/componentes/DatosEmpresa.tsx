@@ -143,6 +143,30 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
         })
     }
 
+    const handleChangeEmailJefe = (event: ChangeEvent<HTMLInputElement>) => {
+        modificar({
+            ...datos,
+            email_jefe: event.target.value
+        })
+    }
+
+    const handleChangeCelularJefe = (event: ChangeEvent<HTMLInputElement>) => {
+        modificar({
+            ...datos,
+            celular_jefe: event.target.value
+        })
+    }
+
+     //Grado
+     const handleChangeTipoEmpresa = (event: ChangeEvent<HTMLSelectElement>) => {
+        const selectedValue = event.target.value
+
+        modificar({
+            ...datos,
+            tipo_empresa_id: selectedValue,
+        })
+    }
+
     const LoadGrado = async () => {
         setGrado([])
         const response = await ListarGrado<Listas>(abortController.current)
@@ -350,6 +374,20 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
                         readOnly
                     />
                 </div>
+                <div className='flex flex-col gap-1'>
+                    <label htmlFor="gradoInstruccion" className='font-bold text-gray-500'>Grado de instrucción</label>
+                    <select
+                        id="gradoInstruccion"
+                        name="gradoInstruccion"
+                        className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-xs sm:text-sm'
+                        defaultValue={datos.tipo_empresa_id}
+                        onChange={handleChangeTipoEmpresa}
+                    >
+                        <option value={0} disabled>Selecciona una opción</option>
+                        <option value={1}>Pública</option>
+                        <option value={2}>Privada</option>
+                    </select>
+                </div>
             </div>
             <div className='bg-gray-100 text-upla-100 w-full rounded-lg flex p-2 mt-3'>
                 <i className="bi bi-2-circle-fill ml-2 text-2xl" />
@@ -431,6 +469,31 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
                         ))}
                     </select>
                 </div>
+                <div className='flex flex-col gap-1'>
+                    <label htmlFor="emailRep" className='font-bold text-gray-500'>Correo electrónico <i className="text-red-500 bi bi-asterisk text-xs" /></label>
+                    <input
+                        type="text"
+                        id="emailRep"
+                        name="emailRep"
+                        className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
+                        value={datos.email_jefe}
+                        onChange={handleChangeEmailJefe}
+                        placeholder="Ingrese email del representante..."
+                    />
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <label htmlFor="celularRep" className='font-bold text-gray-500'>Celular <i className="text-red-500 bi bi-asterisk text-xs" /></label>
+                    <input
+                        type="text"
+                        id="celularRep"
+                        name="celularRep"
+                        className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
+                        value={datos.celular_jefe}
+                        onChange={handleChangeCelularJefe}
+                        placeholder="Ingrese celular del representante..."
+                    />
+                </div>
+
             </div>
         </div>
     )

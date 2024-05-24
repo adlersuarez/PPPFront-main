@@ -60,7 +60,7 @@ const RevisionEstudiante = () => {
     }, [])
 
     return (
-        <ContainerVIstas titulo='Detalle estudiante' retornar>
+        <ContainerVIstas titulo='REVISIÓN SECCIONES' retornar>
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full max-w-full px-3 flex-0 overflow-y-auto">
                     <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">

@@ -12,11 +12,20 @@ const instance = axios.create({
     },
     responseType: 'blob'
 })
-
+/*
 instance.interceptors.request.use((config) => {
     const apiKey = import.meta.env.VITE_API_KEY
     config.headers.key = apiKey
     return config
+})*/
+
+instance.interceptors.request.use((config) => {
+    const storage = window.localStorage as Storage;
+    const token = storage.getItem('token');
+    if (token !== null) {
+        config.headers.Authorization = 'Bearer ' + JSON.parse(token);
+    }
+    return config;
 })
 
 //Convertir Docx-Pdf

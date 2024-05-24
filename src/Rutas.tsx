@@ -4,7 +4,7 @@ import InicioAfterLogin from './view/pages/Inicio';
 import Formato from './view/pages/estudiante/Formato';
 import Contacto from './view/pages/estudiante/Contacto';
 import Reglamento from './view/pages/estudiante/Reglamento';
-import Admin from './view/pages/admin/Dashboard';
+import Dashboard from './view/pages/admin/reportes/Dashboard';
 import Revision from './view/pages/docente/Revision';
 import Especifico from './view/pages/docente/Especifico';
 import ProcesoMedicina from './view/pages/facultades/medicina/interno/ProcesoMedicina';
@@ -15,11 +15,11 @@ import Acceso from './view/acceso/Acceso';
 import NotFound from './view/pages/404/NotFound';
 import Proceso from './view/pages/estudiante/Proceso';
 import Secciones from './view/pages/docente/Secciones';
-import RevisionAdmin from './view/pages/admin/RevisionAdmin';
-import RevisionDocente from './view/pages/admin/RevisionDocente';
-import RevisionEstudiante from './view/pages/admin/RevisionEstudiante';
+import RevisionAdmin from './view/pages/admin/revision/RevisionAdmin';
+import RevisionDocente from './view/pages/admin/revision/RevisionDocente';
+import RevisionEstudiante from './view/pages/admin/revision/RevisionEstudiante';
 import RevisionSeccionAlumno from './view/pages/admin/RevisionSeccionAlumno';
-import RevisionAlumnoEspecifico from './view/pages/admin/RevisionAlumnoEspecifico';
+import RevisionAlumnoEspecifico from './view/pages/admin/revision/RevisionAlumnoEspecifico';
 
 const router = createBrowserRouter([
   {
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
 
       {
         path: 'administrador',
-        element: <Admin />,
+        element: <Dashboard />,
       },
       {
         path: 'revision/*',

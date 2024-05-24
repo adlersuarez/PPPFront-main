@@ -17,7 +17,7 @@ import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
 import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
 import { SuspenseModal } from "@/component/suspense/SuspenseModal";
 
-const ModalCargarCartaAceptacion = React.lazy(() => import("../../modalForms/ModalCargarCartaAceptacion"));
+const ModalCargarCartaAceptacion = React.lazy(() => import("../../modalForms/ModalTemplate2/ModalCargarCartaAceptacion"));
 const VistaPreviaDocumentosFile = React.lazy(() => import("@/component/VistaPreviaDocumentosFile"));
 
 interface Props {

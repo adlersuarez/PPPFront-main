@@ -12,10 +12,20 @@ const instance = axios.create({
     },
 })
 
-instance.interceptors.request.use((config) => {
+/*instance.interceptors.request.use((config) => {
     const apiKey = import.meta.env.VITE_API_KEY
     config.headers.key = apiKey
     return config
+})*/
+
+
+instance.interceptors.request.use((config) => {
+    const storage = window.localStorage as Storage;
+    const token = storage.getItem('token');
+    if (token !== null) {
+        config.headers.Authorization = 'Bearer ' + JSON.parse(token);
+    }
+    return config;
 })
 
 //Grado
@@ -133,8 +143,8 @@ export async function ListarSeccionDocenteAdmin<Listas>(DocenteId: string, Carre
 }
 
 
-export async function ListarSeccionAlumnos<Listas>(CarreraId: string, AsigId: string, DocenteId: string, SedeId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
-    return await Resolve.create<Listas>(instance.get<Listas>(`/Estudiante/ListarSeccionAlumnos/${CarreraId}/${AsigId}/${DocenteId}/${SedeId}/${PeriodoId}`, { signal: abortController?.signal }))
+export async function ListarSeccionAlumnos<Listas>(CarreraId: string, AsigId: string, DocenteId: string, SedeId: string, Seccion: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Estudiante/ListarSeccionAlumnos/${CarreraId}/${AsigId}/${DocenteId}/${SedeId}/${Seccion}/${PeriodoId}`, { signal: abortController?.signal }))
 }
 export async function ObtenerDatosCartaAlumnoEspecifico<Listas>(EstudianteId: string, DocenteId: string, PeriodoId: number, abortController: AbortController | null): Promise<Response<Listas> | RestError> {
     return await Resolve.create<Listas>(instance.get<Listas>(`/CartaPresentacion/ObtenerDatosCartaAlumnoEspecifico/${EstudianteId}/${DocenteId}/${PeriodoId}`, { signal: abortController?.signal }))

@@ -70,7 +70,7 @@ const Revision = () => {
     const LoadSecciones = async () => {
         setLoading(true)
         setAlumnosSeccion([])
-        const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, codigo, seccion.sed_Id, periodo, abortController.current)
+        const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, codigo, seccion.sed_Id,seccion.nta_Seccion, periodo, abortController.current)
 
         if (response instanceof Response) {
             const data = response.data.resultado as ListaSeccion[]

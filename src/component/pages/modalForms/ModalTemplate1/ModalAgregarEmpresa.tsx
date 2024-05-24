@@ -1,10 +1,10 @@
-import Modal from "../modal/ModalComponente"
+import Modal from "../../modal/ModalComponente"
 import { useRef, useState } from "react"
-import { VerificacionDatos } from "./componentes/VerificacionDatos"
+import { VerificacionDatos } from "../componentes/VerificacionDatos"
 import DatosEmpresa from "@/model/interfaces/empresa/empresa"
-import { FormularioEmpresa } from "./componentes/DatosEmpresa"
+import { FormularioEmpresa } from "../componentes/DatosEmpresa"
 import toast from "react-hot-toast"
-import useSweerAlert from "../../../component/hooks/useSweetAlert"
+import useSweerAlert from "../../../hooks/useSweetAlert"
 import RestError from "@/model/class/resterror.model.class"
 import Response from "@/model/class/response.model.class"
 import { RegistrarCartaPresentacion } from "@/network/rest/practicas.network"
@@ -38,6 +38,10 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
             toast.error('Debe ingresar un RUC válido, con estado: ACTIVO y condición domicilio: HABIDO')
             return
         }
+        if (formularioEmpresa.tipo_empresa_id === "0") {
+            toast.error('Seleccione el tipo de empresa.')
+            return
+        }
         if (formularioEmpresa.dni_jefe.trim().length !== 8) {
             toast.error("Debe ingresar el DNI válido, y obtener el resultado")
             return
@@ -58,6 +62,7 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
 
     const [formularioEmpresa, setFormularioEmpresa] = useState<DatosEmpresa>({
         ruc: '',
+        tipo_empresa_id: '0',
         nombre_empresa: '',
         direccion_empresa: '',
         dpd_empresa: '',
@@ -72,6 +77,8 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
         grado_instruccion: '',
         id_cargo_jefe: '0',
         cargo_jefe: '',
+        celular_jefe: '',
+        email_jefe: ''
     })
 
     const modificarEmpresaDatos = (nuevosDatos: DatosEmpresa) => {
@@ -84,6 +91,7 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
     const limpiarFormulario = () => {
         setFormularioEmpresa({
             ruc: '',
+            tipo_empresa_id: '0',
             nombre_empresa: '',
             direccion_empresa: '',
             dpd_empresa: '',
@@ -98,6 +106,8 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
             grado_instruccion: '',
             id_cargo_jefe: '0',
             cargo_jefe: '',
+            celular_jefe: '',
+            email_jefe: ''
         })
     }
 
@@ -124,7 +134,8 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
                 empresaNombre: formularioEmpresa.nombre_empresa,
                 direccion: formularioEmpresa.direccion_empresa,
                 depProvDist: formularioEmpresa.dpd_empresa,
-                ubigeoEmpresa: formularioEmpresa.ubigeo_empresa
+                ubigeoEmpresa: formularioEmpresa.ubigeo_empresa,
+                tipoEmpresaId: Number(formularioEmpresa.tipo_empresa_id)
             },
             jsonRepresentante:
             {
@@ -133,11 +144,13 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
                 repDni: formularioEmpresa.dni_jefe,
                 repNombres: formularioEmpresa.nombre_jefe,
                 repApellidoPat: formularioEmpresa.apellidoP_jefe,
-                repApellidoMat: formularioEmpresa.apellidoM_jefe
+                repApellidoMat: formularioEmpresa.apellidoM_jefe,
+                repEmail: formularioEmpresa.email_jefe,
+                repCelular: formularioEmpresa.celular_jefe
             }
         }
 
-        sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+       sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
                 //console.log(params)
 

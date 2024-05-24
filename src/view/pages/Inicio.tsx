@@ -1,4 +1,5 @@
 import ContainerVIstas from '@/component/Container';
+import useRolLogin from '@/component/hooks/useRolLogin';
 import { BotonAnimado } from '@/component/pages/buttons/ButtonAnimado';
 import ButtonLink from '@/component/pages/buttons/ButtonLink';
 import ModalidadCard from '@/component/pages/cards/ModalidadCard';
@@ -10,6 +11,8 @@ import { useSelector } from 'react-redux';
 const InicioAfterLogin = () => {
 
     const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
+
+    const roles = useRolLogin()
 
     //Docente - Admin
     if (compararHashSHA256(import.meta.env.VITE_USER_TYPO_AD, tipoUsuario)) {
@@ -28,6 +31,25 @@ const InicioAfterLogin = () => {
                         <div className='grid grid-cols-1 sm:grid-cols-3 gap-y-6 sm:gap-y-0'>
                             <div className='col-span-1 grid grid-cols-1 p-4'>
                                 <div className='flex flex-col gap-8 sm:my-auto'>
+                                    {roles ?
+                                        <ButtonLink
+                                            to={'/admin'}
+                                            nombre={'Revisión Facultad'}
+                                            icon={'bi-play-fill'}
+                                            color='bg-gray-600'
+                                            hover='bg-gray-800'
+                                        />
+                                        :
+                                        <ButtonLink
+                                            to={'/revision'}
+                                            nombre={'Iniciar Revisión'}
+                                            icon={'bi-play-fill'}
+                                            color='bg-gray-600'
+                                            hover='bg-gray-800'
+                                        />
+                                    }
+
+                                    <hr />
                                     <ButtonLink
                                         to={'/inscripcion'}
                                         nombre={'Manual'}
@@ -47,7 +69,7 @@ const InicioAfterLogin = () => {
 
                                     <ButtonLink
                                         to={'/contactos'}
-                                        nombre={'Contactos'}
+                                        nombre={'Soporte'}
                                         icon={'bi-telephone'}
                                         color='bg-upla-100'
                                         hover='bg-upla-200'

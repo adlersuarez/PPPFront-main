@@ -49,6 +49,7 @@ const ButtonLink = (props: Props) => {
            ${props.color}
            hover:${props.hover}
             hover:bg-blue-700
+            hover:scale-105
             rounded-lg
             uppercase 
             `}
@@ -82,6 +83,7 @@ const ButtonLink = (props: Props) => {
                ${props.color}
                hover:${props.hover}
                 hover:bg-blue-700
+                hover:scale-105
                 rounded-lg
                 uppercase 
                 `}

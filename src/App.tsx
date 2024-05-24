@@ -7,13 +7,17 @@ import routerEstudiante from './rutas/RutaEstudiante';
 import { compararHashSHA256 } from './helper/herramienta.helper';
 import routerDocente from './rutas/RutasDocente';
 import routerAcceso from './rutas/RutaAcceso';
+//import useRolLogin from './component/hooks/useRolLogin';
 
 function App() {
 
     const cargando = useSelector((state: RootState) => state.autenticacion.cargando)
 
     const tipoUsuario = useSelector((state: RootState) => state.autenticacion.tipoUsuario)
-    
+
+    /*const roles = useRolLogin()
+    console.log(roles)*/
+
     if (cargando) return <Cargar />
 
     //Docente - Admin

@@ -10,6 +10,7 @@ export interface RegistroEmpresaCarta {
         direccion: string
         depProvDist: string
         ubigeoEmpresa: string
+        tipoEmpresaId: number
     }
     jsonRepresentante: {
         gradoId: number
@@ -18,5 +19,8 @@ export interface RegistroEmpresaCarta {
         repNombres: string
         repApellidoPat: string
         repApellidoMat: string
+
+        repEmail: string
+        repCelular: string
     }
 }

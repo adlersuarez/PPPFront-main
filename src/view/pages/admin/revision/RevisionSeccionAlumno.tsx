@@ -12,7 +12,7 @@ import { RootState } from "@/store/configureStore.store";
 import ListaSeccion from "@/model/interfaces/docente/listaSeccion";
 import { LoaderSvg } from "@/component/Svg.component";
 import { convertirANumerosRomanos } from "@/helper/herramienta.helper";
-import EstadosAlumno from '../docente/PasosRevision.tsx/componente/EstadosAlumno';
+import EstadosAlumno from '../../docente/PasosRevision.tsx/componente/EstadosAlumno';
 
 const RevisionSeccionAlumno = () => {
     const navigate = useNavigate()
@@ -63,7 +63,7 @@ const RevisionSeccionAlumno = () => {
     const LoadSecciones = async () => {
         setLoading(false)
         setAlumnosSeccion([])
-        const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, idDocente, seccion.sed_Id, periodo, abortController.current)
+        const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, idDocente, seccion.sed_Id, seccion.nta_Seccion, periodo, abortController.current)
 
         if (response instanceof Response) {
             const data = response.data.resultado as ListaSeccion[]
@@ -83,7 +83,7 @@ const RevisionSeccionAlumno = () => {
     const [showDetalles, setShowDetalles] = useState<boolean>(false)
 
     return (
-        <ContainerVIstas titulo='REVISIÓN DOCENTE' retornar>
+        <ContainerVIstas titulo='REVISIÓN ESTUDIANTES' retornar>
 
             <div onClick={() => setShowDetalles(!showDetalles)} role='button'
                 className="w-full rounded-lg border-2 border-gray-300 border-t-4">

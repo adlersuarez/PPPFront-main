@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ContainerVIstas from '@/component/Container';
-import { CartaPresentacionAdmin } from './componentes/CartaPresentacion';
-import { EmpresaSeleccionadaAdmin } from './componentes/EmpresaSeleccionada';
-import { AreaPracticasAdmin } from './componentes/AreaPracticas';
-import { HorarioAdmin } from './componentes/Horario';
+import { CartaPresentacionAdmin } from '../componentes/CartaPresentacion';
+import { EmpresaSeleccionadaAdmin } from '../componentes/EmpresaSeleccionada';
+import { AreaPracticasAdmin } from '../componentes/AreaPracticas';
+import { HorarioAdmin } from '../componentes/Horario';
 import CartaPresentacionDatos from '@/model/interfaces/cartaPresentacion/cartaPresentacion';
 import { MostrarDocumentosAdmin, ObtenerDatosAreaTrabajo, ObtenerDatosCartaPresentacionAdmin, ObtenerDatosDuracion, ObtenerDatosEmpresaElegidaDocente } from '@/network/rest/practicas.network';
 import Listas from '@/model/interfaces/Listas.model.interface';
@@ -15,9 +15,9 @@ import AreaTrabajoPracticas from '@/model/interfaces/empresa/areaTrabajoPractica
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/configureStore.store';
 import DuracionDetallePracticas from '@/model/interfaces/horario/duracionPracticas';
-import { EstudianteNoCompletado } from './componentes/EstudianteNoCompletado';
-import { PlanActividadesAdmin } from './componentes/PlanActividades';
-import { DocumentoMostradoAdmin } from './componentes/DocumentoMostrado';
+import { EstudianteNoCompletado } from '../componentes/EstudianteNoCompletado';
+import { PlanActividadesAdmin } from '../componentes/PlanActividades';
+import { DocumentoMostradoAdmin } from '../componentes/DocumentoMostrado';
 import DocumentoAdmin from '@/model/interfaces/documento/mostrarDocumentoAdmin';
 import EmpresaElegidaRespuesta from '@/model/interfaces/empresa/empresaElegidaRespuesta';
 
@@ -131,7 +131,7 @@ const RevisionAlumnoEspecifico = () => {
 
 
     return (
-        <ContainerVIstas titulo='Detalle estudiante' retornar>
+        <ContainerVIstas titulo='ESTUDIANTE' retornar>
             <div className="w-full ">
                 <div onClick={() => setShowDetalles(!showDetalles)} className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                     <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4  text-lg sm:text-2xl">
