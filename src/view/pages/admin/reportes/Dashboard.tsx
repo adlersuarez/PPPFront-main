@@ -127,11 +127,11 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         LoadAsignatura()
-    }, [carreraId])
+    }, [carreraId,periodoId])
 
     useEffect(() => {
         LoadDocente()
-    }, [asignaturaId])
+    }, [asignaturaId,carreraId,periodoId])
 
     useEffect(() => {
         const today = new Date()
@@ -385,7 +385,7 @@ const Dashboard: React.FC = () => {
                                     <option value="000000">Todas</option>
                                     {asignaturas.map((asi, index) => (
                                         <option key={index} value={asi.asignaturaId}>
-                                            {asi.asignaturaNombre}
+                                           {carreraId == '00' && asi.carreraId + ' - '}{asi.asignaturaNombre}
                                         </option>
                                     ))}
                                 </select>

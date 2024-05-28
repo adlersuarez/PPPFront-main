@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ContainerVIstas from "@/component/Container";
-import { ListarAsignaturasPeriodo, ListarCarrerasPorFacultad, ListarDocentesCarreraAsignatura, ListarFacultades, ListarPeriodos } from "@/network/rest/reportes.network";
+import { ListarAsignaturasPeriodo, ListarCarrerasPorFacultad, ListarDocentesCarreraAsignatura, ListarFacultades, ListarPeriodos, ReporteListarSeccion } from "@/network/rest/reportes.network";
 import Listas from "@/model/interfaces/Listas.model.interface";
 import Facultad from "@/model/interfaces/reportes/facultad";
 import Response from "@/model/class/response.model.class";
@@ -11,16 +11,13 @@ import Asignatura from "@/model/interfaces/reportes/asignatura";
 import Docente from "@/model/interfaces/reportes/docente";
 import Periodos from "@/model/interfaces/reportes/periodos";
 import { convertirANumerosRomanos } from "@/helper/herramienta.helper";
-import SeccionesDocente from "@/model/interfaces/docente/secciones";
-import { ListarSeccionDocenteAdmin } from "@/network/rest/practicas.network";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/configureStore.store";
 import { LoaderSvg } from "@/component/Svg.component";
+import SeccionDetalle from "@/model/interfaces/reportes/seccionDetalle";
+import { ButtonGenerarReporte } from "./componentes/ButtonGenerarReporte";
 
 const ReporteGeneral: React.FC = () => {
 
     const abortController = useRef(new AbortController())
-    const periodo = useSelector((state: RootState) => state.infoPersonal.periodoId)
 
     const [facultadId, setFacultadId] = useState<string>('02') //Por defecto es 00, pero para la fac CAC por ahora sera 02
     const [carreraId, setCarreraId] = useState<string>('00')
@@ -122,11 +119,11 @@ const ReporteGeneral: React.FC = () => {
 
     useEffect(() => {
         LoadAsignatura()
-    }, [carreraId])
+    }, [carreraId, periodoId])
 
     useEffect(() => {
         LoadDocente()
-    }, [asignaturaId])
+    }, [asignaturaId, carreraId, periodoId])
 
     useEffect(() => {
         const today = new Date()
@@ -151,15 +148,15 @@ const ReporteGeneral: React.FC = () => {
 
     /// TABLA GENERAL
     const [loading, setLoading] = useState<boolean>(false)
-    const [secciones, setSecciones] = useState<SeccionesDocente[]>([])
+    const [secciones, setSecciones] = useState<SeccionDetalle[]>([])
 
     const LoadSecciones = async () => {
         setLoading(false)
         setSecciones([])
-        const response = await ListarSeccionDocenteAdmin<Listas>('42065104', 'CF', periodo, abortController.current)
+        const response = await ReporteListarSeccion<Listas>(carreraId, asignaturaId, docenteId, Number(periodoId))
 
         if (response instanceof Response) {
-            const data = response.data.resultado as SeccionesDocente[]
+            const data = response.data.resultado as SeccionDetalle[]
             setSecciones(data)
         }
         if (response instanceof RestError) {
@@ -169,9 +166,12 @@ const ReporteGeneral: React.FC = () => {
         setLoading(true)
     }
 
+
     useEffect(() => {
         LoadSecciones()
-    }, [])
+    }, [carreraId, asignaturaId, docenteId, periodoId])
+
+    //
 
     return (
         <ContainerVIstas titulo='REPORTE GENERAL' retornar>
@@ -232,7 +232,7 @@ const ReporteGeneral: React.FC = () => {
                                             onChange={(e) => setPeriodoId(e.target.value)}
                                             className="w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-xs sm:text-sm"
                                         >
-                                            <option value="0">Todos</option>
+                                            {/*<option value="0">Todos</option>*/}
                                             {periodos.map((peri) => (
                                                 <option key={peri.periodoId} value={peri.periodoId}>
                                                     {peri.anio + ' - ' + convertirANumerosRomanos(peri.semestre)}
@@ -264,7 +264,7 @@ const ReporteGeneral: React.FC = () => {
                                     <option value="000000">Todas</option>
                                     {asignaturas.map((asi, index) => (
                                         <option key={index} value={asi.asignaturaId}>
-                                            {asi.asignaturaNombre}
+                                            {carreraId == '00' && asi.carreraId + ' - '}{asi.asignaturaNombre}
                                         </option>
                                     ))}
                                 </select>
@@ -293,7 +293,6 @@ const ReporteGeneral: React.FC = () => {
                     <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
                         <thead className="align-bottom">
                             <tr>
-                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Facultad</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Carrera</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sede</th>
 
@@ -302,7 +301,8 @@ const ReporteGeneral: React.FC = () => {
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Asignatura</th>
 
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sección</th>
-                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Lista</th>
+                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Docente</th>
+                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Reporte</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -327,29 +327,33 @@ const ReporteGeneral: React.FC = () => {
 
                                                 return (
                                                     <tr key={index} className="bg-white border-b">
-                                                        <td className="text-sm p-2 text-center">
-                                                            {item.fac_Facultad}
+                                                        <td className="text-sm p-2 text-left">
+                                                            {item.carrera}
                                                         </td>
                                                         <td className="text-sm p-2 text-center">
-                                                            {item.car_Carrera}
+                                                            {item.sede}
                                                         </td>
                                                         <td className="text-sm p-2 text-center">
-                                                            {item.sed_Sede}
+                                                            {item.anioActual + ' - ' + convertirANumerosRomanos(item.semestreActual)}
                                                         </td>
                                                         <td className="text-sm p-2 text-center">
-                                                            {item.mtr_Anio + ' - ' + convertirANumerosRomanos(item.mtr_Periodo)}
+                                                            {convertirANumerosRomanos(item.nivel)}
                                                         </td>
-                                                        <td className="text-sm p-2 text-center">
-                                                            {convertirANumerosRomanos(item.nta_Nivel)}
+                                                        <td className="text-sm p-2 text-left">
+                                                            {item.asignatura}
                                                         </td>
-                                                        <td className="text-sm p-2 text-center">
-                                                            {item.asi_Asignatura}
+                                                        <td className="text-sm p-2 text-center font-medium">
+                                                            {item.seccion}
                                                         </td>
-                                                        <td className="text-sm p-2 text-center">
-                                                            {item.nta_Seccion}
+                                                        <td className="text-sm p-2 text-left font-medium">
+                                                            {item.docente.trim()}
                                                         </td>
-                                                        <td className="text-sm p-2 text-center align-middle border-b border-solid">
-                                                            <button>Generar Reporte</button>
+                                                        <td className="text-xs p-2 text-center align-middle border-b border-solid">
+
+                                                            <ButtonGenerarReporte
+                                                                datos={item}
+                                                                periodoId={Number(periodoId)}
+                                                            />
                                                         </td>
                                                     </tr>
                                                 )

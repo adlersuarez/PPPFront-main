@@ -48,7 +48,8 @@
     "react-use": "^17.4.0",
     "sort-by": "^1.2.0",
     "sweetalert2": "^11.7.32",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",

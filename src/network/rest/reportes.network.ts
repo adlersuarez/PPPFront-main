@@ -76,3 +76,12 @@ export async function ReporteInformacionEstudiante<InformacionEstudiante>(Estudi
 export async function ReporteInformacionDocente<InformacionDocente>(DocenteId: string, CarreraId: string, AsignaturaId: string, SedeId: string, Seccion: string, PeriodoId: number, signal = null): Promise<Response<InformacionDocente> | RestError> {
     return await Resolve.create<InformacionDocente>(instance.get<InformacionDocente>(`/Reporte/ReporteInformacionDocente/${DocenteId}/${CarreraId}/${AsignaturaId}/${SedeId}/${Seccion}/${PeriodoId}`, { signal: signal! }));
 }
+
+export async function ReporteListarSeccion<Listas>(CarreraId: string, AsignaturaId: string, DocenteId: string, PeriodoId: number, signal = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Reporte/ReporteListarSeccion/${CarreraId}/${AsignaturaId}/${DocenteId}/${PeriodoId}`, { signal: signal! }));
+}
+
+
+export async function ReporteSuneduGenerar<Listas>(CarreraId: string, AsignaturaId: string, DocenteId: string, SedeId: string, Seccion: string, PeriodoId: number, signal = null): Promise<Response<Listas> | RestError> {
+    return await Resolve.create<Listas>(instance.get<Listas>(`/Reporte/ReporteSunedu/${CarreraId}/${AsignaturaId}/${DocenteId}/${SedeId}/${Seccion}/${PeriodoId}`, { signal: signal! }));
+}
