@@ -23,7 +23,7 @@ interface DocenteDetailsProps {
     buscar: boolean
 }
 
-export const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDocente, sedeId, periodo, seccion, buscar, secciones }) => {
+const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDocente, sedeId, periodo, seccion, buscar, secciones }) => {
 
     const [loading, setLoading] = useState<boolean>(true)
     const [alumnosSeccion, setAlumnosSeccion] = useState<ListaSeccion[]>([])
@@ -214,3 +214,5 @@ export const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId,
         </div>
     )
 }
+
+export default EspecificoDocente

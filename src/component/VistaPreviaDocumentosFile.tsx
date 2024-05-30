@@ -30,7 +30,6 @@ const VistaPreviaDocumentosFile: React.FC<ModalFunctions> = ({ show, close, file
         setSelectedFile(files[0])
     }, [files])
 
-
     const [startIndex, setStartIndex] = useState<number>(0)
     const [itemsPerPage, setItemsPerPage] = useState<number>(0)
 

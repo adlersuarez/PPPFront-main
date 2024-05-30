@@ -27,7 +27,7 @@ interface PieChartProps {
     tipo: 'porcentaje' | 'cantidad'
 }
 
-export const PieChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo, position,legend }) => {
+const PieChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo, position,legend }) => {
 
     const chartData = {
         labels: labels,
@@ -65,3 +65,5 @@ export const PieChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo, 
         <Pie data={chartData} options={options} />
     )
 }
+
+export default PieChart

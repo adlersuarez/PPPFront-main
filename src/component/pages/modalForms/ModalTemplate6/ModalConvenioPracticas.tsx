@@ -10,7 +10,7 @@ import VistaPreviaDocumentosFile from "@/component/VistaPreviaDocumentosFile"
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 import { RegistrarDocumento } from "@/network/rest/cargarArchivos.network"
 import RespValue from "@/model/interfaces/RespValue.model.interface"
-import HerramientaDoc from "./componente/HerramientaDoc"
+import ConvenioDespliegue from "./componente/ConvenioDespliegue"
 
 type Props = {
     show: boolean
@@ -18,7 +18,7 @@ type Props = {
     changeInit: () => void
 }
 
-const ModalConvenioPracticas: React.FC<Props> = ({ show, hide,changeInit }) => {
+const ModalConvenioPracticas: React.FC<Props> = ({ show, hide, changeInit }) => {
 
     const sweet = useSweerAlert()
 
@@ -142,17 +142,9 @@ const ModalConvenioPracticas: React.FC<Props> = ({ show, hide,changeInit }) => {
                                         </span>
                                         <div className="flex flex-col gap-4">
 
-                                            <HerramientaDoc
-                                                titulo='Convenio no remunerado'
+                                            <ConvenioDespliegue
+                                                titulo='Convenio de prácticas'
                                                 tipoDoc='docx'
-                                                urlDownload='/formatos/FCAC/Formato Convenio PPP no remuneradas.docx'
-                                                urlShow='/formatos/FCAC/Formato Convenio PPP no remuneradas.pdf'
-                                            />
-                                            <HerramientaDoc
-                                                titulo='Convenio remunerado'
-                                                tipoDoc='docx'
-                                                urlDownload='/formatos/FCAC/Formato Convenio PPP remuneradas.docx'
-                                                urlShow='/formatos/FCAC/Formato Convenio PPP remuneradas.pdf'
                                             />
 
                                         </div>

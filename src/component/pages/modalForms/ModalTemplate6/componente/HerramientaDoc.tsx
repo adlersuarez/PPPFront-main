@@ -15,13 +15,13 @@ const HerramientaDoc: React.FC<HerramientaDoc> = ({ urlDownload, urlShow, titulo
     const [showDoc, setShowDoc] = useState<boolean>(false)
     const handleShowDoc = () => setShowDoc(true)
     const handleCloseDoc = () => setShowDoc(false)
-   
+
     ///descargar
     const handleDownloadFile = () => {
 
         const fileName = obtenerNombreArchivo(urlDownload)
         const filePath = urlDownload
-    
+
         fetch(filePath)
             .then(response => response.blob())
             .then(blob => {
@@ -35,6 +35,8 @@ const HerramientaDoc: React.FC<HerramientaDoc> = ({ urlDownload, urlShow, titulo
             })
             .catch(error => console.error('Error al descargar el archivo:', error))
     }
+
+    console.log(urlShow)
 
     return (
         <div className="flex flex-col border border-upla-100 bg-white rounded-md overflow-hidden">

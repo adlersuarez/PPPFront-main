@@ -8,7 +8,7 @@ interface CardDashboard {
     description: string
 }
 
-export const CardDashboard: React.FC<CardDashboard> = ({ bgGradient, iconClass, title, quantity, description }) => {
+const CardDashboard: React.FC<CardDashboard> = ({ bgGradient, iconClass, title, quantity, description }) => {
 
     const [cantidad, setCantidad] = useState<number>(0)
 
@@ -36,3 +36,5 @@ export const CardDashboard: React.FC<CardDashboard> = ({ bgGradient, iconClass, 
         </div>
     )
 }
+
+export default CardDashboard

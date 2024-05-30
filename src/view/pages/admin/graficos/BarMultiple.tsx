@@ -30,7 +30,7 @@ interface ChartProps {
     indexAxis?: 'x' | 'y'; // Parámetro opcional para indexAxis
 }
 
-export const BarChart: React.FC<ChartProps> = ({ data, labels, titulo, indexAxis, legend }) => {
+const BarChart: React.FC<ChartProps> = ({ data, labels, titulo, indexAxis, legend }) => {
 
     const maxData = data.reduce((max, dataset) => {
         const maxInDataset = Math.max(...dataset.data); // Encuentra el máximo en cada conjunto de datos
@@ -121,3 +121,5 @@ export const BarChart: React.FC<ChartProps> = ({ data, labels, titulo, indexAxis
         <Bar data={chartData} options={options} />
     )
 }
+
+export default BarChart

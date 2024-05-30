@@ -9,6 +9,7 @@ export default interface AreaTrabajoPracticas {
     jefeCargo: string
     jefeGrado: string
     direccionAreaPracticas: string
+    descripcionAreaPracticas: string
     ubigeo: string
     depProvDist: string
     jefeEmail: string

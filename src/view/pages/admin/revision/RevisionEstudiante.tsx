@@ -24,13 +24,15 @@ const RevisionEstudiante = () => {
     const location = useLocation()
     const idAsig: string = location.state.usr.idAsig
     const idDocente: string = location.state.usr.idDocente
+    const nombreDocente: string = location.state.usr.nombreDocente
 
     const onEventDetalle = (seccion: SeccionesDocente) => {
         navigate(`../estudiante-detalle`, {
             state: {
                 seccion: seccion,
                 docente: {
-                    idDocente: idDocente
+                    idDocente: idDocente,
+                    nombreDocente: nombreDocente
                 }
             },
         })
@@ -61,6 +63,13 @@ const RevisionEstudiante = () => {
 
     return (
         <ContainerVIstas titulo='REVISIÓN SECCIONES' retornar>
+            <div className="w-full rounded-lg border-2 border-gray-300 border-t-4 mb-4">
+                <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-upla-100 text-lg sm:text-2xl">
+                    <div className=" font-bold ">
+                        <span className='text-gray-400 mr-4'>{nombreDocente}</span> {idDocente}
+                    </div>
+                </div>
+            </div>
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full max-w-full px-3 flex-0 overflow-y-auto">
                     <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">

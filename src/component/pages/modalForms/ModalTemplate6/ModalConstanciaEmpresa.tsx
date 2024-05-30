@@ -145,8 +145,8 @@ const ModalConstanciaEmpresa: React.FC<Props> = ({ show, hide,changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Modelo constancia de empresa'
                                                 tipoDoc='docx'
-                                                urlDownload='/formatos/FCAC/Formato Constancia Empresa.docx'
-                                                urlShow='/formatos/FCAC/Formato Constancia Empresa.pdf'
+                                                urlDownload='/formatos/fcac/Formato Constancia Empresa.docx'
+                                                urlShow='/formatos/fcac/Formato Constancia Empresa.pdf'
                                             />
 
                                         </div>

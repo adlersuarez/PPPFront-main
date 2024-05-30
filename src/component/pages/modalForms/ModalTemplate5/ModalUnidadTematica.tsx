@@ -152,8 +152,8 @@ const ModalUnidadTemática: React.FC<Props> = ({ show, hide, numero, changeInit 
                                             <HerramientaDoc
                                                 titulo='Estructura de Unidad Temática'
                                                 tipoDoc='pdf'
-                                                urlDownload='/Formatos/FCAC/Estructura AS - PP1.pdf'
-                                                urlShow='/Formatos/FCAC/Estructura AS - PP1.pdf'
+                                                urlDownload='/formatos/fcac/Estructura AS - PP1.pdf'
+                                                urlShow='/formatos/fcac/Estructura AS - PP1.pdf'
                                             />
 
                                         </div>

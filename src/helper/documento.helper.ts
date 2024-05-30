@@ -258,50 +258,55 @@ export const handleCrearConvenioPracticas = async (periodo: number): Promise<voi
 
             // Determinar la ruta de la plantilla
             let rutaPlantilla = '';
+            if(data.tipoConvenio === 0){
+                toast.error("Aún no puede generar un convenio hasta registrar la carta de aceptación")
+                return
+            }
+
             if (data.tipoConvenio === 1) {
-                rutaPlantilla = '/plantillas/convenio-no-remunerado.docx';
+                rutaPlantilla = '/plantillas/convenio-no-remunerado.docx'
             } else if (data.tipoConvenio === 2) {
-                rutaPlantilla = '/plantillas/convenio-remunerado.docx';
+                rutaPlantilla = '/plantillas/convenio-remunerado.docx'
             } else {
-                throw new Error('Tipo de convenio no soportado');
+                throw new Error('Tipo de convenio no soportado')
             }
 
             // Cargar la plantilla
-            const response = await fetch(rutaPlantilla);
+            const response = await fetch(rutaPlantilla)
             if (!response.ok) {
-                throw new Error('Error al cargar la plantilla');
+                throw new Error('Error al cargar la plantilla')
             }
-            const contenidoPlantilla = await response.arrayBuffer();
+            const contenidoPlantilla = await response.arrayBuffer()
 
             // Procesar la plantilla
-            const zip = new PizZip(contenidoPlantilla);
-            const doc = new Docxtemplater(zip);
-            doc.render(data);
+            const zip = new PizZip(contenidoPlantilla)
+            const doc = new Docxtemplater(zip)
+            doc.render(data)
 
             // Generar el documento final
-            const buffer = doc.getZip().generate({ type: 'blob' });
+            const buffer = doc.getZip().generate({ type: 'blob' })
 
             // Crear un objeto URL para el blob generado
-            const blobURL = URL.createObjectURL(buffer);
+            const blobURL = URL.createObjectURL(buffer)
 
             // Crear un enlace de descarga y simular un clic en él para iniciar la descarga del archivo
-            const link = document.createElement('a');
+            const link = document.createElement('a')
             link.href = blobURL;
-            link.download = 'Convenio-practicas.docx';
-            document.body.appendChild(link);
-            link.click();
+            link.download = 'Convenio-practicas.docx'
+            document.body.appendChild(link)
+            link.click()
 
             // Limpiar el objeto URL creado
-            URL.revokeObjectURL(blobURL);
-            document.body.removeChild(link);
+            URL.revokeObjectURL(blobURL)
+            document.body.removeChild(link)
         } else if (responseDatos instanceof RestError) {
             if (responseDatos.getType() !== Types.CANCELED) {
-                console.error(responseDatos.getMessage());
+                console.error(responseDatos.getMessage())
             }
         } else {
-            console.error('Respuesta inesperada del servidor');
+            console.error('Respuesta inesperada del servidor')
         }
     } catch (error) {
-        console.error('Error al crear el convenio de prácticas:', error);
+        console.error('Error al crear el convenio de prácticas:', error)
     }
-};
+}

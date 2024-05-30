@@ -22,14 +22,14 @@ const Formato = () => {
             tipo: 'Modelo',
             nombre: "Carta de Aceptación",
             resumen: "Documento formal que confirma tu aceptación en una institución formalmente reconocida",
-            urlDownload: '/formatos/FCAC/Modelo Carta Aceptacion.docx',
+            urlDownload: '/formatos/fcac/Modelo Carta Aceptacion.docx',
             formato: 'docx'
         },
         {
             tipo: 'Estructura',
             nombre: "Informe Final",
             resumen: "Documento detallado de la experiencia del estudiante durante su periodo de prácticas en una organización",
-            urlDownload: '/formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf',
+            urlDownload: '/formatos/fcac/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf',
             formato: 'pdf'
         },
     ]

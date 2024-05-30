@@ -7,7 +7,7 @@ interface DropdownComponentProps {
     buscar: boolean
 }
 
-export const SelectSeccion: React.FC<DropdownComponentProps> = ({ handleListClick, listaResultado, buscar }) => {
+const SelectSeccion: React.FC<DropdownComponentProps> = ({ handleListClick, listaResultado, buscar }) => {
     const [desplegar, setDesplegar] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
     const [buscando, setBuscando] = useState<boolean>(false)
@@ -119,3 +119,5 @@ export const SelectSeccion: React.FC<DropdownComponentProps> = ({ handleListClic
         </div>
     )
 }
+
+export default SelectSeccion

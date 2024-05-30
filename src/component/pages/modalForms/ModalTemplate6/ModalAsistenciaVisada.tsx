@@ -145,8 +145,8 @@ const ModalAsistenciaVisada: React.FC<Props> = ({ show, hide, changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Modelo de asistencia'
                                                 tipoDoc='docx'
-                                                urlDownload='/formatos/FCAC/Modelo de Asistencia.docx'
-                                                urlShow='/formatos/FCAC/Modelo de Asistencia.pdf'
+                                                urlDownload='/formatos/fcac/Modelo de Asistencia.docx'
+                                                urlShow='/formatos/fcac/Modelo de Asistencia.pdf'
                                             />
 
                                            

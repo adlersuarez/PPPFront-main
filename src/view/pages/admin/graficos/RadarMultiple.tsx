@@ -28,7 +28,7 @@ interface PieChartProps {
     tipo: 'porcentaje' | 'cantidad'
 }
 
-export const RadarChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo }) => {
+const RadarChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo }) => {
     
     const chartData = {
         labels: labels,
@@ -82,3 +82,5 @@ export const RadarChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo
         <Radar data={chartData} options={options} />
     )
 }
+
+export default RadarChart

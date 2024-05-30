@@ -33,7 +33,7 @@ interface ChartProps {
 }
 
 // Definición del componente
-export const MultipleCustomChart: React.FC<ChartProps> = ({ data, labels, titulo }) => {
+const MultipleCustomChart: React.FC<ChartProps> = ({ data, labels, titulo }) => {
     const maxData = data.reduce((max, dataset) => {
         const maxInDataset = Math.max(...dataset.data);
         return Math.max(max, maxInDataset);
@@ -81,3 +81,5 @@ export const MultipleCustomChart: React.FC<ChartProps> = ({ data, labels, titulo
 
     return <Chart type={'bar'} data={chartData} options={options} />;
 }
+
+export default MultipleCustomChart

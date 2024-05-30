@@ -150,15 +150,15 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Estructura de Informe Final'
                                                 tipoDoc='pdf'
-                                                urlDownload={'/formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
-                                                urlShow={'/formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
+                                                urlDownload={'/formatos/fcac/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
+                                                urlShow={'/formatos/fcac/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
                                             />
 
                                             <HerramientaDoc
                                                 titulo='Modelo de carátula'
                                                 tipoDoc='docx'
-                                                urlDownload='/formatos/FCAC/Modelo de Caratula.docx'
-                                                urlShow='/formatos/FCAC/Modelo de Caratula.pdf'
+                                                urlDownload='/formatos/fcac/Modelo de Caratula.docx'
+                                                urlShow='/formatos/fcac/Modelo de Caratula.pdf'
                                             />
 
                                         </div>

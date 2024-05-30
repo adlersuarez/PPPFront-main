@@ -23,7 +23,7 @@ export const AreaPracticasAdmin: React.FC<AreaPracticas> = ({ datosArea }) => {
                 <div className='flex gap-4'>
                     <div className='shrink-0 text-gray-500 font-medium'>Área :</div>
                     <span className='text-upla-100 font-semibold'>
-                        {' -- aqui va el area --'}
+                        {datosArea?.descripcionAreaPracticas}
                     </span>
                 </div>
                 <div className='flex gap-4'>

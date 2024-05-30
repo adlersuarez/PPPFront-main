@@ -23,6 +23,7 @@ const RevisionSeccionAlumno = () => {
     const location = useLocation()
     const seccion: SeccionesDocente = location.state.seccion
     const idDocente: string = location.state.docente.idDocente
+    const nombreDocente: string = location.state.docente.nombreDocente
 
     const datos: Record<string, string> = {
         facultad: seccion.fac_Facultad,
@@ -84,7 +85,13 @@ const RevisionSeccionAlumno = () => {
 
     return (
         <ContainerVIstas titulo='REVISIÓN ESTUDIANTES' retornar>
-
+            <div className="w-full rounded-lg border-2 border-gray-300 border-t-4 mb-4">
+                <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-upla-100 text-lg sm:text-2xl">
+                    <div className=" font-bold ">
+                        <span className='text-gray-400 mr-4'>{nombreDocente}</span> {idDocente}
+                    </div>
+                </div>
+            </div>
             <div onClick={() => setShowDetalles(!showDetalles)} role='button'
                 className="w-full rounded-lg border-2 border-gray-300 border-t-4">
                 <div className="flex justify-between border-b-2 border-gray-200 py-2 px-4 text-upla-100 text-lg sm:text-2xl">

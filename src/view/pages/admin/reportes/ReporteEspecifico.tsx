@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, Suspense, useRef, useState } from "react";
 import ContainerVIstas from "@/component/Container";
 import { ListarSeccionDocente } from "@/network/rest/practicas.network";
 import Listas from "@/model/interfaces/Listas.model.interface";
@@ -7,11 +7,13 @@ import { RootState } from "@/store/configureStore.store";
 import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
-import { SelectSeccion } from "../componentes/SelectSeccion";
 import SeccionesDocente from "@/model/interfaces/docente/secciones";
 import toast from "react-hot-toast";
-import { EspecificoEstudiante } from "./componentes/EspecificoEstudiante";
-import { EspecificoDocente } from "./componentes/EspecificoDocente";
+
+const SelectSeccion = React.lazy(() => import('../componentes/SelectSeccion'))
+const EspecificoEstudiante = React.lazy(() => import('./componentes/EspecificoEstudiante'))
+const EspecificoDocente = React.lazy(() => import('./componentes/EspecificoDocente'))
+
 
 const ReporteEspecifico: React.FC = () => {
 
@@ -104,9 +106,6 @@ const ReporteEspecifico: React.FC = () => {
         setBuscar(true)
     }
 
-    console.log(carId, asiId, sedeId, seccion)
-
-
     return (
         <ContainerVIstas titulo='REPORTE ESPECÍFICO' retornar>
             <div className="flex flex-col p-2 gap-4">
@@ -147,41 +146,49 @@ const ReporteEspecifico: React.FC = () => {
                         </div>
                         {
                             tipoUsuario === 'Docente' &&
-                            <SelectSeccion
-                                handleListClick={handleListClick}
-                                listaResultado={secciones}
-                                buscar={buscar}
-                            />
+                            <Suspense fallback={<div>Cargando...</div>}>
+                                <SelectSeccion
+                                    handleListClick={handleListClick}
+                                    listaResultado={secciones}
+                                    buscar={buscar}
+                                />
+                            </Suspense>
+
                         }
 
                     </div>
                 </div>
                 {
                     tipoUsuario === 'Estudiante' &&
-                    <EspecificoEstudiante
-                        codEstudiante={codigoBusqueda}
+                    <Suspense fallback={<div>Cargando...</div>}>
+                        <EspecificoEstudiante
+                            codEstudiante={codigoBusqueda}
 
-                        buscar={buscar}
-                    />
+                            buscar={buscar}
+                        />
+                    </Suspense>
+
 
                 }
 
 
                 {
                     tipoUsuario === 'Docente' &&
-                    <EspecificoDocente
-                        codDocente={codigoBusqueda}
-                        carId={carId}
-                        asiId={asiId}
-                        sedeId={sedeId}
-                        periodo={periodo}
-                        seccion={seccion}
+                    <Suspense fallback={<div>Cargando...</div>}>
+                        <EspecificoDocente
+                            codDocente={codigoBusqueda}
+                            carId={carId}
+                            asiId={asiId}
+                            sedeId={sedeId}
+                            periodo={periodo}
+                            seccion={seccion}
 
-                        secciones={secciones}
-                        buscar={buscar}
-                    />
+                            secciones={secciones}
+                            buscar={buscar}
+                        />
+                    </Suspense>
+
                 }
-
 
             </div>
         </ContainerVIstas>

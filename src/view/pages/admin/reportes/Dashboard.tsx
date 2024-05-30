@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import ContainerVIstas from "@/component/Container";
 import { ListarAsignaturasPeriodo, ListarCarrerasPorFacultad, ListarDocentesCarreraAsignatura, ListarFacultades, ListarPeriodos, ReporteDatosDiasPracticas, ReporteDatosGenerales, ReporteDatosGradoJefe, ReporteDatosRankEmpresa, ReporteDatosTipoEmpresa } from "@/network/rest/reportes.network";
 import Listas from "@/model/interfaces/Listas.model.interface";
@@ -7,21 +7,23 @@ import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
 import Carrera from "@/model/interfaces/reportes/carrera";
-import { CardDashboard } from "../componentes/CardDashboard";
 import Asignatura from "@/model/interfaces/reportes/asignatura";
 import Docente from "@/model/interfaces/reportes/docente";
 import Periodos from "@/model/interfaces/reportes/periodos";
 import { convertirANumerosRomanos } from "@/helper/herramienta.helper";
 import DatosGenerales from "@/model/interfaces/reportes/datosGenerales";
-import { BarChart } from "../graficos/BarMultiple";
-import { PieChart } from "../graficos/PieMultiple";
+
 import TipoEmpresa from "@/model/interfaces/reportes/tipoEmpresa";
 import RankEmpresa from "@/model/interfaces/reportes/rankEmpresa";
 import TipoGradoJefe from "@/model/interfaces/reportes/tipoGradoJefe";
 import TipoDia from "@/model/interfaces/reportes/tipoDia";
 import { agregarColorHexTipoEmpresa, agregarColorHexTipoGradoJefe, bgColorReportes, convertirBgColortoArrayRGBA, getCantidadesRankEmpresa, getCantidadesTipoDia, getCantidadesTipoEmpresa, getCantidadesTipoGradoJefe, getLabelsRankEmpresa, getLabelsTipoDia, getLabelsTipoEmpresa, getLabelsTipoGradoJefe, totalTipoEmpresa, totalTipoGradoJefe } from "@/helper/reporte.color";
 import { HelperColor } from "../componentes/HelperColor";
-import { NoResultados } from "../componentes/NoResultados";
+
+const CardDashboard = React.lazy(() => import('../componentes/CardDashboard'))
+const NoResultados = React.lazy(() => import('../componentes/NoResultados'))
+const PieChart = React.lazy(() => import('../graficos/PieMultiple'))
+const BarChart = React.lazy(() => import('../graficos/BarMultiple'))
 
 const Dashboard: React.FC = () => {
 
@@ -127,11 +129,11 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         LoadAsignatura()
-    }, [carreraId,periodoId])
+    }, [carreraId, periodoId])
 
     useEffect(() => {
         LoadDocente()
-    }, [asignaturaId,carreraId,periodoId])
+    }, [asignaturaId, carreraId, periodoId])
 
     useEffect(() => {
         const today = new Date()
@@ -385,7 +387,7 @@ const Dashboard: React.FC = () => {
                                     <option value="000000">Todas</option>
                                     {asignaturas.map((asi, index) => (
                                         <option key={index} value={asi.asignaturaId}>
-                                           {carreraId == '00' && asi.carreraId + ' - '}{asi.asignaturaNombre}
+                                            {carreraId == '00' && asi.carreraId + ' - '}{asi.asignaturaNombre}
                                         </option>
                                     ))}
                                 </select>
@@ -410,35 +412,43 @@ const Dashboard: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-4">
+                    <Suspense fallback={<div>Cargando...</div>}>
+                        <CardDashboard
+                            bgGradient="from-blue-400 to-upla-100"
+                            iconClass="bi-pencil-square"
+                            title="Estudiantes"
+                            quantity={datosDashboard?.cantTotal ?? 0}
+                            description="Matriculados"
+                        />
+                    </Suspense>
+                    <Suspense fallback={<div>Cargando...</div>}>
+                        <CardDashboard
+                            bgGradient="from-green-700 to-green-300"
+                            iconClass="bi-check-lg"
+                            title="Estudiantes"
+                            quantity={datosDashboard?.cantActivo ?? 0}
+                            description="Activos"
+                        />
+                    </Suspense>
+                    <Suspense fallback={<div>Cargando...</div>}>
+                        <CardDashboard
+                            bgGradient="from-red-700 to-pink-300"
+                            iconClass="bi-exclamation-triangle-fill"
+                            title="Estudiantes"
+                            quantity={datosDashboard?.cantInactivo ?? 0}
+                            description="No activos"
+                        />
+                    </Suspense>
+                    <Suspense fallback={<div>Cargando...</div>}>
+                        <CardDashboard
+                            bgGradient="from-blue-400 to-blue-600"
+                            iconClass="bi-file-earmark-arrow-down"
+                            title="Cartas de presentación"
+                            quantity={datosDashboard?.cantGenerada ?? 0}
+                            description="Generadas"
+                        />
+                    </Suspense>
 
-                    <CardDashboard
-                        bgGradient="from-blue-400 to-upla-100"
-                        iconClass="bi-pencil-square"
-                        title="Estudiantes"
-                        quantity={datosDashboard?.cantTotal ?? 0}
-                        description="Matriculados"
-                    />
-                    <CardDashboard
-                        bgGradient="from-green-700 to-green-300"
-                        iconClass="bi-check-lg"
-                        title="Estudiantes"
-                        quantity={datosDashboard?.cantActivo ?? 0}
-                        description="Activos"
-                    />
-                    <CardDashboard
-                        bgGradient="from-red-700 to-pink-300"
-                        iconClass="bi-exclamation-triangle-fill"
-                        title="Estudiantes"
-                        quantity={datosDashboard?.cantInactivo ?? 0}
-                        description="No activos"
-                    />
-                    <CardDashboard
-                        bgGradient="from-blue-400 to-blue-600"
-                        iconClass="bi-file-earmark-arrow-down"
-                        title="Cartas de presentación"
-                        quantity={datosDashboard?.cantGenerada ?? 0}
-                        description="Generadas"
-                    />
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -474,17 +484,23 @@ const Dashboard: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="p-4 m-auto sm:h-[280px]">
-                                        <PieChart
-                                            data={tipoEmpresaDatos.data}
-                                            labels={tipoEmpresaDatos.labels}
-                                            legend={false}
-                                            tipo={'porcentaje'}
-                                        />
+                                        <Suspense fallback={<div>Cargando...</div>}>
+                                            <PieChart
+                                                data={tipoEmpresaDatos.data}
+                                                labels={tipoEmpresaDatos.labels}
+                                                legend={false}
+                                                tipo={'porcentaje'}
+                                            />
+                                        </Suspense>
+
                                     </div>
 
                                 </div>
                                 :
-                                <NoResultados />
+                                <Suspense fallback={<div>Cargando...</div>}>
+                                    <NoResultados />
+                                </Suspense>
+
                         }
 
                     </div>
@@ -523,7 +539,9 @@ const Dashboard: React.FC = () => {
                                     </div>
                                 </>
                                 :
-                                <NoResultados />
+                                <Suspense fallback={<div>Cargando...</div>}>
+                                    <NoResultados />
+                                </Suspense>
                         }
 
                     </div>
@@ -564,7 +582,9 @@ const Dashboard: React.FC = () => {
 
                                 </div>
                                 :
-                                <NoResultados />
+                                <Suspense fallback={<div>Cargando...</div>}>
+                                    <NoResultados />
+                                </Suspense>
                         }
                     </div>
 
@@ -602,7 +622,9 @@ const Dashboard: React.FC = () => {
                                     </div>
                                 </>
                                 :
-                                <NoResultados />
+                                <Suspense fallback={<div>Cargando...</div>}>
+                                    <NoResultados />
+                                </Suspense>
                         }
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const NoResultados: React.FC = () => {
+const NoResultados: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-center h-full sm:min-h-[280px] text-center">
             <svg className="w-12 h-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -11,3 +11,4 @@ export const NoResultados: React.FC = () => {
         </div>
     )
 }
+export default NoResultados

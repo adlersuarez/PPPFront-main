@@ -27,7 +27,7 @@ interface ChartProps {
     fill?:boolean
 }
 
-export const LineChart: React.FC<ChartProps> = ({ data, labels, titulo, fill }) => {
+const LineChart: React.FC<ChartProps> = ({ data, labels, titulo, fill }) => {
 
     const maxData = data.reduce((max, dataset) => {
         const maxInDataset = Math.max(...dataset.data);
@@ -74,3 +74,5 @@ export const LineChart: React.FC<ChartProps> = ({ data, labels, titulo, fill }) 
 
     return <Line data={chartData} options={options} />
 }
+
+export default LineChart

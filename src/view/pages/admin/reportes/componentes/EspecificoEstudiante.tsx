@@ -28,7 +28,7 @@ interface StudentDetailsProps {
     buscar: boolean
 }
 
-export const EspecificoEstudiante: React.FC<StudentDetailsProps> = ({ codEstudiante, buscar }) => {
+const EspecificoEstudiante: React.FC<StudentDetailsProps> = ({ codEstudiante, buscar }) => {
 
     const abortController = useRef(new AbortController())
     const periodo = useSelector((state: RootState) => state.infoPersonal.periodoId)
@@ -305,3 +305,5 @@ export const EspecificoEstudiante: React.FC<StudentDetailsProps> = ({ codEstudia
         </div>
     )
 }
+
+export default EspecificoEstudiante

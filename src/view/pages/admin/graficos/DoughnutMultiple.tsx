@@ -25,7 +25,7 @@ interface PieChartProps {
     tipo: 'porcentaje' | 'cantidad'
 }
 
-export const DoughnutChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo }) => {
+const DoughnutChart: React.FC<PieChartProps> = ({ data, labels, titulo, tipo }) => {
     const chartData = {
         labels: labels,
         datasets: data.map(dataset => {
@@ -62,5 +62,7 @@ export const DoughnutChart: React.FC<PieChartProps> = ({ data, labels, titulo, t
 
     return (
         <Doughnut data={chartData} options={options} />
-    );
+    )
 }
+
+export default DoughnutChart

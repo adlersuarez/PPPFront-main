@@ -25,10 +25,11 @@ const RevisionDocente = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [listaDocentes, setListaDocentes] = useState<ListaDocente[]>([])
 
-    const onEventDetalle = (idDocente: string) => {
+    const onEventDetalle = (idDocente: string, nombreDocente: string) => {
         navigate(`../docente-detalle`, {
             state: {
                 idDocente: idDocente,
+                nombreDocente: nombreDocente,
                 idAsig: carrera
             },
         })
@@ -104,7 +105,7 @@ const RevisionDocente = () => {
                                                             <button
                                                                 title="Ver historial"
                                                                 className="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-md text-sm px-4 py-2"
-                                                                onClick={() => onEventDetalle(item.per_Id)}
+                                                                onClick={() => onEventDetalle(item.per_Id, item.perNombre)}
                                                             >
                                                                 <i className="bi bi-list-ul text-sm" />
                                                             </button>
