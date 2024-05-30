@@ -22,7 +22,6 @@ interface Props {
 
 const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
 
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
     const abortController = useRef(new AbortController())
 
@@ -41,7 +40,7 @@ const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
 
     const LoadEstadoPlan = async () => {
         // setGrado([])
-        const response = await EstadoPlanActividades<EstadoValor>(codigo, periodo, abortController.current)
+        const response = await EstadoPlanActividades<EstadoValor>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as EstadoValor
             setEstadoPlan(Number(data.value))

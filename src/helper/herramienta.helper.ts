@@ -617,3 +617,8 @@ export function convertirHorarioDetalle(detallePracticas: DuracionPracticas[]): 
     horaFin: detalle.horaFin
   }))
 }
+
+export function raizDoc() {
+  const raiz = import.meta.env.VITE_STORAGE_DOC_REQUERIDO
+  return raiz
+}

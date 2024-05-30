@@ -1,34 +1,26 @@
-import { obtenerNombreArchivo } from "@/helper/herramienta.helper"
+import { handleCrearConvenioPracticas } from "@/helper/documento.helper"
+import { RootState } from "@/store/configureStore.store"
+import { useState } from "react"
+import { useSelector } from "react-redux"
 
 type Props = {
     tipo: string
     nombre: string
     resumen: string
     formato: string
-    urlDownload?: string
 }
 
-const FormatoCard: React.FC<Props> = ({ urlDownload, tipo, nombre, resumen, formato }) => {
+const ConvenioCard: React.FC<Props> = ({ tipo, nombre, resumen, formato }) => {
+
+    const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
+    const [carga, setCarga] = useState<boolean>(false)
 
     const tipoDoc = formato
 
-    const handleDownloadFile = () => {
-
-        const fileName = obtenerNombreArchivo(urlDownload ?? '')
-        const filePath = urlDownload ?? ''
-
-        fetch(filePath)
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(new Blob([blob]))
-                const link = document.createElement('a')
-                link.href = url
-                link.setAttribute('download', fileName)
-                document.body.appendChild(link)
-                link.click()
-                link.parentNode?.removeChild(link)
-            })
-            .catch(error => console.error('Error al descargar el archivo:', error))
+    const generarConvenio = async () => {
+        setCarga(true)
+        handleCrearConvenioPracticas(periodo)
+        setCarga(false)
     }
 
     return (
@@ -50,7 +42,8 @@ const FormatoCard: React.FC<Props> = ({ urlDownload, tipo, nombre, resumen, form
             </div>
 
             <button
-                onClick={() => handleDownloadFile()}
+                disabled={carga}
+                onClick={() => generarConvenio()}
                 className="bg-gray-500 hover:bg-upla-100 hover:scale-105 text-white font-bold p-2 pr-4 rounded transition-all duration-300 flex gap-4 justify-center"
             >
                 <i className="bi bi-download" /> Descargar
@@ -60,4 +53,4 @@ const FormatoCard: React.FC<Props> = ({ urlDownload, tipo, nombre, resumen, form
 
 }
 
-export default FormatoCard;
+export default ConvenioCard;

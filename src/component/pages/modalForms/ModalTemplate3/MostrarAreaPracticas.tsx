@@ -53,20 +53,20 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide, valor }) => {
                                 <i className="bi bi-building mr-2" /> EMPRESA
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Nombre :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.empresaNombre}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Nombre :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.empresaNombre}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>RUC :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.empresaRuc}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>RUC :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.empresaRuc}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Estado :</div>
-                                <span className="text-blue-700 font-bold">{'ACTIVO'}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Estado :</div>
+                                <span className="text-upla-100 font-bold">{'ACTIVO'}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Condición domicilio :</div>
-                                <span className="text-blue-700 font-bold">{'HABIDO'}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Condición :</div>
+                                <span className="text-upla-100 font-bold">{'HABIDO'}</span>
                             </div>
                         </div>
                     </div>
@@ -77,12 +77,12 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide, valor }) => {
                                 <i className="bi bi-person-vcard mr-2" /> ÁREA DE TRABAJO
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Dirección :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.direccionAreaPracticas}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Dirección :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.direccionAreaPracticas}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Ubigeo :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.ubigeo}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Ubigeo :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.ubigeo}</span>
                             </div>
                         </div>
                     </div>
@@ -93,24 +93,23 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide, valor }) => {
                                 <i className="bi bi-person-workspace mr-2" /> JEFE INMEDIATO
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Nombre :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.jefeInmediato}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Nombre :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.jefeInmediato}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Cargo :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.repCargo}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Cargo :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.repCargo}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Celular :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.jefeCelular}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Celular :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.jefeCelular}</span>
                             </div>
                             <div className='w-full flex gap-3'>
-                                <div className='whitespace-nowrap'>Email :</div>
-                                <span className="text-blue-700 font-bold">{datosAreaTrabajo?.jefeEmail}</span>
+                                <div className='whitespace-nowrap w-20 shrink-0'>Email :</div>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.jefeEmail}</span>
                             </div>
                         </div>
                     </div>
-
 
                 </div>
             </Modal.Body>

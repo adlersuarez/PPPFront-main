@@ -73,7 +73,7 @@ const ModalUnidadTemática: React.FC<Props> = ({ show, hide, numero, changeInit 
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await RegistrarDocumento<RespValue>('UT' + numero, codigo, periodo, formData)
+                    const response = await RegistrarDocumento<RespValue>('UT' + numero, periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {

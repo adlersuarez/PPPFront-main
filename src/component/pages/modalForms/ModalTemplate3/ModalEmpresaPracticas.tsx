@@ -32,7 +32,6 @@ type Props = {
 
 const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) => {
 
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
     const abortController = useRef(new AbortController())
 
@@ -55,7 +54,8 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
         cargoId: 0,
         gradoId: 0,
         jefeEmail: '',
-        jefeCelular: ''
+        jefeCelular: '',
+        descripcionAreaPracticas: ''
     })
 
     // Consulta de PRUEBA para datos del DNI
@@ -159,7 +159,7 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
     }
 
     const LoadDatosEmpresa = async () => {
-        const response = await ObtenerDatosEmpresaElegida<EmpresaAreaTrabajo>(codigo, periodo, abortController.current)
+        const response = await ObtenerDatosEmpresaElegida<EmpresaAreaTrabajo>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as EmpresaAreaTrabajo
             setEmpresaDatos(data)
@@ -188,7 +188,8 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
             cargoId: 0,
             gradoId: 0,
             jefeEmail: '',
-            jefeCelular: ''
+            jefeCelular: '',
+            descripcionAreaPracticas: ''
         })
         setDni("")
     }
@@ -286,6 +287,13 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
         })
     }
 
+    const handleChangeDescripcionArea = (event: ChangeEvent<HTMLInputElement>) => {
+        setDatosAreaTrabajo({
+            ...datosAreaTrabajo,
+            descripcionAreaPracticas: event.target.value
+        })
+    }
+
     const handleChangeEmailJefe = (event: ChangeEvent<HTMLInputElement>) => {
         setDatosAreaTrabajo({
             ...datosAreaTrabajo,
@@ -304,6 +312,11 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
 
         if (datosAreaTrabajo.areaTrabajoDireccion.trim() == '') {
             toast.error("En necesario consignar la dirección del centro laboral donde realiza sus prácticas")
+            return
+        }
+
+        if (datosAreaTrabajo.descripcionAreaPracticas.trim() == '') {
+            toast.error("En necesario consignar el área específica donde desempeña sus prácticas")
             return
         }
 
@@ -347,7 +360,8 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
             jsonAreaPractica: {
                 direccionAreaPracticas: datosAreaTrabajo.areaTrabajoDireccion,
                 depProvDist: searchTermDPD,
-                ubigeo: datosAreaTrabajo.areaTrabajoUbigeo
+                ubigeo: datosAreaTrabajo.areaTrabajoUbigeo,
+                descripcionAreaPracticas: datosAreaTrabajo.descripcionAreaPracticas
             }
         }
 
@@ -355,7 +369,7 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
             if (value) {
 
                 sweet.openInformation("Mensaje", "Procesando información...")
-                const response = await RegistrarJefeInmediato<RespValue>(periodo, codigo, params, abortController.current)
+                const response = await RegistrarJefeInmediato<RespValue>(periodo, params, abortController.current)
 
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
@@ -437,11 +451,11 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
                             />
                         </div>
                         <div className='flex flex-col gap-1'>
-                            <label htmlFor="estadoEmpresa" className='font-bold text-gray-500'>Dirección del centro laboral <i className="text-red-500 bi bi-asterisk text-xs" /></label>
+                            <label htmlFor="direccionEmpresa" className='font-bold text-gray-500'>Dirección del centro laboral <i className="text-red-500 bi bi-asterisk text-xs" /></label>
                             <input
                                 type="text"
-                                id="nombreEmpresa"
-                                name="nombreEmpresa"
+                                id="direccionEmpresa"
+                                name="direccionEmpresa"
                                 className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
                                 value={datosAreaTrabajo.areaTrabajoDireccion}
                                 onChange={handleChangeDireccionArea}
@@ -499,6 +513,18 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
                             )}
 
 
+                        </div>
+                        <div className='flex flex-col gap-1'>
+                            <label htmlFor="areaPracticasDesarrollo" className='font-bold text-gray-500'>Área de las prácticas <i className="text-red-500 bi bi-asterisk text-xs" /></label>
+                            <input
+                                type="text"
+                                id="areaPracticasDesarrollo"
+                                name="areaPracticasDesarrollo"
+                                className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
+                                value={datosAreaTrabajo.descripcionAreaPracticas}
+                                onChange={handleChangeDescripcionArea}
+                                placeholder="Ingrese el área donde desempeña sus prácticas..."
+                            />
                         </div>
                     </div>
                     <div className='bg-gray-100 text-upla-100 w-full rounded-lg flex p-2 mt-3'>

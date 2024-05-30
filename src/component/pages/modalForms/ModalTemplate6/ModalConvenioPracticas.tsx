@@ -71,7 +71,7 @@ const ModalConvenioPracticas: React.FC<Props> = ({ show, hide,changeInit }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await RegistrarDocumento<RespValue>('CP', codigo, periodo, formData)
+                    const response = await RegistrarDocumento<RespValue>('CP', periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
@@ -145,14 +145,14 @@ const ModalConvenioPracticas: React.FC<Props> = ({ show, hide,changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Convenio no remunerado'
                                                 tipoDoc='docx'
-                                                urlDownload='/Formatos/FCAC/Formato Convenio PPP no remuneradas.docx'
-                                                urlShow='/Formatos/FCAC/Formato Convenio PPP no remuneradas.pdf'
+                                                urlDownload='/formatos/FCAC/Formato Convenio PPP no remuneradas.docx'
+                                                urlShow='/formatos/FCAC/Formato Convenio PPP no remuneradas.pdf'
                                             />
                                             <HerramientaDoc
                                                 titulo='Convenio remunerado'
                                                 tipoDoc='docx'
-                                                urlDownload='/Formatos/FCAC/Formato Convenio PPP remuneradas.docx'
-                                                urlShow='/Formatos/FCAC/Formato Convenio PPP remuneradas.pdf'
+                                                urlDownload='/formatos/FCAC/Formato Convenio PPP remuneradas.docx'
+                                                urlShow='/formatos/FCAC/Formato Convenio PPP remuneradas.pdf'
                                             />
 
                                         </div>

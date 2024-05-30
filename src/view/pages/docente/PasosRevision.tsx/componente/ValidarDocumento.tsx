@@ -54,7 +54,7 @@ const ModalValidarDocumento: React.FC<Props> = ({ show, hide, changeInit, tipoDo
 
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
-                        sweet.openSuccess("¡Operación completada con éxito!", "La carta de aceptación ha sido cargada satisfactoriamente.", () => {
+                        sweet.openSuccess("¡Operación completada con éxito!", "El documento ha sido validado satisfactoriamente.", () => {
                             changeInit()
                             hide()
                         })

@@ -13,5 +13,6 @@ export default interface RegistroAreaTrabajo {
         direccionAreaPracticas: string
         depProvDist: string
         ubigeo: string
+        descripcionAreaPracticas: string
     }
 }

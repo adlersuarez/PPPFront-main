@@ -9,4 +9,5 @@ export default interface EmpresaElegidaFormulario {
     gradoId: number
     jefeEmail: string
     jefeCelular: string
+    descripcionAreaPracticas: string
 }

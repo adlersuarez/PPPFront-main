@@ -16,7 +16,6 @@ import { compararHashSHA256 } from '@/helper/herramienta.helper';
 const Proceso = () => {
 
     const asignatura = useSelector((state: RootState) => state.infoEstudiante.asignatura)
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
     const abortController = useRef(new AbortController())
@@ -72,7 +71,7 @@ const Proceso = () => {
 
     const LoadEstadoPracticas = async () => {
         setEstado_model([])
-        const response = await ObtenerEstadoPracticasEstudiante<EstadoPracticas>(codigo, periodo, abortController.current)
+        const response = await ObtenerEstadoPracticasEstudiante<EstadoPracticas>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as EstadoPracticas
             //setEmpresaDatos(data)

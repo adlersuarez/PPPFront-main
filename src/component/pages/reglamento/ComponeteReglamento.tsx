@@ -58,7 +58,7 @@ const PdfPreview: React.FC<PdfPreviewProps> = ({ pdfUrl }) => {
 
 const ListaDetalle: React.FC<ListaDetalleProps> = ({ tipo, datos }) => {
 
-    let indice_aux = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n',]
+    let indice_aux = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',]
 
     const renderLista = () => {
         switch (tipo) {
@@ -110,8 +110,8 @@ const ListaDetalle: React.FC<ListaDetalleProps> = ({ tipo, datos }) => {
 }
 
 const RightContent: React.FC<RightContentProps> = ({ data, titulo, tipo }) => {
-    
-    let indice_aux = ['PRIMERO','SEGUNDO','TERCERO','CUARTO','QUINTO','SEXTO',]
+
+    let indice_aux = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'CUARTO', 'QUINTO', 'SEXTO',]
 
     return (
         <div className="flex flex-col gap-2 sm:gap-4">
@@ -131,9 +131,9 @@ const RightContent: React.FC<RightContentProps> = ({ data, titulo, tipo }) => {
                                             <span className="sm:text-lg text-sm font-bold w-3/12 sm:w-1/5">
                                                 {
                                                     tipo === 'literal' ?
-                                                    `${indice_aux[index]}`
-                                                    :
-                                                    `Art. ${articulo.id}°`
+                                                        `${indice_aux[index]}`
+                                                        :
+                                                        `Art. ${articulo.id}°`
                                                 }
                                             </span>
                                             <div className="w-9/12 sm:w-4/5 flex flex-col gap-1 sm:gap:2">

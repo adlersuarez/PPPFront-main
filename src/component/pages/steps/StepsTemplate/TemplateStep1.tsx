@@ -29,7 +29,6 @@ interface Props {
 
 const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
 
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     //Código de asignatura
     const idAsign = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
 
@@ -67,7 +66,7 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
     const LoadPagosCarta = async () => {
         setCargarDatosCarta(true)
         setPagosCarta([])
-        const response = await ConsultaPagoCartaPresentacion<Listas>(codigo, abortController.current)
+        const response = await ConsultaPagoCartaPresentacion<Listas>(abortController.current)
 
         if (response instanceof Response) {
             const data = response.data.resultado as PagoCarta[]
@@ -84,7 +83,7 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
     const LoadPagosTramite = async () => {
         setCargarDatosCarta(true)
         setPagosCarta([])
-        const response = await ConsultaPagoTramite<Listas>(codigo, abortController.current)
+        const response = await ConsultaPagoTramite<Listas>(abortController.current)
 
         if (response instanceof Response) {
             const data = response.data.resultado as PagoCarta[]
@@ -102,7 +101,7 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
 
     const LoadDatosCartas = async () => {
         setCartaPresentDatos([])
-        const response = await ObtenerDatosCartaPresentacion<Listas>(codigo, operacionSeleccionada, abortController.current)
+        const response = await ObtenerDatosCartaPresentacion<Listas>(operacionSeleccionada, abortController.current)
         if (response instanceof Response) {
             const data = response.data.resultado as CartaPresentacionDatos[]
             setCartaPresentDatos(data)

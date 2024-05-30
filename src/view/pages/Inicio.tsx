@@ -56,7 +56,7 @@ const InicioAfterLogin = () => {
                                         icon={'bi-book'}
                                         color='bg-upla-100'
                                         hover='bg-upla-200'
-                                        download='/Manual/Manual-docente.pdf'
+                                        download='/manual/Manual-docente.pdf'
                                     />
 
                                     <ButtonLink
@@ -177,7 +177,7 @@ const InicioAfterLogin = () => {
                                 icon={'bi-book'}
                                 color='bg-upla-100'
                                 hover='bg-upla-200'
-                                download='/Manual/Manual-estudiante.pdf'
+                                download={'/manual/Manual-estudiante.pdf'}
                             />
 
                             <ButtonLink

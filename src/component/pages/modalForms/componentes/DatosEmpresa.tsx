@@ -375,10 +375,10 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
                     />
                 </div>
                 <div className='flex flex-col gap-1'>
-                    <label htmlFor="gradoInstruccion" className='font-bold text-gray-500'>Grado de instrucción</label>
+                    <label htmlFor="tipoEmpresa" className='font-bold text-gray-500'>Tipo de empresa</label>
                     <select
-                        id="gradoInstruccion"
-                        name="gradoInstruccion"
+                        id="tipoEmpresa"
+                        name="tipoEmpresa"
                         className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-xs sm:text-sm'
                         defaultValue={datos.tipo_empresa_id}
                         onChange={handleChangeTipoEmpresa}

@@ -27,7 +27,8 @@ import TipoGradoJefe from "./reportes/tipoGradoJefe";
 import RankEmpresa from "./reportes/rankEmpresa";
 import SeccionDetalle from "./reportes/seccionDetalle";
 import ReporteSunedu from "./reportes/reporteSunedu";
+import ConvenioPracticas from "./convenio/convenioPracticas";
 
 export default interface Listas {
-    resultado: Grado[] | Cargo[] | CartaPresentacionDatos[] | EmpresaCarta[] | Ubigeo[] | UnidadTematica[] | DiasPracticas[] | PagoCarta[] | ActividadUnidad[] | SeccionesDocente[] | ListaSeccion[] | ListaCartaEmpresaDocente[] | HorarioEstudiante[] | DuracionPracticas[] | ExcluidoPracticas[] | MostrarDocumentoUrl[] | ListaDocente[] | DocumentoAdmin[] | Facultad[] | Carrera[] | Asignatura[] | Docente[] | Periodos[] | TipoDia[] | tipoEmpresa[] | TipoGradoJefe[] | RankEmpresa[] | SeccionDetalle[] | ReporteSunedu[]
+    resultado: Grado[] | Cargo[] | CartaPresentacionDatos[] | EmpresaCarta[] | Ubigeo[] | UnidadTematica[] | DiasPracticas[] | PagoCarta[] | ActividadUnidad[] | SeccionesDocente[] | ListaSeccion[] | ListaCartaEmpresaDocente[] | HorarioEstudiante[] | DuracionPracticas[] | ExcluidoPracticas[] | MostrarDocumentoUrl[] | ListaDocente[] | DocumentoAdmin[] | Facultad[] | Carrera[] | Asignatura[] | Docente[] | Periodos[] | TipoDia[] | tipoEmpresa[] | TipoGradoJefe[] | RankEmpresa[] | SeccionDetalle[] | ReporteSunedu[] | ConvenioPracticas[]
 }

@@ -37,8 +37,8 @@ const Reglamento = () => {
     const reglamentos: PropsReglamento[] = [
         {
             encabezado: 'HUANCAYO-PERÚ 2019',
-            urlImg: '/Reglamentos/ImagenReglamento.png',
-            urlDoc: '/Reglamentos/Reglamento-General-de-PPP.pdf',
+            urlImg: '/reglamentos/ImagenReglamento.png',
+            urlDoc: '/reglamentos/Reglamento-General-de-PPP.pdf',
             titulo: 'REGLAMENTO GENERAL DE PRÁCTICAS PREPROFESIONALES',
             texto: 'APROBADO MEDIANTE RESOLUCIÓN Nº 1786-2019-CU-VRAC',
             contenido: [

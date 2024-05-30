@@ -71,7 +71,7 @@ const ModalConstanciaEmpresa: React.FC<Props> = ({ show, hide,changeInit }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await RegistrarDocumento<RespValue>('CE', codigo, periodo, formData)
+                    const response = await RegistrarDocumento<RespValue>('CE', periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
@@ -145,8 +145,8 @@ const ModalConstanciaEmpresa: React.FC<Props> = ({ show, hide,changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Modelo constancia de empresa'
                                                 tipoDoc='docx'
-                                                urlDownload='/Formatos/FCAC/Formato Constancia Empresa.docx'
-                                                urlShow='/Formatos/FCAC/Formato Constancia Empresa.pdf'
+                                                urlDownload='/formatos/FCAC/Formato Constancia Empresa.docx'
+                                                urlShow='/formatos/FCAC/Formato Constancia Empresa.pdf'
                                             />
 
                                         </div>

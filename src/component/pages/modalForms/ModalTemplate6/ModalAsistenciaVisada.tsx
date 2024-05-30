@@ -71,7 +71,7 @@ const ModalAsistenciaVisada: React.FC<Props> = ({ show, hide, changeInit }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await RegistrarDocumento<RespValue>('AV', codigo, periodo, formData)
+                    const response = await RegistrarDocumento<RespValue>('AV', periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
@@ -145,8 +145,8 @@ const ModalAsistenciaVisada: React.FC<Props> = ({ show, hide, changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Modelo de asistencia'
                                                 tipoDoc='docx'
-                                                urlDownload='/Formatos/FCAC/Modelo de Asistencia.docx'
-                                                urlShow='/Formatos/FCAC/Modelo de Asistencia.pdf'
+                                                urlDownload='/formatos/FCAC/Modelo de Asistencia.docx'
+                                                urlShow='/formatos/FCAC/Modelo de Asistencia.pdf'
                                             />
 
                                            

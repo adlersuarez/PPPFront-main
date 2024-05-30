@@ -125,7 +125,7 @@ const Inicio = () => {
                     setInformacion(response.data as Estudiante)
                     setCargando(false)
 
-                    const respuestaAlumno = await ConsultaInfoEstId<InfoEstudiante>(codigo)
+                    const respuestaAlumno = await ConsultaInfoEstId<InfoEstudiante>()
                     if (respuestaAlumno instanceof Response) {
                         dispatch(loginDataEstudiante(respuestaAlumno.data))
                         //guardamos los datos del alumno

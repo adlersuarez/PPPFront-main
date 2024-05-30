@@ -1,4 +1,5 @@
 import ContainerVIstas from "@/component/Container";
+import ConvenioCard from "@/component/pages/cards/Convenio";
 import FormatoCard from "@/component/pages/cards/FormatoCard";
 import { obtenerNombreInforme } from "@/helper/herramienta.helper";
 import { RootState } from "@/store/configureStore.store";
@@ -8,12 +9,12 @@ interface Document {
     tipo: string
     nombre: string
     resumen: string
-    urlDownload: string
+    formato: string
+    urlDownload?: string
 }
 
 const Formato = () => {
 
-    //Código de asignatura
     const idAsign = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
 
     const documents: Document[] = [
@@ -21,15 +22,24 @@ const Formato = () => {
             tipo: 'Modelo',
             nombre: "Carta de Aceptación",
             resumen: "Documento formal que confirma tu aceptación en una institución formalmente reconocida",
-            urlDownload: '/Formatos/FCAC/Modelo Carta Aceptacion.docx',
+            urlDownload: '/formatos/FCAC/Modelo Carta Aceptacion.docx',
+            formato: 'docx'
         },
         {
             tipo: 'Estructura',
             nombre: "Informe Final",
             resumen: "Documento detallado de la experiencia del estudiante durante su periodo de prácticas en una organización",
-            urlDownload: '/Formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf',
+            urlDownload: '/formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf',
+            formato: 'pdf'
         },
     ]
+
+    const convenio = {
+        tipo: 'Modelo',
+        nombre: "Convenio de Prácticas",
+        resumen: "Acuerdo formal establecido entre una institución educativa y una empresa u organización",
+        formato: 'docx'
+    }
 
     return (
         <ContainerVIstas titulo='FORMATOS' retornar>
@@ -47,10 +57,14 @@ const Formato = () => {
                             />
                         ))
                     }
+                    {
+                        <ConvenioCard
+                            {...convenio}
+                        />
+                    }
                 </div>
             </div>
         </ContainerVIstas>
-
     )
 }
 

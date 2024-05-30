@@ -36,6 +36,8 @@ const ButtonLink = (props: Props) => {
         return (
             <button
                 onClick={handleDownloadFile}
+                //href={props.download}
+                // download={"Manual-estudiante.pdf"}
                 className={`
             flex 
             items-center 

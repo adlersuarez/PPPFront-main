@@ -18,8 +18,9 @@ import Secciones from './view/pages/docente/Secciones';
 import RevisionAdmin from './view/pages/admin/revision/RevisionAdmin';
 import RevisionDocente from './view/pages/admin/revision/RevisionDocente';
 import RevisionEstudiante from './view/pages/admin/revision/RevisionEstudiante';
-import RevisionSeccionAlumno from './view/pages/admin/RevisionSeccionAlumno';
+
 import RevisionAlumnoEspecifico from './view/pages/admin/revision/RevisionAlumnoEspecifico';
+import RevisionSeccionAlumno from './view/pages/admin/revision/RevisionSeccionAlumno';
 
 const router = createBrowserRouter([
   {

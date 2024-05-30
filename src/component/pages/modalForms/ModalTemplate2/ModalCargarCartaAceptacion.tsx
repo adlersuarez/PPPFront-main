@@ -74,7 +74,7 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
     }
 
     const loadEmpresaCarta = async () => {
-        const response = await ListarEmpresasCartaAlumno<Listas>(periodo, codigo, abortController.current)
+        const response = await ListarEmpresasCartaAlumno<Listas>(periodo, abortController.current)
 
         if (response instanceof Response) {
             setEmpresa(response.data.resultado as EmpresaCarta[])
@@ -121,7 +121,7 @@ const ModalCargarCartaAceptacion: React.FC<Props> = ({ show, hide, init }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await ConfirmarEmpresaCarta<RespValue>(selectedEmpresa, codigo, periodo,Number(tipoConvenio), formData)
+                    const response = await ConfirmarEmpresaCarta<RespValue>(selectedEmpresa, periodo, Number(tipoConvenio), formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {

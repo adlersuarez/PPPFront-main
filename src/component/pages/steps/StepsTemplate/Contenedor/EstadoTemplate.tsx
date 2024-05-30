@@ -20,7 +20,6 @@ type DatosEstado = {
 
 const EstadoTemplate: React.FC<DatosEstado> = ({ paso }) => {
 
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
     const abortController = useRef(new AbortController())
@@ -31,7 +30,7 @@ const EstadoTemplate: React.FC<DatosEstado> = ({ paso }) => {
     const LoadEstadoPracticas = async () => {
         setCargaEstado(true)
         setEstado_model([])
-        const response = await ObtenerEstadoPracticasEstudiante<EstadoPracticas>(codigo, periodo, abortController.current)
+        const response = await ObtenerEstadoPracticasEstudiante<EstadoPracticas>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as EstadoPracticas
             setEstado_model(Object.values(data))

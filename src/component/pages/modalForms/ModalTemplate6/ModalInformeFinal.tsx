@@ -73,7 +73,7 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
 
                     sweet.openInformation("Mensaje", "Procesando información...")
 
-                    const response = await RegistrarDocumento<RespValue>('IF', codigo, periodo, formData)
+                    const response = await RegistrarDocumento<RespValue>('IF', periodo, formData)
 
                     if (response instanceof Response) {
                         if (response.data.value == "procesado") {
@@ -150,15 +150,15 @@ const ModalInformeFinal: React.FC<Props> = ({ show, hide, changeInit }) => {
                                             <HerramientaDoc
                                                 titulo='Estructura de Informe Final'
                                                 tipoDoc='pdf'
-                                                urlDownload={'/Formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
-                                                urlShow={'/Formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
+                                                urlDownload={'/formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
+                                                urlShow={'/formatos/FCAC/Estructura ' + obtenerNombreInforme(idAsign) + '.pdf'}
                                             />
 
                                             <HerramientaDoc
                                                 titulo='Modelo de carátula'
                                                 tipoDoc='docx'
-                                                urlDownload='/Formatos/FCAC/Modelo de Caratula.docx'
-                                                urlShow='/Formatos/FCAC/Modelo de Caratula.pdf'
+                                                urlDownload='/formatos/FCAC/Modelo de Caratula.docx'
+                                                urlShow='/formatos/FCAC/Modelo de Caratula.pdf'
                                             />
 
                                         </div>

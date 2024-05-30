@@ -21,7 +21,6 @@ const HerramientaDoc: React.FC<HerramientaDoc> = ({ urlDownload, urlShow, titulo
 
         const fileName = obtenerNombreArchivo(urlDownload)
         const filePath = urlDownload
-        console.log(filePath)
     
         fetch(filePath)
             .then(response => response.blob())

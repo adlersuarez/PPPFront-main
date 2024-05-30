@@ -27,7 +27,6 @@ interface Props {
 
 const TemplateStep3: React.FC<Props> = ({InitEstado}) => {
 
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
     const abortController = useRef(new AbortController())
 
@@ -54,7 +53,7 @@ const TemplateStep3: React.FC<Props> = ({InitEstado}) => {
 
     const LoadEstadoAreaTrabajo = async () => {
         // setGrado([])
-        const response = await EstadoAreaTrabajo<EstadoValor>(codigo, periodo, abortController.current)
+        const response = await EstadoAreaTrabajo<EstadoValor>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as EstadoValor
             setEstadoAreaTrabajo(Number(data.value))
@@ -69,7 +68,7 @@ const TemplateStep3: React.FC<Props> = ({InitEstado}) => {
 
     const LoadEstadoDuracion = async () => {
         // setGrado([])
-        const response = await EstadoDuracionPracticas<EstadoValor>(codigo, periodo, abortController.current)
+        const response = await EstadoDuracionPracticas<EstadoValor>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as EstadoValor
             setEstadoDuracion(Number(data.value))

@@ -60,7 +60,7 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
     const LoadFechasPracticas = async () => {
         setFechaInicial('')
         setFechaFinal('')
-        const response = await ObtenerFechasDuracionPracticas<FechaPracticas>(codigo, periodo, abortController.current)
+        const response = await ObtenerFechasDuracionPracticas<FechaPracticas>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data as FechaPracticas
             //setEmpresaDatos(data)
@@ -78,7 +78,7 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
     //------------------------ DIAS LABORABLES INICIO - FIN ------------------------
     const LoadDiasPracticas = async () => {
         setDiasPracticas([])
-        const response = await ObtenerDiasLaboralesPracticante<Listas>(codigo, periodo, abortController.current)
+        const response = await ObtenerDiasLaboralesPracticante<Listas>(periodo, abortController.current)
         if (response instanceof Response) {
             const data = response.data.resultado as DiasPracticas[]
             setDiasPracticas(data)
