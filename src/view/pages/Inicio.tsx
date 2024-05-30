@@ -32,32 +32,46 @@ const InicioAfterLogin = () => {
                             <div className='col-span-1 grid grid-cols-1 p-4'>
                                 <div className='flex flex-col gap-8 sm:my-auto'>
                                     {roles ?
-                                        <ButtonLink
-                                            to={'/admin'}
-                                            nombre={'Revisión Facultad'}
-                                            icon={'bi-play-fill'}
-                                            color='bg-gray-600'
-                                            hover='bg-gray-800'
-                                        />
-                                        :
-                                        <ButtonLink
-                                            to={'/revision'}
-                                            nombre={'Iniciar Revisión'}
-                                            icon={'bi-play-fill'}
-                                            color='bg-gray-600'
-                                            hover='bg-gray-800'
-                                        />
-                                    }
+                                        <>
+                                            <ButtonLink
+                                                to={'/admin'}
+                                                nombre={'Revisión Facultad'}
+                                                icon={'bi-play-fill'}
+                                                color='bg-gray-600'
+                                                hover='bg-gray-800'
+                                            />
+                                            <hr />
+                                            <ButtonLink
+                                                to={'/inscripcion'}
+                                                nombre={'Manual'}
+                                                icon={'bi-book'}
+                                                color='bg-upla-100'
+                                                hover='bg-upla-200'
+                                                download='/manual/Manual-administrador.pdf'
+                                            />
+                                        </>
 
-                                    <hr />
-                                    <ButtonLink
-                                        to={'/inscripcion'}
-                                        nombre={'Manual'}
-                                        icon={'bi-book'}
-                                        color='bg-upla-100'
-                                        hover='bg-upla-200'
-                                        download='/manual/Manual-docente.pdf'
-                                    />
+                                        :
+                                        <>
+                                            <ButtonLink
+                                                to={'/revision'}
+                                                nombre={'Iniciar Revisión'}
+                                                icon={'bi-play-fill'}
+                                                color='bg-gray-600'
+                                                hover='bg-gray-800'
+                                            />
+                                            <hr />
+                                            <ButtonLink
+                                                to={'/inscripcion'}
+                                                nombre={'Manual'}
+                                                icon={'bi-book'}
+                                                color='bg-upla-100'
+                                                hover='bg-upla-200'
+                                                download='/manual/Manual-docente.pdf'
+                                            />
+                                        </>
+
+                                    }
 
                                     <ButtonLink
                                         to={'/reglamentos'}
