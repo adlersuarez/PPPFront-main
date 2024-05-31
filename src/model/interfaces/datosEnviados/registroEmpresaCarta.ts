@@ -1,6 +1,4 @@
 export interface RegistroEmpresaCarta {
-    usuarioId: string
-    estudianteId: string
     codigoOperacion: string
     fechaOperacion: string
     periodoId: number

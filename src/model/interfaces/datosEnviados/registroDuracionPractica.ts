@@ -10,7 +10,6 @@ export interface DetalleExcluido {
 }
 
 export default interface RegistroDuracionPractica {
-    estudianteId: string
     periodo: number
     fechaInicio: string
     fechaFinal: string

@@ -26,7 +26,6 @@ type Props = {
 
 const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fechaOperacion, initEstado }) => {
 
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
     const [step, setStep] = useState<number>(1)
@@ -123,8 +122,6 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
         }
 
         const params: RegistroEmpresaCarta = {
-            usuarioId: codigo,
-            estudianteId: codigo,
             codigoOperacion: operacion,
             fechaOperacion: fechaOperacion,
             periodoId: periodo,

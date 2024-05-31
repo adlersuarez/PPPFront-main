@@ -257,12 +257,12 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
             </div>
             <div className='bg-gray-100 w-full rounded-lg p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3'>
                 <div className='flex flex-col gap-1'>
-                    <label htmlFor="ruc" className='font-bold text-gray-500'>RUC <i className="text-red-500 bi bi-asterisk text-xs" /></label>
+                    <label htmlFor="rucEmpresa" className='font-bold text-gray-500'>RUC <i className="text-red-500 bi bi-asterisk text-xs" /></label>
                     <div className='grid grid-cols-3 gap-2'>
                         <input
                             type="text"
-                            id="ruc"
-                            name="ruc"
+                            id="rucEmpresa"
+                            name="rucEmpresa"
                             className='col-span-2 w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
                             placeholder="Ingrese N° de RUC"
                             value={ruc}
@@ -384,8 +384,8 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
                         onChange={handleChangeTipoEmpresa}
                     >
                         <option value={0} disabled>Selecciona una opción</option>
-                        <option value={1}>Pública</option>
-                        <option value={2}>Privada</option>
+                        <option value={1}>PÚBLICA</option>
+                        <option value={2}>PRIVADA</option>
                     </select>
                 </div>
             </div>

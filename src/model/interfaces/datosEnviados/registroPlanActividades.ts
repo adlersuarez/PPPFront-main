@@ -6,8 +6,6 @@ interface UnidadTematica {
 }
 
 export default interface RegistroPlanActividades {
-    estudianteId: string
-    usuario: string
     periodo: number
     objetivoGeneral: string
     unidadTematica1: UnidadTematica

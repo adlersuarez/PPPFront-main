@@ -127,8 +127,8 @@ const ReporteEspecifico: React.FC = () => {
                             <div className='grid grid-cols-3 gap-2'>
                                 <input
                                     type="text"
-                                    id="ruc"
-                                    name="ruc"
+                                    id="codigoUsuario"
+                                    name="codigoUsuario"
                                     className='col-span-2 w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
                                     placeholder={placeHolderUser}
                                     value={codigoBusqueda}

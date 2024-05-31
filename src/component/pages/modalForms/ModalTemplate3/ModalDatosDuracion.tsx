@@ -51,7 +51,6 @@ type Props = {
 const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
     const sweet = useSweerAlert()
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
     const [startDate, setStartDate] = useState<Date | null>(null)
@@ -580,7 +579,6 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         }
 
         const params: RegistroDuracionPractica = {
-            estudianteId: codigo,
             periodo: periodo,
             fechaInicio: manualStartDate, // formato aaaa-mm-dd
             fechaFinal: manualEndDate, // formato aaaa-mm-dd

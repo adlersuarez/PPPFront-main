@@ -36,7 +36,6 @@ type Props = {
 
 const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
 
-    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
     //------- Obtenerlo de la BBDD -------//
@@ -236,8 +235,6 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
         }*/
 
         const params: RegistroPlanActividades = {
-            estudianteId: codigo,
-            usuario: codigo,
             periodo: periodo,
             objetivoGeneral: objetivoGeneral,
             unidadTematica1: {
