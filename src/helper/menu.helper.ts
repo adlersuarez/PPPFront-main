@@ -24,7 +24,7 @@ export const menusEstudiante: MenuItem[] = [
     {
         id: "3",
         titulo: "Formatos",
-        url: "/formatos",
+        url: "/formatos-estudiante",
         icono: "bi-file-earmark-text",
         moduPadre: false,
         modPosicion: 3,
@@ -34,7 +34,7 @@ export const menusEstudiante: MenuItem[] = [
     {
         id: "4",
         titulo: "Reglamentos",
-        url: "/reglamentos",
+        url: "/reglamentos-practicas",
         icono: "bi-file-ruled",
         moduPadre: false,
         modPosicion: 4,
@@ -138,7 +138,7 @@ export const menusDocente: MenuItem[] = [
     {
         id: "4",
         titulo: "Reglamentos",
-        url: "/reglamentos",
+        url: "/reglamentos-practicas",
         icono: "bi-file-ruled",
         moduPadre: false,
         modPosicion: 4,

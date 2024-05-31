@@ -27,7 +27,7 @@ const routerEstudiante = createBrowserRouter([
         element: <Proceso />,
       },
       {
-        path: 'formatos',
+        path: 'formatos-estudiante',
         element: <Formato />,
       },
       {
@@ -35,7 +35,7 @@ const routerEstudiante = createBrowserRouter([
         element: <Contacto />,
       },
       {
-        path: 'reglamentos',
+        path: 'reglamentos-practicas',
         element: <Reglamento />,
       },
       {

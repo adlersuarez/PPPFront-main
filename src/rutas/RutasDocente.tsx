@@ -38,7 +38,7 @@ const routerDocente = createBrowserRouter([
         element: <Contacto />,
       },
       {
-        path: 'reglamentos',
+        path: 'reglamentos-practicas',
         element: <Reglamento />,
       },
       {
