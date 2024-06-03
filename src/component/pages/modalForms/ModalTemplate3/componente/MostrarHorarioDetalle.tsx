@@ -162,6 +162,7 @@ const MostrarHorarioDetalle: React.FC<Props> = ({ show, hide, horarioElegido }) 
             </Modal.Header>
             <Modal.Body>
                 <div className='flex flex-col gap-3 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-upla-100 border-2 border-upla-100'>
+                <div className="min-w-[1200px]"> 
                     <Scheduler
                         timeZone="America/Lima"
                         defaultCurrentView="week"
@@ -189,17 +190,18 @@ const MostrarHorarioDetalle: React.FC<Props> = ({ show, hide, horarioElegido }) 
                             fieldExpr="color"
                         />
                     </Scheduler>
+                    </div>
                 </div>
             </Modal.Body>
             <Modal.Footer>
                 <div className="w-full flex justify-between">
                     <div className="flex flex-col gap-2 text-sm">
                         <div className="flex flex-row gap-2">
-                            <div className="my-auto bg-[#EF9A9A] w-10 h-5"/>
+                            <div className="my-auto bg-[#EF9A9A] w-10 h-5 shrink-0"/>
                             <span className="my-auto font-medium text-gray-500">Horario Académico</span>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <div className="my-auto bg-[#81C784] w-10 h-5"/>
+                            <div className="my-auto bg-[#81C784] w-10 h-5 shrink-0"/>
                             <span className="my-auto font-medium text-gray-500">Horario Prácticas preprofesionales</span>
                         </div>
                     </div>

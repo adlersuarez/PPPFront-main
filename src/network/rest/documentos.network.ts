@@ -33,3 +33,7 @@ export async function ConvertirWordToPdf<Blob>(formData: FormData, signal = null
     return await Resolve.create<Blob>(instance.post<Blob>(`/Convertir/ConvertirWordToPdfAspose`, formData, { signal: signal! }))
 }
 
+export async function ObtenerCartaPresentacionEspecifica<Blob>(CartaId: number, signal = null): Promise<Response<Blob> | RestError> {
+    return await Resolve.create<Blob>(instance.get<Blob>(`/CartaPresentacion/ObtenerCartaPresentacionEspecifica/${CartaId}`, { signal: signal! }))
+}
+

@@ -156,21 +156,21 @@ const MostrarHorarioCruce: React.FC<Props> = ({ show, hide, horarioElegido, chan
 
         <Modal onShow={show} maxWidth="max-w-[1500px]">
             <Modal.Header closeButton onHide={hide}>
-                <div className="flex gap-8">
+                <div className="flex sm:flex-row flex-col sm:gap-8 gap-2">
                     <span className="text-upla-100 font-bold ml-2 text-lg uppercase">
                         <i className="mr-2 bi bi-info-circle-fill" />
                         Verificación cruce de horarios
                     </span>
                     {
                         booleanCruce &&
-                        <span className="text-red-400 font-medium border border-red-400 px-2 rounded-md py-0.5">
-                            <i className="mr-1 animate-pulse bi bi-exclamation-triangle-fill" /> Existe cruce de Horarios
+                        <span className="text-center text-red-400 font-medium border border-red-400 px-2 rounded-md py-0.5">
+                            <i className="mr-1 animate-pulse bi bi-exclamation-triangle-fill" /> Existe cruce de horarios
                         </span>
                     }
                     {
                         horarioElegido.length === 0 &&
-                        <span className="text-gray-400 font-medium border border-gray-400 px-2 rounded-md py-0.5">
-                            <i className="mr-1 bi bi-dash-circle" /> No seleccionó ningúnn horario de prácticas
+                        <span className="text-center text-gray-400 font-medium border border-gray-400 px-2 rounded-md py-0.5">
+                            <i className="mr-1 bi bi-dash-circle" /> No seleccionó ningún horario
                         </span>
                     }
                 </div>
@@ -178,44 +178,47 @@ const MostrarHorarioCruce: React.FC<Props> = ({ show, hide, horarioElegido, chan
             </Modal.Header>
             <Modal.Body>
                 <div className='flex flex-col gap-3 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-upla-100 border-2 border-upla-100'>
-                    <Scheduler
-                        timeZone="America/Lima"
-                        defaultCurrentView="week"
-                        dataSource={dataHorario}
-                        showAllDayPanel={false}
-                        firstDayOfWeek={1}
-                        cellDuration={60}
-                        showCurrentTimeIndicator={false}
+                    <div className="min-w-[1200px]">
+                        <Scheduler
+                            timeZone="America/Lima"
+                            defaultCurrentView="week"
+                            dataSource={dataHorario}
+                            showAllDayPanel={false}
+                            firstDayOfWeek={1}
+                            cellDuration={60}
+                            showCurrentTimeIndicator={false}
 
-                        onAppointmentTooltipShowing={(e) => e.cancel = true}
-                        width={"100%"}
-                        height={"100%"}
-                        appointmentRender={renderCard}
-                        //onAppointmentClick={(e: any) => handleOpenModalInfo(e)}
-                        editing={false}
-                    >
-                        <View
-                            type="week"
-                            startDayHour={7}
-                            endDayHour={24}
-                            dateCellRender={renderDateCell}
-                        />
-                        <Resource
-                            dataSource={colorRender}
-                            fieldExpr="color"
-                        />
-                    </Scheduler>
+                            onAppointmentTooltipShowing={(e) => e.cancel = true}
+                            width={"100%"}
+                            height={"100%"}
+                            appointmentRender={renderCard}
+                            //onAppointmentClick={(e: any) => handleOpenModalInfo(e)}
+                            editing={false}
+                        >
+                            <View
+                                type="week"
+                                startDayHour={7}
+                                endDayHour={24}
+                                dateCellRender={renderDateCell}
+                            />
+                            <Resource
+                                dataSource={colorRender}
+                                fieldExpr="color"
+                            />
+                        </Scheduler>
+                    </div>
+
                 </div>
             </Modal.Body>
             <Modal.Footer>
                 <div className="w-full flex justify-between">
                     <div className="flex flex-col gap-2 text-sm">
                         <div className="flex flex-row gap-2">
-                            <div className="my-auto bg-[#EF9A9A] w-10 h-5"/>
+                            <div className="my-auto bg-[#EF9A9A] w-10 h-5 shrink-0" />
                             <span className="my-auto font-medium text-gray-500">Horario Académico</span>
                         </div>
                         <div className="flex flex-row gap-2">
-                            <div className="my-auto bg-[#81C784] w-10 h-5"/>
+                            <div className="my-auto bg-[#81C784] w-10 h-5 shrink-0" />
                             <span className="my-auto font-medium text-gray-500">Horario Seleccionado - Prácticas preprofesionales</span>
                         </div>
                     </div>

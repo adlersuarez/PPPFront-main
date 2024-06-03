@@ -205,3 +205,12 @@ export async function ObtenerObjetivoGeneral<ObjetivoGeneral>(EstudianteId: stri
 export async function ObtenerConvenioPracticas<ConvenioPracticas>(PeriodoId: number, signal = null): Promise<Response<ConvenioPracticas> | RestError> {
     return await Resolve.create<ConvenioPracticas>(instance.get<ConvenioPracticas>(`/Practicas/ObtenerConvenioPracticas/${PeriodoId}`, { signal: signal! }));
 }
+
+
+
+
+
+/*
+export async function ObtenerCartaPresentacionEspecifica<Blob>(CartaId: number, signal = null): Promise<Response<Blob> | RestError> {
+    return await Resolve.create<Blob>(instance.get<Blob>(`/CartaPresentacion/ObtenerCartaPresentacionEspecifica/${CartaId}`, { signal: signal! }))
+}*/

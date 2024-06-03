@@ -1,7 +1,6 @@
 import React, { useState, Suspense, useRef, useEffect } from 'react';
 import ContenedorSteps from './Contenedor/ContenedorSteps';
 import EstadoTemplate from './Contenedor/EstadoTemplate';
-import { handleCrearSolicitudYConvertirAPdf } from '@/helper/documento.helper';
 import { EstadoCarta } from '../../modalForms/componentes/EstadoCarta';
 import CartaPresentacionDatos from '@/model/interfaces/cartaPresentacion/cartaPresentacion';
 import Listas from '@/model/interfaces/Listas.model.interface';
@@ -19,6 +18,9 @@ import { ProcesoPasosEstudiante } from '@/helper/requisitos.helper';
 import RequisitosListaEstudiante from './Contenedor/RequisitoEstudiante';
 import ImportanteListaEstudiante from './Contenedor/ImportanteEstudiante';
 import { SuspenseModal } from '@/component/suspense/SuspenseModal';
+
+import toast from 'react-hot-toast';
+import { ObtenerCartaPresentacionEspecifica } from '@/network/rest/documentos.network';
 
 const ModalAgregarEmpresa = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalAgregarEmpresa'));
 const ModalMostrarDatos = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalMostrarDatos'));
@@ -114,9 +116,26 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
 
     const [cargaGenerarSolicitud, setCargaGenerarSolicitud] = useState<boolean>(false)
 
-    const generarSolicitud = async (carta: CartaPresentacionDatos) => {
+    const generarSolicitud = async (cartaId: number) => {
         setCargaGenerarSolicitud(true)
-        await handleCrearSolicitudYConvertirAPdf(carta)
+        const response = await ObtenerCartaPresentacionEspecifica<Blob>(cartaId)
+      //  console.log(response)
+
+        if (response instanceof Response) {
+            const pdfBlob = new Blob([response.data], { type: 'application/pdf' })
+            const pdfUrl = window.URL.createObjectURL(pdfBlob)
+            const a = document.createElement('a')
+            a.href = pdfUrl
+            a.download = 'CARTA-PRESENTACION.pdf'
+            a.click()
+
+            toast.success("¡El documento se ha generado con éxito!")
+        }
+
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return
+            console.log(response.getMessage())
+        }
         setCargaGenerarSolicitud(false)
     }
 
@@ -281,7 +300,7 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
                                                                 className="bg-gray-400 hover:bg-blue-500 hover:scale-110 text-white px-4 py-1 rounded transition-colors duration-300" >
                                                                 <i className="bi bi-eye" />
                                                             </button>
-                                                            <button onClick={() => generarSolicitud(carta)} title='Descargar PDF' disabled={cargaGenerarSolicitud}
+                                                            <button onClick={() => generarSolicitud(carta.cartaId)} title='Descargar PDF' disabled={cargaGenerarSolicitud}
                                                                 className="bg-gray-400 hover:bg-red-700 hover:scale-110 text-white px-4 py-1 rounded transition-colors duration-300" >
                                                                 {cargaGenerarSolicitud ? <LoaderSvg /> : <i className="bi bi-download" />}
                                                             </button>
