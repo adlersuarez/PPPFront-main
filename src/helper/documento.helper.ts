@@ -3,14 +3,12 @@ import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
 import CartaPresentacionDatos from "@/model/interfaces/cartaPresentacion/cartaPresentacion";
 import DatosCartaAceptacion from "@/model/interfaces/cartaPresentacion/datosCartaAceptacion";
-import { ConvertirWordToPdf } from "@/network/rest/documentos.network";
+import { ConvertirWordToPdf, ObtenerConvenioPracticas } from "@/network/rest/documentos.network";
 import axios from "axios";
 import * as Docxtemplater from 'docxtemplater';
 import * as PizZip from 'pizzip';
 import toast from "react-hot-toast";
 import { convertirANumerosRomanos, corregirNombreAdministrativo, formatearPalabrasPrimeraMayus, obtenerSedeFechaHoy, obtenerUltimaPalabra } from "./herramienta.helper";
-import ConvenioPracticas from "@/model/interfaces/convenio/convenioPracticas";
-import { ObtenerConvenioPracticas } from "@/network/rest/practicas.network";
 
 export const handleCrearSolicitud = async (data: DatosCartaAceptacion): Promise<void> => {
     // Cargar la plantilla
@@ -198,113 +196,26 @@ export const handleCrearConvenio = async (data: DatosCartaAceptacion): Promise<v
 }
 
 
-///// CONVENIO
-/*export const handleCrearConvenioPracticas = async (periodo: number): Promise<void> => {
-    // Procesar la plantilla con los datos
-
-    const responseDatos = await ObtenerConvenioPracticas<ConvenioPracticas>(periodo)
-
-    if (responseDatos instanceof Response) {
-        const data = responseDatos.data as ConvenioPracticas
-        // Cargar la plantilla
-        let rutaPlantilla = ""
-
-        if (data.tipoConvenio == 1) {
-            rutaPlantilla = '/plantillas/convenio-no-remunerado.docx'
-        }
-        if (data.tipoConvenio == 2) {
-            rutaPlantilla = '/plantillas/convenio-remunerado.docx'
-        }
-
-        const response = await fetch(rutaPlantilla)
-        const contenidoPlantilla = await response.arrayBuffer()
-
-        const zip = new PizZip(contenidoPlantilla)
-        const doc = new Docxtemplater()
-        doc.loadZip(zip)
-
-        doc.render(data)
-
-        // Generar el documento final
-        const buffer = doc.getZip().generate({ type: 'blob' })
-
-        // Crear un objeto URL para el blob generado
-        const blobURL = URL.createObjectURL(buffer)
-
-        // Crear un enlace de descarga y simular un clic en él para iniciar la descarga del archivo
-        const link = document.createElement('a')
-        link.href = blobURL
-        link.download = 'Convenio-practicas.docx'
-        document.body.appendChild(link)
-        link.click()
-
-        // Limpiar el objeto URL creado
-        URL.revokeObjectURL(blobURL)
-
-    }
-    if (responseDatos instanceof RestError) {
-        if (responseDatos.getType() === Types.CANCELED) return;
-        console.log(responseDatos.getMessage())
-    }
-
-}*/
 export const handleCrearConvenioPracticas = async (periodo: number): Promise<void> => {
     try {
         // Obtener los datos del convenio de prácticas
-        const responseDatos = await ObtenerConvenioPracticas<ConvenioPracticas>(periodo);
+        const response = await ObtenerConvenioPracticas<Blob>(periodo)
+      //  console.log(response)
 
-        if (responseDatos instanceof Response) {
-            const data = responseDatos.data as ConvenioPracticas;
+      if (response instanceof Response) {
+        const wordBlob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        const wordUrl = window.URL.createObjectURL(wordBlob);
+        const a = document.createElement('a');
+        a.href = wordUrl;
+        a.download = 'CARTA-PRESENTACION.docx';
+        a.click();
+    
+        toast.success("¡El documento se ha generado con éxito!");
+    }
 
-            // Determinar la ruta de la plantilla
-            let rutaPlantilla = '';
-            if(data.tipoConvenio === 0){
-                toast.error("Aún no puede generar un convenio hasta registrar la carta de aceptación")
-                return
-            }
-
-            if (data.tipoConvenio === 1) {
-                rutaPlantilla = '/plantillas/convenio-no-remunerado.docx'
-            } else if (data.tipoConvenio === 2) {
-                rutaPlantilla = '/plantillas/convenio-remunerado.docx'
-            } else {
-                throw new Error('Tipo de convenio no soportado')
-            }
-
-            // Cargar la plantilla
-            const response = await fetch(rutaPlantilla)
-            if (!response.ok) {
-                throw new Error('Error al cargar la plantilla')
-            }
-            const contenidoPlantilla = await response.arrayBuffer()
-
-            // Procesar la plantilla
-            const zip = new PizZip(contenidoPlantilla)
-            const doc = new Docxtemplater(zip)
-            doc.render(data)
-
-            // Generar el documento final
-            const buffer = doc.getZip().generate({ type: 'blob' })
-
-            // Crear un objeto URL para el blob generado
-            const blobURL = URL.createObjectURL(buffer)
-
-            // Crear un enlace de descarga y simular un clic en él para iniciar la descarga del archivo
-            const link = document.createElement('a')
-            link.href = blobURL;
-            link.download = 'Convenio-practicas.docx'
-            document.body.appendChild(link)
-            link.click()
-
-            // Limpiar el objeto URL creado
-            URL.revokeObjectURL(blobURL)
-            document.body.removeChild(link)
-        } else if (responseDatos instanceof RestError) {
-            if (responseDatos.getType() !== Types.CANCELED) {
-                console.error(responseDatos.getMessage())
-            }
-        } else {
-            console.error('Respuesta inesperada del servidor')
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return
+            console.log(response.getMessage())
         }
     } catch (error) {
         console.error('Error al crear el convenio de prácticas:', error)
