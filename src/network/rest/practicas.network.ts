@@ -202,10 +202,9 @@ export async function ObtenerObjetivoGeneral<ObjetivoGeneral>(EstudianteId: stri
     return await Resolve.create<ObjetivoGeneral>(instance.get<ObjetivoGeneral>(`/Practicas/ObtenerObjetivoGeneral/${EstudianteId}/${PeriodoId}`, { signal: abortController?.signal }));
 }
 
-/*
 export async function ObtenerConvenioPracticas<ConvenioPracticas>(PeriodoId: number, signal = null): Promise<Response<ConvenioPracticas> | RestError> {
     return await Resolve.create<ConvenioPracticas>(instance.get<ConvenioPracticas>(`/Practicas/ObtenerConvenioPracticas/${PeriodoId}`, { signal: signal! }));
-}*/
+}
 
 
 /*

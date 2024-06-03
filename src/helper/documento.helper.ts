@@ -3,7 +3,7 @@ import RestError from "@/model/class/resterror.model.class";
 import { Types } from "@/model/enum/types.model";
 import CartaPresentacionDatos from "@/model/interfaces/cartaPresentacion/cartaPresentacion";
 import DatosCartaAceptacion from "@/model/interfaces/cartaPresentacion/datosCartaAceptacion";
-import { ConvertirWordToPdf, ObtenerConvenioPracticas } from "@/network/rest/documentos.network";
+import { ConvertirWordToPdf, ObtenerConvenioPracticasWord } from "@/network/rest/documentos.network";
 import axios from "axios";
 import * as Docxtemplater from 'docxtemplater';
 import * as PizZip from 'pizzip';
@@ -199,19 +199,19 @@ export const handleCrearConvenio = async (data: DatosCartaAceptacion): Promise<v
 export const handleCrearConvenioPracticas = async (periodo: number): Promise<void> => {
     try {
         // Obtener los datos del convenio de prácticas
-        const response = await ObtenerConvenioPracticas<Blob>(periodo)
-      //  console.log(response)
+        const response = await ObtenerConvenioPracticasWord<Blob>(periodo)
+        //  console.log(response)
 
-      if (response instanceof Response) {
-        const wordBlob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-        const wordUrl = window.URL.createObjectURL(wordBlob);
-        const a = document.createElement('a');
-        a.href = wordUrl;
-        a.download = 'CARTA-PRESENTACION.docx';
-        a.click();
-    
-        toast.success("¡El documento se ha generado con éxito!");
-    }
+        if (response instanceof Response) {
+            const wordBlob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            const wordUrl = window.URL.createObjectURL(wordBlob);
+            const a = document.createElement('a');
+            a.href = wordUrl;
+            a.download = 'Convenio-practicas.docx';
+            a.click();
+
+            toast.success("¡El documento se ha generado con éxito!");
+        }
 
         if (response instanceof RestError) {
             if (response.getType() === Types.CANCELED) return

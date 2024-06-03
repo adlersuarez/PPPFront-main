@@ -37,7 +37,7 @@ export async function ObtenerCartaPresentacionEspecifica<Blob>(CartaId: number, 
     return await Resolve.create<Blob>(instance.get<Blob>(`/CartaPresentacion/ObtenerCartaPresentacionEspecifica/${CartaId}`, { signal: signal! }))
 }
 
-export async function ObtenerConvenioPracticas<Blob>(CartaId: number, signal = null): Promise<Response<Blob> | RestError> {
-    return await Resolve.create<Blob>(instance.get<Blob>(`/Practicas/ObtenerConvenioPracticas/${CartaId}`, { signal: signal! }))
+export async function ObtenerConvenioPracticasWord<Blob>(CartaId: number, signal = null): Promise<Response<Blob> | RestError> {
+    return await Resolve.create<Blob>(instance.get<Blob>(`/Practicas/ObtenerConvenioPracticasWord/${CartaId}`, { signal: signal! }))
 }
 
