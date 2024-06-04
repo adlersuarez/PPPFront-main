@@ -483,7 +483,7 @@ const Dashboard: React.FC = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="p-4 m-auto sm:h-[280px]">
+                                    <div className="p-4 m-auto sm:h-[280px] h-[260px]">
                                         <Suspense fallback={<div>Cargando...</div>}>
                                             <PieChart
                                                 data={tipoEmpresaDatos.data}
@@ -571,7 +571,7 @@ const Dashboard: React.FC = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="p-4 m-auto sm:h-[280px]">
+                                    <div className="p-4 m-auto sm:h-[280px] h-[260px]">
                                         <PieChart
                                             data={tipoGradoJefe.data}
                                             labels={tipoGradoJefe.labels}

@@ -92,10 +92,10 @@ const ReporteEspecifico: React.FC = () => {
 
 
     ////
-    const [carId, setCarId] = useState<string>("")
-    const [asiId, setAsiId] = useState<string>("")
-    const [sedeId, setSedeId] = useState<string>("")
-    const [seccion, setSeccion] = useState<string>("")
+    const [carId, setCarId] = useState<string>("00")
+    const [asiId, setAsiId] = useState<string>("000000")
+    const [sedeId, setSedeId] = useState<string>("00")
+    const [seccion, setSeccion] = useState<string>("00")
 
 
     const handleListClick = (carId: string, asiId: string, sedeId: string, seccion: string) => {

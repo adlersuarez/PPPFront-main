@@ -55,6 +55,10 @@ const ModalAsistenciaVisada: React.FC<Props> = ({ show, hide, changeInit }) => {
 
 
     const handleGuardarCambios = () => {
+        if (selectedFile === null) {
+            toast.error('Tiene que seleccionar el archivo')
+            return
+        }
         if (selectedFile) {
             //Carta aceptacion es CA-
             const nombreArchivo: string = "AV-" + codigo + "-" + anio + per + "-" + codAsig + ".pdf"

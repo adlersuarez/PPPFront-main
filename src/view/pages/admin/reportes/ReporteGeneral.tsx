@@ -288,7 +288,7 @@ const ReporteGeneral: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="w-full">
+                <div className="w-full overflow-y-auto">
 
                     <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
                         <thead className="align-bottom">

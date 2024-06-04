@@ -28,11 +28,11 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
     const [loading, setLoading] = useState<boolean>(true)
     const [alumnosSeccion, setAlumnosSeccion] = useState<ListaSeccion[]>([])
 
-    const [docenteId, setDocenteId] = useState<string>("0")
-    const [carreraId, setCarreraId] = useState<string>("0")
-    const [asignaturaId, setAsignaturaId] = useState<string>("0")
-    const [sedId, setSedId] = useState<string>("0")
-    const [seccionId, setSeccionId] = useState<string>("0")
+    const [docenteId, setDocenteId] = useState<string>("00000000")
+    const [carreraId, setCarreraId] = useState<string>("00")
+    const [asignaturaId, setAsignaturaId] = useState<string>("000000")
+    const [sedId, setSedId] = useState<string>("00")
+    const [seccionId, setSeccionId] = useState<string>("00")
     const [periodoId, setPeriodoId] = useState<number>(0)
 
     const [listaSecciones, setListaSecciones] = useState<SeccionesDocente[]>([])
@@ -159,7 +159,7 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
                 </div>
             </div>
 
-            <div className="w-full max-w-full mt-4">
+            <div className="w-full max-w-full mt-4 overflow-y-auto">
                 <table className="w-full text-gray-700 uppercase bg-upla-100 border table-auto" id="miTabla">
                     <thead className="align-bottom">
                         <tr>
