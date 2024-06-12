@@ -46,7 +46,7 @@ const routerEstudiante = createBrowserRouter([
     ]
   },
   {
-    path: '/*',
+    path: '/',
     element: <Navigate to="login" replace />,
   },
   {

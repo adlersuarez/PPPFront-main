@@ -48,27 +48,37 @@ const ModalValidarDocumento: React.FC<Props> = ({ show, hide, changeInit, tipoDo
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
 
-                console.log(params)
+                // Mostrar sweet alert de carga
+                sweet.openLoading("Cargando", "Por favor espere mientras procesamos la información.");
 
-                const response = await ValidarDocumento<RespValue>(params)
+                try {
+                    const response = await ValidarDocumento<RespValue>(params);
+                    // Cerrar sweet alert de carga
+                    sweet.close();
 
-                if (response instanceof Response) {
-                    if (response.data.value == "procesado") {
-                        sweet.openSuccess("¡Operación completada con éxito!", "El documento ha sido validado satisfactoriamente.", () => {
-                            changeInit()
-                            hide()
-                        })
+                    if (response instanceof Response) {
+                        if (response.data.value == "procesado") {
+                            sweet.openSuccess("¡Operación completada con éxito!", "El documento ha sido validado satisfactoriamente.", () => {
+                                changeInit();
+                                hide();
+                            });
+                        }
+                    } else if (response instanceof RestError) {
+                        if (response.getType() === Types.CANCELED) return;
+                        if (response.getStatus() == 401) return;
+                        if (response.getStatus() == 403) return;
+
+                        console.log(response.getMessage());
+
+                        sweet.openWarning("Error", "Por favor, comuníquese con la Oficina de Informática.", () => { });
                     }
-                }
+                } catch (error) {
+                    // Cerrar sweet alert de carga en caso de error
+                    sweet.close();
 
-                if (response instanceof RestError) {
-                    if (response.getType() === Types.CANCELED) return
-                    if (response.getStatus() == 401) return
-                    if (response.getStatus() == 403) return
+                    console.error(error);
 
-                    console.log(response.getMessage())
-
-                    sweet.openWarning("Error", "Por favor, comuníquese con la Oficina de Informática.", () => { })
+                    sweet.openWarning("Error", "Ha ocurrido un error inesperado. Por favor, inténtelo nuevamente más tarde.", () => { });
                 }
             }
         })

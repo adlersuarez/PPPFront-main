@@ -86,7 +86,7 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
     }
 
     useEffect(() => {
-        if (docenteId != '0' && carreraId != '0' && asignaturaId != '0' && sedId != '0' && seccionId != '0' && periodoId != 0 && buscando) {
+        if (docenteId != '00000000' && carreraId != '00' && asignaturaId != '000000' && sedId != '00' && seccionId != '00' && periodoId != 0 && buscando) {
             LoadListaSeccion()
             LoadDatosDocente()
         }

@@ -27,7 +27,7 @@ const useSweet = (): Sweet => {
             showConfirmButton: false, //Ocultar el botón
             allowOutsideClick: false,
             timer: 2500, //Añadirle Tiempo
-           
+
         });
 
         if (result instanceof Promise) {
@@ -89,13 +89,34 @@ const useSweet = (): Sweet => {
         }
     }
 
+    const openLoading = (title: string, message: string) => {
+        alert.current({
+            title: `<span class="text-info">${title}</span>`,
+            text: message,
+            type: "info",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            onOpen: () => {
+                // Muestra el ícono de carga
+                alert.current.showLoading();
+            }
+        });
+    };
+
+    const close = () => {
+        alert.current.close();
+    };
+
     return {
         alert: alert.current,
         openInformation,
         openSuccess,
         openWarning,
         openError,
-        openDialog
+        openDialog,
+        openLoading,
+        close
     };
 }
 

@@ -5,4 +5,6 @@ export default interface Sweet {
     openWarning: (title: string, message: string, callback?: () => void) => void,
     openError: (title: string, message: string) => void,
     openDialog: (title: string, message: string, callback: (value: boolean) => void) => void,
+    openLoading: (title: string, message: string) => void;
+    close: () => void;
 }
