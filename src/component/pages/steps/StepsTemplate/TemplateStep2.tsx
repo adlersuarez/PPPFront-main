@@ -157,7 +157,7 @@ const TemplateStep2: React.FC<Props> = ({InitEstado}) => {
                                     <tbody>
                                         {
                                             listaCartas.map((carta, index) => (
-                                                <tr key={index} className='bg-white border-b'>
+                                                <tr key={index} className='bg-white border-b hover:bg-blue-50'>
                                                     <td className="text-sm p-2 py-3 text-center content-start border-b border-solid">
                                                         <EstadoRequisito valor={carta.estadoDoc} />
                                                     </td>

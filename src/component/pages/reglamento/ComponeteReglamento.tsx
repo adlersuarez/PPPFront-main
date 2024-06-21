@@ -199,8 +199,8 @@ const ComponenteReglamento: React.FC<PropsReglamento> = ({ encabezado, urlImg, u
                             </div>
                             <a href={urlDoc}
                                 download
-                                className="text-sm flex gap-2 w-28 bg-red-500 text-white px-2 rounded-sm justify-between">
-                                <i className="bi bi-file-pdf-fill text-lg my-auto"></i>
+                                className="text-sm flex gap-2 w-28 bg-red-500 text-white px-2 rounded justify-between hover:bg-red-700 hover:scale-105 hover:font-semibold">
+                                <i className="bi bi-file-pdf-fill text-lg my-auto"/>
                                 <span className="my-auto">
                                     Descargar
                                 </span>
@@ -223,11 +223,13 @@ const ComponenteReglamento: React.FC<PropsReglamento> = ({ encabezado, urlImg, u
                         </div>
 
                         <button title="Vista Previa" className="relative hidden sm:flex " onClick={() => setPreviewPdf(!previewPdf)}>
-                            <img
-                                src={urlImg}
-                                alt="Imagen"
-                                className="w-28 h-40 border transition-transform transform-gpu "
-                            />
+                            <div className="w-28 h-40 shrink-0">
+                                <img
+                                    src={urlImg}
+                                    alt="Imagen"
+                                    className="transition-transform transform-gpu object-center"
+                                />
+                            </div>
                             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hover:bg-black hover:bg-opacity-20 w-full h-full flex transition-opacity">
                                 <i className="bi bi-eye text-gray-200 text-3xl m-auto" />
                             </div>
@@ -245,7 +247,7 @@ const ComponenteReglamento: React.FC<PropsReglamento> = ({ encabezado, urlImg, u
                                 onClick={() => handleButtonClick(index, cont.content)}
                                 className={`font-bold py-2 px-4 text-xs rounded ${selectedButtonIndex === index
                                     ? 'bg-blue-700 text-white'
-                                    : 'bg-gray-500 hover:bg-blue-700 text-white'
+                                    : 'bg-gray-400 hover:bg-black text-white'
                                     }`}
                             >
                                 {cont.nombre}

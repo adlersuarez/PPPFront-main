@@ -35,7 +35,7 @@ const Revision = () => {
 
         plan: seccion.pEs_Id,
 
-        periodoString : seccion.mtr_Anio+seccion.mtr_Periodo,
+        periodoString: seccion.mtr_Anio + seccion.mtr_Periodo,
         idAsign: seccion.asi_Id
     }
 
@@ -59,7 +59,7 @@ const Revision = () => {
                 seccion: datos.seccion,
                 plan: datos.plan,
 
-                periodoString : datos.periodoString,
+                periodoString: datos.periodoString,
                 idAsign: datos.idAsign
             },
         })
@@ -70,7 +70,7 @@ const Revision = () => {
     const LoadSecciones = async () => {
         setLoading(true)
         setAlumnosSeccion([])
-        const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, codigo, seccion.sed_Id,seccion.nta_Seccion, periodo, abortController.current)
+        const response = await ListarSeccionAlumnos<Listas>(seccion.car_Id, seccion.asi_Id, codigo, seccion.sed_Id, seccion.nta_Seccion, periodo, abortController.current)
 
         if (response instanceof Response) {
             const data = response.data.resultado as ListaSeccion[]
@@ -89,6 +89,8 @@ const Revision = () => {
 
     const [showDetalles, setShowDetalles] = useState<boolean>(false)
 
+    console.log(alumnosSeccion)
+
     return (
         <ContainerVIstas titulo='REVISIÓN DOCENTE' retornar>
 
@@ -102,25 +104,25 @@ const Revision = () => {
                 </div>
                 <div className={`${!showDetalles ? 'hidden' : 'flex'} p-4`}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-lg sm:text-lg w-full">
-                            <div className='flex gap-2 font-bold text-gray-500'>
-                                <div className="w-28 shrink-0">Facultad: </div> <span className="font-medium text-upla-100">{datos.facultad}</span>
-                            </div>
-                            <div className='flex gap-2 font-bold text-gray-500'>
-                                <div className="w-28 shrink-0">Carrera: </div> <span className="font-medium text-upla-100">{datos.carrera}</span>
-                            </div>
-                            <div className='flex gap-2 font-bold text-gray-500'>
-                                <div className="w-28 shrink-0">Sede: </div> <span className="font-medium text-upla-100">{datos.sede}</span>
-                            </div>
-                            <div className='flex gap-2 font-bold text-gray-500'>
-                                <div className="w-28 shrink-0">Periodo: </div> <span className="font-medium text-upla-100">{datos.periodo}</span>
-                            </div>
-                            <div className='flex gap-2 font-bold text-gray-500'>
-                                <div className="w-28 shrink-0">Semestre: </div> <span className="font-medium text-upla-100">{datos.semestre}</span>
-                            </div>
-                            <div className='flex gap-2 font-bold text-gray-500'>
-                                <div className="w-28 shrink-0">Plan: </div> <span className="font-medium text-upla-100">{datos.plan}</span>
-                            </div>
+                        <div className='flex gap-2 font-bold text-gray-500'>
+                            <div className="w-28 shrink-0">Facultad: </div> <span className="font-medium text-upla-100">{datos.facultad}</span>
                         </div>
+                        <div className='flex gap-2 font-bold text-gray-500'>
+                            <div className="w-28 shrink-0">Carrera: </div> <span className="font-medium text-upla-100">{datos.carrera}</span>
+                        </div>
+                        <div className='flex gap-2 font-bold text-gray-500'>
+                            <div className="w-28 shrink-0">Sede: </div> <span className="font-medium text-upla-100">{datos.sede}</span>
+                        </div>
+                        <div className='flex gap-2 font-bold text-gray-500'>
+                            <div className="w-28 shrink-0">Periodo: </div> <span className="font-medium text-upla-100">{datos.periodo}</span>
+                        </div>
+                        <div className='flex gap-2 font-bold text-gray-500'>
+                            <div className="w-28 shrink-0">Semestre: </div> <span className="font-medium text-upla-100">{datos.semestre}</span>
+                        </div>
+                        <div className='flex gap-2 font-bold text-gray-500'>
+                            <div className="w-28 shrink-0">Plan: </div> <span className="font-medium text-upla-100">{datos.plan}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -133,8 +135,9 @@ const Revision = () => {
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Código</th>
                                 <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Estudiante</th>
+                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
                                 <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Empresa de prácticas</th>
-                                
+
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Detalle</th>
                             </tr>
@@ -143,7 +146,7 @@ const Revision = () => {
                             {
                                 loading ? (
                                     <tr className="text-center bg-white border-b">
-                                        <td colSpan={6} className="text-sm p-2 border-b border-solid">
+                                        <td colSpan={7} className="text-sm p-2 border-b border-solid">
                                             <div className="flex items-center justify-center gap-4">
                                                 <LoaderSvg /> <span>Cargando datos...</span>
                                             </div>
@@ -152,12 +155,12 @@ const Revision = () => {
                                 ) : (
                                     alumnosSeccion.length == 0 ?
                                         <tr className="text-center bg-white border-b">
-                                            <td colSpan={6} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
+                                            <td colSpan={7} className="text-sm p-2  border-b border-solid">No hay datos para mostrar.</td>
                                         </tr>
                                         :
                                         (alumnosSeccion.map((item, index) => {
                                             return (
-                                                <tr key={index} className="bg-white border-b">
+                                                <tr key={index} className="bg-white border-b hover:bg-blue-50">
                                                     <td className="text-sm p-2 text-center">
                                                         {index + 1}
                                                     </td>
@@ -166,6 +169,14 @@ const Revision = () => {
                                                     </td>
                                                     <td className="text-sm px-6 p-2 text-left">
                                                         {item.apellidoPaterno + " " + item.apellidoMaterno + " " + item.nombres}
+                                                    </td>
+                                                    <td className="text-sm px-6 p-2 text-center">
+                                                        {item.estadoAlumno == 1 &&
+                                                            <span className='bg-green-200 text-xs p-1 px-2 rounded-md font-medium'> Matriculado </span>
+                                                        }
+                                                        {item.estadoAlumno == 0 &&
+                                                            <span className='bg-red-200 text-xs p-1 px-2 rounded-md font-medium'> IMPEDIDO </span>
+                                                        }
                                                     </td>
                                                     <td className="text-sm px-6 p-2 text-left">
                                                         {item.empresaNombre ?
@@ -178,7 +189,7 @@ const Revision = () => {
                                                         }
                                                     </td>
                                                     <td className="text-sm p-2 text-center">
-                                                        <EstadosAlumno EstudianteId={item.est_Id}/>
+                                                        <EstadosAlumno EstudianteId={item.est_Id} />
                                                     </td>
                                                     <td className="text-sm p-2 text-center">
                                                         <button

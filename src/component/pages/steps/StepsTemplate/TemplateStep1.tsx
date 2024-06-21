@@ -13,7 +13,7 @@ import Response from '@/model/class/response.model.class';
 import PagoCarta from '@/model/interfaces/pagos/pagoCarta';
 import { CargandoPagos } from '../../carga/CargandoPagos';
 import { LoaderSvg } from '@/component/Svg.component';
-import { convertirFechaPago_aaaa_mm_dd, formatoFecha_Date_fechaSlash } from '@/helper/herramienta.helper';
+import { convertirFechaPago_aaaa_mm_dd, formatoFecha_Date_fechaSlash, validadoCarta } from '@/helper/herramienta.helper';
 import { ProcesoPasosEstudiante } from '@/helper/requisitos.helper';
 import RequisitosListaEstudiante from './Contenedor/RequisitoEstudiante';
 import ImportanteListaEstudiante from './Contenedor/ImportanteEstudiante';
@@ -21,6 +21,7 @@ import { SuspenseModal } from '@/component/suspense/SuspenseModal';
 
 import toast from 'react-hot-toast';
 import { ObtenerCartaPresentacionEspecifica } from '@/network/rest/documentos.network';
+import { ButtonOperacion } from '../../buttons/ButtonOperacion';
 
 const ModalAgregarEmpresa = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalAgregarEmpresa'));
 const ModalMostrarDatos = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalMostrarDatos'));
@@ -55,6 +56,7 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
     const handleShowAgregarEmpresa = () => setShowEmpresa(true)
     const handleCloseEmpresa = () => setShowEmpresa(false)
 
+    const [mostrarDatos, setMostrarDatos] = useState<boolean>(false)
 
     const handleSeleccionarOperacion = (codOperacion: string) => {
         setOperacionSeleccionada(codOperacion)
@@ -119,7 +121,7 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
     const generarSolicitud = async (cartaId: number) => {
         setCargaGenerarSolicitud(true)
         const response = await ObtenerCartaPresentacionEspecifica<Blob>(cartaId)
-      //  console.log(response)
+        //  console.log(response)
 
         if (response instanceof Response) {
             const pdfBlob = new Blob([response.data], { type: 'application/pdf' })
@@ -156,20 +158,35 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
     }, [])
 
     useEffect(() => {
-        handleSeleccionarOperacion(pagosCarta[0]?.operacion)
-    }, [pagosCarta])
-
-    useEffect(() => {
         if (operacionSeleccionada) {
             LoadDatosCartas()
         }
     }, [operacionSeleccionada])
+
+    useEffect(() => {
+        handleSeleccionarOperacion(pagosCarta[0]?.operacion)
+    }, [pagosCarta])
+
+
 
     //Requisitos step 1
     const requisitos = ProcesoPasosEstudiante[0].requisitos ?? []
     const importante = ProcesoPasosEstudiante[0].importante ?? []
 
     const pagoLista = pagosCarta.filter((pago) => pago.operacion !== '')
+
+    useEffect(() => {
+
+        if (!validadoCarta(cartaPresentDatos)) {
+            setMostrarDatos(false)
+            return
+        }
+        if (fechaOperacionSeleccionada.length === 10) {
+            setMostrarDatos(true)
+            return
+        }
+
+    }, [cartaPresentDatos, fechaOperacionSeleccionada])
 
     return (
         <div className="mt-4 rounded shadow-lg border p-4 w-full">
@@ -211,11 +228,11 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
                                     {!cargarDatosCarta ?
                                         pagoLista.length != 0 ?
                                             pagoLista.map((item, index) => (
-                                                <div key={index} title={item.fecha_operacion}
-                                                    role='button' onClick={() => handleSeleccionarOperacion(item.operacion)}
-                                                    className={`bg-gray-400 hover:bg-upla-100 text-white font-semibold text-xs p-1 px-2 hover:scale-105 `}>
-                                                    {item.operacion}
-                                                </div>
+                                                <ButtonOperacion
+                                                    key={index}
+                                                    item={item}
+                                                    handleSeleccionarOperacion={handleSeleccionarOperacion}
+                                                />
                                             ))
                                             :
                                             <div className='flex w-full py-0.5'>
@@ -248,23 +265,25 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
                             Cartas de presentación generadas
                         </div>
                         <div className='p-1 flex flex-col sm:flex-row justify-between mb-2 px-2 gap-2'>
-                            <div className='my-auto'>
-                                Código Operación: <span className='font-bold'>{operacionSeleccionada}</span>
+                            <div className='my-auto bg-white p-1 px-2 rounded-md text-sm border border-upla-100'>
+                                Código seleccionado : <span className='font-bold ml-2 text-gray-600'>{operacionSeleccionada}</span>
                             </div>
                             <div className='my-auto'>
-                                {cartaPresentDatos.length < 5 ?
+                                {
+                                    mostrarDatos &&
                                     (
-                                        fechaOperacionSeleccionada.length === 10 &&
-                                        <button onClick={handleShowAgregarEmpresa} title='Carta de Presentación'
-                                            className='px-3 p-1 sm:py-0.5 w-full sm:w-auto bg-green-400 hover:bg-green-500 text-white rounded-md'>
-                                            <i className="bi bi-clipboard2-plus mr-2" />
-                                            Agregar Empresa
-                                        </button>
+                                        cartaPresentDatos.length < 5 ? (
+                                            <button onClick={handleShowAgregarEmpresa} title='Carta de Presentación'
+                                                className='px-3 p-1 sm:py-0.5 w-full sm:w-auto bg-green-400 hover:bg-green-500 text-white rounded-md'>
+                                                <i className="bi bi-clipboard2-plus mr-2 animate-pulse" />
+                                                Agregar Empresa
+                                            </button>
+                                        ) : (
+                                            <div className='text-white bg-gray-400 text-sm px-2 py-0.5 rounded-md'>
+                                                Límite superado
+                                            </div>
+                                        )
                                     )
-                                    :
-                                    <div className='text-white bg-gray-400 text-sm px-2 py-0.5 rounded-md'>
-                                        Limite superado
-                                    </div>
                                 }
                             </div>
                         </div>
@@ -284,7 +303,7 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
                                     {
                                         cartaPresentDatos.length != 0 ?
                                             cartaPresentDatos.map((carta, index) => (
-                                                <tr key={index} className='bg-white border-b'>
+                                                <tr key={index} className='bg-white border-b hover:bg-blue-50'>
                                                     <td className="text-sm px-4 p-2 text-center align-middle border-b border-solid">
                                                         <EstadoCarta valor={carta.cartaEstado} />
                                                     </td>

@@ -17,7 +17,6 @@ const ModalMostrarDatos: React.FC<Props> = ({ show, hide, datosCarta }) => {
     if (datosCarta == null) {
         return
     }
-    console.log(123)
 
     return (
 

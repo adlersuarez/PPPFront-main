@@ -4,4 +4,5 @@ export default interface ListaSeccion {
     apellidoPaterno: string
     apellidoMaterno: string
     empresaNombre: string
+    estadoAlumno: number
 }

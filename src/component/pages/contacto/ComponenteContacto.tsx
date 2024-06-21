@@ -60,7 +60,7 @@ const ComponenteContacto: React.FC<PropsContacto> = ({ titulo, nombre, telefono,
                             (wspMsg && !isDocente) && 
                             <div className="p-2 mt-3">
                                 <button onClick={enviarMensajeWhatsApp}
-                                    className="bg-green-400 text-white p-1 px-2 rounded-md font-medium">
+                                    className="bg-green-400 text-white p-1 px-2 rounded-md font-medium hover:bg-green-500 hover:scale-105">
                                     Solicitar apoyo <i className="ml-2 bi bi-whatsapp" />
                                 </button>
                             </div>

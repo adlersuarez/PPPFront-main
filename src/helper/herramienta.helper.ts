@@ -11,6 +11,7 @@ import MostrarDuracionEstandar, { ListaDias, ListaHorarioDias } from '@/model/in
 import MostrarDocumentoUrl from '@/model/interfaces/documento/mostrarDocumento'
 import FilePreview from '@/model/interfaces/documento/filePreview'
 import DocumentoAdmin from '@/model/interfaces/documento/mostrarDocumentoAdmin'
+import CartaPresentacionDatos from '@/model/interfaces/cartaPresentacion/cartaPresentacion'
 
 export function formatTime(value: string) {
   var hourEnd = value.indexOf(":")
@@ -152,6 +153,34 @@ export function formatoFecha_Date_fechaSlash(fecha: string): string {
   const dia = String(fechaObjeto.getDate()).padStart(2, '0');
   return `${dia}/${mes}/${año}`;
 }
+
+export function formatoFechaOperacion(fechaPago: string): string {
+  const months = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
+
+  const date = new Date(fechaPago);
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  let formattedDate = `${day} de ${month} de ${year}`;
+
+  if (hours !== 0 || minutes !== 0 || seconds !== 0) {
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // convierte el formato 24h a 12h
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+
+    formattedDate += ` ${formattedHours}:${formattedMinutes} ${ampm}`;
+  }
+
+  return formattedDate;
+};
 
 export function formatoFecha_Date_completo(fecha: string): string {
   const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -622,3 +651,7 @@ export function raizDoc() {
   const raiz = import.meta.env.VITE_STORAGE_DOC_REQUERIDO
   return raiz
 }
+
+export function validadoCarta(datos: CartaPresentacionDatos[]): boolean {
+  return !datos.some(item => item.cartaEstado === 2);
+};

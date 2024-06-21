@@ -11,17 +11,24 @@ const useRolLogin = () => {
 
     useEffect(() => {
         if (tokens) {
-            const decodedToken: any = jwtDecode(tokens ?? '')
+            const decodedToken: any = jwtDecode(tokens);
 
-            const codigoLoginFromToken: string[] = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? []
-            const practicasLoginRoles: string[] = Array.from(codigoLoginFromToken).filter(valor => valor === 'PracticaCoordinador')
-            //setRolLoginToken(codigoLoginFromToken)
-            setIsCoordinador(practicasLoginRoles.length !== 0)
+            const codigoLoginFromToken: string | string[] = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? [];
+
+            let practicasLoginRoles: string[] = [];
+
+            if (typeof codigoLoginFromToken === 'string') {
+                practicasLoginRoles = [codigoLoginFromToken];
+            } else if (Array.isArray(codigoLoginFromToken)) {
+                practicasLoginRoles = codigoLoginFromToken;
+            }
+
+            const isPracticaCoordinador = practicasLoginRoles.includes('PracticaCoordinador');
+            setIsCoordinador(isPracticaCoordinador);
         } else {
-            //setRolLoginToken([])
-            setIsCoordinador(false)
+            setIsCoordinador(false);
         }
-    }, [tokens])
+    }, [tokens]);
 
     //return codigoRolToken
     return isCoordinador

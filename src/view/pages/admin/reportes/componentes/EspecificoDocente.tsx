@@ -166,6 +166,7 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">#</th>
                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Código</th>
                             <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Estudiante</th>
+                            <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
                             <th className="px-6 py-2 font-bold text-left uppercase align-middle text-white text-xs">Empresa de prácticas</th>
                             <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Estado</th>
                         </tr>
@@ -173,7 +174,7 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
                     <tbody>
                         {loading ? (
                             <tr className="text-center bg-white border-b">
-                                <td colSpan={6} className="text-sm p-2 border-b border-solid">
+                                <td colSpan={7} className="text-sm p-2 border-b border-solid">
                                     <div className="flex items-center justify-center gap-4">
                                         <span>Cargando datos...</span>
                                     </div>
@@ -181,7 +182,7 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
                             </tr>
                         ) : alumnosSeccion.length === 0 ? (
                             <tr className="text-center bg-white border-b">
-                                <td colSpan={6} className="text-sm p-2 border-b border-solid">No hay datos para mostrar.</td>
+                                <td colSpan={7} className="text-sm p-2 border-b border-solid">No hay datos para mostrar.</td>
                             </tr>
                         ) : (
                             alumnosSeccion.map((item, index) => (
@@ -190,6 +191,14 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
                                     <td className="text-sm p-2 text-center font-medium text-gray-500">{item.est_Id}</td>
                                     <td className="text-sm px-6 p-2 text-left">
                                         {item.apellidoPaterno + " " + item.apellidoMaterno + " " + item.nombres}
+                                    </td>
+                                    <td className="text-sm px-6 p-2 text-center">
+                                        {item.estadoAlumno == 1 &&
+                                            <span className='bg-green-200 text-xs p-1 px-2 rounded-md font-medium'> Matriculado </span>
+                                        }
+                                        {item.estadoAlumno == 0 &&
+                                            <span className='bg-red-200 text-xs p-1 px-2 rounded-md font-medium'> IMPEDIDO </span>
+                                        }
                                     </td>
                                     <td className="text-sm px-6 p-2 text-left">
                                         {item.empresaNombre ? (

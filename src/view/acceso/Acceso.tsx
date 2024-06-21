@@ -71,8 +71,6 @@ const Acceso = () => {
 
         const response = await LoginRest<Login>(data)
 
-        //console.log(response)
-
         if (response instanceof Response) {
             const tipUser = response.data.docNumId.length == 7 ? hashStringSHA256(import.meta.env.VITE_USER_TYPO_ES) : hashStringSHA256(import.meta.env.VITE_USER_TYPO_AD)
             dispatch(login({ codigo: response.data.docNumId, token: response.data.token, tipoUsuario: tipUser }));

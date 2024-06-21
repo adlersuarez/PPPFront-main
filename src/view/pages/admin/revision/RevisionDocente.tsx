@@ -93,7 +93,7 @@ const RevisionDocente = () => {
                                             listaDocentes.map((item, index) => {
 
                                                 return (
-                                                    <tr key={index} className="bg-white border-b">
+                                                    <tr key={index} className="bg-white border-b hover:bg-blue-50">
                                                         <td className="text-sm p-2 text-center text-gray-400 font-semibold">
                                                             {item.per_Id}
                                                         </td>

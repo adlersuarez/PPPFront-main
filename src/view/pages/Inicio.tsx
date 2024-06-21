@@ -74,7 +74,7 @@ const InicioAfterLogin = () => {
                                     }
 
                                     <ButtonLink
-                                        to={'/reglamentos'}
+                                        to={'/reglamentos-practicas'}
                                         nombre={'Reglamento'}
                                         icon={'bi-journal-check'}
                                         color='bg-upla-100'
@@ -195,7 +195,7 @@ const InicioAfterLogin = () => {
                             />
 
                             <ButtonLink
-                                to={'/reglamentos'}
+                                to={'/reglamentos-practicas'}
                                 nombre={'Reglamento'}
                                 icon={'bi-journal-check'}
                                 color='bg-upla-100'

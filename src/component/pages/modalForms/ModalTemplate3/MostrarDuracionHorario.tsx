@@ -100,7 +100,7 @@ const MostrarDuracionHorario: React.FC<Props> = ({ show, hide, valor }) => {
                     show={verHorario}
                     hide={handleCloseHorario}
                     horarioElegido={convertirHorarioDetalle(listaDiasPracticas)}
-                    //horarioElegido={convertirAFormatoDeseado(selectedDays, tipoHorarioSeleccionado)}
+                //horarioElegido={convertirAFormatoDeseado(selectedDays, tipoHorarioSeleccionado)}
                 />
                 <div className="flex flex-col gap-4">
                     <div className='bg-gray-100 w-full rounded-lg p-4'>
@@ -110,10 +110,10 @@ const MostrarDuracionHorario: React.FC<Props> = ({ show, hide, valor }) => {
                             </div>
                             <div className='w-full flex flex-col sm:flex-row sm:col-span-2 justify-center gap-3 sm:gap-8 mb-3'>
                                 <div className="bg-white px-2 py-1 rounded">
-                                    Fecha Inicio: <span className="text-blue-500 font-medium">11/04/2024</span>
+                                    Fecha Inicio: <span className="text-blue-500 font-medium">{formatoFecha_Date_fechaSlash(duracionPracticas?.fechaInicio ?? '')}</span>
                                 </div>
                                 <div className="bg-white px-2 py-1 rounded">
-                                    Fecha Fin: <span className="text-blue-500 font-medium">25/07/2024</span>
+                                    Fecha Fin: <span className="text-blue-500 font-medium">{formatoFecha_Date_fechaSlash(duracionPracticas?.fechaFinal ?? '')}</span>
                                 </div>
                             </div>
                             <div className='w-full flex gap-3'>
