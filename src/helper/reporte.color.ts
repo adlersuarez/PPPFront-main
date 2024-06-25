@@ -149,18 +149,42 @@ export function agregarColorHexTipoGradoJefe(grados: TipoGradoJefe[], colors: Co
 
 
 // ------------------ TIPO DIA SEMANA ---------------
+// Función auxiliar para consolidar días con el mismo diaId y ordenarlos
+function consolidarDias(dias: TipoDia[]): TipoDia[] {
+    const diaMap = new Map<number, TipoDia>()
+
+    dias.forEach(dia => {
+        if (diaMap.has(dia.diaId)) {
+            const diaExistente = diaMap.get(dia.diaId)!
+            diaExistente.cantidad += dia.cantidad
+        } else {
+            diaMap.set(dia.diaId, { ...dia })
+        }
+    })
+
+    const diasConsolidados = Array.from(diaMap.values())
+    return diasConsolidados.sort((a, b) => a.diaId - b.diaId)
+}
+
 export function getCantidadesTipoDia(dias: TipoDia[]): number[] {
-    return dias.map(dia => dia.cantidad)
+    const diasConsolidados = consolidarDias(dias)
+    return diasConsolidados.map(dia => dia.cantidad)
 }
+
 export function getLabelsTipoDia(dias: TipoDia[]): string[] {
-    return dias.map(dia => dia.diaNombre)
+    const diasConsolidados = consolidarDias(dias)
+    return diasConsolidados.map(dia => dia.diaNombre)
 }
+
 export function totalTipoDia(dias: TipoDia[]): number {
-    return dias.reduce((total, dia) => total + dia.cantidad, 0)
+    const diasConsolidados = consolidarDias(dias)
+    return diasConsolidados.reduce((total, dia) => total + dia.cantidad, 0)
 }
+
 export function agregarColorHexTipoDia(dias: TipoDia[], colors: ColorHelp[]): (TipoDia & { hexColor: string })[] {
-    return dias.map((dia, index) => {
-        const color = colors[index % colors.length] // Usa el índice para obtener el color correspondiente
+    const diasConsolidados = consolidarDias(dias)
+    return diasConsolidados.map((dia, index) => {
+        const color = colors[index % colors.length]
         return {
             ...dia,
             hexColor: color.bgHEX

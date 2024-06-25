@@ -22,6 +22,7 @@ import { SuspenseModal } from '@/component/suspense/SuspenseModal';
 import toast from 'react-hot-toast';
 import { ObtenerCartaPresentacionEspecifica } from '@/network/rest/documentos.network';
 import { ButtonOperacion } from '../../buttons/ButtonOperacion';
+//import { generarCartaPdfMake } from '@/helper/docpdf.helper';
 
 const ModalAgregarEmpresa = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalAgregarEmpresa'));
 const ModalMostrarDatos = React.lazy(() => import('../../modalForms/ModalTemplate1/ModalMostrarDatos'));
@@ -323,6 +324,10 @@ const TemplateStep1: React.FC<Props> = ({ InitEstado }) => {
                                                                 className="bg-gray-400 hover:bg-red-700 hover:scale-110 text-white px-4 py-1 rounded transition-colors duration-300" >
                                                                 {cargaGenerarSolicitud ? <LoaderSvg /> : <i className="bi bi-download" />}
                                                             </button>
+                                                            {/*<button onClick={generarCartaPdfMake} title='Descargar PDF' disabled={cargaGenerarSolicitud}
+                                                                className="bg-gray-400 hover:bg-red-700 hover:scale-110 text-white px-4 py-1 rounded transition-colors duration-300" >
+                                                                {cargaGenerarSolicitud ? <LoaderSvg /> : <i className="bi bi-download" />}
+                                                            </button>*/}
                                                         </div>
                                                     </td>
                                                 </tr>

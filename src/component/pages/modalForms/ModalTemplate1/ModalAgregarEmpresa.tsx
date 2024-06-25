@@ -53,6 +53,14 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
             toast.error('Seleccione el cargo que asume el representante de la empresa.')
             return
         }
+        if(formularioEmpresa.celular_jefe.trim() === ""){
+            toast.error('Debe ingresar el número de celular del representante de la empresa.')
+            return
+        }
+        if(formularioEmpresa.email_jefe.trim() === ""){
+            toast.error('Debe ingresar el correo electrónico del representante de la empresa.')
+            return
+        }
 
         if (step < 2) setStep(step + 1)
     }

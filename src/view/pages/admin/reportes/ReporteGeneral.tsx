@@ -298,9 +298,10 @@ const ReporteGeneral: React.FC = () => {
 
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Periodo</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Semestre</th>
-                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Asignatura</th>
+                                <th className="px-3 py-2 font-bold text-center uppercase align-middle text-white text-xs">Asignatura</th>
 
-                                <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sección</th>
+                                <th className="px-4 py-2 font-bold text-center uppercase align-middle text-white text-xs">Sección</th>
+                                <th className="px-4 py-2 font-bold text-center uppercase align-middle text-white text-xs">Código</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Docente</th>
                                 <th className="px-6 py-2 font-bold text-center uppercase align-middle text-white text-xs">Reporte</th>
                             </tr>
@@ -327,7 +328,7 @@ const ReporteGeneral: React.FC = () => {
 
                                                 return (
                                                     <tr key={index} className="bg-white border-b hover:bg-blue-50">
-                                                        <td className="text-sm p-2 text-left">
+                                                        <td className="text-sm p-2 px-4 text-left">
                                                             {item.carrera}
                                                         </td>
                                                         <td className="text-sm p-2 text-center">
@@ -345,7 +346,10 @@ const ReporteGeneral: React.FC = () => {
                                                         <td className="text-sm p-2 text-center font-medium">
                                                             {item.seccion}
                                                         </td>
-                                                        <td className="text-sm p-2 text-left font-medium">
+                                                        <td className="text-sm p-2 px-4 text-center font-medium">
+                                                            {item.per_Id}
+                                                        </td>
+                                                        <td className="text-sm p-2 px-4 text-left font-medium">
                                                             {item.docente.trim()}
                                                         </td>
                                                         <td className="text-xs p-2 text-center align-middle border-b border-solid">

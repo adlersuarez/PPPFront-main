@@ -24,7 +24,7 @@ export const ButtonGenerarReporte: React.FC<Props> = ({ datos, periodoId }) => {
         <button
             disabled={descargando}
             onClick={() => reporteNuevo()}
-            className={` hover:bg-upla-100 rounded px-2 py-1 text-white font-medium hover:scale-y-105 ${descargando ? 'opacity-50  bg-green-500' : 'bg-gray-400'}`}
+            className={`w-32 shrink-0 hover:bg-upla-100 rounded px-2 py-1.5 text-white font-medium hover:scale-y-105 ${descargando ? 'opacity-50  bg-green-500' : 'bg-gray-400'}`}
         >
             <i className={`bi bi-${descargando ? 'file-earmark-excel' : 'download'} mr-2`} />
             {descargando ? 'Descargando...' : 'Generar Reporte'}

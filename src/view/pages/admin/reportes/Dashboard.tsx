@@ -296,6 +296,8 @@ const Dashboard: React.FC = () => {
         dataTable: listaDiasPracticas
     }
 
+console.log(listaDiasPracticas)
+
     return (
         <ContainerVIstas titulo='DASHBOARD - PRÁCTICAS PREPROFESIONALES' retornar>
             <div className="flex flex-col p-2 gap-8">
@@ -508,7 +510,7 @@ const Dashboard: React.FC = () => {
                     {/* BARRAS vertical -  Empresas*/}
                     <div className="sm:relative bg-gray-100 p-4 shadow rounded-md flex flex-col gap-4">
                         <div className="sm:absolute flex cursor-default sm:right-4">
-                            <h2 className="bg-upla-100 text-white p-2 px-4 font-medium rounded">Rank empresas</h2>
+                            <h2 className="bg-upla-100 text-white p-2 px-4 font-medium rounded">Top 5 - Rank empresas</h2>
                         </div>
                         {
                             listaRankEmpresa.length != 0 ?
@@ -561,7 +563,7 @@ const Dashboard: React.FC = () => {
                                                     tipoGradoJefe.dataLeyenda.map((data, index) => (
                                                         <div key={index} className="flex justify-between hover:scale-105">
                                                             <div className="flex gap-2 text-xs">
-                                                                <div className="my-auto border border-white w-6 h-3 bg-[#FF638450]/[0.5]" />
+                                                            <div className={`my-auto border shrink-0 border-white w-8 h-4 bg-[${data.hexColor}]/[0.5]`} />
                                                                 <span className="my-auto">{data.gradoNombre}</span>
                                                             </div>
                                                             <span className="my-auto font-medium text-base ml-4 text-upla-100">{data.cantidad}</span>
