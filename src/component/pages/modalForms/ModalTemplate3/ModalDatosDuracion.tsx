@@ -583,7 +583,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
             fechaInicio: manualStartDate, // formato aaaa-mm-dd
             fechaFinal: manualEndDate, // formato aaaa-mm-dd
             cantDias: dayCount, //integer
-            cantHorasSemanales: cantHoraSemanal, // 2 decimales
+            cantHorasSemanales: parseFloat(cantHoraSemanal.toFixed(2)), // 2 decimales
             tipoDias: tipoHorarioSeleccionado, // añadir select para eso
             jsonDetalleDias: convertirAFormatoDeseado(selectedDays, tipoHorarioSeleccionado),
             jsonDiasExcluidos: convertirAFormatoString(excludedDays)

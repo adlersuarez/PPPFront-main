@@ -43,6 +43,15 @@ export const EmpresaSeleccionadaAdmin: React.FC<EmpresaSeleccionada> = ({ datosE
                         {datosEmpresa?.depProvDist}
                     </span>
                 </div>
+                <div className='flex gap-4'>
+                    <div className='shrink-0 text-gray-500 font-medium'>Convenio :</div>
+                    <span className='text-upla-100 font-semibold'>
+                        {datosEmpresa?.tipoConvenioId === 1 && 'No remunerado'}
+                    </span>
+                    <span className='text-upla-100 font-semibold'>
+                        {datosEmpresa?.tipoConvenioId === 2 && 'Remunerado'}
+                    </span>
+                </div>
                 <hr className='my-2' />
                 <div className='text-upla-100 font-semibold border-b-[2px] border-b-upla-100'>
                     <i className="bi bi-person-fill mr-2" />REPRESENTANTE</div>

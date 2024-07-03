@@ -150,7 +150,7 @@ export function agregarColorHexTipoGradoJefe(grados: TipoGradoJefe[], colors: Co
 
 // ------------------ TIPO DIA SEMANA ---------------
 // Función auxiliar para consolidar días con el mismo diaId y ordenarlos
-function consolidarDias(dias: TipoDia[]): TipoDia[] {
+export function consolidarDias(dias: TipoDia[]): TipoDia[] {
     const diaMap = new Map<number, TipoDia>()
 
     dias.forEach(dia => {

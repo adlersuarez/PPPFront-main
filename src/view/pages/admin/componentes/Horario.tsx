@@ -1,7 +1,7 @@
 import DuracionDetallePracticas from '@/model/interfaces/horario/duracionPracticas';
 import React, { useEffect, useRef, useState } from 'react';
 import { EstudianteNoCompletado } from './EstudianteNoCompletado';
-import { formatoFecha_Date_fechaSlash } from '@/helper/herramienta.helper';
+import { convertirTiempoDecimalAHorasYMonutos, formatoFecha_Date_fechaSlash } from '@/helper/herramienta.helper';
 import { ListarDetalleDuracion, ListarDetalleExcluido } from '@/network/rest/practicas.network';
 import Listas from '@/model/interfaces/Listas.model.interface';
 import DuracionPracticas from '@/model/interfaces/practicas/duracionPracticas';
@@ -79,11 +79,11 @@ export const HorarioAdmin: React.FC<Horario> = ({ horario }) => {
                     <i className="bi bi-calendar-week mr-2" />HORARIO</div>
                 <div className='flex gap-4'>
                     <div className='shrink-0 text-gray-500 font-medium'>Fecha inicio :</div>
-                    <span className='text-upla-100 font-semibold'>{formatoFecha_Date_fechaSlash(horario?.fechaInicio??'')}</span>
+                    <span className='text-upla-100 font-semibold'>{formatoFecha_Date_fechaSlash(horario?.fechaInicio ?? '')}</span>
                 </div>
                 <div className='flex gap-4'>
                     <div className='shrink-0 text-gray-500 font-medium'>Fecha final :</div>
-                    <span className='text-upla-100 font-semibold'>{formatoFecha_Date_fechaSlash(horario?.fechaFinal??'')}</span>
+                    <span className='text-upla-100 font-semibold'>{formatoFecha_Date_fechaSlash(horario?.fechaFinal ?? '')}</span>
                 </div>
                 <div className='flex gap-4'>
                     <div className='shrink-0 text-gray-500 font-medium'>Tipo :</div>
@@ -104,7 +104,7 @@ export const HorarioAdmin: React.FC<Horario> = ({ horario }) => {
                 </div>
                 <div className='flex gap-4'>
                     <div className='shrink-0 text-gray-500 font-medium'>Cant. horas semanales :</div>
-                    <span className='text-upla-100 font-semibold'>{horario?.cantHorasSemanales}</span>
+                    <span className='text-upla-100 font-semibold'>{convertirTiempoDecimalAHorasYMonutos(horario?.cantHorasSemanales ?? 0)} </span>
                 </div>
                 <div className='flex gap-4'>
                     <div className='shrink-0 text-gray-500 font-medium'>Cant. días de prácticas :</div>

@@ -186,7 +186,7 @@ const EspecificoDocente: React.FC<DocenteDetailsProps> = ({ carId, asiId, codDoc
                             </tr>
                         ) : (
                             alumnosSeccion.map((item, index) => (
-                                <tr key={index} className="bg-white border-b">
+                                <tr key={index} className="bg-white border-b hover:bg-blue-50">
                                     <td className="text-sm p-2 text-center">{index + 1}</td>
                                     <td className="text-sm p-2 text-center font-medium text-gray-500">{item.est_Id}</td>
                                     <td className="text-sm px-6 p-2 text-left">

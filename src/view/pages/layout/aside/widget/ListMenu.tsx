@@ -39,7 +39,7 @@ const ListMenu = (props: Props) => {
                 group 
                 hover:text-white`}
             >
-                <i className={`bi ${props.icon}  text-xl pr-2`} ></i>
+                <i className={`bi ${props.icon} text-xl pr-4`} ></i>
                 <span
                     className="flex-1 
                     pr-2

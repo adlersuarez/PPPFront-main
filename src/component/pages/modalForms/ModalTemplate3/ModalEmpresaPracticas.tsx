@@ -345,6 +345,10 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
             toast.error("En necesario consignar el celular personal de su jefe inmediato")
             return
         }
+        if (aceptado === false) {
+            toast.error("Debe aceptar los términos de validez de datos respecto a la Ley 27444")
+            return
+        }
 
         const params: RegistroAreaTrabajo = {
             jsonDatosJefe: {
@@ -391,6 +395,13 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
 
             }
         })
+    }
+
+    //VALDIEZ DE TÉRMINOS
+    const [aceptado, setAceptado] = useState<boolean>(false);
+
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAceptado(e.target.checked)
     }
 
     return (
@@ -638,13 +649,23 @@ const ModalEmpresaPracticas: React.FC<Props> = ({ show, hide, init, change }) =>
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <div className="w-full lg:gap-3 flex justify-end">
-                    <div className="mb-3 lg:mb-0 hidden">
-                        <span className="flex font-medium text-red-800 bg-red-200 rounded p-1 text-xs text-center">Asumo la plena responsabilidad de la exactitud de los datos consignados, acogiéndome a la Ley 27444 del Procedimiento Administrativo General.</span>
+               
+                <div className="flex flex-col sm:flex-row gap-6 justify-between w-full">
+                    <div className="flex items-center bg-blue-50 px-3 pr-4 py-2 sm:py-1 rounded-md cursor-pointer">
+                        <input
+                            type="checkbox"
+                            id="aceptarTerminos"
+                            checked={aceptado}
+                            onChange={handleCheckboxChange}
+                            className="h-4 w-4 text-upla-100 cursor-pointer focus:ring-0 focus:outline-none border-upla-100"
+                        />
+                        <label htmlFor="aceptarTerminos" className="ml-5 sm:ml-4 text-sm text-gray-700 cursor-pointer text-justify">
+                            Asumo la plena responsabilidad de la exactitud de los datos consignados, acogiéndome a la <strong>Ley 27444</strong> del Procedimiento Administrativo General.
+                        </label>
                     </div>
-                    <div className="grid grid-cols-1  gap-3">
+                    <div className="grid grid-cols-1 w-full sm:w-auto gap-3 shrink-0">
                         <button
-                            onClick={handleRegistrarDatosEmpresa}
+                              onClick={handleRegistrarDatosEmpresa}
                             className={`text-white bg-gray-400 hover:bg-green-400 hover:border-green-400 focus:outline-none rounded-lg border border-gray-400 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10`}
                         >
                             Registrar

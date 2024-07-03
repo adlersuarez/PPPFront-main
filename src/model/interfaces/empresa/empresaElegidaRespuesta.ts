@@ -7,5 +7,6 @@ export default interface EmpresaElegidaRespuesta {
     representante: string
     repCargo: string
     repGrado: string
+    tipoConvenioId: number
   }
   

@@ -1,5 +1,11 @@
 import ContainerVIstas from "@/component/Container";
 import ComponenteReglamento from "@/component/pages/reglamento/ComponeteReglamento";
+import Response from "@/model/class/response.model.class";
+import RestError from "@/model/class/resterror.model.class";
+import { Types } from "@/model/enum/types.model";
+import Listas from "@/model/interfaces/Listas.model.interface";
+import { BuscarCoincidenciasReglamento } from "@/network/rest/reglamento.network";
+import { useEffect, useRef, useState } from "react";
 
 interface Articulo {
     id: number
@@ -322,8 +328,37 @@ const Reglamento = () => {
             ]
         },
 
-
     ]
+
+
+    /////
+    const [busquedaEncontrada, setBusquedaEncontrada] = useState<any[]>([])
+    //const [filtro, setFiltro] = useState<string>("")
+
+    const abortController = useRef(new AbortController())
+
+    const BuscarFiltrado = async () => {
+        const params = {
+            busqueda: "fines"
+        }
+        setBusquedaEncontrada([])
+        const response = await BuscarCoincidenciasReglamento<Listas>(params, abortController.current)
+        // console.log(response)
+        if (response instanceof Response) {
+            const data = response.data.resultado as any[]
+            setBusquedaEncontrada(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    useEffect(() => {
+        BuscarFiltrado()
+    }, [])
+
+    console.log(busquedaEncontrada)
 
     return (
 

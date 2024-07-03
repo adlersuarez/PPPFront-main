@@ -17,7 +17,7 @@ import TipoEmpresa from "@/model/interfaces/reportes/tipoEmpresa";
 import RankEmpresa from "@/model/interfaces/reportes/rankEmpresa";
 import TipoGradoJefe from "@/model/interfaces/reportes/tipoGradoJefe";
 import TipoDia from "@/model/interfaces/reportes/tipoDia";
-import { agregarColorHexTipoEmpresa, agregarColorHexTipoGradoJefe, bgColorReportes, convertirBgColortoArrayRGBA, getCantidadesRankEmpresa, getCantidadesTipoDia, getCantidadesTipoEmpresa, getCantidadesTipoGradoJefe, getLabelsRankEmpresa, getLabelsTipoDia, getLabelsTipoEmpresa, getLabelsTipoGradoJefe, totalTipoEmpresa, totalTipoGradoJefe } from "@/helper/reporte.color";
+import { agregarColorHexTipoEmpresa, agregarColorHexTipoGradoJefe, bgColorReportes, consolidarDias, convertirBgColortoArrayRGBA, getCantidadesRankEmpresa, getCantidadesTipoDia, getCantidadesTipoEmpresa, getCantidadesTipoGradoJefe, getLabelsRankEmpresa, getLabelsTipoDia, getLabelsTipoEmpresa, getLabelsTipoGradoJefe, totalTipoEmpresa, totalTipoGradoJefe } from "@/helper/reporte.color";
 import { HelperColor } from "../componentes/HelperColor";
 
 const CardDashboard = React.lazy(() => import('../componentes/CardDashboard'))
@@ -296,8 +296,6 @@ const Dashboard: React.FC = () => {
         dataTable: listaDiasPracticas
     }
 
-console.log(listaDiasPracticas)
-
     return (
         <ContainerVIstas titulo='DASHBOARD - PRÁCTICAS PREPROFESIONALES' retornar>
             <div className="flex flex-col p-2 gap-8">
@@ -563,7 +561,7 @@ console.log(listaDiasPracticas)
                                                     tipoGradoJefe.dataLeyenda.map((data, index) => (
                                                         <div key={index} className="flex justify-between hover:scale-105">
                                                             <div className="flex gap-2 text-xs">
-                                                            <div className={`my-auto border shrink-0 border-white w-8 h-4 bg-[${data.hexColor}]/[0.5]`} />
+                                                                <div className={`my-auto border shrink-0 border-white w-8 h-4 bg-[${data.hexColor}]/[0.5]`} />
                                                                 <span className="my-auto">{data.gradoNombre}</span>
                                                             </div>
                                                             <span className="my-auto font-medium text-base ml-4 text-upla-100">{data.cantidad}</span>
@@ -609,7 +607,7 @@ console.log(listaDiasPracticas)
                                     <div className="sm:hidden block">
                                         <table className="min-w-full divide-y divide-gray-200">
                                             <tbody className="bg-white divide-y divide-gray-200">
-                                                {tipoDiaSemana.dataTable.map((item, index) => (
+                                                {consolidarDias(listaDiasPracticas).map((item, index) => (
                                                     <tr key={index}>
                                                         <td className="px-6 py-4 text-sm font-medium text-gray-500">
                                                             {item.diaNombre}

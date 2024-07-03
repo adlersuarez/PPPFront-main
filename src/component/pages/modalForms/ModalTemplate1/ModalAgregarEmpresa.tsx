@@ -53,11 +53,11 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
             toast.error('Seleccione el cargo que asume el representante de la empresa.')
             return
         }
-        if(formularioEmpresa.celular_jefe.trim() === ""){
+        if (formularioEmpresa.celular_jefe.trim() === "") {
             toast.error('Debe ingresar el número de celular del representante de la empresa.')
             return
         }
-        if(formularioEmpresa.email_jefe.trim() === ""){
+        if (formularioEmpresa.email_jefe.trim() === "") {
             toast.error('Debe ingresar el correo electrónico del representante de la empresa.')
             return
         }
@@ -128,6 +128,10 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
         if (operacion.trim() === '') {
             return
         }
+        if (aceptado === false) {
+            toast.error("Debe aceptar los términos de validez de datos respecto a la Ley 27444")
+            return
+        }
 
         const params: RegistroEmpresaCarta = {
             codigoOperacion: operacion,
@@ -155,7 +159,7 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
             }
         }
 
-       sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
+        sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
                 //console.log(params)
 
@@ -185,6 +189,13 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
         })
     }
 
+    //VALDIEZ DE TÉRMINOS
+    const [aceptado, setAceptado] = useState<boolean>(false);
+
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAceptado(e.target.checked)
+    }
+
     return (
 
         <Modal onShow={show}>
@@ -200,25 +211,51 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
                     <div className="mb-3 lg:mb-0 hidden">
                         <span className="flex font-medium text-red-800 bg-red-200 rounded p-1 text-xs text-center">Asumo la plena responsabilidad de la exactitud de los datos consignados, acogiéndome a la Ley 27444 del Procedimiento Administrativo General.</span>
                     </div>
-                    <div className="grid grid-cols-2 w-full sm:w-64 gap-3">
-                        <button
-                            onClick={handlePrevStep}
-                            className={`text-gray-500 bg-white hover:bg-upla-100 hover:border-upla-100 focus:outline-none rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10 ${step == 1 && 'hidden'}`}
-                        >
-                            Atrás
-                        </button>
-                        <button
-                            onClick={handleNextStep}
-                            className={`text-gray-500 bg-white hover:bg-upla-100 hover:border-upla-100 focus:outline-none rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10 ${step == 2 ? 'hidden' : 'col-start-2'}`}
-                        >
-                            Siguiente
-                        </button>
-                        <button
-                            onClick={handleRegistrarEmpresa}
-                            className={`text-white bg-gray-400 hover:bg-green-400 hover:border-green-400 focus:outline-none rounded-lg border border-gray-400 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10 ${step == 1 && 'hidden'}`}
-                        >
-                            Registrar
-                        </button>
+                    <div className="grid grid-cols-2 w-full gap-3">
+
+                        <div className={`flex flex-col sm:flex-row gap-4 col-span-2 justify-between w-full ${step == 2 ? 'hidden' : ''}`}>
+                            <span className="flex gap-x-4 items-center text-red-800 border-[1px] border-dashed border-red-800 bg-red-100 rounded p-2 px-4 text-xs text-justify">
+                                <i className="bi bi-exclamation-diamond-fill text-lg text-red-500 animate-pulse" />
+                                <span>Asumo la plena responsabilidad de la exactitud de los datos consignados, acogiéndome a la <strong>Ley 27444</strong> del Procedimiento Administrativo General.</span>
+
+                            </span>
+                            <button
+                                onClick={handleNextStep}
+                                className={`text-gray-500 bg-white hover:bg-upla-100 hover:border-upla-100 focus:outline-none rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10 `}
+                            >
+                                Siguiente
+                            </button>
+                        </div>
+                        <div className={`flex flex-col sm:flex-row gap-4 col-span-2 justify-between w-full ${step == 1 ? 'hidden' : ''}`}>
+
+                            <div className="flex items-center bg-blue-50 px-3 pr-4 py-2 sm:py-1 rounded-md cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    id="aceptarTerminos"
+                                    checked={aceptado}
+                                    onChange={handleCheckboxChange}
+                                    className="h-4 w-4 text-upla-100 cursor-pointer focus:ring-0 focus:outline-none border-upla-100"
+                                />
+                                <label htmlFor="aceptarTerminos" className="ml-5 sm:ml-3 text-sm text-gray-700 cursor-pointer text-justify">
+                                    Acepto los términos de validez de datos respecto a la <strong>Ley 27444</strong>
+                                </label>
+                            </div>
+
+                            <div className="grid grid-cols-2 sm:flex gap-x-4 w-full sm:w-auto">
+                                <button
+                                    onClick={handlePrevStep}
+                                    className={`text-gray-500 bg-white hover:bg-upla-100 hover:border-upla-100 focus:outline-none rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10 ${step == 1 && 'hidden'}`}
+                                >
+                                    Atrás
+                                </button>
+                                <button
+                                    onClick={handleRegistrarEmpresa}
+                                    className={`text-white bg-gray-400 hover:bg-green-400 hover:border-green-400 focus:outline-none rounded-lg border border-gray-400 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10 `}
+                                >
+                                    Registrar
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
