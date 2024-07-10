@@ -142,7 +142,7 @@ const ModalUnidadTemática: React.FC<Props> = ({ show, hide, numero, changeInit 
                     <div className='bg-gray-100 w-full rounded-lg p-4'>
                         <div className='flex flex-col sm:gap-x-8 gap-2 sm:gap-y-3'>
                             <div className="grid grid-grid-cols-1 sm:grid-cols-2 gap-10">
-                                <div className="flex flex-col gap-4">
+                                <div className="hidden flex-col gap-4">
                                     <div className="text-upla-100 font-semibold">
                                         {asignatura}
                                     </div>

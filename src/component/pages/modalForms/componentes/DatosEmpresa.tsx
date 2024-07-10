@@ -18,6 +18,7 @@ import DatosEmpresa from '@/model/interfaces/empresa/empresa';
 import { TipoGrado } from '@/model/interfaces/grado/tipoGrado';
 import Cargo from '@/model/interfaces/cargo/cargo';
 import { TipoCargo } from '@/model/interfaces/cargo/tipoCargo';
+import { obtenerDiferencia } from '@/helper/herramienta.helper';
 
 
 type Props = {
@@ -60,7 +61,7 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
                     ruc: respuesta.ruc,
                     nombre_empresa: respuesta.nombre_o_razon_social,
                     direccion_empresa: respuesta.direccion,
-                    dpd_empresa: respuesta.dpd,
+                    dpd_empresa: obtenerDiferencia(respuesta.direccion_completa,respuesta.direccion),
                     estado_empresa: respuesta.estado,
                     condicion_domicilio: respuesta.condicion,
                     ubigeo_empresa: respuesta.ubigeo[2]

@@ -13,7 +13,7 @@ import useSweerAlert from "../../../../component/hooks/useSweetAlert"
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/configureStore.store';
 import RegistroDuracionPractica, { DetalleDuracion, DetalleExcluido } from '@/model/interfaces/datosEnviados/registroDuracionPractica';
-import { calcularCantDiasEstandar, calcularCantDiasFlexible, convertirTiempoDecimalAHorasYMonutos } from '@/helper/herramienta.helper';
+import { calcularCantDiasEstandar, calcularCantDiasFlexible, convertirTiempoDecimalAHorasYMonutos, obtenerHorasTotales } from '@/helper/herramienta.helper';
 import DiaFlexibleHorario from './componente/DiaFlexibleHorario';
 import { InsertarDuracionPracticas } from '@/network/rest/practicas.network';
 import RespValue from '@/model/interfaces/RespValue.model.interface';
@@ -36,9 +36,7 @@ interface TimeRange {
     end: string
 }
 
-const duracion = 380
-const maxDiario = 6
-const maxSemanal = 30
+
 
 type Props = {
     show: boolean
@@ -49,6 +47,13 @@ type Props = {
 }
 
 const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
+
+    //Código de asignatura
+    const idAsign = useSelector((state: RootState) => state.infoEstudiante.asi_Id)
+
+    const duracion = obtenerHorasTotales(idAsign) //380
+    const maxDiario = 6
+    const maxSemanal = 30
 
     const sweet = useSweerAlert()
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
@@ -648,6 +653,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
     const [existeCruce, setExisteCruce] = useState<boolean>(false)
     const changeExisteCruce = (newValor: boolean) => setExisteCruce(newValor)
+
 
     return (
 

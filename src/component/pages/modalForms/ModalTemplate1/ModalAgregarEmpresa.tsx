@@ -142,7 +142,7 @@ const ModalAgregarEmpresa: React.FC<Props> = ({ show, hide, init, operacion, fec
                 empresaRuc: formularioEmpresa.ruc,
                 empresaNombre: formularioEmpresa.nombre_empresa,
                 direccion: formularioEmpresa.direccion_empresa,
-                depProvDist: formularioEmpresa.dpd_empresa,
+                depProvDist: formularioEmpresa.dpd_empresa ?? '',
                 ubigeoEmpresa: formularioEmpresa.ubigeo_empresa,
                 tipoEmpresaId: Number(formularioEmpresa.tipo_empresa_id)
             },

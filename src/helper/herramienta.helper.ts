@@ -639,6 +639,23 @@ export const obtenerNombreInforme = (codigo: number) => {
   }
 }
 
+export const obtenerHorasTotales = (codigo: number) => {
+  switch (codigo) {
+    case 113286:
+      return 240;
+    case 113296:
+      return 380;
+    case 123276:
+      return 240;
+    case 123284:
+      return 240;
+    case 123297:
+      return 380;
+    default:
+      return 0;
+  }
+}
+
 export function convertirHorarioDetalle(detallePracticas: DuracionPracticas[]): DetalleDuracion[] {
   return detallePracticas.map((detalle: DuracionPracticas) => ({
     diaId: detalle.diaId,
@@ -655,3 +672,13 @@ export function raizDoc() {
 export function validadoCarta(datos: CartaPresentacionDatos[]): boolean {
   return !datos.some(item => item.cartaEstado === 2);
 };
+
+export function obtenerDiferencia(cadena1: string, cadena2: string): string {
+  // Remover espacios en blanco y separar la cadena por la coma
+  const [parte1, parte2] = cadena1.split(',').map(s => s.trim());
+  
+  if (parte1 === cadena2) {
+    return parte2 || ''; // Retorna la segunda parte si existe, sino retorna una cadena vacía
+  }
+  return '';
+}
