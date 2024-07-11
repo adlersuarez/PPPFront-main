@@ -391,11 +391,11 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
             </div>
             <div className='bg-gray-100 text-upla-100 w-full rounded-lg flex p-2 mt-3'>
                 <i className="bi bi-2-circle-fill ml-2 text-2xl" />
-                <span className='ml-4 font-bold sm:text-xl my-auto'>DATOS DEL REPRESENTANTE</span>
+                <span className='ml-4 font-bold sm:text-xl my-auto'>DATOS DEL REPRESENTANTE DE LA EMPRESA</span>
             </div>
             <div className='bg-gray-100 w-full rounded-lg p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3'>
                 <div className='flex flex-col gap-1'>
-                    <label htmlFor="dniJefe" className='font-bold text-gray-500'>DNI <i className="text-red-500 bi bi-asterisk text-xs" /></label>
+                    <label htmlFor="dniJefe" className='font-bold text-gray-500'>DNI del representante de la <strong>EMPRESA</strong><i className="text-red-500 bi bi-asterisk text-xs" /></label>
                     <div className='grid grid-cols-3 gap-2'>
                         <input
                             type="text"
@@ -420,7 +420,7 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
 
                 </div>
                 <div className='flex flex-col gap-1'>
-                    <label htmlFor="nombreJefe" className='font-bold text-gray-500'>Nombre</label>
+                    <label htmlFor="nombreJefe" className='font-bold text-gray-500'>Nombre del representante de la <strong>EMPRESA</strong></label>
                     <input
                         type="text"
                         id="nombreJefe"
