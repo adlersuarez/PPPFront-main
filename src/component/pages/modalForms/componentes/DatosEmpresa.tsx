@@ -55,13 +55,12 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
         if (response instanceof Response) {
             let respuesta = response.data.data
             if (respuesta) {
-
                 modificar({
                     ...datos,
                     ruc: respuesta.ruc,
                     nombre_empresa: respuesta.nombre_o_razon_social,
                     direccion_empresa: respuesta.direccion,
-                    dpd_empresa: obtenerDiferencia(respuesta.direccion_completa,respuesta.direccion),
+                    dpd_empresa: obtenerDiferencia(respuesta.direccion_completa, respuesta.direccion),
                     estado_empresa: respuesta.estado,
                     condicion_domicilio: respuesta.condicion,
                     ubigeo_empresa: respuesta.ubigeo[2]
@@ -158,8 +157,8 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
         })
     }
 
-     //Grado
-     const handleChangeTipoEmpresa = (event: ChangeEvent<HTMLSelectElement>) => {
+    //Grado
+    const handleChangeTipoEmpresa = (event: ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value
 
         modificar({
@@ -360,7 +359,7 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
                         id="direccionEmpresa"
                         name="direccionEmpresa"
                         className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm bg-gray-300'
-                        value={datos.direccion_empresa}
+                        value={datos.direccion_empresa !== '' ? datos.direccion_empresa : "- No registrado -"}
                         readOnly
                     />
                 </div>
@@ -371,7 +370,7 @@ export const FormularioEmpresa: React.FC<Props> = ({ datos, modificar }) => {
                         id="ubicacionDireccion"
                         name="ubicacionDireccion"
                         className='w-full border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm bg-gray-300'
-                        value={datos.dpd_empresa}
+                        value={datos.dpd_empresa !== '' ? datos.dpd_empresa : "- No registrado -"}
                         readOnly
                     />
                 </div>

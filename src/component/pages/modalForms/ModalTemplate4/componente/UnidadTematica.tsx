@@ -108,7 +108,7 @@ const UnidadTematica: React.FC<Props> = ({ posicion, total, onToggle, openIndex,
 
   return (
     <div className='flex flex-col border-gray-300'>
-      <div className="px-4 py-2 flex flex-row justify-between bg-gray-300 cursor-pointer font-medium text-gray-500" onClick={() => onToggle(posicion)}>
+      <div className="px-4 py-2 flex flex-col sm:flex-row justify-between bg-gray-300 cursor-pointer font-medium text-gray-500" onClick={() => onToggle(posicion)}>
         <div className='flex gap-4'>
           <h2>UNIDAD TEMÁTICA {posicion}</h2>
           {completado &&
@@ -120,7 +120,7 @@ const UnidadTematica: React.FC<Props> = ({ posicion, total, onToggle, openIndex,
             </div>
           }
         </div>
-        <div className='flex gap-8'>
+        <div className='flex gap-8 justify-between'>
           {openIndex !== posicion &&
             <div className='flex w-44 text-xs font-normal gap-2'>
               <span className='my-auto'><i className="bi bi-calendar3" /></span>

@@ -217,22 +217,94 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
 
     const handleRegistrarDatosEmpresa = () => {
 
-        /*if (manualStartDate === '') {
-            toast.error("Por favor, ingresa la Fecha de Inicio de prácticas.")
+        if (objetivoGeneral === '') {
+            toast.error("Por favor, ingresa el Objetivo General.")
             return
         }
-        if (cantHoraSemanal > 30) {
-            toast.error("Las horas semanales no pueden exceder las 30 horas.")
+
+        // UNIDAD TEMÁTICA 1
+        if (unidadesTematicas[0].objetivoEspecifico === '') {
+            toast.error("Por favor, ingresa el Objetivo Específico de la Unidad temática 1.")
             return
         }
-        if (selectedDays.length === 0) {
-            toast.error("Por favor, selecciona al menos un día de la semana.")
-            return
-        }
-        if (timeRanges.length === 0) {
-            toast.error("Por favor, agrega al menos un horario de prácticas.")
+
+        /*if (unidadesTematicas[0].fechaInicio === '') {
+            toast.error("Por favor, ingresa la fecha de Inicio de la Unidad temática 1.")
             return
         }*/
+
+        if (unidadesTematicas[0].fechaFinal === '') {
+            toast.error("Por favor, ingresa la fecha Final de la Unidad temática 1.")
+            return
+        }
+
+        if (unidadesTematicas[0].actividades.length === 0) {
+            toast.error("Por favor, registre actividades de la Unidad temática 1.")
+            return
+        }
+
+        // UNIDAD TEMÁTICA 2
+        if (unidadesTematicas[1].objetivoEspecifico === '') {
+            toast.error("Por favor, ingresa el Objetivo Específico de la Unidad temática 2.")
+            return
+        }
+
+        if (unidadesTematicas[1].fechaInicio === '') {
+            toast.error("Por favor, ingresa la fecha de Inicio de la Unidad temática 2.")
+            return
+        }
+
+        if (unidadesTematicas[1].fechaFinal === '') {
+            toast.error("Por favor, ingresa la fecha Final de la Unidad temática 2.")
+            return
+        }
+
+        if (unidadesTematicas[1].actividades.length === 0) {
+            toast.error("Por favor, registre actividades de la Unidad temática 2.")
+            return
+        }
+
+        // UNIDAD TEMÁTICA 3
+        if (unidadesTematicas[2].objetivoEspecifico === '') {
+            toast.error("Por favor, ingresa el Objetivo Específico de la Unidad temática 3.")
+            return
+        }
+
+        if (unidadesTematicas[2].fechaInicio === '') {
+            toast.error("Por favor, ingresa la fecha de Inicio de la Unidad temática 3.")
+            return
+        }
+
+        if (unidadesTematicas[2].fechaFinal === '') {
+            toast.error("Por favor, ingresa la fecha Final de la Unidad temática 3.")
+            return
+        }
+
+        if (unidadesTematicas[2].actividades.length === 0) {
+            toast.error("Por favor, registre actividades de la Unidad temática 3.")
+            return
+        }
+
+        // UNIDAD TEMÁTICA 4
+        if (unidadesTematicas[3].objetivoEspecifico === '') {
+            toast.error("Por favor, ingresa el Objetivo Específico de la Unidad temática 4.")
+            return
+        }
+
+        if (unidadesTematicas[3].fechaInicio === '') {
+            toast.error("Por favor, ingresa la fecha de Inicio de la Unidad temática 4.")
+            return
+        }
+
+        /*if (unidadesTematicas[3].fechaFinal === '') {
+            toast.error("Por favor, ingresa la fecha Final de la Unidad temática 4.")
+            return
+        }*/
+
+        if (unidadesTematicas[3].actividades.length === 0) {
+            toast.error("Por favor, registre actividades de la Unidad temática 4.")
+            return
+        }
 
         const params: RegistroPlanActividades = {
             periodo: periodo,
@@ -330,10 +402,11 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <div className="w-full lg:gap-3 flex justify-end">
-                    <div className="mb-3 lg:mb-0 hidden">
-                        <span className="flex font-medium text-red-800 bg-red-200 rounded p-1 text-xs text-center">Asumo la plena responsabilidad de la exactitud de los datos consignados, acogiéndome a la Ley 27444 del Procedimiento Administrativo General.</span>
-                    </div>
+                <div className="w-full lg:gap-3 flex flex-col sm:flex-row gap-y-4 justify-between">
+                    <span className="flex gap-x-4 items-center text-yellow-800 border-[1px] border-dashed border-yellow-800 bg-yellow-100 rounded p-2 px-4 text-xs text-justify">
+                        <i className="bi bi-exclamation-diamond-fill text-lg text-yellow-500 animate-pulse" />
+                        <span>Asegúrese de que todos los datos sean completados de manera precisa</span>
+                    </span>
                     <div className="grid grid-cols-1 w-full sm:w-64 gap-3">
 
                         <button

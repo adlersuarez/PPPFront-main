@@ -644,13 +644,13 @@ export const obtenerHorasTotales = (codigo: number) => {
     case 113286:
       return 240;
     case 113296:
-      return 380;
-    case 123276:
       return 240;
+    case 123276:
+      return 180;
     case 123284:
       return 240;
     case 123297:
-      return 380;
+      return 320;
     default:
       return 0;
   }
