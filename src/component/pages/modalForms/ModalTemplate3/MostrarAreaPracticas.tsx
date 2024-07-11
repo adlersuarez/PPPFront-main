@@ -98,7 +98,7 @@ const MostrarAreaPracticas: React.FC<Props> = ({ show, hide, valor }) => {
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap w-20 shrink-0'>Cargo :</div>
-                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.repCargo}</span>
+                                <span className="text-upla-100 font-bold">{datosAreaTrabajo?.jefeCargo}</span>
                             </div>
                             <div className='w-full flex gap-3'>
                                 <div className='whitespace-nowrap w-20 shrink-0'>Celular :</div>
