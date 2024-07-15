@@ -54,7 +54,7 @@ export const PlanActividadesAdmin: React.FC<Horario> = ({ estudianteId }) => {
     }
 
     const MostrarSeleccion = (idUnidad: number) => {
-        const encontrado = unidadesTematicas.find((unidad) => unidad.unidadTematicaId === idUnidad)
+        const encontrado = unidadesTematicas.find((unidad) => unidad.numeroUnidad === idUnidad)
         setUnidadesTematicaSeleccionada(encontrado ?? null)
     }
 
