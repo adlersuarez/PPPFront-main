@@ -54,7 +54,7 @@ const Paso4 = (datos: Paso3Props) => {
     }
 
     const MostrarSeleccion = (idUnidad: number) => {
-        const encontrado = unidadesTematicas.find((unidad) => unidad.unidadTematicaId === idUnidad)
+        const encontrado = unidadesTematicas.find((unidad) => unidad.numeroUnidad === idUnidad)
         setUnidadesTematicaSeleccionada(encontrado ?? null)
     }
 
@@ -82,6 +82,8 @@ const Paso4 = (datos: Paso3Props) => {
     const ObtenerActividadesUnidad = async (unidadId: number) => {
         setActividadesUnidad([])
         const response = await ObtenerActividadesUnidadTematicaEspecifica<Listas>(unidadId, abortController.current)
+        console.log(response)
+
         if (response instanceof Response) {
             const data = response.data.resultado as ActividadUnidad[]
             setActividadesUnidad(data)

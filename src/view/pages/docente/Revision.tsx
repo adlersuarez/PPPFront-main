@@ -89,8 +89,6 @@ const Revision = () => {
 
     const [showDetalles, setShowDetalles] = useState<boolean>(false)
 
-    console.log(alumnosSeccion)
-
     return (
         <ContainerVIstas titulo='REVISIÓN DOCENTE' retornar>
 
