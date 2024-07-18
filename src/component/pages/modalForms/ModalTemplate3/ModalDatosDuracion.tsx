@@ -570,6 +570,12 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
             toast.error("Las horas semanales no pueden exceder las 30 horas.")
             return
         }
+
+        if (cantHoraSemanal <= 0) {
+            toast.error("Tiene que seleccionar un horario adecuado")
+            return
+        }
+
         if (selectedDays.length === 0) {
             toast.error("Por favor, selecciona al menos un día de la semana.")
             return

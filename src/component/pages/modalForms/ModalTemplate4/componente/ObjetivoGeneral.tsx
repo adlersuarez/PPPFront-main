@@ -8,7 +8,7 @@ interface Props {
     handleChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-const ObjetivoGeneral: React.FC<Props> = ({ posicion, onToggle, openIndex, objetivoGeneral, handleChange }) => {
+const ObjetivoGeneralComp: React.FC<Props> = ({ posicion, onToggle, openIndex, objetivoGeneral, handleChange }) => {
 
 
     const [completado, setCompletado] = useState<boolean>(false) // si lleno el objetivo general
@@ -55,4 +55,4 @@ const ObjetivoGeneral: React.FC<Props> = ({ posicion, onToggle, openIndex, objet
     )
 }
 
-export default ObjetivoGeneral
+export default ObjetivoGeneralComp

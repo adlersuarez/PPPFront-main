@@ -12,6 +12,7 @@ import MostrarDocumentoUrl from '@/model/interfaces/documento/mostrarDocumento'
 import FilePreview from '@/model/interfaces/documento/filePreview'
 import DocumentoAdmin from '@/model/interfaces/documento/mostrarDocumentoAdmin'
 import CartaPresentacionDatos from '@/model/interfaces/cartaPresentacion/cartaPresentacion'
+import ActividadUnidad from '@/model/interfaces/planActividades/actividades'
 
 export function formatTime(value: string) {
   var hourEnd = value.indexOf(":")
@@ -676,9 +677,29 @@ export function validadoCarta(datos: CartaPresentacionDatos[]): boolean {
 export function obtenerDiferencia(cadena1: string, cadena2: string): string {
   // Remover espacios en blanco y separar la cadena por la coma
   const [parte1, parte2] = cadena1.split(',').map(s => s.trim());
-  
+
   if (parte1 === cadena2) {
     return parte2 || ''; // Retorna la segunda parte si existe, sino retorna una cadena vacía
   }
   return '';
 }
+
+
+export function convertirFechaEditarActividades(fecha: string) {
+  // Crear un objeto Date a partir de la fecha proporcionada
+  const fechaObj = new Date(fecha);
+
+  // Obtener el año, mes y día
+  const año = fechaObj.getFullYear();
+  const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0'); // Los meses empiezan desde 0, por eso sumamos 1
+  const día = fechaObj.getDate().toString().padStart(2, '0');
+
+  // Formatear la fecha en el formato 'aaaa-mm-dd'
+  return `${año}-${mes}-${día}`;
+}
+
+export function obtenerActividades(lista: ActividadUnidad[]): string[] {
+  return lista.map(elemento => elemento.actividad);
+}
+
+

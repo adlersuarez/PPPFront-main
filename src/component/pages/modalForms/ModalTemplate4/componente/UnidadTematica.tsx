@@ -47,7 +47,7 @@ const initialState: SelectedDay[] = [
   { idDia: 6, dia: 'sábado', seleccionado: false }
 ]
 
-const UnidadTematica: React.FC<Props> = ({ posicion, total, onToggle, openIndex, unidadTematica,diasPracticas, minFecha, maxFecha, modificarObjetivo, modificarFechas, agregarActividad, eliminarActividad, //editarActividad
+const UnidadTematicaComp: React.FC<Props> = ({ posicion, total, onToggle, openIndex, unidadTematica,diasPracticas, minFecha, maxFecha, modificarObjetivo, modificarFechas, agregarActividad, eliminarActividad, //editarActividad
 }) => {
 
   const primero = posicion == 1
@@ -267,4 +267,4 @@ const UnidadTematica: React.FC<Props> = ({ posicion, total, onToggle, openIndex,
   )
 }
 
-export default UnidadTematica
+export default UnidadTematicaComp

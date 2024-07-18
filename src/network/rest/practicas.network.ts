@@ -211,3 +211,11 @@ export async function ObtenerConvenioPracticas<ConvenioPracticas>(PeriodoId: num
 export async function ObtenerCartaPresentacionEspecifica<Blob>(CartaId: number, signal = null): Promise<Response<Blob> | RestError> {
     return await Resolve.create<Blob>(instance.get<Blob>(`/CartaPresentacion/ObtenerCartaPresentacionEspecifica/${CartaId}`, { signal: signal! }))
 }*/
+//PlanActividades/ObtenerEstadoModificaPlan
+export async function ObtenerEstadoModificaPlan<EstadoEditarPlan>(EstudianteId:string, PeriodoId: number, signal = null): Promise<Response<EstadoEditarPlan> | RestError> {
+    return await Resolve.create<EstadoEditarPlan>(instance.get<EstadoEditarPlan>(`/PlanActividades/ObtenerEstadoModificaPlan/${EstudianteId}/${PeriodoId}`, { signal: signal! }));
+}
+//Editar actividades
+export async function EditarPlanActividades<RespValue>(params: object, abortController: AbortController | null = null): Promise<Response<RespValue> | RestError> {
+    return await Resolve.create(instance.post<RespValue>(`/PlanActividades/EditarPlanActividades`, params, { signal: abortController?.signal }))
+}

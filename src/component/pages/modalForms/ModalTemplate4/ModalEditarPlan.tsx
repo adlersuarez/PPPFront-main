@@ -3,10 +3,10 @@ import Modal from "../../modal/ModalComponente"
 
 import ObjetivoGeneralComp from "./componente/ObjetivoGeneral"
 import UnidadTematicaComp from "./componente/UnidadTematica"
-import { convertirFormatoFechaInput, formatoFecha_Date_String, revertirFormatoFechaForm } from "@/helper/herramienta.helper"
+import { convertirFechaEditarActividades, convertirFormatoFechaInput, formatoFecha_Date_String, obtenerActividades, revertirFormatoFechaForm } from "@/helper/herramienta.helper"
 import RegistroPlanActividades from "@/model/interfaces/datosEnviados/registroPlanActividades"
 import useSweerAlert from "../../../../component/hooks/useSweetAlert"
-import { InsertarPlanActividades, ObtenerDiasLaboralesPracticante, ObtenerFechasDuracionPracticas } from "@/network/rest/practicas.network"
+import { EditarPlanActividades, ListarDatosUnidadTematica, ObtenerActividadesUnidadTematicaEspecifica, ObtenerDiasLaboralesPracticante, ObtenerFechasDuracionPracticas, ObtenerObjetivoGeneral } from "@/network/rest/practicas.network"
 import RespValue from "@/model/interfaces/RespValue.model.interface"
 import Response from "@/model/class/response.model.class"
 import RestError from "@/model/class/resterror.model.class"
@@ -17,6 +17,9 @@ import FechaPracticas from "@/model/interfaces/practicas/fechaPracticas"
 import DiasPracticas from "@/model/interfaces/practicas/diasPracticas"
 import Listas from "@/model/interfaces/Listas.model.interface"
 import toast from "react-hot-toast"
+import UnidadTematica from "@/model/interfaces/planActividades/unidadTematica"
+import ObjetivoGeneral from "@/model/interfaces/planActividades/objetivoGeneral"
+import ActividadUnidad from "@/model/interfaces/planActividades/actividades"
 
 interface UnidadTema {
     numero: number
@@ -34,14 +37,114 @@ type Props = {
     change: () => void
 }
 
-const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
+const ModalEditarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
 
+    const codigo = useSelector((state: RootState) => state.autenticacion.codigo)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
 
     //------- Obtenerlo de la BBDD -------//
-    //const fechaInicial = "2024-04-02"
-    //const fechaFinal = "2024-07-02"
+    const [unidadesTematicasEditar, setUnidadesTematicasEditar] = useState<UnidadTematica[]>([])
+    const [objetivoGeneralEditar, setObjetivoGeneralEditar] = useState<ObjetivoGeneral | null>(null)
 
+    const [actividadesUnidad1, setActividadesUnidad1] = useState<ActividadUnidad[]>([])
+    const ObtenerActividadesUnidad1 = async (unidad: number) => {
+        setActividadesUnidad1([])
+        const response = await ObtenerActividadesUnidadTematicaEspecifica<Listas>(unidad, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data.resultado as ActividadUnidad[]
+            setActividadesUnidad1(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+    const [actividadesUnidad2, setActividadesUnidad2] = useState<ActividadUnidad[]>([])
+    const ObtenerActividadesUnidad2 = async (unidad: number) => {
+        setActividadesUnidad2([])
+        const response = await ObtenerActividadesUnidadTematicaEspecifica<Listas>(unidad, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data.resultado as ActividadUnidad[]
+            setActividadesUnidad2(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    const [actividadesUnidad3, setActividadesUnidad3] = useState<ActividadUnidad[]>([])
+    const ObtenerActividadesUnidad3 = async (unidad: number) => {
+        setActividadesUnidad3([])
+        const response = await ObtenerActividadesUnidadTematicaEspecifica<Listas>(unidad, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data.resultado as ActividadUnidad[]
+            setActividadesUnidad3(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    const [actividadesUnidad4, setActividadesUnidad4] = useState<ActividadUnidad[]>([])
+    const ObtenerActividadesUnidad4 = async (unidad: number) => {
+        setActividadesUnidad4([])
+        const response = await ObtenerActividadesUnidadTematicaEspecifica<Listas>(unidad, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data.resultado as ActividadUnidad[]
+            setActividadesUnidad4(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+
+    const ListarUnidadTematica = async () => {
+        setUnidadesTematicasEditar([])
+        const response = await ListarDatosUnidadTematica<Listas>(codigo, periodo, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data.resultado as UnidadTematica[]
+            setUnidadesTematicasEditar(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+    //
+    const MostrarObjetivoGeneral = async () => {
+        setObjetivoGeneralEditar(null)
+        const response = await ObtenerObjetivoGeneral<ObjetivoGeneral>(codigo, periodo, abortController.current)
+        if (response instanceof Response) {
+            const data = response.data as ObjetivoGeneral
+            setObjetivoGeneralEditar(data)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
+    useEffect(() => {
+        ListarUnidadTematica()
+        MostrarObjetivoGeneral()
+    }, [])
+
+    useEffect(() => {
+        if (unidadesTematicasEditar.length == 0) {
+            return
+        }
+
+        ObtenerActividadesUnidad1(unidadesTematicasEditar[0].unidadTematicaId)
+        ObtenerActividadesUnidad2(unidadesTematicasEditar[1].unidadTematicaId)
+        ObtenerActividadesUnidad3(unidadesTematicasEditar[2].unidadTematicaId)
+        ObtenerActividadesUnidad4(unidadesTematicasEditar[3].unidadTematicaId)
+    }, [unidadesTematicasEditar])
+
+    ///// EDITAR
     const sweet = useSweerAlert()
     const abortController = useRef(new AbortController())
 
@@ -94,6 +197,10 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
     }, [])
 
     useEffect(() => {
+        setObjetivoGeneral(objetivoGeneralEditar?.objetivoGeneral ?? '')
+    }, [objetivoGeneralEditar])
+
+    useEffect(() => {
         setUnidadesTematicas((oldUnidadesTematicas) => {
             return oldUnidadesTematicas.map((unidad, index) => {
                 if (index === 0) {
@@ -113,6 +220,82 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
         })
 
     }, [fechaInicial, fechaFinal])
+
+    useEffect(() => {
+        if (unidadesTematicasEditar.length == 0) {
+            return
+        }
+
+        setUnidadesTematicas((oldUnidadesTematicas) => {
+            return oldUnidadesTematicas.map((unidad, index) => {
+                if (index === 0) {
+                    return {
+                        ...unidad,
+                        objetivoEspecifico: unidadesTematicasEditar[0].objetivoEspecifico,
+                        fechaFinal: convertirFechaEditarActividades(unidadesTematicasEditar[0].fechaFinUnidad),
+                    };
+                } else if (index === 1) {
+                    return {
+                        ...unidad,
+                        objetivoEspecifico: unidadesTematicasEditar[1].objetivoEspecifico,
+                        fechaInicio: convertirFechaEditarActividades(unidadesTematicasEditar[1].fechaInicioUnidad),
+                        fechaFinal: convertirFechaEditarActividades(unidadesTematicasEditar[1].fechaFinUnidad),
+                    };
+                } else if (index === 2) {
+                    return {
+                        ...unidad,
+                        objetivoEspecifico: unidadesTematicasEditar[2].objetivoEspecifico,
+                        fechaInicio: convertirFechaEditarActividades(unidadesTematicasEditar[2].fechaInicioUnidad),
+                        fechaFinal: convertirFechaEditarActividades(unidadesTematicasEditar[2].fechaFinUnidad),
+                    };
+                } else if (index === 3) {
+                    return {
+                        ...unidad,
+                        objetivoEspecifico: unidadesTematicasEditar[3].objetivoEspecifico,
+                        fechaInicio: convertirFechaEditarActividades(unidadesTematicasEditar[3].fechaInicioUnidad),
+                    };
+                } else {
+                    return unidad
+                }
+            })
+        })
+
+    }, [unidadesTematicasEditar])
+
+    useEffect(() => {
+        if (unidadesTematicasEditar.length == 0) {
+            return
+        }
+
+        setUnidadesTematicas((oldUnidadesTematicas) => {
+            return oldUnidadesTematicas.map((unidad, index) => {
+                if (index === 0) {
+                    return {
+                        ...unidad,
+                        actividades: obtenerActividades(actividadesUnidad1)
+                    };
+                } else if (index === 1) {
+                    return {
+                        ...unidad,
+                        actividades: obtenerActividades(actividadesUnidad2)
+                    };
+                } else if (index === 2) {
+                    return {
+                        ...unidad,
+                        actividades: obtenerActividades(actividadesUnidad3)
+                    };
+                } else if (index === 3) {
+                    return {
+                        ...unidad,
+                        actividades: obtenerActividades(actividadesUnidad4)
+                    };
+                } else {
+                    return unidad
+                }
+            })
+        })
+
+    }, [actividadesUnidad1, actividadesUnidad2, actividadesUnidad3, actividadesUnidad4])
 
     // Estado para las unidades temáticas
     const [unidadesTematicas, setUnidadesTematicas] = useState<UnidadTema[]>([
@@ -338,8 +521,9 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
         sweet.openDialog("Mensaje", "¿Esta seguro de continuar", async (value) => {
             if (value) {
 
+                console.log(params)
                 sweet.openInformation("Mensaje", "Procesando información...")
-                const response = await InsertarPlanActividades<RespValue>(params, abortController.current)
+                const response = await EditarPlanActividades<RespValue>(params, abortController.current)
 
                 if (response instanceof Response) {
                     if (response.data.value == "procesado") {
@@ -356,7 +540,7 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
                     sweet.openWarning("Error", "Por favor, comuníquese con la Oficina de Informática.", () => { })
                     console.log(response.getMessage())
                 }
-
+                
             }
         })
     }
@@ -370,7 +554,7 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
                     <div className='bg-gray-100 w-full rounded-lg flex p-2 justify-between'>
                         <div className='flex text-upla-100'>
                             <i className="bi bi-card-checklist ml-2 text-2xl" />
-                            <span className='ml-4 font-bold sm:text-xl my-auto'>PLAN DE ACTIVIDADES</span>
+                            <span className='ml-4 font-bold sm:text-xl my-auto'>EDITAR - PLAN DE ACTIVIDADES</span>
                         </div>
                     </div>
                     <div className='bg-gray-100 w-full rounded-lg p-4 flex flex-col gap-4'>
@@ -424,4 +608,4 @@ const ModalCargarPlan: React.FC<Props> = ({ show, hide, init, change }) => {
     )
 }
 
-export default ModalCargarPlan
+export default ModalEditarPlan

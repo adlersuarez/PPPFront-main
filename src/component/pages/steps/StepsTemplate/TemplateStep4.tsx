@@ -4,7 +4,7 @@ import EstadoTemplate from "./Contenedor/EstadoTemplate";
 import { EstadoRequisito } from "./Contenedor/EstadoRequisito";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore.store";
-import { EstadoPlanActividades } from "@/network/rest/practicas.network";
+import { EstadoPlanActividades, ObtenerEstadoModificaPlan } from "@/network/rest/practicas.network";
 import EstadoValor from "@/model/interfaces/estado/EstadoValor";
 import Response from "@/model/class/response.model.class";
 import RestError from "@/model/class/resterror.model.class";
@@ -12,16 +12,19 @@ import { Types } from "@/model/enum/types.model";
 import { ProcesoPasosEstudiante } from "@/helper/requisitos.helper";
 import RequisitosListaEstudiante from "./Contenedor/RequisitoEstudiante";
 import { SuspenseModal } from "@/component/suspense/SuspenseModal";
+import EstadoEditarPlan from "@/model/interfaces/planActividades/estadoEditar";
 
 const ModalCargarPlan = React.lazy(() => import("../../modalForms/ModalTemplate4/ModalCargarPlan"));
 const MostrarPlanActividades = React.lazy(() => import("../../modalForms/ModalTemplate4/MostrarPlanActividades"));
+const ModalEditarPlan = React.lazy(() => import("../../modalForms/ModalTemplate4/ModalEditarPlan"));
 
 interface Props {
     InitEstado: () => void
 }
 
-const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
+const TemplateStep4: React.FC<Props> = ({ InitEstado }) => {
 
+    const codigoEst = useSelector((state: RootState) => state.infoEstudiante.est_Id)
     const periodo = useSelector((state: RootState) => state.infoEstudiante.periodoId)
     const abortController = useRef(new AbortController())
 
@@ -35,7 +38,15 @@ const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
     const handleClosePlanDatos = () => setShowPlanDatos(false)
     const handleShowPlanDatos = () => setShowPlanDatos(true)
 
+    // Editar plan
+    const [showEditarPlan, setShowEditarPlan] = useState<boolean>(false)
 
+    const handleCloseEditar = () => setShowEditarPlan(false)
+    const handleShowEditar = () => setShowEditarPlan(true)
+
+    const [estadoEditar, setEstadoEditar] = useState<boolean | null>(null)
+
+    /////
     const [estadoPlan, setEstadoPlan] = useState<number | null>(null)
 
     const LoadEstadoPlan = async () => {
@@ -51,9 +62,23 @@ const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
         }
     }
 
+    const LoadEstadoEdicion = async () => {
+        // setGrado([])/* CAMBIAR         AQUI
+        const response = await ObtenerEstadoModificaPlan<EstadoEditarPlan>(codigoEst,periodo)
+        if (response instanceof Response) {
+            const data = response.data as EstadoEditarPlan
+            setEstadoEditar(data.estado)
+        }
+        if (response instanceof RestError) {
+            if (response.getType() === Types.CANCELED) return;
+            console.log(response.getMessage())
+        }
+    }
+
     const Init = () => {
         InitEstado()
         LoadEstadoPlan()
+        LoadEstadoEdicion()
     }
 
     useEffect(() => {
@@ -72,6 +97,7 @@ const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
             <Suspense fallback={<SuspenseModal />}>
                 <ModalCargarPlan show={show} hide={handleClose} init={Init} change={handleChangeCambios} />
                 <MostrarPlanActividades show={showPlanDatos} hide={handleClosePlanDatos} cambios={cambios} />
+                <ModalEditarPlan show={showEditarPlan} hide={handleCloseEditar} init={Init} change={handleChangeCambios} />
             </Suspense>
 
             <ContenedorSteps
@@ -126,6 +152,15 @@ const TemplateStep4: React.FC<Props> = ({InitEstado}) => {
                                                         className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >
                                                         Ver
                                                     </button>
+
+                                                }
+                                                {(estadoPlan === 1 && estadoEditar === true) &&
+                                                    <button
+                                                        onClick={handleShowEditar}
+                                                        className="bg-gray-400 hover:bg-blue-600 text-white px-4 py-1 rounded" >
+                                                        Editar
+                                                    </button>
+
                                                 }
 
                                             </div>
