@@ -35,6 +35,9 @@ const RevisionSeccionAlumno = () => {
         seccion: seccion.nta_Seccion,
 
         plan: seccion.pEs_Id,
+
+        periodoString: seccion.mtr_Anio + seccion.mtr_Periodo,
+        idAsign: seccion.asi_Id
     }
 
     const [loading, setLoading] = useState<boolean>(false)
@@ -55,6 +58,29 @@ const RevisionSeccionAlumno = () => {
                 curso: datos.curso,
                 seccion: datos.seccion,
                 plan: datos.plan,
+            },
+        })
+    }
+
+    const onEventCorrecion = (
+        codigo: string,
+        nombres: string
+    ) => {
+        navigate(`/revision/estudiante-detalle`, {
+            state: {
+                codigo: codigo,
+                nombres: nombres,
+                facultad: datos.facultad,
+                carrera: datos.carrera,
+                sede: datos.sede,
+                periodo: datos.periodo,
+                semestre: datos.semestre,
+                curso: datos.curso,
+                seccion: datos.seccion,
+                plan: datos.plan,
+
+                periodoString: datos.periodoString,
+                idAsign: datos.idAsign
             },
         })
     }
@@ -189,7 +215,7 @@ const RevisionSeccionAlumno = () => {
                                                     <td className="text-sm p-2 text-center">
                                                         <EstadosAlumno EstudianteId={item.est_Id} />
                                                     </td>
-                                                    <td className="text-sm p-2 text-center">
+                                                    <td className="flex gap-x-2 text-sm p-2 text-center">
                                                         <button
                                                             title="Ver historial"
                                                             className="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-md text-sm px-4 py-2"
@@ -199,6 +225,16 @@ const RevisionSeccionAlumno = () => {
                                                             }
                                                         >
                                                             <i className="bi bi-list-ul text-sm"></i>
+                                                        </button>
+                                                        <button
+                                                            title="Revisión extra"
+                                                            className="focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:ring-green-300 rounded-md text-sm px-4 py-2"
+                                                            onClick={() =>
+                                                                onEventCorrecion(item.est_Id,
+                                                                    item.nombres + " " + item.apellidoPaterno + " " + item.apellidoMaterno)
+                                                            }
+                                                        >
+                                                            <i className="bi bi-check-lg text-sm"></i>
                                                         </button>
                                                     </td>
                                                 </tr>

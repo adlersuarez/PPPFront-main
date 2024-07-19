@@ -35,6 +35,8 @@ const Paso1 = (datos: DatosProps) => {
         setCartasPresDocente([])
         const response = await ObtenerDatosCartaAlumnoEspecifico<Listas>(datos.estudianteId, codigo, periodo, abortController.current)
 
+        console.log(response)
+
         if (response instanceof Response) {
             const data = response.data.resultado as ListaCartaEmpresaDocente[]
             setCartasPresDocente(data)

@@ -560,6 +560,8 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
         })
     }
 
+    console.log(cantHoraSemanal)
+
     const handleRegistrarDatosEmpresa = () => {
 
         if (manualStartDate === '') {
@@ -663,7 +665,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
 
     return (
 
-        <Modal onShow={props.show}>
+        <Modal onShow={props.show} maxWidth='max-w-4xl'>
             <Modal.Header closeButton onHide={props.hide}> </Modal.Header>
             <Modal.Body>
 
@@ -803,7 +805,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                             <div className='flex flex-col gap-2 px-2 py-3 rounded-md bg-white'>
                                                 {
                                                     timeRanges.map((range, index) => (
-                                                        <div key={index} className='flex flex-row gap-2 justify-between'>
+                                                        <div key={index} className='flex flex-col sm:flex-row gap-2 justify-between'>
                                                             <div className='text-gray-500 flex gap-2 font-semibold w-20' title={'Periodo ' + (index + 1)}>
                                                                 <span className='my-auto'>
                                                                     <i className="bi bi-hash text-upla-100 mr-1" />
@@ -815,7 +817,7 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                                                     <input
                                                                         type="time"
                                                                         value={range.start}
-                                                                        className='h-8 border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
+                                                                        className='h-8 border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 w-32 text-xs sm:text-sm sm:w-auto'
                                                                         onChange={(e) => handleInputChange(index, 'start', e.target.value)}
                                                                     //min={index > 0 ? timeRanges[index - 1].end : ''}
                                                                     />
@@ -825,14 +827,12 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                                                     <input
                                                                         type="time"
                                                                         value={range.end}
-                                                                        className='h-8 border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 text-sm'
+                                                                        className='h-8 border rounded-md px-4 border-gray-400 focus-visible:ring-blue-200 transition-colors duration-300 ease-in-out focus:ring-0 w-32 text-xs sm:text-sm sm:w-auto'
                                                                         onChange={(e) => handleInputChange(index, 'end', e.target.value)}
                                                                     //min={'17:35'}
                                                                     />
                                                                 </div>
-                                                            </div>
-
-                                                            <div className='my-auto text-lg w-10 flex'>
+                                                                <div className='my-auto text-lg w-10 flex'>
                                                                 {index === 0 ?
                                                                     <i className="bi bi-list m-auto text-upla-100 text-xl" />
                                                                     :
@@ -842,6 +842,9 @@ const ModalDatosDuracion: React.FC<Props> = (props: Props) => {
                                                                     </button>
                                                                 }
                                                             </div>
+                                                            </div>
+
+                                                           
                                                         </div>
                                                     ))
                                                 }

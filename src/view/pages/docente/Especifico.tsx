@@ -71,7 +71,7 @@ const Especifico = () => {
             componenteActual = <div>Paso no válido</div>
     }
 
-    //const current = new Date('2024-04-03 00:00:00');
+    // const current = new Date('2024-04-03 00:00:00');
     // const dayOfWeek = current.toLocaleDateString('es-ES', { weekday: 'long' });
 
     return (
